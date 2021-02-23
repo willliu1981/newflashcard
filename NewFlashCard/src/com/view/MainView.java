@@ -1,4 +1,4 @@
-package com.control.view;
+package com.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -9,8 +9,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
-import com.control.model.CardBox;
-import com.control.model.Vocabulary;
+import com.model.CardBox;
+import com.model.Vocabulary;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;

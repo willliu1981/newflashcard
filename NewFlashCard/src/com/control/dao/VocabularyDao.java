@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.control.connection.Conn;
-import com.control.model.Vocabulary;
+import com.model.Vocabulary;
 
 public class VocabularyDao extends Dao<Vocabulary> {
 

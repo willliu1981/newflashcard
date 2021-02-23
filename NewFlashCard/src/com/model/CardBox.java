@@ -1,4 +1,4 @@
-package com.control.model;
+package com.model;
 
 import java.sql.Date;
 
