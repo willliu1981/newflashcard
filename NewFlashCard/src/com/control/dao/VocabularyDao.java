@@ -46,7 +46,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
 				m = new Vocabulary();
-				m.setBox_id(rs.getInt("id"));
+				m.setId(rs.getInt("id"));
 				m.setVocabulary(rs.getString("vocabulary"));
 				m.setTranslation(rs.getString("translation"));
 				m.setBox_id(rs.getInt("box_id"));
@@ -73,7 +73,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			m = new Vocabulary();
-			m.setBox_id(rs.getInt("id"));
+			m.setId(rs.getInt("id"));
 			m.setVocabulary(rs.getString("vocabulary"));
 			m.setTranslation(rs.getString("translation"));
 			m.setBox_id(rs.getInt("box_id"));
