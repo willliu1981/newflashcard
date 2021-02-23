@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.GridLayout;
 
 public class MainView extends JFrame {
 
@@ -71,7 +72,7 @@ public class MainView extends JFrame {
 		JButton btnNewButton = new JButton("卡片小盒");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, "vocabulary");
+				((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, "cardbox");
 			}
 		});
 
@@ -86,81 +87,51 @@ public class MainView extends JFrame {
 		contentPane.add(panel_cardlayout, BorderLayout.CENTER);
 		panel_cardlayout.setLayout(new CardLayout(0, 0));
 
-		JPanel panel_cardbox = new JPanel();
-		panel_cardlayout.add(panel_cardbox, "cardbox");
-		panel_cardbox.setLayout(new BoxLayout(panel_cardbox, BoxLayout.Y_AXIS));
-		
-		JPanel panel_cardbox_title = new JPanel();
-		panel_cardbox.add(panel_cardbox_title);
-		panel_cardbox_title.setLayout(new BoxLayout(panel_cardbox_title, BoxLayout.X_AXIS));
-		
-		JButton btnNewButton_3 = new JButton("New button");
-		btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_cardbox_title.add(btnNewButton_3);
-		
-		JButton btnNewButton_4 = new JButton("New button");
-		btnNewButton_4.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_cardbox_title.add(btnNewButton_4);
-		
-		JButton btnNewButton_5 = new JButton("New button");
-		btnNewButton_5.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_cardbox_title.add(btnNewButton_5);
-		
-		JPanel panel_cardbox_row = new JPanel();
-		panel_cardbox.add(panel_cardbox_row);
-		GridBagLayout gbl_panel_cardbox_row = new GridBagLayout();
-		gbl_panel_cardbox_row.columnWidths = new int[] {40, 120, 120, 150, 150, 0};
-		gbl_panel_cardbox_row.rowHeights = new int[] {50, 0};
-		gbl_panel_cardbox_row.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_panel_cardbox_row.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_cardbox_row.setLayout(gbl_panel_cardbox_row);
-		
-		JLabel lblId = new JLabel("id");
-		lblId.setFont(new Font("新細明體", Font.PLAIN, 18));
-		GridBagConstraints gbc_lblId = new GridBagConstraints();
-		gbc_lblId.anchor = GridBagConstraints.WEST;
-		gbc_lblId.insets = new Insets(0, 0, 0, 5);
-		gbc_lblId.gridx = 0;
-		gbc_lblId.gridy = 0;
-		panel_cardbox_row.add(lblId, gbc_lblId);
-		
-		JLabel lblNewLabel_2_1 = new JLabel("name");
-		lblNewLabel_2_1.setFont(new Font("新細明體", Font.PLAIN, 18));
-		GridBagConstraints gbc_lblNewLabel_2_1 = new GridBagConstraints();
-		gbc_lblNewLabel_2_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_2_1.gridx = 1;
-		gbc_lblNewLabel_2_1.gridy = 0;
-		panel_cardbox_row.add(lblNewLabel_2_1, gbc_lblNewLabel_2_1);
-		
-		JLabel lblNewLabel_2_1_1 = new JLabel("count");
-		lblNewLabel_2_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
-		GridBagConstraints gbc_lblNewLabel_2_1_1 = new GridBagConstraints();
-		gbc_lblNewLabel_2_1_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2_1_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_2_1_1.gridx = 2;
-		gbc_lblNewLabel_2_1_1.gridy = 0;
-		panel_cardbox_row.add(lblNewLabel_2_1_1, gbc_lblNewLabel_2_1_1);
-		
-		JLabel lblNewLabel_2_1_2 = new JLabel("create_date");
-		lblNewLabel_2_1_2.setFont(new Font("新細明體", Font.PLAIN, 18));
-		GridBagConstraints gbc_lblNewLabel_2_1_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2_1_2.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2_1_2.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_2_1_2.gridx = 3;
-		gbc_lblNewLabel_2_1_2.gridy = 0;
-		panel_cardbox_row.add(lblNewLabel_2_1_2, gbc_lblNewLabel_2_1_2);
-		
-		JLabel lblNewLabel_2_1_1_1 = new JLabel("update_date");
-		lblNewLabel_2_1_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
-		GridBagConstraints gbc_lblNewLabel_2_1_1_1 = new GridBagConstraints();
-		gbc_lblNewLabel_2_1_1_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2_1_1_1.gridx = 4;
-		gbc_lblNewLabel_2_1_1_1.gridy = 0;
-		panel_cardbox_row.add(lblNewLabel_2_1_1_1, gbc_lblNewLabel_2_1_1_1);
-
 		JPanel panel_vocabulary = new JPanel();
 		panel_cardlayout.add(panel_vocabulary, "vocabulary");
+
+		/*
+		 * panel_cardbox
+		 */
+		{
+			JPanel panel_cardbox = new JPanel();
+			panel_cardlayout.add(panel_cardbox, "cardbox");
+			panel_cardbox.setLayout(new BoxLayout(panel_cardbox, BoxLayout.Y_AXIS));
+
+			/*
+			 * panel_cardbox
+			 * 創建row
+			 */
+			{
+				JPanel panel_cardbox_title = new JPanel();
+				panel_cardbox.add(panel_cardbox_title);
+				panel_cardbox_title.setLayout(new GridLayout(0, 5, 0, 0));
+
+				for (int i = 0; i < 10; i++) {
+					CardBoxRow cardBoxRow = new CardBoxRow();
+					panel_cardbox.add(cardBoxRow);
+					cardBoxRow.setName("" + i);
+				}
+
+				JButton btnNewButton_3 = new JButton("小盒ID");
+				btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 18));
+				panel_cardbox_title.add(btnNewButton_3);
+
+				JButton btnNewButton_6 = new JButton("小盒名稱");
+				panel_cardbox_title.add(btnNewButton_6);
+
+				JButton btnNewButton_4 = new JButton("卡片數量");
+				btnNewButton_4.setFont(new Font("新細明體", Font.PLAIN, 18));
+				panel_cardbox_title.add(btnNewButton_4);
+
+				JButton btnNewButton_5 = new JButton("建立時間");
+				btnNewButton_5.setFont(new Font("新細明體", Font.PLAIN, 18));
+				panel_cardbox_title.add(btnNewButton_5);
+
+				JButton btnNewButton_7 = new JButton("更新時間");
+				panel_cardbox_title.add(btnNewButton_7);
+			}
+		}
 
 		JLabel lblNewLabel_1 = new JLabel("T2");
 		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
