@@ -11,6 +11,7 @@ import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import com.view.control.ShowRowControl;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -36,9 +37,11 @@ import java.awt.GridLayout;
 public class MainView extends JFrame {
 
 	private JPanel contentPane;
-	private JPanel panel_cardlayout;
+	private JPanel panel_centerbar;
 	private JPanel panel_cardbox;
 	private JPanel panel_vocabulary;
+	private ShowRowControl<CardBox> cardboxShowRowControl = new ShowRowControl();
+	private ShowRowControl<Vocabulary> vocabularyShowRowControl = new ShowRowControl();
 
 	/**
 	 * Launch the application.
@@ -76,63 +79,71 @@ public class MainView extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.NORTH);
-		JButton btnNewButton = new JButton("卡片小盒");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, "cardbox");
-				List<CardBox> list = new CardBoxDao().queryAll();
-				for (int i = 0; i < list.size(); i++) {
-					Component[] rows = ((JPanel) panel_cardbox.getComponent(i + 1)).getComponents();
-					// *
-					((JLabel) rows[0]).setText("" + list.get(i).getId());
-					((JLabel) rows[1]).setText("" + list.get(i).getName());
-					((JLabel) rows[2]).setText("0");
-					((JLabel) rows[3]).setText("" + list.get(i).getCreate_date());
-					((JLabel) rows[4]).setText("" + list.get(i).getUpdate_date());
-					///
+		/*
+		 * topbar
+		 */
+		{
+			JPanel panel_topbar = new JPanel();
+			contentPane.add(panel_topbar, BorderLayout.NORTH);
+
+			JButton btnNewButton = new JButton("卡片小盒");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, "cardbox");
+
+					List<CardBox> list = new CardBoxDao().queryAll();
+					cardboxShowRowControl.setResults(list);
+					cardboxShowRowControl.showRow();
+					/*
+					 * for (int i = 0; i < list.size(); i++) { Component[] rows = ((JPanel)
+					 * panel_cardbox.getComponent(i + 1)).getComponents(); ((JLabel)
+					 * rows[0]).setText("" + list.get(i).getId()); ((JLabel) rows[1]).setText("" +
+					 * list.get(i).getName()); ((JLabel) rows[2]).setText("0"); ((JLabel)
+					 * rows[3]).setText("" + list.get(i).getCreate_date()); ((JLabel)
+					 * rows[4]).setText("" + list.get(i).getUpdate_date()); }
+					 *///
 				}
-			}
-		});
-
-		JButton btnNewButton_1 = new JButton("詞彙");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, "vocabulary");
-				List<Vocabulary> list = new VocabularyDao().queryAll();
-				for (int i = 0; i < list.size(); i++) {
-					Component[] rows = ((JPanel) panel_vocabulary.getComponent(i + 1)).getComponents();
-					// *
-					((JLabel) rows[0]).setText("" + list.get(i).getId());
-					((JLabel) rows[1]).setText("" + list.get(i).getVocabulary());
-					((JLabel) rows[2]).setText("" + list.get(i).getTranslation());
-					((JLabel) rows[3]).setText("" + list.get(i).getBox_id());
-					((JLabel) rows[4]).setText("" + list.get(i).getCreate_date());
-					((JLabel) rows[5]).setText("" + list.get(i).getUpdate_date());
-					///
+			});
+			JButton btnNewButton_1 = new JButton("詞彙");
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, "vocabulary");
+					List<Vocabulary> list = new VocabularyDao().queryAll();
+					vocabularyShowRowControl.setResults(list);
+					vocabularyShowRowControl.showRow();
+					/*
+					 * for (int i = 0; i < list.size(); i++) { Component[] rows = ((JPanel)
+					 * panel_vocabulary.getComponent(i + 1)).getComponents(); // * ((JLabel)
+					 * rows[0]).setText("" + list.get(i).getId()); ((JLabel) rows[1]).setText("" +
+					 * list.get(i).getVocabulary()); ((JLabel) rows[2]).setText("" +
+					 * list.get(i).getTranslation()); ((JLabel) rows[3]).setText("" +
+					 * list.get(i).getBox_id()); ((JLabel) rows[4]).setText("" +
+					 * list.get(i).getCreate_date()); ((JLabel) rows[5]).setText("" +
+					 * list.get(i).getUpdate_date()); /// }
+					 *///
 				}
-			}
-		});
-		panel.add(btnNewButton_1);
-		panel.add(btnNewButton);
+			});
 
-		JButton btnNewButton_2 = new JButton("New button");
-		panel.add(btnNewButton_2);
+			JButton btnNewButton_2 = new JButton("New button");
 
-		panel_cardlayout = new JPanel();
-		contentPane.add(panel_cardlayout, BorderLayout.CENTER);
-		panel_cardlayout.setLayout(new CardLayout(0, 0));
+			panel_topbar.add(btnNewButton);
+			panel_topbar.add(btnNewButton_1);
+			panel_topbar.add(btnNewButton_2);
+		}
+
+		panel_centerbar = new JPanel();
+		contentPane.add(panel_centerbar, BorderLayout.CENTER);
+		panel_centerbar.setLayout(new CardLayout(0, 0));
 
 		/*
-		 * panel_vocabulary
+		 * panel vocabulary
 		 */
 		{
 			panel_vocabulary = new JPanel();
-			panel_cardlayout.add(panel_vocabulary, "vocabulary");
+			panel_centerbar.add(panel_vocabulary, "vocabulary");
 			panel_vocabulary.setLayout(new BoxLayout(panel_vocabulary, BoxLayout.Y_AXIS));
 			/*
-			 * panel_cardbox 創建row
+			 * 創建 vocabulary row
 			 */
 			{
 				JPanel panel_vocabulary_title_1 = new JPanel();
@@ -166,20 +177,23 @@ public class MainView extends JFrame {
 				for (int i = 0; i < 10; i++) {
 					VocabularyRow vocabularyRow = new VocabularyRow();
 					panel_vocabulary.add(vocabularyRow);
+					vocabularyRow.setName("" + i);
+					vocabularyRow.setShowRowControl(vocabularyShowRowControl);
+					this.vocabularyShowRowControl.add(vocabularyRow);
 				}
 			}
 		}
 
 		/*
-		 * panel_cardbox
+		 * panel cardbox
 		 */
 		{
 			panel_cardbox = new JPanel();
-			panel_cardlayout.add(panel_cardbox, "cardbox");
+			panel_centerbar.add(panel_cardbox, "cardbox");
 			panel_cardbox.setLayout(new BoxLayout(panel_cardbox, BoxLayout.Y_AXIS));
 
 			/*
-			 * panel_cardbox 創建row
+			 * 創建 cardbox row
 			 */
 			{
 				JPanel panel_cardbox_title = new JPanel();
@@ -191,6 +205,7 @@ public class MainView extends JFrame {
 				panel_cardbox_title.add(btnNewButton_3);
 
 				JButton btnNewButton_6 = new JButton("小盒名稱");
+				btnNewButton_6.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_6);
 
 				JButton btnNewButton_4 = new JButton("卡片數量");
@@ -202,11 +217,15 @@ public class MainView extends JFrame {
 				panel_cardbox_title.add(btnNewButton_5);
 
 				JButton btnNewButton_7 = new JButton("更新時間");
+				btnNewButton_7.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_7);
 
 				for (int i = 0; i < 10; i++) {
 					CardBoxRow cardBoxRow = new CardBoxRow();
 					panel_cardbox.add(cardBoxRow);
+					cardBoxRow.setName("" + i);
+					cardBoxRow.setShowRowControl(cardboxShowRowControl);
+					this.cardboxShowRowControl.add(cardBoxRow);
 				}
 			}
 		}
