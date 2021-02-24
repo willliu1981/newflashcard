@@ -94,14 +94,6 @@ public class MainView extends JFrame {
 					List<CardBox> list = new CardBoxDao().queryAll();
 					cardboxShowRowControl.setResults(list);
 					cardboxShowRowControl.showRow();
-					/*
-					 * for (int i = 0; i < list.size(); i++) { Component[] rows = ((JPanel)
-					 * panel_cardbox.getComponent(i + 1)).getComponents(); ((JLabel)
-					 * rows[0]).setText("" + list.get(i).getId()); ((JLabel) rows[1]).setText("" +
-					 * list.get(i).getName()); ((JLabel) rows[2]).setText("0"); ((JLabel)
-					 * rows[3]).setText("" + list.get(i).getCreate_date()); ((JLabel)
-					 * rows[4]).setText("" + list.get(i).getUpdate_date()); }
-					 *///
 				}
 			});
 			JButton btnNewButton_1 = new JButton("詞彙");
@@ -111,16 +103,6 @@ public class MainView extends JFrame {
 					List<Vocabulary> list = new VocabularyDao().queryAll();
 					vocabularyShowRowControl.setResults(list);
 					vocabularyShowRowControl.showRow();
-					/*
-					 * for (int i = 0; i < list.size(); i++) { Component[] rows = ((JPanel)
-					 * panel_vocabulary.getComponent(i + 1)).getComponents(); // * ((JLabel)
-					 * rows[0]).setText("" + list.get(i).getId()); ((JLabel) rows[1]).setText("" +
-					 * list.get(i).getVocabulary()); ((JLabel) rows[2]).setText("" +
-					 * list.get(i).getTranslation()); ((JLabel) rows[3]).setText("" +
-					 * list.get(i).getBox_id()); ((JLabel) rows[4]).setText("" +
-					 * list.get(i).getCreate_date()); ((JLabel) rows[5]).setText("" +
-					 * list.get(i).getUpdate_date()); /// }
-					 *///
 				}
 			});
 
