@@ -33,6 +33,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.GridLayout;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class MainView extends JFrame {
 
@@ -87,16 +91,23 @@ public class MainView extends JFrame {
 			contentPane.add(panel_topbar, BorderLayout.NORTH);
 
 			JButton btnNewButton = new JButton("卡片小盒");
+			btnNewButton.setBackground(SystemColor.controlHighlight);
+			btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 18));
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, "cardbox");
-
 					List<CardBox> list = new CardBoxDao().queryAll();
 					cardboxShowRowControl.setResults(list);
 					cardboxShowRowControl.showRow();
 				}
 			});
+
+			JButton btnNewButton_2 = new JButton("New button");
+			btnNewButton_2.setBackground(SystemColor.controlHighlight);
+			btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 18));
 			JButton btnNewButton_1 = new JButton("詞彙");
+			btnNewButton_1.setBackground(SystemColor.controlHighlight);
+			btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 			btnNewButton_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, "vocabulary");
@@ -105,17 +116,21 @@ public class MainView extends JFrame {
 					vocabularyShowRowControl.showRow();
 				}
 			});
-
-			JButton btnNewButton_2 = new JButton("New button");
+			panel_topbar.add(btnNewButton_1);
 
 			panel_topbar.add(btnNewButton);
-			panel_topbar.add(btnNewButton_1);
 			panel_topbar.add(btnNewButton_2);
 		}
 
 		panel_centerbar = new JPanel();
 		contentPane.add(panel_centerbar, BorderLayout.CENTER);
 		panel_centerbar.setLayout(new CardLayout(0, 0));
+		
+		/*
+		 * panel start
+		 */
+		JPanel panel_start = new JPanel();
+		panel_centerbar.add(panel_start, "start");
 
 		/*
 		 * panel vocabulary
@@ -133,26 +148,32 @@ public class MainView extends JFrame {
 				panel_vocabulary_title_1.setLayout(new GridLayout(0, 6, 0, 0));
 
 				JButton btnNewButton_3_1 = new JButton("詞彙ID");
+				btnNewButton_3_1.setBackground(SystemColor.controlHighlight);
 				btnNewButton_3_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_vocabulary_title_1.add(btnNewButton_3_1);
 
 				JButton btnNewButton_6_1 = new JButton("英文單詞");
+				btnNewButton_6_1.setBackground(SystemColor.controlHighlight);
 				btnNewButton_6_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_vocabulary_title_1.add(btnNewButton_6_1);
 
 				JButton btnNewButton_4_1 = new JButton("中文翻譯");
+				btnNewButton_4_1.setBackground(SystemColor.controlHighlight);
 				btnNewButton_4_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_vocabulary_title_1.add(btnNewButton_4_1);
 
 				JButton btnNewButton_5_1 = new JButton("小盒連結");
+				btnNewButton_5_1.setBackground(SystemColor.controlHighlight);
 				btnNewButton_5_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_vocabulary_title_1.add(btnNewButton_5_1);
 
 				JButton btnNewButton_5_1_1 = new JButton("建立時間");
+				btnNewButton_5_1_1.setBackground(SystemColor.controlHighlight);
 				btnNewButton_5_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_vocabulary_title_1.add(btnNewButton_5_1_1);
 
 				JButton btnNewButton_7_1 = new JButton("更新時間");
+				btnNewButton_7_1.setBackground(SystemColor.controlHighlight);
 				btnNewButton_7_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_vocabulary_title_1.add(btnNewButton_7_1);
 
@@ -183,24 +204,31 @@ public class MainView extends JFrame {
 				panel_cardbox_title.setLayout(new GridLayout(0, 5, 0, 0));
 
 				JButton btnNewButton_3 = new JButton("小盒ID");
+				btnNewButton_3.setBackground(SystemColor.controlHighlight);
 				btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_3);
 
 				JButton btnNewButton_6 = new JButton("小盒名稱");
+				btnNewButton_6.setBackground(SystemColor.controlHighlight);
 				btnNewButton_6.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_6);
 
 				JButton btnNewButton_4 = new JButton("卡片數量");
+				btnNewButton_4.setBackground(SystemColor.controlHighlight);
 				btnNewButton_4.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_4);
 
 				JButton btnNewButton_5 = new JButton("建立時間");
+				btnNewButton_5.setBackground(SystemColor.controlHighlight);
 				btnNewButton_5.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_5);
 
 				JButton btnNewButton_7 = new JButton("更新時間");
+				btnNewButton_7.setBackground(SystemColor.controlHighlight);
 				btnNewButton_7.setFont(new Font("新細明體", Font.PLAIN, 18));
 				panel_cardbox_title.add(btnNewButton_7);
+				
+				
 
 				for (int i = 0; i < 10; i++) {
 					CardBoxRow cardBoxRow = new CardBoxRow();
