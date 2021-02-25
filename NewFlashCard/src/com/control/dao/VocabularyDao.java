@@ -85,6 +85,34 @@ public class VocabularyDao extends Dao<Vocabulary> {
 		return m;
 	}
 
+	public List<Vocabulary> queryByBoxID(int id) {
+		Conn conn = new Conn();
+		Connection myConn = conn.conn();
+		PreparedStatement st = null;
+		String sql = "select * from vocabulary where box_id=?";
+		ResultSet rs = null;
+		List<Vocabulary> ms = new ArrayList<>();
+		Vocabulary m = null;
+		try {
+			st = myConn.prepareStatement(sql);
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			while (rs.next()) {
+				m = new Vocabulary();
+				m.setId(rs.getInt("id"));
+				m.setVocabulary(rs.getString("vocabulary"));
+				m.setTranslation(rs.getString("translation"));
+				m.setBox_id(rs.getInt("box_id"));
+				m.setCreate_date(rs.getString("create_date"));
+				m.setUpdate_date(rs.getString("update_date"));
+				ms.add(m);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ms;
+	}
+
 	@Override
 	public void update(Vocabulary t, int id) {
 		Conn conn = new Conn();
@@ -110,7 +138,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 		PreparedStatement st = null;
 		String sql = "delete from vocabulary where id=?";
 		try {
-			st=myConn.prepareStatement(sql);
+			st = myConn.prepareStatement(sql);
 			st.setInt(1, id);
 			st.executeUpdate();
 		} catch (SQLException e) {

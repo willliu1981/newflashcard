@@ -11,10 +11,10 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import com.control.viewcontrol.ShowRow;
+import com.control.viewcontrol.ShowRowControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
-import com.view.control.ShowRow;
-import com.view.control.ShowRowControl;
 
 public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	private ShowRowControl<Vocabulary> showRowControl;

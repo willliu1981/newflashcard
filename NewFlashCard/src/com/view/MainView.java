@@ -28,9 +28,9 @@ import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
+import com.control.viewcontrol.ShowRowControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
-import com.view.control.ShowRowControl;
 
 public class MainView extends JFrame {
 	public static final String ShowRow_CardBox = "cardbox";

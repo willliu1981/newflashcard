@@ -1,4 +1,4 @@
-package com.view.control;
+package com.control.viewcontrol;
 
 import com.model.CardBox;
 
