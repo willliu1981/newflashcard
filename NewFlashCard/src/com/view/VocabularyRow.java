@@ -18,6 +18,7 @@ import javax.swing.border.BevelBorder;
 
 public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	private ShowRowControl<Vocabulary> showRowControl;
+	
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {

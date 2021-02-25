@@ -3,6 +3,7 @@ package com.control.viewcontrol;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
@@ -13,10 +14,11 @@ public class ShowRowControl<T> {
 	private List<T> results;
 	private int fromIdx = 0;
 	private JFrame eventJFrame;
+	private ShowRowInfo info;
 
 	public ShowRowControl(JFrame eventJFrame) {
 		showRows = new ArrayList<>();
-		this.eventJFrame=eventJFrame;
+		this.eventJFrame = eventJFrame;
 	}
 
 	public int getFromIdx() {
@@ -58,6 +60,13 @@ public class ShowRowControl<T> {
 	public JFrame getEventJFrame() {
 		return eventJFrame;
 	}
-	
-	
+
+	public void showInfo(Map<String, String> map) {
+		this.info.showInfo(map);
+	}
+
+	public void setInfo(ShowRowInfo info) {
+		this.info = info;
+	}
+
 }

@@ -35,7 +35,7 @@ public class Vocabulary {
 	}
 
 	public Integer getBox_id() {
-		return (box_id == null ? 0 : this.box_id);
+		return (box_id == null ? -1 : this.box_id);
 	}
 
 	public void setBox_id(Integer box_id) {

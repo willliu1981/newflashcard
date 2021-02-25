@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.border.SoftBevelBorder;
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
 import com.control.viewcontrol.ShowRowControl;
+import com.control.viewcontrol.ShowRowInfo;
 import com.model.CardBox;
 import com.model.Vocabulary;
 
@@ -98,6 +100,7 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, MainView.ShowRow_CardBox);
 					List<CardBox> list = new CardBoxDao().queryAll();
+					CardBoxRow.setVocabularyQuantities(new VocabularyDao().queryAll());
 					cardboxShowRowControl.setResults(list);
 					cardboxShowRowControl.showRow();
 				}
@@ -234,6 +237,18 @@ public class MainView extends JFrame {
 	}
 
 	private void createCardBoxVocabularyPanel() {
+		ShowRowInfo info = new ShowRowInfo() {
+			@Override
+			public void showInfo(Map<String, String> m) {
+				((JLabel) this.comps.get(CardBox.ID)).setText(m.get(CardBox.ID));
+				((JLabel) this.comps.get(CardBox.Name)).setText(m.get(CardBox.Name));
+				((JLabel) this.comps.get(CardBox.Quantity)).setText(m.get(CardBox.Quantity));
+				((JLabel) this.comps.get(CardBox.Create_date)).setText(m.get(CardBox.Create_date));
+				((JLabel) this.comps.get(CardBox.Update_date)).setText(m.get(CardBox.Update_date));
+			}
+		};
+		this.cardboxShowRowControl.setInfo(info);
+		
 		panel_cardbox_vocabulary = new JPanel();
 		panel_centerbar.add(panel_cardbox_vocabulary, MainView.ShowRow_CardBox_Vocabulary);
 		panel_cardbox_vocabulary.setLayout(new BoxLayout(panel_cardbox_vocabulary, BoxLayout.Y_AXIS));
@@ -273,41 +288,46 @@ public class MainView extends JFrame {
 		panel_1.add(lblNewLabel_7);
 
 		JLabel lblNewLabel_2 = new JLabel("id");
+		info.add(CardBox.ID, lblNewLabel_2);
 		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("name");
+		info.add(CardBox.Name, lblNewLabel_3);
 		lblNewLabel_3.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_5 = new JLabel("quantity");
+		info.add(CardBox.Quantity, lblNewLabel_5);
 		lblNewLabel_5.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_5);
 
 		JLabel lblNewLabel_8 = new JLabel("create date");
+		info.add(CardBox.Create_date, lblNewLabel_8);
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_8);
 
 		JLabel lblNewLabel_9 = new JLabel("update date");
+		info.add(CardBox.Update_date, lblNewLabel_9);
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_9.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_9);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_cardbox_vocabulary_title.add(panel_3);
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		JButton btnNewButton_9 = new JButton("新增卡片");
 		btnNewButton_9.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_9.setBackground(SystemColor.controlHighlight);
 		btnNewButton_9.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_3.add(btnNewButton_9);
-		
+
 		JButton btnNewButton_10 = new JButton("編輯名稱");
 		btnNewButton_10.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_10.setBackground(SystemColor.controlHighlight);
@@ -347,6 +367,7 @@ public class MainView extends JFrame {
 		btnNewButton_7_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		btnNewButton_7_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_7_1_1);
+
 		/*
 		 * 創建 vocabulary row
 		 */

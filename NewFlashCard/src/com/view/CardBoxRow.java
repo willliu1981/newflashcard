@@ -8,7 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +25,9 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 
 public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
-	public ShowRowControl<CardBox> showRowControl;
+	private ShowRowControl<CardBox> showRowControl;
+	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
+
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
@@ -47,6 +51,18 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 				List<Vocabulary> list = new VocabularyDao().queryByBoxID(cardbox.getId());
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
+				
+				int sum=0;
+				if(vocabularyQuantities.containsKey(cardbox.getId())) {
+					sum=vocabularyQuantities.get(cardbox.getId());
+				}
+				Map<String,String>map=new HashMap<>();
+				map.put(CardBox.ID, cardbox.getId().toString());
+				map.put(CardBox.Name, cardbox.getName());
+				map.put(CardBox.Create_date, cardbox.getCreate_date());
+				map.put(CardBox.Update_date, cardbox.getUpdate_date());
+				map.put(CardBox.Quantity, String.valueOf(sum));
+				showRowControl.showInfo(map);
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
@@ -110,9 +126,13 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		Component[] rows = this.getComponents();
 		if (idx < size) {
 			CardBox cardBox = this.showRowControl.getResults().get(idx);
+			int sum = 0;
+			if (vocabularyQuantities.containsKey(cardBox.getId())) {
+				sum = vocabularyQuantities.get(cardBox.getId());
+			}
 			((JLabel) rows[0]).setText("" + cardBox.getId());
 			((JLabel) rows[1]).setText("" + cardBox.getName());
-			((JLabel) rows[2]).setText("0");
+			((JLabel) rows[2]).setText("" + sum);
 			((JLabel) rows[3]).setText("" + cardBox.getCreate_date());
 			((JLabel) rows[4]).setText("" + cardBox.getUpdate_date());
 		} else {
@@ -122,6 +142,28 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[3]).setText(" ");
 			((JLabel) rows[4]).setText(" ");
 		}
+	}
+
+	public static void setVocabularyQuantities(Map<Integer, Integer> map) {
+		vocabularyQuantities = map;
+	}
+
+	public static void setVocabularyQuantities(List<Vocabulary> list) {
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0, id; i < list.size(); i++) {
+			if (list.get(i).getBox_id() != null && (id = list.get(i).getBox_id()) > -1) {
+				if (map.containsKey(id)) {
+					map.put(id, map.get(id) + 1);
+				} else {
+					map.put(id, 1);
+				}
+			}
+		}
+		vocabularyQuantities = map;
+	}
+
+	public static Map<Integer, Integer> getVocabularyQuantities() {
+		return vocabularyQuantities == null ? new HashMap<>() : vocabularyQuantities;
 	}
 
 }

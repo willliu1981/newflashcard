@@ -3,6 +3,12 @@ package com.model;
 import java.sql.Date;
 
 public class CardBox {
+	public static final String ID="id";
+	public static final String Name="name";
+	public static final String Create_date="create_date";
+	public static final String Update_date="update_date";
+	public static final String Quantity="quantity";
+	
 	private Integer id;
 	private String name;
 	private String create_date;
