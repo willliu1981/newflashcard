@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,6 +104,9 @@ public class MainView extends JFrame {
 					CardBoxRow.setVocabularyQuantities(new VocabularyDao().queryAll());
 					cardboxShowRowControl.setResults(list);
 					cardboxShowRowControl.showRow();
+					Map<String, String> map = new HashMap<>();
+					map.put(ShowRowInfo.CardBox_Quantity, String.valueOf(list.size()));
+					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox);
 				}
 			});
 
@@ -237,18 +241,19 @@ public class MainView extends JFrame {
 	}
 
 	private void createCardBoxVocabularyPanel() {
-		ShowRowInfo info = new ShowRowInfo() {
+		ShowRowInfo info = new ShowRowInfo(ShowRowInfo.InfoName_CardBox_Vocabulary) {
 			@Override
 			public void showInfo(Map<String, String> m) {
-				((JLabel) this.comps.get(CardBox.ID)).setText(m.get(CardBox.ID));
-				((JLabel) this.comps.get(CardBox.Name)).setText(m.get(CardBox.Name));
-				((JLabel) this.comps.get(CardBox.Quantity)).setText(m.get(CardBox.Quantity));
-				((JLabel) this.comps.get(CardBox.Create_date)).setText(m.get(CardBox.Create_date));
-				((JLabel) this.comps.get(CardBox.Update_date)).setText(m.get(CardBox.Update_date));
+				((JLabel) this.comps.get(ShowRowInfo.ID)).setText(m.get(ShowRowInfo.ID));
+				((JLabel) this.comps.get(ShowRowInfo.Name)).setText(m.get(ShowRowInfo.Name));
+				((JLabel) this.comps.get(ShowRowInfo.CardBox_Vocabulary_Quantity))
+						.setText(m.get(ShowRowInfo.CardBox_Vocabulary_Quantity));
+				((JLabel) this.comps.get(ShowRowInfo.Create_date)).setText(m.get(ShowRowInfo.Create_date));
+				((JLabel) this.comps.get(ShowRowInfo.Update_date)).setText(m.get(ShowRowInfo.Update_date));
 			}
 		};
 		this.cardboxShowRowControl.setInfo(info);
-		
+
 		panel_cardbox_vocabulary = new JPanel();
 		panel_centerbar.add(panel_cardbox_vocabulary, MainView.ShowRow_CardBox_Vocabulary);
 		panel_cardbox_vocabulary.setLayout(new BoxLayout(panel_cardbox_vocabulary, BoxLayout.Y_AXIS));
@@ -288,31 +293,31 @@ public class MainView extends JFrame {
 		panel_1.add(lblNewLabel_7);
 
 		JLabel lblNewLabel_2 = new JLabel("id");
-		info.add(CardBox.ID, lblNewLabel_2);
+		info.add(lblNewLabel_2, ShowRowInfo.ID);
 		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("name");
-		info.add(CardBox.Name, lblNewLabel_3);
+		info.add(lblNewLabel_3, ShowRowInfo.Name);
 		lblNewLabel_3.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_5 = new JLabel("quantity");
-		info.add(CardBox.Quantity, lblNewLabel_5);
+		info.add(lblNewLabel_5, ShowRowInfo.CardBox_Vocabulary_Quantity);
 		lblNewLabel_5.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_5);
 
 		JLabel lblNewLabel_8 = new JLabel("create date");
-		info.add(CardBox.Create_date, lblNewLabel_8);
+		info.add(lblNewLabel_8, ShowRowInfo.Create_date);
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_8);
 
 		JLabel lblNewLabel_9 = new JLabel("update date");
-		info.add(CardBox.Update_date, lblNewLabel_9);
+		info.add(lblNewLabel_9, ShowRowInfo.Update_date);
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_9.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_9);
@@ -381,6 +386,14 @@ public class MainView extends JFrame {
 	}
 
 	private void createCardBoxPanel() {
+		ShowRowInfo info = new ShowRowInfo(ShowRowInfo.InfoName_CardBox) {
+			@Override
+			public void showInfo(Map<String, String> m) {
+				((JLabel) this.comps.get(ShowRowInfo.CardBox_Quantity)).setText(m.get(ShowRowInfo.CardBox_Quantity));
+			}
+		};
+		this.cardboxShowRowControl.setInfo(info);
+
 		panel_cardbox = new JPanel();
 		panel_centerbar.add(panel_cardbox, "cardbox");
 		panel_cardbox.setLayout(new BoxLayout(panel_cardbox, BoxLayout.Y_AXIS));
@@ -410,6 +423,7 @@ public class MainView extends JFrame {
 		panel_1.add(btnNewButton_8);
 
 		JLabel lblNewLabel_10 = new JLabel("小盒數量：");
+		info.add(lblNewLabel_10, ShowRowInfo.CardBox_Quantity);
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_10.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_10);

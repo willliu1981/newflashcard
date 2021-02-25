@@ -62,11 +62,37 @@ public class ShowRowControl<T> {
 	}
 
 	public void showInfo(Map<String, String> map) {
-		this.info.showInfo(map);
+		this.showInfo(map,ShowRowInfo.InfoName_Default);
+	}
+	
+	public void showInfo(Map<String, String> map,String infoName) {
+		this.find(info, infoName) .showInfo(map);
+	}
+	
+	private ShowRowInfo find(ShowRowInfo info,String infoName) {
+		if(info.getInfoName().equals(infoName)) {
+			return info;
+		}else {
+			return find(info.getInfo(),infoName);
+		}
 	}
 
 	public void setInfo(ShowRowInfo info) {
-		this.info = info;
+		this.setInfo(info, false);
+	}
+
+	public void setInfo(ShowRowInfo info, boolean createNew) {
+		if (createNew) {
+			//強制賦予info
+			this.info = info;
+			return;
+		}
+		
+		if (this.info != null) {
+			this.info.setInfo(info); 
+		} else {
+			this.info = info;
+		}
 	}
 
 }

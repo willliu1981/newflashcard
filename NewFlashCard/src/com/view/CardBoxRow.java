@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import com.control.dao.VocabularyDao;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
+import com.control.viewcontrol.ShowRowInfo;
 import com.model.CardBox;
 import com.model.Vocabulary;
 import javax.swing.border.SoftBevelBorder;
@@ -57,12 +58,12 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 					sum=vocabularyQuantities.get(cardbox.getId());
 				}
 				Map<String,String>map=new HashMap<>();
-				map.put(CardBox.ID, cardbox.getId().toString());
-				map.put(CardBox.Name, cardbox.getName());
-				map.put(CardBox.Create_date, cardbox.getCreate_date());
-				map.put(CardBox.Update_date, cardbox.getUpdate_date());
-				map.put(CardBox.Quantity, String.valueOf(sum));
-				showRowControl.showInfo(map);
+				map.put(ShowRowInfo.ID, cardbox.getId().toString());
+				map.put(ShowRowInfo.Name, cardbox.getName());
+				map.put(ShowRowInfo.Create_date, cardbox.getCreate_date());
+				map.put(ShowRowInfo.Update_date, cardbox.getUpdate_date());
+				map.put(ShowRowInfo.CardBox_Vocabulary_Quantity, String.valueOf(sum));
+				showRowControl.showInfo(map,ShowRowInfo.InfoName_CardBox_Vocabulary);
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
