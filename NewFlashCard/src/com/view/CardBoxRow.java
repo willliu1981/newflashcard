@@ -12,7 +12,9 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import com.control.dao.CardBoxDao;
+import com.control.dao.VocabularyDao;
 import com.model.CardBox;
+import com.model.Vocabulary;
 import com.view.control.ShowRow;
 import com.view.control.ShowRowControl;
 import java.awt.event.MouseWheelListener;
@@ -20,8 +22,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class CardBoxRow extends JPanel implements ShowRow<CardBox, MainView> {
-	public ShowRowControl<CardBox, MainView> showRowControl;
+public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
+	public ShowRowControl<CardBox> showRowControl;
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
@@ -36,8 +38,12 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox, MainView> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				((CardLayout) (showRowControl.getEventFrame().getContentPane().getLayout()))
-						.show(showRowControl.getEventFrame().getPanel_centerbar(), "cardboxvocabulary");
+				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_centerbar().getLayout()).show(
+						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
+						MainView.ShowRow_CardBox_Vocabulary);
+				List<Vocabulary> list = new VocabularyDao().queryAll();
+				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
+				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
@@ -83,7 +89,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox, MainView> {
 
 	}
 
-	public void setShowRowControl(ShowRowControl<CardBox, MainView> control) {
+	public void setShowRowControl(ShowRowControl<CardBox> control) {
 		this.showRowControl = control;
 	}
 

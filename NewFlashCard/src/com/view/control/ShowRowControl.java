@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import com.model.CardBox;
 
-public class ShowRowControl<T,F> {
+public class ShowRowControl<T> {
 	private List<ShowRow> showRows;
 	private List<T> results;
 	private int fromIdx = 0;
-	private F eventFrame;
+	private JFrame eventJFrame;
 
-	public ShowRowControl(F eventFrame) {
+	public ShowRowControl(JFrame eventJFrame) {
 		showRows = new ArrayList<>();
-		this.eventFrame=eventFrame;
+		this.eventJFrame=eventJFrame;
 	}
 
 	public int getFromIdx() {
@@ -38,12 +37,6 @@ public class ShowRowControl<T,F> {
 		}
 	}
 
-	public F getEventFrame() {
-		return eventFrame;
-	}
-
-
-
 	public void add(ShowRow showRow) {
 		this.showRows.add(showRow);
 	}
@@ -61,4 +54,10 @@ public class ShowRowControl<T,F> {
 			row.showRow();
 		}
 	}
+
+	public JFrame getEventJFrame() {
+		return eventJFrame;
+	}
+	
+	
 }

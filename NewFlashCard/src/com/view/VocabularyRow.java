@@ -16,8 +16,8 @@ import com.model.Vocabulary;
 import com.view.control.ShowRow;
 import com.view.control.ShowRowControl;
 
-public class VocabularyRow extends JPanel implements ShowRow<Vocabulary,MainView> {
-	private ShowRowControl<Vocabulary,MainView> showRowControl;
+public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
+	private ShowRowControl<Vocabulary> showRowControl;
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
@@ -75,7 +75,7 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary,MainView
 
 	@Override
 	public void showRow() {
-		int idx = Integer.valueOf(this.getName())+this.showRowControl.getFromIdx();
+		int idx = Integer.valueOf(this.getName()) + this.showRowControl.getFromIdx();
 		int size = this.showRowControl.getResults().size();
 		Component[] rows = this.getComponents();
 		if (idx < size) {
@@ -98,7 +98,7 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary,MainView
 	}
 
 	@Override
-	public void setShowRowControl(ShowRowControl<Vocabulary,MainView> control) {
+	public void setShowRowControl(ShowRowControl<Vocabulary> control) {
 		this.showRowControl = control;
 
 	}
