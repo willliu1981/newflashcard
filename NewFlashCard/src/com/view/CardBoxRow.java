@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -19,8 +20,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
-	public ShowRowControl<CardBox> showRowControl;
+public class CardBoxRow extends JPanel implements ShowRow<CardBox, MainView> {
+	public ShowRowControl<CardBox, MainView> showRowControl;
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
@@ -35,11 +36,10 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				System.out.println("L");
+				((CardLayout) (showRowControl.getEventFrame().getContentPane().getLayout()))
+						.show(showRowControl.getEventFrame().getPanel_centerbar(), "cardboxvocabulary");
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
-				System.out.println("c");
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
-				System.out.println("R");
 			}
 		}
 	};
@@ -83,7 +83,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 
 	}
 
-	public void setShowRowControl(ShowRowControl<CardBox> control) {
+	public void setShowRowControl(ShowRowControl<CardBox, MainView> control) {
 		this.showRowControl = control;
 	}
 

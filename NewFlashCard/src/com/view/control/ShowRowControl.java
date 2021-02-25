@@ -4,15 +4,20 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import com.model.CardBox;
 
-public class ShowRowControl<T> {
+public class ShowRowControl<T,F> {
 	private List<ShowRow> showRows;
 	private List<T> results;
 	private int fromIdx = 0;
+	private F eventFrame;
 
-	public ShowRowControl() {
+	public ShowRowControl(F eventFrame) {
 		showRows = new ArrayList<>();
+		this.eventFrame=eventFrame;
 	}
 
 	public int getFromIdx() {
@@ -32,6 +37,12 @@ public class ShowRowControl<T> {
 			this.fromIdx = this.results.size() - 1;
 		}
 	}
+
+	public F getEventFrame() {
+		return eventFrame;
+	}
+
+
 
 	public void add(ShowRow showRow) {
 		this.showRows.add(showRow);

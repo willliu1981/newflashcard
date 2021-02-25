@@ -16,8 +16,8 @@ import com.model.Vocabulary;
 import com.view.control.ShowRow;
 import com.view.control.ShowRowControl;
 
-public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
-	private ShowRowControl<Vocabulary> showRowControl;
+public class VocabularyRow extends JPanel implements ShowRow<Vocabulary,MainView> {
+	private ShowRowControl<Vocabulary,MainView> showRowControl;
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
@@ -98,7 +98,7 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	}
 
 	@Override
-	public void setShowRowControl(ShowRowControl<Vocabulary> control) {
+	public void setShowRowControl(ShowRowControl<Vocabulary,MainView> control) {
 		this.showRowControl = control;
 
 	}
