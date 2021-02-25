@@ -66,14 +66,14 @@ public class ShowRowControl<T> {
 	}
 	
 	public void showInfo(Map<String, String> map,String infoName) {
-		this.find(info, infoName) .showInfo(map);
+		this.findInfo(info, infoName) .showInfo(map);
 	}
 	
-	private ShowRowInfo find(ShowRowInfo info,String infoName) {
+	private ShowRowInfo findInfo(ShowRowInfo info,String infoName) {
 		if(info.getInfoName().equals(infoName)) {
 			return info;
 		}else {
-			return find(info.getInfo(),infoName);
+			return findInfo(info.getInfo(),infoName);
 		}
 	}
 

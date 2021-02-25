@@ -134,6 +134,9 @@ public class MainView extends JFrame {
 					List<Vocabulary> list = new VocabularyDao().queryAll();
 					vocabularyShowRowControl.setResults(list);
 					vocabularyShowRowControl.showRow();
+					Map<String, String> map = new HashMap<>();
+					map.put(ShowRowInfo.Vocabulary_Quantity, String.valueOf(list.size()));
+					vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary);
 				}
 			});
 			panel_topbar.add(btnNewButton_1);
@@ -159,6 +162,14 @@ public class MainView extends JFrame {
 	}
 
 	private void createVocabularyPanel() {
+		ShowRowInfo info = new ShowRowInfo(ShowRowInfo.InfoName_Vocabulary) {
+			@Override
+			public void showInfo(Map<String, String> m) {
+				JLabel lbl = ((JLabel) this.comps.get(ShowRowInfo.Vocabulary_Quantity));
+				lbl.setText(lbl.getName() + m.get(ShowRowInfo.Vocabulary_Quantity));
+			}
+		};
+		this.vocabularyShowRowControl.setInfo(info);
 		panel_vocabulary = new JPanel();
 		panel_centerbar.add(panel_vocabulary, "vocabulary");
 		panel_vocabulary.setLayout(new BoxLayout(panel_vocabulary, BoxLayout.Y_AXIS));
@@ -185,6 +196,8 @@ public class MainView extends JFrame {
 		panel_1.add(btnNewButton_8);
 
 		JLabel lblNewLabel_10 = new JLabel("詞彙數量：");
+		lblNewLabel_10.setName("詞彙數量：");
+		info.add(lblNewLabel_10, ShowRowInfo.Vocabulary_Quantity);
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_10.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_10);
@@ -389,7 +402,8 @@ public class MainView extends JFrame {
 		ShowRowInfo info = new ShowRowInfo(ShowRowInfo.InfoName_CardBox) {
 			@Override
 			public void showInfo(Map<String, String> m) {
-				((JLabel) this.comps.get(ShowRowInfo.CardBox_Quantity)).setText(m.get(ShowRowInfo.CardBox_Quantity));
+				JLabel lbl = ((JLabel) this.comps.get(ShowRowInfo.CardBox_Quantity));
+				lbl.setText(lbl.getName() + m.get(ShowRowInfo.CardBox_Quantity));
 			}
 		};
 		this.cardboxShowRowControl.setInfo(info);
@@ -423,6 +437,7 @@ public class MainView extends JFrame {
 		panel_1.add(btnNewButton_8);
 
 		JLabel lblNewLabel_10 = new JLabel("小盒數量：");
+		lblNewLabel_10.setName("小盒數量：");
 		info.add(lblNewLabel_10, ShowRowInfo.CardBox_Quantity);
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_10.setFont(new Font("新細明體", Font.PLAIN, 18));
