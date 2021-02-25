@@ -1,27 +1,26 @@
 package com.view;
 
-import javax.swing.JPanel;
-import java.awt.GridLayout;
-import java.util.List;
-
-import javax.swing.JLabel;
-
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
-
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	public ShowRowControl<CardBox> showRowControl;
@@ -43,8 +42,8 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_centerbar().getLayout()).show(
 						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
 						MainView.ShowRow_CardBox_Vocabulary);
-				int idx=Integer.valueOf( getName())+showRowControl.getFromIdx();
-				CardBox cardbox=showRowControl.getResults().get(idx);
+				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
+				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryByBoxID(cardbox.getId());
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
@@ -58,7 +57,10 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	 * Create the panel.
 	 */
 	public CardBoxRow() {
+		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		setLayout(new GridLayout(1, 0, 0, 0));
+		addMouseListener(myClickListener);
+		addMouseWheelListener(myWheelListener);
 
 		JLabel lbl_cardbox_id = new JLabel("id");
 		lbl_cardbox_id.addMouseListener(myClickListener);
@@ -114,11 +116,11 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[3]).setText("" + cardBox.getCreate_date());
 			((JLabel) rows[4]).setText("" + cardBox.getUpdate_date());
 		} else {
-			((JLabel) rows[0]).setText("");
-			((JLabel) rows[1]).setText("");
-			((JLabel) rows[2]).setText("");
-			((JLabel) rows[3]).setText("");
-			((JLabel) rows[4]).setText("");
+			((JLabel) rows[0]).setText(" ");
+			((JLabel) rows[1]).setText(" ");
+			((JLabel) rows[2]).setText(" ");
+			((JLabel) rows[3]).setText(" ");
+			((JLabel) rows[4]).setText(" ");
 		}
 	}
 

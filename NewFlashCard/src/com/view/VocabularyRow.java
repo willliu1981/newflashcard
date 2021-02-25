@@ -1,20 +1,20 @@
 package com.view;
 
-import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.JLabel;
-
-import java.awt.Component;
-import java.awt.Font;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
-import com.model.CardBox;
 import com.model.Vocabulary;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	private ShowRowControl<Vocabulary> showRowControl;
@@ -33,7 +33,9 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	 * Create the panel.
 	 */
 	public VocabularyRow() {
+		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		setLayout(new GridLayout(1, 0, 0, 0));
+		addMouseWheelListener(myWheelListener);
 
 		JLabel lbl_vocabulary_id = new JLabel("id");
 		lbl_vocabulary_id.addMouseWheelListener(myWheelListener);
@@ -87,12 +89,12 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 			((JLabel) rows[4]).setText("" + v.getCreate_date());
 			((JLabel) rows[5]).setText("" + v.getUpdate_date());
 		} else {
-			((JLabel) rows[0]).setText("");
-			((JLabel) rows[1]).setText("");
-			((JLabel) rows[2]).setText("");
-			((JLabel) rows[3]).setText("");
-			((JLabel) rows[4]).setText("");
-			((JLabel) rows[5]).setText("");
+			((JLabel) rows[0]).setText(" ");
+			((JLabel) rows[1]).setText(" ");
+			((JLabel) rows[2]).setText(" ");
+			((JLabel) rows[3]).setText(" ");
+			((JLabel) rows[4]).setText(" ");
+			((JLabel) rows[5]).setText(" ");
 		}
 
 	}
