@@ -423,69 +423,54 @@ public class MainView extends JFrame {
 	}
 
 	private void createTestPanel() {
-		
-		JPanel panel = new JPanel();
-		panel_centerbar.add(panel, "name_115007085983600");
 		panel_test = new JPanel();
 		panel_centerbar.add(panel_test, Show_Test);
-		panel_test.setLayout(new BoxLayout(panel_test, BoxLayout.Y_AXIS));
+		panel_test.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_info = new JPanel();
-		panel_test.add(panel_info);
-		panel_info.setLayout(new GridLayout(3, 5, 0, 0));
-		
-		JPanel panel_1 = new JPanel();
-		panel_info.add(panel_1);
-		
-		JPanel panel_21 = new JPanel();
-		panel_info.add(panel_21);
-		
-		JPanel panel_19 = new JPanel();
-		panel_info.add(panel_19);
-		
-		JPanel panel_10 = new JPanel();
-		panel_info.add(panel_10);
+		panel_test.add(panel_info, BorderLayout.NORTH);
+		panel_info.setLayout(new BoxLayout(panel_info, BoxLayout.Y_AXIS));
 		
 		JPanel panel_20 = new JPanel();
 		panel_info.add(panel_20);
 		
-		JLabel lblNewLabel_13 = new JLabel("");
-		lblNewLabel_13.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_13.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_info.add(lblNewLabel_13);
+		JPanel panel_3 = new JPanel();
+		panel_info.add(panel_3);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+		
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		panel_3.add(panel);
 		
 		JButton btnNewButton_11 = new JButton("New button");
 		btnNewButton_11.setFont(new Font("新細明體", Font.PLAIN, 18));
+		btnNewButton_11.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_11.setBackground(SystemColor.controlHighlight);
-		panel_info.add(btnNewButton_11);
+		panel.add(btnNewButton_11);
 		
 		JButton btnNewButton_12 = new JButton("New button");
 		btnNewButton_12.setFont(new Font("新細明體", Font.PLAIN, 18));
+		btnNewButton_12.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_12.setBackground(SystemColor.controlHighlight);
-		panel_info.add(btnNewButton_12);
+		panel.add(btnNewButton_12);
 		
 		JButton btnNewButton_13 = new JButton("New button");
 		btnNewButton_13.setFont(new Font("新細明體", Font.PLAIN, 18));
+		btnNewButton_13.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_13.setBackground(SystemColor.controlHighlight);
-		panel_info.add(btnNewButton_13);
+		panel.add(btnNewButton_13);
 		
-		JPanel panel_3 = new JPanel();
-		panel_info.add(panel_3);
+		JPanel panel_1 = new JPanel();
+		panel_3.add(panel_1);
+		
+		JLabel lblNewLabel_13 = new JLabel("小盒數量:");
+		lblNewLabel_13.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_13.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_1.add(lblNewLabel_13);
 		
 		JPanel panel_4 = new JPanel();
 		panel_info.add(panel_4);
-		
-		JPanel panel_6 = new JPanel();
-		panel_info.add(panel_6);
-		
-		JPanel panel_7 = new JPanel();
-		panel_info.add(panel_7);
-		
-		JPanel panel_8 = new JPanel();
-		panel_info.add(panel_8);
-		
-		JPanel panel_9 = new JPanel();
-		panel_info.add(panel_9);
 		
 		JPanel panel_testrow = new JPanel();
 		panel_test.add(panel_testrow);
