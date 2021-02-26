@@ -23,7 +23,7 @@ public abstract class ShowRowInfo {
 	protected String infoName;
 
 	public ShowRowInfo() {
-
+		this(InfoName_Default);
 	}
 
 	public ShowRowInfo(String infoName) {

@@ -62,18 +62,18 @@ public class ShowRowControl<T> {
 	}
 
 	public void showInfo(Map<String, String> map) {
-		this.showInfo(map,ShowRowInfo.InfoName_Default);
+		this.showInfo(map, ShowRowInfo.InfoName_Default);
 	}
-	
-	public void showInfo(Map<String, String> map,String infoName) {
-		this.findInfo(info, infoName) .showInfo(map);
+
+	public void showInfo(Map<String, String> map, String infoName) {
+		this.findInfo(info, infoName).showInfo(map);
 	}
-	
-	private ShowRowInfo findInfo(ShowRowInfo info,String infoName) {
-		if(info.getInfoName().equals(infoName)) {
+
+	private ShowRowInfo findInfo(ShowRowInfo info, String infoName) {
+		if (info.getInfoName().equals(infoName)) {
 			return info;
-		}else {
-			return findInfo(info.getInfo(),infoName);
+		} else {
+			return findInfo(info.getInfo(), infoName);
 		}
 	}
 
@@ -82,16 +82,26 @@ public class ShowRowControl<T> {
 	}
 
 	public void setInfo(ShowRowInfo info, boolean createNew) {
-		if (createNew) {
-			//強制賦予info
-			this.info = info;
-			return;
+		if (this.info == null) {
+			this.info = new ShowRowInfo() {
+				@Override
+				public void showInfo(Map<String, String> map) {
+				}
+			};
 		}
-		
-		if (this.info != null) {
-			this.info.setInfo(info); 
+		if (createNew) {
+			// 強制賦予info
+			this.info.setInfo(info);
 		} else {
-			this.info = info;
+			this.setAvailableInfo(this.info, info);
+		}
+	}
+
+	public void setAvailableInfo(ShowRowInfo thisInfo, ShowRowInfo otherInfo) {
+		if (thisInfo.getInfo() != null) {
+			setAvailableInfo(thisInfo.getInfo(), otherInfo);
+		} else {
+			thisInfo.setInfo(otherInfo);
 		}
 	}
 

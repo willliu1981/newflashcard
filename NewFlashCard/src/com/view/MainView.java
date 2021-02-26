@@ -214,8 +214,12 @@ public class MainView extends JFrame {
 		btnNewButton_3_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		btnNewButton_3_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3_1);
-
 		JButton btnNewButton_6_1 = new JButton("英文單詞");
+		btnNewButton_6_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vocabularyShowRowControl.getResults();
+			}
+		});
 		btnNewButton_6_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		btnNewButton_6_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_6_1);
@@ -444,7 +448,6 @@ public class MainView extends JFrame {
 		panel_1.add(lblNewLabel_10);
 
 		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
 		panel_cardbox_title.add(panel_2);
 
 		JPanel panel_title = new JPanel();
