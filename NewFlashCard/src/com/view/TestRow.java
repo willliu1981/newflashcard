@@ -2,7 +2,6 @@ package com.view;
 
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,9 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.VocabularyDao;
 import com.control.viewcontrol.ShowRow;
@@ -22,10 +23,13 @@ import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
 import com.model.CardBox;
 import com.model.Vocabulary;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
+import java.awt.SystemColor;
+import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
-public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
+public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
 
@@ -73,46 +77,34 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	/**
 	 * Create the panel.
 	 */
-	public CardBoxRow() {
+	public TestRow() {
 		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		setLayout(new GridLayout(1, 0, 0, 0));
+		setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_center = new JPanel();
+		add(panel_center, BorderLayout.CENTER);
+		panel_center.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JLabel lblNewLabel_2 = new JLabel("name");
+		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 18));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_center.add(lblNewLabel_2);
+		
+		JPanel panel_rbar = new JPanel();
+		add(panel_rbar, BorderLayout.EAST);
+		panel_rbar.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JLabel lblNewLabel_1 = new JLabel("create date");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_rbar.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel = new JLabel("quantity");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_rbar.add(lblNewLabel);
 		addMouseListener(myClickListener);
 		addMouseWheelListener(myWheelListener);
-
-		JLabel lbl_cardbox_id = new JLabel("id");
-		lbl_cardbox_id.addMouseListener(myClickListener);
-		lbl_cardbox_id.addMouseWheelListener(myWheelListener);
-		lbl_cardbox_id.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_cardbox_id.setFont(new Font("新細明體", Font.PLAIN, 18));
-		add(lbl_cardbox_id);
-
-		JLabel lbl_cardbox_name = new JLabel("name");
-		lbl_cardbox_name.addMouseListener(myClickListener);
-		lbl_cardbox_name.addMouseWheelListener(myWheelListener);
-		lbl_cardbox_name.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_cardbox_name.setFont(new Font("新細明體", Font.PLAIN, 18));
-		add(lbl_cardbox_name);
-
-		JLabel lbl_cardbox_count = new JLabel("count");
-		lbl_cardbox_count.addMouseListener(myClickListener);
-		lbl_cardbox_count.addMouseWheelListener(myWheelListener);
-		lbl_cardbox_count.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_cardbox_count.setFont(new Font("新細明體", Font.PLAIN, 18));
-		add(lbl_cardbox_count);
-
-		JLabel lbl_cardbox_createdate = new JLabel("create_date");
-		lbl_cardbox_createdate.addMouseListener(myClickListener);
-		lbl_cardbox_createdate.addMouseWheelListener(myWheelListener);
-		lbl_cardbox_createdate.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_cardbox_createdate.setFont(new Font("新細明體", Font.PLAIN, 18));
-		add(lbl_cardbox_createdate);
-
-		JLabel lbl_cardbox_updatedate = new JLabel("update_date");
-		lbl_cardbox_updatedate.addMouseListener(myClickListener);
-		lbl_cardbox_updatedate.addMouseWheelListener(myWheelListener);
-		lbl_cardbox_updatedate.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_cardbox_updatedate.setFont(new Font("新細明體", Font.PLAIN, 18));
-		add(lbl_cardbox_updatedate);
 
 	}
 
