@@ -121,8 +121,8 @@ public class MainView extends JFrame {
 					cardboxShowRowControl.setResults(list);
 					cardboxShowRowControl.showRow();
 					Map<String, String> map = new HashMap<>();
-					map.put(ShowRowInfo.CardBox_Quantity, String.valueOf(list.size()));
-					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox);
+					map.put(ShowRowInfo.Test_Quantity, String.valueOf(list.size()));
+					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_Test);
 				}
 			});
 			btnNewButton_2.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -423,59 +423,69 @@ public class MainView extends JFrame {
 	}
 
 	private void createTestPanel() {
+		ShowRowInfo info = new ShowRowInfo(ShowRowInfo.InfoName_Test) {
+			@Override
+			public void showInfo(Map<String, String> m) {
+				JLabel lbl = ((JLabel) this.comps.get(ShowRowInfo.Test_Quantity));
+				lbl.setText(lbl.getName() + m.get(ShowRowInfo.Test_Quantity));
+			}
+		};
+		this.cardboxShowRowControl.setInfo(info);
 		panel_test = new JPanel();
 		panel_centerbar.add(panel_test, Show_Test);
 		panel_test.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_info = new JPanel();
 		panel_test.add(panel_info, BorderLayout.NORTH);
 		panel_info.setLayout(new BoxLayout(panel_info, BoxLayout.Y_AXIS));
-		
-		JPanel panel_20 = new JPanel();
-		panel_info.add(panel_20);
-		
-		JPanel panel_3 = new JPanel();
-		panel_info.add(panel_3);
-		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
-		
+
+		JPanel panel_top = new JPanel();
+		panel_info.add(panel_top);
+
+		JPanel panel_center = new JPanel();
+		panel_info.add(panel_center);
+		panel_center.setLayout(new BoxLayout(panel_center, BoxLayout.X_AXIS));
+
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panel_3.add(panel);
-		
+		panel_center.add(panel);
+
 		JButton btnNewButton_11 = new JButton("New button");
 		btnNewButton_11.setFont(new Font("新細明體", Font.PLAIN, 18));
 		btnNewButton_11.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_11.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_11);
-		
+
 		JButton btnNewButton_12 = new JButton("New button");
 		btnNewButton_12.setFont(new Font("新細明體", Font.PLAIN, 18));
 		btnNewButton_12.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_12.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_12);
-		
+
 		JButton btnNewButton_13 = new JButton("New button");
 		btnNewButton_13.setFont(new Font("新細明體", Font.PLAIN, 18));
 		btnNewButton_13.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_13.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_13);
-		
+
 		JPanel panel_1 = new JPanel();
-		panel_3.add(panel_1);
-		
+		panel_center.add(panel_1);
+
 		JLabel lblNewLabel_13 = new JLabel("小盒數量:");
+		lblNewLabel_13.setName("小盒數量:");
+		info.add(lblNewLabel_13, ShowRowInfo.Test_Quantity);
 		lblNewLabel_13.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_13.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_13);
-		
-		JPanel panel_4 = new JPanel();
-		panel_info.add(panel_4);
-		
+
+		JPanel panel_bottom = new JPanel();
+		panel_info.add(panel_bottom);
+
 		JPanel panel_testrow = new JPanel();
 		panel_test.add(panel_testrow);
 		panel_testrow.setLayout(new GridLayout(4, 3, 0, 0));
-		
+
 		/*
 		 * 創建 test row
 		 */
@@ -483,8 +493,8 @@ public class MainView extends JFrame {
 			TestRow TestRow = new TestRow();
 			panel_testrow.add(TestRow);
 			TestRow.setName("" + i);
-//			TestRow.setShowRowControl(cardboxShowRowControl);
-//			this.cardboxShowRowControl.add(cardBoxRow);
+			TestRow.setShowRowControl(cardboxShowRowControl);
+			this.cardboxShowRowControl.add(TestRow);
 		}
 	}
 

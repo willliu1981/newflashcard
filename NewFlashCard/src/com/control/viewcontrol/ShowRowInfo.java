@@ -13,11 +13,12 @@ public abstract class ShowRowInfo {
 	public static final String Vocabulary_Quantity = "vocabulary_quantity";
 	public static final String CardBox_Quantity = "cardbox_quantity";
 	public static final String CardBox_Vocabulary_Quantity = "cardbox_vocabulary_quantity";
+	public static final String Test_Quantity = "test_quantity";
 	public static final String InfoName_Default = "info_default";
 	public static final String InfoName_CardBox = "info_cardbox";
 	public static final String InfoName_Vocabulary = "info_vocabulary";
 	public static final String InfoName_CardBox_Vocabulary = "info_cardbox_vocabulary";
-
+	public static final String InfoName_Test = "info_test";
 	protected Map<String, Component> comps = new HashMap<>();
 	protected ShowRowInfo info;
 	protected String infoName;
