@@ -26,10 +26,9 @@ import com.control.viewcontrol.ShowRowInfo;
 import com.model.CardBox;
 import com.model.Vocabulary;
 
-public class TestRow extends JPanel implements ShowRow<CardBox>{
+public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
-
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
@@ -50,18 +49,18 @@ public class TestRow extends JPanel implements ShowRow<CardBox>{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout().getLayout()).show(
-						((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout(),
-						MainView.CardLayout_Test_Question);
+				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout()
+						.getLayout()).show(
+								((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout(),
+								MainView.CardLayout_Test_Question);
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryAll();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCardboxIdx(cardbox.getId());
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCorrectAnswerRowIdx(4);;
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setEventIdx(0);
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl() .setResults(list);
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().init(3,8);
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
-				
+
 //				int sum = 0;
 //				if (vocabularyQuantities.containsKey(cardbox.getId())) {
 //					sum = vocabularyQuantities.get(cardbox.getId());
@@ -167,7 +166,5 @@ public class TestRow extends JPanel implements ShowRow<CardBox>{
 	public static Map<Integer, Integer> getVocabularyQuantities() {
 		return vocabularyQuantities == null ? new HashMap<>() : vocabularyQuantities;
 	}
-
-
 
 }

@@ -55,7 +55,6 @@ public class MainView extends JFrame {
 		@Override
 		public void setResults(List<Vocabulary> results) {
 			super.setResults(results);
-			super.setResults(results);
 			this.answers = results;
 			List<Vocabulary> list = results.stream().filter(x -> {
 				return x.getBox_id() == this.cardboxIdx;
