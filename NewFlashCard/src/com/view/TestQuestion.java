@@ -133,13 +133,26 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public void showRow() {
 		int idx = Integer.valueOf(this.getName());
 		if (idx == 0) {
+			// 問題
 			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout, CardLayout_Question);
+			((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center")).setText(
+					this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx()).getVocabulary());
 		} else if (idx == 1 || idx == 2) {
-			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout, CardLayout_Background);
-		}else {
+			// info
+			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
+					CardLayout_Background);
+		} else {
+			// answers
 			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout, CardLayout_Answer);
+			if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
+				((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
+						.setText(this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx())
+								.getTranslation());
+			} else {
+				((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
+						.setText(this.showRowControl.getRndAnswer().getTranslation());
+			}
 		}
-
 	}
 
 	public static void setVocabularyQuantities(Map<Integer, Integer> map) {

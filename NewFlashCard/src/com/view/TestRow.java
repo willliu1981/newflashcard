@@ -56,8 +56,12 @@ public class TestRow extends JPanel implements ShowRow<CardBox>{
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryAll();
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCardboxIdx(cardbox.getId());
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCorrectAnswerRowIdx(4);;
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setEventIdx(0);
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl() .setResults(list);
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
+				
 //				int sum = 0;
 //				if (vocabularyQuantities.containsKey(cardbox.getId())) {
 //					sum = vocabularyQuantities.get(cardbox.getId());

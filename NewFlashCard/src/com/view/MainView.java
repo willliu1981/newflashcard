@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,16 +51,17 @@ public class MainView extends JFrame {
 	private JPanel panel_vocabulary;
 	private ShowRowControl<CardBox> cardboxShowRowControl = new ShowRowControl(this);
 	private ShowRowControl<Vocabulary> vocabularyShowRowControl = new ShowRowControl(this);
-	private ShowRowControl<Vocabulary> testQuestionControl = new TestQuestionControl<Vocabulary>(this) {
-
+	private TestQuestionControl<Vocabulary> testQuestionControl = new TestQuestionControl<Vocabulary>(this) {
 		@Override
 		public void setResults(List<Vocabulary> results) {
 			super.setResults(results);
 			super.setResults(results);
 			this.answers = results;
-			this.questions = results.stream().filter(x -> {
-				return x.getBox_id() == this.eventIdx;
+			List<Vocabulary> list = results.stream().filter(x -> {
+				return x.getBox_id() == this.cardboxIdx;
 			}).collect(Collectors.toList());
+			Collections.shuffle(list);
+			this.questions = list;
 		}
 	};
 	private JPanel panel_cardbox_vocabulary;
@@ -436,7 +438,7 @@ public class MainView extends JFrame {
 //				lbl.setText("" + m.get(ShowRowInfo.Test_Quantity));
 //			}
 //		};
-		//this.cardboxShowRowControl.setInfo(info);
+		// this.cardboxShowRowControl.setInfo(info);
 		JPanel panel_test = new JPanel();
 		panel_centerbar.add(panel_test, CardLayout_Test);
 		panel_test.setLayout(new BorderLayout(0, 0));
@@ -613,7 +615,7 @@ public class MainView extends JFrame {
 		return vocabularyShowRowControl;
 	}
 
-	public ShowRowControl<Vocabulary> getTestQuestionControl() {
+	public TestQuestionControl<Vocabulary> getTestQuestionControl() {
 		return testQuestionControl;
 	}
 
