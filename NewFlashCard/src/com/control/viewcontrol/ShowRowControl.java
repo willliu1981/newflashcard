@@ -10,11 +10,11 @@ import javax.swing.JFrame;
 import com.model.CardBox;
 
 public class ShowRowControl<T> {
-	private List<ShowRow> showRows;
-	private List<T> results;
-	private int fromIdx = 0;
-	private JFrame eventJFrame;
-	private ShowRowInfo info;
+	protected List<ShowRow> showRows;
+	protected List<T> results;
+	protected int fromIdx = 0;
+	protected JFrame eventJFrame;
+	protected ShowRowInfo info;
 
 	public ShowRowControl(JFrame eventJFrame) {
 		showRows = new ArrayList<>();
@@ -66,10 +66,19 @@ public class ShowRowControl<T> {
 	}
 
 	public void showInfo(Map<String, String> map, String infoName) {
-		this.findInfo(info, infoName).showInfo(map);
+		if (this.info != null && map != null && infoName != null) {
+			ShowRowInfo info = this.findInfo(this.info, infoName);
+			if (info != null) {
+				info.showInfo(map);
+			}
+		}
 	}
 
 	private ShowRowInfo findInfo(ShowRowInfo info, String infoName) {
+		if (info == null) {
+			return null;
+		}
+
 		if (info.getInfoName().equals(infoName)) {
 			return info;
 		} else {

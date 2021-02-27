@@ -46,7 +46,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_centerbar().getLayout()).show(
 						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
-						MainView.Show_CardBox_Vocabulary);
+						MainView.CardLayout_CardBox_Vocabulary);
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryByBoxID(cardbox.getId());

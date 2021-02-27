@@ -25,11 +25,11 @@ import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
 import com.model.CardBox;
 import com.model.Vocabulary;
-import java.awt.FlowLayout;
 
-public class TestRow extends JPanel implements ShowRow<CardBox> {
+public class TestRow extends JPanel implements ShowRow<CardBox>{
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
+
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
@@ -50,26 +50,25 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_centerbar().getLayout()).show(
-						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
-						MainView.Show_CardBox_Vocabulary);
+				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout().getLayout()).show(
+						((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout(),
+						MainView.CardLayout_Test_Question);
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				CardBox cardbox = showRowControl.getResults().get(idx);
-				List<Vocabulary> list = new VocabularyDao().queryByBoxID(cardbox.getId());
-				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
-				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
-
-				int sum = 0;
-				if (vocabularyQuantities.containsKey(cardbox.getId())) {
-					sum = vocabularyQuantities.get(cardbox.getId());
-				}
-				Map<String, String> map = new HashMap<>();
-				map.put(ShowRowInfo.ID, cardbox.getId().toString());
-				map.put(ShowRowInfo.Name, cardbox.getName());
-				map.put(ShowRowInfo.Create_date, cardbox.getCreate_date());
-				map.put(ShowRowInfo.Update_date, cardbox.getUpdate_date());
-				map.put(ShowRowInfo.CardBox_Vocabulary_Quantity, String.valueOf(sum));
-				showRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary);
+				List<Vocabulary> list = new VocabularyDao().queryAll();
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl() .setResults(list);
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
+//				int sum = 0;
+//				if (vocabularyQuantities.containsKey(cardbox.getId())) {
+//					sum = vocabularyQuantities.get(cardbox.getId());
+//				}
+//				Map<String, String> map = new HashMap<>();
+//				map.put(ShowRowInfo.ID, cardbox.getId().toString());
+//				map.put(ShowRowInfo.Name, cardbox.getName());
+//				map.put(ShowRowInfo.Create_date, cardbox.getCreate_date());
+//				map.put(ShowRowInfo.Update_date, cardbox.getUpdate_date());
+//				map.put(ShowRowInfo.CardBox_Vocabulary_Quantity, String.valueOf(sum));
+//				showRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary);
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
@@ -164,5 +163,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 	public static Map<Integer, Integer> getVocabularyQuantities() {
 		return vocabularyQuantities == null ? new HashMap<>() : vocabularyQuantities;
 	}
+
+
 
 }
