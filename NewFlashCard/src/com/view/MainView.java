@@ -63,6 +63,22 @@ public class MainView extends JFrame {
 			Collections.shuffle(list);
 			this.questions = list;
 		}
+
+		@Override
+		public Vocabulary getRandomAnswer() {
+			int idx = 0;
+			while (true) {
+				idx = (int) (Math.random() * this.answers.size());
+				if (this.answers.get(idx).getId() != this.questions.get(this.eventIdx).getId()) {
+					break;
+				} else {
+					if (this.answers.size() <= 1) {
+						break;
+					}
+				}
+			}
+			return this.answers.get(idx);
+		}
 	};
 	private JPanel panel_cardbox_vocabulary;
 	private JPanel panel_test_center_cardlayout;

@@ -30,7 +30,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T>{
 		return this.answers;
 	}
 	
-	public T getRndAnswer() {
+	public T getRandomAnswer() {
 		return this.answers.get((int)(Math.random()*this.answers.size()));
 	}
 

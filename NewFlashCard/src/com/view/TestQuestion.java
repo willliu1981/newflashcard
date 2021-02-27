@@ -150,7 +150,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 								.getTranslation());
 			} else {
 				((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-						.setText(this.showRowControl.getRndAnswer().getTranslation());
+						.setText(this.showRowControl.getRandomAnswer().getTranslation());
 			}
 		}
 	}
