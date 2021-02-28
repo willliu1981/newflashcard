@@ -51,10 +51,12 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				switch (showRowControl.getStage()) {
 				case Guess:
 					if (showRowControl.clickRowInRange(rowIdx)) {
-						if (showRowControl.isCorrectAnswer(rowIdx)) {
-							setBackground(Color.cyan);
-						} else {
-							setBackground(Color.orange);
+						if (!showRowControl.isBingo()) {
+							if (showRowControl.isCorrectAnswer(rowIdx)) {
+								setBackground(Color.cyan);
+							} else {
+								setBackground(Color.orange);
+							}
 						}
 					}
 					break;
@@ -138,20 +140,27 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				// 問題
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Question);
-				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center")).setText(
-						this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx()).getVocabulary());
+				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
+						.setText(this.showRowControl.getQuestionResult()
+								.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary());
 			} else if (idx == 1 || idx == 2) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
+				if (idx == 2) {
+					// 進程
+					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx()+1,
+									this.showRowControl.getQuestionResult().size()));
+				}
 			} else {
 				// answers
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Answer);
 				if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
 					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-							.setText(this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx())
-									.getTranslation());
+							.setText(this.showRowControl.getQuestionResult()
+									.get(this.showRowControl.getCurrentQuestionIdx()).getTranslation());
 				} else {
 					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
 							.setText(this.showRowControl.getRandomAnswer().getTranslation());

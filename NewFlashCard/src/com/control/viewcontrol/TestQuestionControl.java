@@ -21,6 +21,8 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected int minRowIdx;
 	protected int maxRowIdx;
 	protected Stage stage;
+	protected boolean bingo;
+	protected boolean firstFailure;
 	// random answer <row idx,question idx>
 
 	public enum Stage {
@@ -40,8 +42,6 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return this.answers;
 	}
 
-
-	
 	public T getRandomAnswer() {
 		int idx = (int) (Math.random() * this.answers.size());
 		return this.answers.get(idx);
@@ -49,9 +49,15 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 
 	public void init(int min, int max) {
 		this.currentQuestionIdx = -1;
-		stage = Stage.Guess;
 		this.setRowIdxRange(min, max);
-		this.moveEventIdx();
+		this.moveCurrentQuestionIdx();
+		questionReset();
+	}
+
+	protected void questionReset() {
+		this.bingo = false;
+		this.firstFailure = false;
+		stage = Stage.Guess;
 	}
 
 	public void setRowIdxRange(int min, int max) {
@@ -62,24 +68,27 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public boolean clickRowInRange(int idx) {
 		return idx >= minRowIdx && idx <= maxRowIdx;
 	}
-	
+
 	public boolean isCorrectAnswer(int rowIdx) {
-		return rowIdx==this.correctAnswerRowIdx;
+		boolean bingo = rowIdx == this.correctAnswerRowIdx;
+		if (!bingo) {
+			this.firstFailure = true;
+		} else {
+			this.bingo = true;
+		}
+		return bingo;
 	}
 
-	public T getCorrectResult() {
-		return this.questions.get(this.currentQuestionIdx);
-	}
-
-	protected void moveEventIdx() {
+	protected void moveCurrentQuestionIdx() {
 		this.currentQuestionIdx++;
 		if (this.currentQuestionIdx >= this.questions.size()) {
 			this.currentQuestionIdx = -1;
 		}
 		this.setCorrectAnswerRowIdx(minRowIdx, maxRowIdx);
+		this.bingo = false;
 	}
 
-	public int getEventIdx() {
+	public int getCurrentQuestionIdx() {
 		return currentQuestionIdx;
 	}
 
@@ -111,6 +120,10 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 
 	public void moveStage() {
 		// this.stage +=this.stage ;
+	}
+
+	public boolean isBingo() {
+		return bingo;
 	}
 
 }
