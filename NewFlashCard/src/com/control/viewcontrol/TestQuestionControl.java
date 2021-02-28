@@ -1,16 +1,8 @@
 package com.control.viewcontrol;
 
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JFrame;
-
-import com.model.CardBox;
-import com.model.Vocabulary;
 
 public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected List<T> questions;
@@ -26,7 +18,22 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	// random answer <row idx,question idx>
 
 	public enum Stage {
-		Guess, GetAnswer
+		Guess(0), GetAnswer(1);
+
+		private int v;
+
+		Stage(int v) {
+			this.v = v;
+		}
+
+		public int getValue() {
+			return v;
+		}
+
+		public Stage next() {
+			return Stage.values()[this.v + 1];
+		}
+
 	}
 
 	public TestQuestionControl(JFrame eventJFrame) {
@@ -118,12 +125,17 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return stage;
 	}
 
-	public void moveStage() {
-		// this.stage +=this.stage ;
+	public void nextStage() {
+		 this.stage=this.stage.next();
 	}
 
 	public boolean isBingo() {
 		return bingo;
 	}
 
+	public boolean isFirstFailure() {
+		return firstFailure;
+	}
+
+	
 }

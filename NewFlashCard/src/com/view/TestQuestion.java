@@ -44,16 +44,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
 						MainView.CardLayout_Test_Question);
 				int rowIdx = Integer.valueOf(getName());
-//				Vocabulary vocabulary = showRowControl.getResults().get(rowIdx);
-//				List<Vocabulary> list = new VocabularyDao().queryByBoxID(vocabulary.getId());
-//				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
-//				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 				switch (showRowControl.getStage()) {
 				case Guess:
 					if (showRowControl.clickRowInRange(rowIdx)) {
 						if (!showRowControl.isBingo()) {
 							if (showRowControl.isCorrectAnswer(rowIdx)) {
-								setBackground(Color.cyan);
+								setBackground(Color.green);
+								showRowControl.nextStage();
 							} else {
 								setBackground(Color.orange);
 							}
@@ -61,23 +58,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					}
 					break;
 				case GetAnswer:
-
+					System.out.println("xxx");
 					break;
 				default:
 					break;
 				}
-
-//				int sum = 0;
-//				if (vocabularyQuantities.containsKey(vocabulary.getId())) {
-//					sum = vocabularyQuantities.get(vocabulary.getId());
-//				}
-//				Map<String, String> map = new HashMap<>();
-//				map.put(ShowRowInfo.ID, vocabulary.getId().toString());
-//				//map.put(ShowRowInfo.Name, vocabulary.getName());
-//				map.put(ShowRowInfo.Create_date, vocabulary.getCreate_date());
-//				map.put(ShowRowInfo.Update_date, vocabulary.getUpdate_date());
-//				map.put(ShowRowInfo.CardBox_Vocabulary_Quantity, String.valueOf(sum));
-//				showRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary);
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
@@ -147,10 +132,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
-				if (idx == 2) {
-					// 進程
+				if (idx == 1) {
+					// info
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx()+1,
+							.setText("");
+				} else if (idx == 2) {
+					// 進度
+					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
 									this.showRowControl.getQuestionResult().size()));
 				}
 			} else {
