@@ -60,18 +60,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().init(3,8);
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
-
-//				int sum = 0;
-//				if (vocabularyQuantities.containsKey(cardbox.getId())) {
-//					sum = vocabularyQuantities.get(cardbox.getId());
-//				}
-//				Map<String, String> map = new HashMap<>();
-//				map.put(ShowRowInfo.ID, cardbox.getId().toString());
-//				map.put(ShowRowInfo.Name, cardbox.getName());
-//				map.put(ShowRowInfo.Create_date, cardbox.getCreate_date());
-//				map.put(ShowRowInfo.Update_date, cardbox.getUpdate_date());
-//				map.put(ShowRowInfo.CardBox_Vocabulary_Quantity, String.valueOf(sum));
-//				showRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary);
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}

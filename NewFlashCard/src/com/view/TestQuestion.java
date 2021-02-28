@@ -45,8 +45,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						MainView.CardLayout_Test_Question);
 				int rowIdx = Integer.valueOf(getName());
 				switch (showRowControl.getStage()) {
+				case ShowQuestion:
+					break;
 				case Guess:
-					if (showRowControl.clickRowInRange(rowIdx)) {
+					if (showRowControl.clickAnswerRowInRange(rowIdx)) {
 						if (!showRowControl.isBingo()) {
 							if (showRowControl.isCorrectAnswer(rowIdx)) {
 								setBackground(Color.green);
@@ -56,9 +58,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							}
 						}
 					}
+					showRowControl.showRow();
 					break;
 				case GetAnswer:
-					System.out.println("xxx");
+					if (rowIdx==1) {
+						showRowControl.questionReset();
+						showRowControl.showRow();
+						showRowControl.nextStage();
+					}
 					break;
 				default:
 					break;
@@ -120,7 +127,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public void showRow() {
 		int idx = Integer.valueOf(this.getName());
 		switch (this.showRowControl.getStage()) {
-		case Guess:
+		case ShowQuestion:
 			if (idx == 0) {
 				// 問題
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
@@ -132,11 +139,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
-				if (idx == 1) {
-					// info
-					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-							.setText("");
-				} else if (idx == 2) {
+				if (idx == 2) {
 					// 進度
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
@@ -155,9 +158,32 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							.setText(this.showRowControl.getRandomAnswer().getTranslation());
 				}
 			}
+			this.setBackground(this.showRowControl.Color_Base);
+			break;
+		case Guess:
+			if (idx == 1) {
+				// 提示評論
+				String info = "";
+				if (this.showRowControl.isFirstFailure()) {
+					info = "猜錯了";
+				}
+				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+						.setText(info);
+			}
 			break;
 		case GetAnswer:
-
+			if (idx == 1) {
+				// 提示評論
+				String info = "";
+				if (!this.showRowControl.isFirstFailure()) {
+					info = "答對了 (下一題)";
+				} else {
+					info = "下一題";
+				}
+				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+						.setText(info);
+				this.setBackground(Color.blue);
+			}
 			break;
 		default:
 			break;

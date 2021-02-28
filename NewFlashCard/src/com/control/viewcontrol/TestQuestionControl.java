@@ -1,10 +1,14 @@
 package com.control.viewcontrol;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JFrame;
 
 public class TestQuestionControl<T> extends ShowRowControl<T> {
+	public final static Color Color_Correct=Color.green;
+	public final static Color Color_Failure=Color.orange;
+	public final static Color Color_Base=Color.lightGray;
 	protected List<T> questions;
 	protected List<T> answers;
 	protected int cardboxIdx;
@@ -18,7 +22,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	// random answer <row idx,question idx>
 
 	public enum Stage {
-		Guess(0), GetAnswer(1);
+		ShowQuestion(0), Guess(1), GetAnswer(2);
 
 		private int v;
 
@@ -57,14 +61,14 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public void init(int min, int max) {
 		this.currentQuestionIdx = -1;
 		this.setRowIdxRange(min, max);
-		this.moveCurrentQuestionIdx();
 		questionReset();
 	}
 
-	protected void questionReset() {
+	public void questionReset() {
 		this.bingo = false;
 		this.firstFailure = false;
-		stage = Stage.Guess;
+		stage = Stage.values()[0];
+		this.moveCurrentQuestionIdx();
 	}
 
 	public void setRowIdxRange(int min, int max) {
@@ -72,7 +76,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		this.maxRowIdx = max;
 	}
 
-	public boolean clickRowInRange(int idx) {
+	public boolean clickAnswerRowInRange(int idx) {
 		return idx >= minRowIdx && idx <= maxRowIdx;
 	}
 
@@ -126,7 +130,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	}
 
 	public void nextStage() {
-		 this.stage=this.stage.next();
+		this.stage = this.stage.next();
 	}
 
 	public boolean isBingo() {
@@ -137,5 +141,4 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return firstFailure;
 	}
 
-	
 }

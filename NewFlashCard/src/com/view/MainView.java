@@ -38,8 +38,11 @@ import com.control.viewcontrol.ShowRowInfo;
 import com.control.viewcontrol.TestQuestionControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import com.test.Test4;
 
 public class MainView extends JFrame {
+
+	
 	public static final String CardLayout_CardBox = "cardbox";
 	public static final String CardLayout_Vocabulary = "vocabulary";
 	public static final String CardLayout_CardBox_Vocabulary = "cardboxvocabulary";
