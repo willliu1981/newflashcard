@@ -50,18 +50,16 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 //				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 				switch (showRowControl.getStage()) {
 				case Guess:
-					if(showRowControl.clickRowInRange(rowIdx)) {
-						if(showRowControl.getClickedResult(rowIdx).getId()==showRowControl.getCorrectResult().getId()){
+					if (showRowControl.clickRowInRange(rowIdx)) {
+						if (showRowControl.isCorrectAnswer(rowIdx)) {
 							setBackground(Color.cyan);
-						}else {
+						} else {
 							setBackground(Color.orange);
 						}
 					}
-					
 					break;
 				case GetAnswer:
-					
-					
+
 					break;
 				default:
 					break;
@@ -161,7 +159,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			}
 			break;
 		case GetAnswer:
-			
+
 			break;
 		default:
 			break;

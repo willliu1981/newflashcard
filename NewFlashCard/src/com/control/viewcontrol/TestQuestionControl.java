@@ -3,6 +3,7 @@ package com.control.viewcontrol;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected int minRowIdx;
 	protected int maxRowIdx;
 	protected Stage stage;
+	// random answer <row idx,question idx>
 
 	public enum Stage {
 		Guess, GetAnswer
@@ -38,8 +40,11 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return this.answers;
 	}
 
+
+	
 	public T getRandomAnswer() {
-		return this.answers.get((int) (Math.random() * this.answers.size()));
+		int idx = (int) (Math.random() * this.answers.size());
+		return this.answers.get(idx);
 	}
 
 	public void init(int min, int max) {
@@ -57,9 +62,9 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public boolean clickRowInRange(int idx) {
 		return idx >= minRowIdx && idx <= maxRowIdx;
 	}
-
-	public T getClickedResult(int idx) {
-		return this.answers.get(idx - minRowIdx);
+	
+	public boolean isCorrectAnswer(int rowIdx) {
+		return rowIdx==this.correctAnswerRowIdx;
 	}
 
 	public T getCorrectResult() {
