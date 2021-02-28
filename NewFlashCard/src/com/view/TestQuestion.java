@@ -2,6 +2,7 @@ package com.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
@@ -35,33 +36,36 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	private JPanel panel_answer;
 	private JPanel panel_background;
 
-	private MouseWheelListener myWheelListener = new MouseWheelListener() {
-		public void mouseWheelMoved(MouseWheelEvent e) {
-			if (e.getWheelRotation() == 1) {
-				showRowControl.rearwardFromIdx();
-				showRowControl.rearwardFromIdx();
-				showRowControl.rearwardFromIdx();
-			} else {
-				showRowControl.towardFromIdx();
-				showRowControl.towardFromIdx();
-				showRowControl.towardFromIdx();
-			}
-			showRowControl.showRow();
-		}
-	};
-
 	private MouseAdapter myClickListener = new MouseAdapter() {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_centerbar().getLayout()).show(
 						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
-						MainView.CardLayout_CardBox_Vocabulary);
-				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
-				Vocabulary vocabulary = showRowControl.getResults().get(idx);
-				List<Vocabulary> list = new VocabularyDao().queryByBoxID(vocabulary.getId());
-				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
-				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
+						MainView.CardLayout_Test_Question);
+				int rowIdx = Integer.valueOf(getName());
+//				Vocabulary vocabulary = showRowControl.getResults().get(rowIdx);
+//				List<Vocabulary> list = new VocabularyDao().queryByBoxID(vocabulary.getId());
+//				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
+//				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
+				switch (showRowControl.getStage()) {
+				case Guess:
+					if(showRowControl.clickRowInRange(rowIdx)) {
+						if(showRowControl.getClickedResult(rowIdx).getId()==showRowControl.getCorrectResult().getId()){
+							setBackground(Color.cyan);
+						}else {
+							setBackground(Color.orange);
+						}
+					}
+					
+					break;
+				case GetAnswer:
+					
+					
+					break;
+				default:
+					break;
+				}
 
 //				int sum = 0;
 //				if (vocabularyQuantities.containsKey(vocabulary.getId())) {
@@ -87,7 +91,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public TestQuestion() {
 		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		setLayout(new BorderLayout(0, 0));
-
 		panel_root_cardlayout = new JPanel();
 		add(panel_root_cardlayout);
 		panel_root_cardlayout.setLayout(new CardLayout(0, 0));
@@ -125,33 +128,43 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_background.add(lblNewLabel_2, BorderLayout.CENTER);
 		addMouseListener(myClickListener);
-		addMouseWheelListener(myWheelListener);
 
 	}
 
 	@Override
 	public void showRow() {
 		int idx = Integer.valueOf(this.getName());
-		if (idx == 0) {
-			// 問題
-			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout, CardLayout_Question);
-			((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center")).setText(
-					this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx()).getVocabulary());
-		} else if (idx == 1 || idx == 2) {
-			// info
-			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
-					CardLayout_Background);
-		} else {
-			// answers
-			((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout, CardLayout_Answer);
-			if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
-				((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-						.setText(this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx())
-								.getTranslation());
+		switch (this.showRowControl.getStage()) {
+		case Guess:
+			if (idx == 0) {
+				// 問題
+				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
+						CardLayout_Question);
+				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center")).setText(
+						this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx()).getVocabulary());
+			} else if (idx == 1 || idx == 2) {
+				// info
+				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
+						CardLayout_Background);
 			} else {
-				((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-						.setText(this.showRowControl.getRandomAnswer().getTranslation());
+				// answers
+				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
+						CardLayout_Answer);
+				if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
+					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
+							.setText(this.showRowControl.getQuestionResult().get(this.showRowControl.getEventIdx())
+									.getTranslation());
+				} else {
+					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
+							.setText(this.showRowControl.getRandomAnswer().getTranslation());
+				}
 			}
+			break;
+		case GetAnswer:
+			
+			break;
+		default:
+			break;
 		}
 	}
 

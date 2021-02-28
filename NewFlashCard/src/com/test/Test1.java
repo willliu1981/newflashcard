@@ -22,6 +22,12 @@ public class Test1 {
 //			A b=null;
 //			set(b,a);
 //			System.out.println(b.a);
+		
+		Test2.EE e=Test2.EE.E2;
+		
+		switch(e) {
+		case E2:
+		}
 
 		List<A> list = new ArrayList<>();
 		list.add(new A("a1"));

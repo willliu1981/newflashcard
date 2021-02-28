@@ -15,14 +15,19 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected List<T> questions;
 	protected List<T> answers;
 	protected int cardboxIdx;
-	protected int eventIdx;
+	protected int currentQuestionIdx;
 	protected int correctAnswerRowIdx;
 	protected int minRowIdx;
 	protected int maxRowIdx;
+	protected Stage stage;
+
+	public enum Stage {
+		Guess, GetAnswer
+	}
 
 	public TestQuestionControl(JFrame eventJFrame) {
 		super(eventJFrame);
-		this.correctAnswerRowIdx=minRowIdx;
+		this.correctAnswerRowIdx = minRowIdx;
 	}
 
 	public List<T> getQuestionResult() {
@@ -37,27 +42,40 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return this.answers.get((int) (Math.random() * this.answers.size()));
 	}
 
-	public void init(int min,int max) {
-		this.eventIdx = -1;
+	public void init(int min, int max) {
+		this.currentQuestionIdx = -1;
+		stage = Stage.Guess;
 		this.setRowIdxRange(min, max);
 		this.moveEventIdx();
 	}
-	
-	public void setRowIdxRange(int min,int max) {
-		this.minRowIdx=min;
-		this.maxRowIdx=max;
+
+	public void setRowIdxRange(int min, int max) {
+		this.minRowIdx = min;
+		this.maxRowIdx = max;
+	}
+
+	public boolean clickRowInRange(int idx) {
+		return idx >= minRowIdx && idx <= maxRowIdx;
+	}
+
+	public T getClickedResult(int idx) {
+		return this.answers.get(idx - minRowIdx);
+	}
+
+	public T getCorrectResult() {
+		return this.questions.get(this.currentQuestionIdx);
 	}
 
 	protected void moveEventIdx() {
-		this.eventIdx++;
-		if (this.eventIdx >= this.questions.size()) {
-			this.eventIdx = -1;
+		this.currentQuestionIdx++;
+		if (this.currentQuestionIdx >= this.questions.size()) {
+			this.currentQuestionIdx = -1;
 		}
 		this.setCorrectAnswerRowIdx(minRowIdx, maxRowIdx);
 	}
 
 	public int getEventIdx() {
-		return eventIdx;
+		return currentQuestionIdx;
 	}
 
 //	public void setEventIdx(int eventIdx) {
@@ -68,10 +86,9 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return correctAnswerRowIdx;
 	}
 
-
 	protected void setCorrectAnswerRowIdx(int minRowIdx, int maxRowIdx) {
-		if(minRowIdx!=maxRowIdx) {
-			this.correctAnswerRowIdx=(int) (Math.random() * (maxRowIdx - minRowIdx)) + minRowIdx;
+		if (minRowIdx != maxRowIdx) {
+			this.correctAnswerRowIdx = (int) (Math.random() * (maxRowIdx - minRowIdx)) + minRowIdx;
 		}
 	}
 
@@ -81,6 +98,14 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 
 	public void setCardboxIdx(int cardboxIdx) {
 		this.cardboxIdx = cardboxIdx;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void moveStage() {
+		// this.stage +=this.stage ;
 	}
 
 }

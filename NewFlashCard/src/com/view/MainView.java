@@ -68,7 +68,7 @@ public class MainView extends JFrame {
 			int idx = 0;
 			while (true) {
 				idx = (int) (Math.random() * this.answers.size());
-				if (this.answers.get(idx).getId() != this.questions.get(this.eventIdx).getId()) {
+				if (this.answers.get(idx).getId() != this.questions.get(this.currentQuestionIdx).getId()) {
 					break;
 				} else {
 					if (this.answers.size() <= 1) {
