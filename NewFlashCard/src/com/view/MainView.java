@@ -46,6 +46,7 @@ public class MainView extends JFrame {
 	public static final String CardLayout_Vocabulary = "vocabulary";
 	public static final String CardLayout_CardBox_Vocabulary = "cardboxvocabulary";
 	public static final String CardLayout_Test = "test";
+	public static final String CardLayout_Test_List = "test_list";
 	public static final String CardLayout_Test_Question = "test_question";
 	public static final String CardLayout_Start = "test_start";
 	private JPanel contentPane;
@@ -154,6 +155,8 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
 							MainView.CardLayout_Test);
+					((CardLayout) panel_test_center_cardlayout.getLayout()).show(panel_test_center_cardlayout,
+							MainView.CardLayout_Test_List);
 					List<CardBox> list = new CardBoxDao().queryAll();
 					TestRow.setVocabularyQuantities(new VocabularyDao().queryAll());
 					cardboxShowRowControl.setResults(list);
@@ -505,9 +508,9 @@ public class MainView extends JFrame {
 		panel_test.add(panel_test_center_cardlayout, BorderLayout.CENTER);
 		panel_test_center_cardlayout.setLayout(new CardLayout(0, 0));
 
-		JPanel panel_testrow = new JPanel();
-		panel_test_center_cardlayout.add(panel_testrow, CardLayout_Test);
-		panel_testrow.setLayout(new GridLayout(4, 3, 0, 0));
+		JPanel panel_test_list = new JPanel();
+		panel_test_center_cardlayout.add(panel_test_list, CardLayout_Test_List);
+		panel_test_list.setLayout(new GridLayout(4, 3, 0, 0));
 
 		JPanel panel_question = new JPanel();
 		panel_test_center_cardlayout.add(panel_question, CardLayout_Test_Question);
@@ -518,7 +521,7 @@ public class MainView extends JFrame {
 		 */
 		for (int i = 0; i < 12; i++) {
 			TestRow TestRow = new TestRow();
-			panel_testrow.add(TestRow);
+			panel_test_list.add(TestRow);
 			TestRow.setName("" + i);
 			TestRow.setShowRowControl(cardboxShowRowControl);
 			this.cardboxShowRowControl.add(TestRow);

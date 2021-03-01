@@ -103,7 +103,6 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_rbar.add(lblNewLabel);
 		addMouseListener(myClickListener);
 		addMouseWheelListener(myWheelListener);
-
 	}
 
 	public void setShowRowControl(ShowRowControl<CardBox> control) {

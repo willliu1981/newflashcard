@@ -153,7 +153,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
-				if (idx == 2) {
+				if (idx == 1) {
+					// 進度
+					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+							.setText("");
+				} else if (idx == 2) {
 					// 進度
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
@@ -189,27 +193,22 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			if (idx == 1) {
 				// 提示評論
 				String info = "";
-				if (this.showRowControl.isLastQuestion()) {
-					if (!this.showRowControl.reviewIsEmpty()) {
-						if (!this.showRowControl.isFirstFailure()) {
-							info = String.format("答對了 (重新複習,共%d題)", this.showRowControl.getReviews().size());
-						} else {
-							info = String.format("重新複習,共%d題", this.showRowControl.getReviews().size());
-						}
-
-					} else {
-						if (!this.showRowControl.isFirstFailure()) {
-							info = "答對了 (已完成測驗,回首頁)";
-						} else {
-							info = "已完成測驗,回首頁";
-						}
-					}
-				} else {
-					if (!this.showRowControl.isFirstFailure()) {
-						info = "答對了 (下一題)";
+				if (this.showRowControl.isFirstFailure()) {
+					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
+					if (this.showRowControl.isLastQuestion()) {
+						info = String.format("重新複習,共%d題", this.showRowControl.getReviews().size());
 					} else {
 						info = "下一題";
-						this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
+					}
+				} else {
+					if (this.showRowControl.isLastQuestion()) {
+						if (this.showRowControl.reviewIsEmpty()) {
+							info = "已完成測驗,回首頁";
+						} else {
+							info = String.format("答對了 (重新複習,共%d題)", this.showRowControl.getReviews().size());
+						}
+					} else {
+						info = "答對了 (下一題)";
 					}
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
