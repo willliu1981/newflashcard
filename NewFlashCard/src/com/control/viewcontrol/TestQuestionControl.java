@@ -1,16 +1,18 @@
 package com.control.viewcontrol;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 
 public class TestQuestionControl<T> extends ShowRowControl<T> {
-	public final static Color Color_Correct=Color.green;
-	public final static Color Color_Failure=Color.orange;
-	public final static Color Color_Base=Color.lightGray;
+	public final static Color Color_Correct = Color.green;
+	public final static Color Color_Failure = Color.orange;
+	public final static Color Color_Base = Color.lightGray;
 	protected List<T> questions;
 	protected List<T> answers;
+	protected List<T> reviews;
 	protected int cardboxIdx;
 	protected int currentQuestionIdx;
 	protected int correctAnswerRowIdx;
@@ -22,7 +24,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	// random answer <row idx,question idx>
 
 	public enum Stage {
-		ShowQuestion(0), Guess(1), GetAnswer(2);
+		ShowQuestion(0), Guess(1), GotAnswer(2);
 
 		private int v;
 
@@ -43,25 +45,64 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public TestQuestionControl(JFrame eventJFrame) {
 		super(eventJFrame);
 		this.correctAnswerRowIdx = minRowIdx;
+		this.reviews = new ArrayList<>();
 	}
 
 	public List<T> getQuestionResult() {
 		return this.questions;
 	}
 
+	public T getCurrentQueation() {
+		return this.questions.get(this.currentQuestionIdx);
+	}
+
 	public List<T> getAnswerResult() {
 		return this.answers;
 	}
 
+	public void addReviews(T t) {
+		this.reviews.add(t);
+	}
+
+	public List<T> getReviews() {
+		return this.reviews;
+	}
+
+	public void setQuestionFromReviews() {
+		this.questions = this.reviews;
+	}
+
+	public boolean reviewIsEmpty() {
+		return this.reviews.isEmpty();
+	}
+
+	public void clearReviews() {
+		this.reviews.clear();
+	}
+
+	public void startReview() {
+		this.init();
+	}
+
 	public T getRandomAnswer() {
+		//這個方法可能會被覆寫
 		int idx = (int) (Math.random() * this.answers.size());
 		return this.answers.get(idx);
+	}
+
+	protected void init() {
+		this.init(this.minRowIdx, this.maxRowIdx);
 	}
 
 	public void init(int min, int max) {
 		this.currentQuestionIdx = -1;
 		this.setRowIdxRange(min, max);
 		questionReset();
+		this.clearReviews();
+	}
+
+	public boolean isLastQuestion() {
+		return this.getCurrentQuestionIdx() == this.questions.size() - 1;
 	}
 
 	public void questionReset() {

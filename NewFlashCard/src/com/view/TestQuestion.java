@@ -40,8 +40,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_centerbar().getLayout()).show(
-						((MainView) showRowControl.getEventJFrame()).getPanel_centerbar(),
+				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout()).show(
+						((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
 						MainView.CardLayout_Test_Question);
 				int rowIdx = Integer.valueOf(getName());
 				switch (showRowControl.getStage()) {
@@ -60,11 +60,25 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					}
 					showRowControl.showRow();
 					break;
-				case GetAnswer:
-					if (rowIdx==1) {
-						showRowControl.questionReset();
-						showRowControl.showRow();
-						showRowControl.nextStage();
+				case GotAnswer:
+					if (rowIdx == 1) {
+						if (showRowControl.isLastQuestion()) {
+							if (showRowControl.reviewIsEmpty()) {
+								((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar()
+										.getLayout()).show(
+												((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
+												MainView.CardLayout_Start);
+							} else {
+								showRowControl.setQuestionFromReviews();
+								showRowControl.startReview();
+								showRowControl.showRow();
+								showRowControl.nextStage();
+							}
+						} else {
+							showRowControl.questionReset();
+							showRowControl.showRow();
+							showRowControl.nextStage();
+						}
 					}
 					break;
 				default:
@@ -166,20 +180,39 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				String info = "";
 				if (this.showRowControl.isFirstFailure()) {
 					info = "猜錯了";
+					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
 			}
 			break;
-		case GetAnswer:
+		case GotAnswer:
 			if (idx == 1) {
 				// 提示評論
 				String info = "";
-				if (!this.showRowControl.isFirstFailure()) {
-					info = "答對了 (下一題)";
+				if (this.showRowControl.isLastQuestion()) {
+					if (!this.showRowControl.reviewIsEmpty()) {
+						if (!this.showRowControl.isFirstFailure()) {
+							info = String.format("答對了 (重新複習,共%d題)", this.showRowControl.getReviews().size());
+						} else {
+							info = String.format("重新複習,共%d題", this.showRowControl.getReviews().size());
+						}
+
+					} else {
+						if (!this.showRowControl.isFirstFailure()) {
+							info = "答對了 (已完成測驗,回首頁)";
+						} else {
+							info = "已完成測驗,回首頁";
+						}
+					}
 				} else {
-					info = "下一題";
+					if (!this.showRowControl.isFirstFailure()) {
+						info = "答對了 (下一題)";
+					} else {
+						info = "下一題";
+					}
 				}
+
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
 				this.setBackground(Color.blue);

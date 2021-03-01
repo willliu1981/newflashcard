@@ -1,9 +1,18 @@
 package com.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Test3 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		List<String> lll=new ArrayList<>();
+		lll.add("aaa");
+		lll.add("bbb");
+		
+		lll.clear();
+		lll.clear();
+		
 
 	}
 	

@@ -42,14 +42,14 @@ import com.test.Test4;
 
 public class MainView extends JFrame {
 
-	
 	public static final String CardLayout_CardBox = "cardbox";
 	public static final String CardLayout_Vocabulary = "vocabulary";
 	public static final String CardLayout_CardBox_Vocabulary = "cardboxvocabulary";
 	public static final String CardLayout_Test = "test";
 	public static final String CardLayout_Test_Question = "test_question";
+	public static final String CardLayout_Start = "test_start";
 	private JPanel contentPane;
-	private JPanel panel_centerbar;
+	private JPanel panel_main_centerbar;
 	private JPanel panel_cardbox;
 	private JPanel panel_vocabulary;
 	private ShowRowControl<CardBox> cardboxShowRowControl = new ShowRowControl(this);
@@ -84,6 +84,7 @@ public class MainView extends JFrame {
 	};
 	private JPanel panel_cardbox_vocabulary;
 	private JPanel panel_test_center_cardlayout;
+	private JPanel panel_start;
 
 	/**
 	 * Launch the application.
@@ -136,7 +137,8 @@ public class MainView extends JFrame {
 			btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 18));
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, MainView.CardLayout_CardBox);
+					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
+							MainView.CardLayout_CardBox);
 					List<CardBox> list = new CardBoxDao().queryAll();
 					CardBoxRow.setVocabularyQuantities(new VocabularyDao().queryAll());
 					cardboxShowRowControl.setResults(list);
@@ -150,7 +152,8 @@ public class MainView extends JFrame {
 			JButton btnNewButton_2 = new JButton("字卡測驗");
 			btnNewButton_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, MainView.CardLayout_Test);
+					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
+							MainView.CardLayout_Test);
 					List<CardBox> list = new CardBoxDao().queryAll();
 					TestRow.setVocabularyQuantities(new VocabularyDao().queryAll());
 					cardboxShowRowControl.setResults(list);
@@ -170,7 +173,8 @@ public class MainView extends JFrame {
 			btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 			btnNewButton_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					((CardLayout) panel_centerbar.getLayout()).show(panel_centerbar, MainView.CardLayout_Vocabulary);
+					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
+							MainView.CardLayout_Vocabulary);
 					List<Vocabulary> list = new VocabularyDao().queryAll();
 					vocabularyShowRowControl.setResults(list);
 					vocabularyShowRowControl.showRow();
@@ -184,16 +188,16 @@ public class MainView extends JFrame {
 			panel_topbar.add(btnNewButton_2);
 		}
 
-		panel_centerbar = new JPanel();
-		panel_centerbar.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		contentPane.add(panel_centerbar, BorderLayout.CENTER);
-		panel_centerbar.setLayout(new CardLayout(0, 0));
+		panel_main_centerbar = new JPanel();
+		panel_main_centerbar.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		contentPane.add(panel_main_centerbar, BorderLayout.CENTER);
+		panel_main_centerbar.setLayout(new CardLayout(0, 0));
 
 		/*
 		 * panel start
 		 */
-		JPanel panel_start = new JPanel();
-		panel_centerbar.add(panel_start, "start");
+		panel_start = new JPanel();
+		panel_main_centerbar.add(panel_start, MainView.CardLayout_Start);
 		panel_start.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblNewLabel_12 = new JLabel("Welcome");
@@ -217,7 +221,7 @@ public class MainView extends JFrame {
 		};
 		this.vocabularyShowRowControl.setInfo(info);
 		panel_vocabulary = new JPanel();
-		panel_centerbar.add(panel_vocabulary, CardLayout_Vocabulary);
+		panel_main_centerbar.add(panel_vocabulary, CardLayout_Vocabulary);
 		panel_vocabulary.setLayout(new BoxLayout(panel_vocabulary, BoxLayout.Y_AXIS));
 
 		JPanel panel_vocabulary_title_1 = new JPanel();
@@ -318,7 +322,7 @@ public class MainView extends JFrame {
 		this.cardboxShowRowControl.setInfo(info);
 
 		panel_cardbox_vocabulary = new JPanel();
-		panel_centerbar.add(panel_cardbox_vocabulary, MainView.CardLayout_CardBox_Vocabulary);
+		panel_main_centerbar.add(panel_cardbox_vocabulary, MainView.CardLayout_CardBox_Vocabulary);
 		panel_cardbox_vocabulary.setLayout(new BoxLayout(panel_cardbox_vocabulary, BoxLayout.Y_AXIS));
 
 		JPanel panel_cardbox_vocabulary_title = new JPanel();
@@ -458,7 +462,7 @@ public class MainView extends JFrame {
 //		};
 		// this.cardboxShowRowControl.setInfo(info);
 		JPanel panel_test = new JPanel();
-		panel_centerbar.add(panel_test, CardLayout_Test);
+		panel_main_centerbar.add(panel_test, CardLayout_Test);
 		panel_test.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_info = new JPanel();
@@ -543,7 +547,7 @@ public class MainView extends JFrame {
 		this.cardboxShowRowControl.setInfo(info);
 
 		panel_cardbox = new JPanel();
-		panel_centerbar.add(panel_cardbox, CardLayout_CardBox);
+		panel_main_centerbar.add(panel_cardbox, CardLayout_CardBox);
 		panel_cardbox.setLayout(new BoxLayout(panel_cardbox, BoxLayout.Y_AXIS));
 
 		/*
@@ -621,8 +625,8 @@ public class MainView extends JFrame {
 		}
 	}
 
-	public JPanel getPanel_centerbar() {
-		return panel_centerbar;
+	public JPanel getPanel_main_centerbar() {
+		return panel_main_centerbar;
 	}
 
 	public JPanel getPanel_test_center_cardlayout() {
