@@ -180,7 +180,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				String info = "";
 				if (this.showRowControl.isFirstFailure()) {
 					info = "猜錯了";
-					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
@@ -210,9 +209,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						info = "答對了 (下一題)";
 					} else {
 						info = "下一題";
+						this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
 					}
 				}
-
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
 				this.setBackground(Color.blue);

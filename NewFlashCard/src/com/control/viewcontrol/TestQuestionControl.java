@@ -3,6 +3,7 @@ package com.control.viewcontrol;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 
@@ -69,7 +70,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	}
 
 	public void setQuestionFromReviews() {
-		this.questions = this.reviews;
+		this.questions = this.reviews.stream().collect(Collectors.toList()) ;
 	}
 
 	public boolean reviewIsEmpty() {
