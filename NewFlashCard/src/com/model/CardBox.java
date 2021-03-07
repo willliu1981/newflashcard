@@ -5,7 +5,7 @@ import java.sql.Date;
 public class CardBox {
 	private Integer id;
 	private String name;
-	private Integer test_time;
+	private Integer test_times;
 	private String test_date;
 	private String create_date;
 	private String update_date;
@@ -42,12 +42,12 @@ public class CardBox {
 		this.update_date = update_date;
 	}
 
-	public Integer getTest_time() {
-		return test_time;
+	public Integer getTest_times() {
+		return test_times;
 	}
 
-	public void setTest_time(Integer test_time) {
-		this.test_time = test_time;
+	public void setTest_times(Integer test_time) {
+		this.test_times = test_time;
 	}
 
 	public String getTest_date() {

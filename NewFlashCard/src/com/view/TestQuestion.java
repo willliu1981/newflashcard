@@ -7,8 +7,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +17,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import com.control.dao.VocabularyDao;
+import com.control.dao.CardBoxDao;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.TestQuestionControl;
+import com.model.CardBox;
 import com.model.Vocabulary;
 
 public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
@@ -67,7 +66,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 								((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar()
 										.getLayout()).show(
 												((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
-												MainView.CardLayout_Start);
+												MainView.CardLayout_Test_Start);
 							} else {
 								showRowControl.setQuestionFromReviews();
 								showRowControl.startReview();
@@ -196,7 +195,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				if (this.showRowControl.isFirstFailure()) {
 					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
 					if (this.showRowControl.isLastQuestion()) {
-						info = String.format("重新複習,共%d題", this.showRowControl.getReviews().size());
+						info = String.format("複習答錯的題目,共%d題", this.showRowControl.getReviews().size());
 					} else {
 						info = "下一題";
 					}
@@ -204,8 +203,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					if (this.showRowControl.isLastQuestion()) {
 						if (this.showRowControl.reviewIsEmpty()) {
 							info = "已完成測驗,回首頁";
+							int boxid = ((MainView) showRowControl.getEventJFrame()).getTestQuestionControl()
+									.getCardboxIdx();
+							CardBox b = new CardBoxDao().query(boxid);
+							b.setTest_times(b.getTest_times() + 1);
+							new CardBoxDao().updateTest(b, boxid);
 						} else {
-							info = String.format("答對了 (重新複習,共%d題)", this.showRowControl.getReviews().size());
+							info = String.format("答對了 (複習答錯的題目,共%d題)", this.showRowControl.getReviews().size());
 						}
 					} else {
 						info = "答對了 (下一題)";

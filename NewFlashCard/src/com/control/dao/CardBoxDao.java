@@ -1,6 +1,7 @@
 package com.control.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,9 +24,11 @@ public class CardBoxDao extends Dao<CardBox> {
 		try {
 			st = myConn.prepareStatement(sql);
 			st.setString(1, t.getName());
-			st.setString(2, t.getCreate_date());
+			st.setString(2, new Date(new java.util.Date().getTime()).toString());
 			st.setString(3, t.getUpdate_date());
 			st.executeUpdate();
+			st.close();
+			myConn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -49,8 +52,13 @@ public class CardBoxDao extends Dao<CardBox> {
 				m.setName(rs.getString("name"));
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
+				m.setTest_times(rs.getInt("test_times"));
+				m.setTest_date(rs.getString("test_date"));
 				ms.add(m);
 			}
+			rs.close();
+			st.close();
+			myConn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,6 +82,11 @@ public class CardBoxDao extends Dao<CardBox> {
 			m.setName(rs.getString("name"));
 			m.setCreate_date(rs.getString("create_date"));
 			m.setUpdate_date(rs.getString("update_date"));
+			m.setTest_times(rs.getInt("test_times"));
+			m.setTest_date(rs.getString("test_date"));
+			rs.close();
+			st.close();
+			myConn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -85,13 +98,37 @@ public class CardBoxDao extends Dao<CardBox> {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
-		String sql = "update cardbox set name=?,update_date=? where id=?";
+		String sql = "update cardbox set name=?,update_date=?,test_times=?,test_date=? where id=?";
+		try {
+			st = myConn.prepareStatement(sql);
+			st.setString(1, t.getName());
+			st.setString(2, new Date(new java.util.Date().getTime()).toString());
+			st.setInt(3, t.getTest_times());
+			st.setString(4, t.getTest_date());
+			st.setInt(5, id);
+			st.executeUpdate();
+			st.close();
+			myConn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateTest(CardBox t, int id) {
+		Conn conn = new Conn();
+		Connection myConn = conn.conn();
+		PreparedStatement st = null;
+		String sql = "update cardbox set name=?,update_date=?,test_times=?,test_date=? where id=?";
 		try {
 			st = myConn.prepareStatement(sql);
 			st.setString(1, t.getName());
 			st.setString(2, t.getUpdate_date());
-			st.setInt(3, id);
+			st.setInt(3, t.getTest_times());
+			st.setString(4, new Date(new java.util.Date().getTime()).toString());
+			st.setInt(5, id);
 			st.executeUpdate();
+			st.close();
+			myConn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -104,13 +141,35 @@ public class CardBoxDao extends Dao<CardBox> {
 		PreparedStatement st = null;
 		String sql = "delete from cardbox where id=?";
 		try {
-			st=myConn.prepareStatement(sql);
+			st = myConn.prepareStatement(sql);
 			st.setInt(1, id);
 			st.executeUpdate();
+			st.close();
+			myConn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public boolean isExist(int id) {
+		Conn conn = new Conn();
+		Connection myConn = conn.conn();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		boolean isExist = false;
+		String sql = "select * from cardbox where id=?";
+		try {
+			st = myConn.prepareStatement(sql);
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			isExist = rs.next();
+			rs.close();
+			st.close();
+			myConn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isExist;
+	}
 
 }

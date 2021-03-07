@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.control.dao.VocabularyDao;
@@ -28,6 +30,7 @@ import javax.swing.border.BevelBorder;
 public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
+	private MouseEvent lastMouseEvent;
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
@@ -44,26 +47,53 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
+				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
+				if(idx>=showRowControl.getResults().size()) {
+					return ;
+				}
+				lastMouseEvent = e;
+				showRowControl.setEventResultIdx(idx);
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout()).show(
 						((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
-						MainView.CardLayout_CardBox_Vocabulary);
-				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
+						MainView.CardLayout_topbar_CardBox_Vocabulary);
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryByBoxID(cardbox.getId());
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
-				
-				int sum=0;
-				if(vocabularyQuantities.containsKey(cardbox.getId())) {
-					sum=vocabularyQuantities.get(cardbox.getId());
+				int sum = 0;
+				if (vocabularyQuantities.containsKey(cardbox.getId())) {
+					sum = vocabularyQuantities.get(cardbox.getId());
 				}
-				Map<String,String>map=new HashMap<>();
+				Map<String, String> map = new HashMap<>();
 				map.put(ShowRowInfo.ID, cardbox.getId().toString());
 				map.put(ShowRowInfo.Name, cardbox.getName());
+				map.put(ShowRowInfo.Test_time, cardbox.getTest_times().toString());
+				map.put(ShowRowInfo.Test_date, cardbox.getTest_date());
 				map.put(ShowRowInfo.Create_date, cardbox.getCreate_date());
 				map.put(ShowRowInfo.Update_date, cardbox.getUpdate_date());
 				map.put(ShowRowInfo.CardBox_Vocabulary_Quantity, String.valueOf(sum));
-				showRowControl.showInfo(map,ShowRowInfo.InfoName_CardBox_Vocabulary);
+				showRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary);
+				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
+						.getLayout()).show(
+								((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
+								MainView.CardLayout_Editbar_Serch);
+				/*
+				 * 關閉Editbar EditPanel
+				 */
+				JPanel editpanel = (JPanel) showRowControl.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.EditbarEditPanel);
+				JPanel fieldpanel = (JPanel) showRowControl
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.EditbarEditPanel_Field);
+				if (fieldpanel.isVisible()) {
+					editpanel.setBorder(BorderFactory.createEmptyBorder());
+					fieldpanel.setVisible(false);
+				}
+				Map<String,String> map2=new HashMap<>();
+				map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MainView.Unlock);
+				showRowControl.showInfo(map2,ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
+				((MainView)showRowControl.getEventJFrame()).getVocabularyShowRowControl().setEventResultIdx(-1);
+				((MainView)showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
@@ -100,6 +130,20 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		lbl_cardbox_count.setFont(new Font("新細明體", Font.PLAIN, 18));
 		add(lbl_cardbox_count);
 
+		JLabel lbl_cardbox_testtime = new JLabel("test_time");
+		lbl_cardbox_testtime.addMouseListener(myClickListener);
+		lbl_cardbox_testtime.addMouseWheelListener(myWheelListener);
+		lbl_cardbox_testtime.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_cardbox_testtime.setFont(new Font("新細明體", Font.PLAIN, 18));
+		add(lbl_cardbox_testtime);
+
+		JLabel lbl_cardbox_testdate = new JLabel("test_date");
+		lbl_cardbox_testdate.addMouseListener(myClickListener);
+		lbl_cardbox_testdate.addMouseWheelListener(myWheelListener);
+		lbl_cardbox_testdate.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_cardbox_testdate.setFont(new Font("新細明體", Font.PLAIN, 18));
+		add(lbl_cardbox_testdate);
+
 		JLabel lbl_cardbox_createdate = new JLabel("create_date");
 		lbl_cardbox_createdate.addMouseListener(myClickListener);
 		lbl_cardbox_createdate.addMouseWheelListener(myWheelListener);
@@ -134,14 +178,18 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[0]).setText("" + cardBox.getId());
 			((JLabel) rows[1]).setText("" + cardBox.getName());
 			((JLabel) rows[2]).setText("" + sum);
-			((JLabel) rows[3]).setText("" + cardBox.getCreate_date());
-			((JLabel) rows[4]).setText("" + cardBox.getUpdate_date());
+			((JLabel) rows[3]).setText("" + cardBox.getTest_times());
+			((JLabel) rows[4]).setText("" + cardBox.getTest_date());
+			((JLabel) rows[5]).setText("" + cardBox.getCreate_date());
+			((JLabel) rows[6]).setText("" + cardBox.getUpdate_date());
 		} else {
 			((JLabel) rows[0]).setText(" ");
 			((JLabel) rows[1]).setText(" ");
 			((JLabel) rows[2]).setText(" ");
 			((JLabel) rows[3]).setText(" ");
 			((JLabel) rows[4]).setText(" ");
+			((JLabel) rows[5]).setText(" ");
+			((JLabel) rows[6]).setText(" ");
 		}
 	}
 
@@ -165,6 +213,10 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 
 	public static Map<Integer, Integer> getVocabularyQuantities() {
 		return vocabularyQuantities == null ? new HashMap<>() : vocabularyQuantities;
+	}
+
+	public MouseEvent getLastMouseEvent() {
+		return lastMouseEvent;
 	}
 
 }

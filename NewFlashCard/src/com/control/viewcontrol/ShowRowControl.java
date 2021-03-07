@@ -1,7 +1,9 @@
 package com.control.viewcontrol;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,33 +12,53 @@ import javax.swing.JFrame;
 import com.model.CardBox;
 
 public class ShowRowControl<T> {
+	public final static Color EventColor_Click = Color.blue;
+	public final static Color EventColor_UnClick = Color.lightGray;
+	public final static Color EventColor_MultiClick = Color.cyan;
+	public final static Color EventColor_MultiUnClick =new Color(0xf0f0f0);
 	protected List<ShowRow> showRows;
 	protected List<T> results;
-	protected int fromIdx = 0;
-	protected JFrame eventJFrame;
+	protected int fromIResulIdx = 0;// row 翻頁(滑鼠滾輪)起始位置,ex.fromIdx=6,Vocabulary panel component index=0,則 共列出第 6~16
+	// 個 資料於 component text 上
+	protected JFrame eventJFrame;// ex. MainView
 	protected ShowRowInfo info;
+	protected int eventReslultIdx = -1;// click row idx
+	protected Map<Integer, T> eventResultMap;//用於cardbox-vocabulary editvar add 多選記錄
 
 	public ShowRowControl(JFrame eventJFrame) {
 		showRows = new ArrayList<>();
+		this.eventResultMap = new HashMap<>();
 		this.eventJFrame = eventJFrame;
 	}
 
+	public void addEventResultMap(Integer idx, T t) {
+		this.eventResultMap.put(idx, t);
+	}
+
+	public Map<Integer, T> getEventResultMap() {
+		return this.eventResultMap;
+	}
+
 	public int getFromIdx() {
-		return fromIdx;
+		return fromIResulIdx;
 	}
 
 	public void towardFromIdx() {
-		this.fromIdx--;
-		if (this.fromIdx == -1) {
-			this.fromIdx = 0;
+		this.fromIResulIdx--;
+		if (this.fromIResulIdx <= -1) {
+			this.fromIResulIdx = 0;
 		}
 	}
 
 	public void rearwardFromIdx() {
-		this.fromIdx++;
-		if (this.fromIdx >= this.results.size()) {
-			this.fromIdx = this.results.size() - 1;
+		this.fromIResulIdx++;
+		if (this.fromIResulIdx >= this.results.size()) {
+			this.fromIResulIdx = this.results.size() - 1;
 		}
+	}
+	
+	public void resetFromIdx() {
+		this.fromIResulIdx=0;
 	}
 
 	public void add(ShowRow showRow) {
@@ -67,22 +89,10 @@ public class ShowRowControl<T> {
 
 	public void showInfo(Map<String, String> map, String infoName) {
 		if (this.info != null && map != null && infoName != null) {
-			ShowRowInfo info = this.findInfo(this.info, infoName);
+			ShowRowInfo info = ShowRowInfo.findInfo(this.info, infoName);
 			if (info != null) {
 				info.showInfo(map);
 			}
-		}
-	}
-
-	private ShowRowInfo findInfo(ShowRowInfo info, String infoName) {
-		if (info == null) {
-			return null;
-		}
-
-		if (info.getInfoName().equals(infoName)) {
-			return info;
-		} else {
-			return findInfo(info.getInfo(), infoName);
 		}
 	}
 
@@ -111,6 +121,32 @@ public class ShowRowControl<T> {
 			setAvailableInfo(thisInfo.getInfo(), otherInfo);
 		} else {
 			thisInfo.setInfo(otherInfo);
+		}
+	}
+
+	public int getEventResultIdx() {
+		return eventReslultIdx;
+	}
+
+	public void setEventResultIdx(int eventIdx) {
+		this.eventReslultIdx = eventIdx;
+	}
+
+	// get reault on click row idx
+	public T getEventReault() {
+		return this.results.get(this.eventReslultIdx);
+	}
+
+	public ShowRowInfo getInfo(String name) {
+		return ShowRowInfo.findInfo(this.info, name);
+	}
+
+	// 給一個event result idx and from idx ,取得clicked row idx
+	public static int getEventRowIdx(int reslutidx, int fromidx) {
+		if (reslutidx == -1) {
+			return -1;
+		} else {
+			return reslutidx - fromidx;
 		}
 	}
 
