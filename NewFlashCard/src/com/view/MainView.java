@@ -9,26 +9,30 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.CardBoxDao;
@@ -39,23 +43,6 @@ import com.control.viewcontrol.ShowRowInfo;
 import com.control.viewcontrol.TestQuestionControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Component;
-import java.awt.Dimension;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.event.MouseAdapter;
 
 public class MainView extends JFrame {
 
@@ -71,6 +58,8 @@ public class MainView extends JFrame {
 	public static final String CardLayout_Editbar_edit = "editbar_edit";
 	public static final String Lock = "lock";
 	public static final String Unlock = "unlock";
+	public static final String MouseEvent_RemoteClickUnResetFromIdx = "event_remoteclickunresetfromidx";
+	public static final String MouseEvent_RemoteClickResetFromIdx = "event_remoteclickresetfromidx";
 	private JPanel contentPane;
 	private JPanel panel_main_centerbar;
 	private JPanel panel_cardbox;
@@ -175,8 +164,12 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_cardbox.setBackground(SystemColor.controlHighlight);
 			btnNewButton_topbar_cardbox.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 			btnNewButton_topbar_cardbox.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//cardboxShowRowControl.resetFromIdx();
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
+						btnNewButton_topbar_cardbox.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
+					}else {
+						cardboxShowRowControl.resetFromIdx();
+					}
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
 							MainView.CardLayout_topbar_CardBox);
 					List<CardBox> list = new CardBoxDao().queryAll();
@@ -196,7 +189,7 @@ public class MainView extends JFrame {
 
 			JButton btnNewButton_topbar_test = new JButton(InfoProperty.getInfo(InfoProperty.Test));
 			btnNewButton_topbar_test.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent e) {
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
 							MainView.CardLayout_topbar_Test);
 					((CardLayout) panel_test_center_cardlayout.getLayout()).show(panel_test_center_cardlayout,
@@ -204,9 +197,9 @@ public class MainView extends JFrame {
 					List<CardBox> list = new CardBoxDao().queryAll();
 					TestRow.setVocabularyQuantitiesInCardboxMap(new VocabularyDao().queryAll());
 					List<CardBox> newlist = list.stream().filter(x -> {
-						boolean r=false;
-						if(TestRow.getVocabularyQuantitiesInCardboxMap().containsKey(x.getId())) {
-							r=TestRow.getVocabularyQuantitiesInCardboxMap().get(x.getId())>0;
+						boolean r = false;
+						if (TestRow.getVocabularyQuantitiesInCardboxMap().containsKey(x.getId())) {
+							r = TestRow.getVocabularyQuantitiesInCardboxMap().get(x.getId()) > 0;
 						}
 						return r;
 					}).collect(Collectors.toList());
@@ -226,9 +219,13 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_vocabulary.setBackground(SystemColor.controlHighlight);
 			btnNewButton_topbar_vocabulary.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 			btnNewButton_topbar_vocabulary.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					vocabularyShowRowControl.setEventResultIdx(-1);//消除選中
-					//vocabularyShowRowControl.resetFromIdx();
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
+						btnNewButton_topbar_vocabulary.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
+					}else {
+						vocabularyShowRowControl.resetFromIdx();
+					}
+					vocabularyShowRowControl.setEventResultIdx(-1);// 消除選中
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
 							MainView.CardLayout_topbar_Vocabulary);
 					List<Vocabulary> list = new VocabularyDao().queryAll();
@@ -267,6 +264,7 @@ public class MainView extends JFrame {
 		panel_start.add(lblNewLabel_12, BorderLayout.CENTER);
 
 		JPanel panel_bottombar = new JPanel();
+		panel_bottombar.setVisible(false);
 		contentPane.add(panel_bottombar, BorderLayout.SOUTH);
 		panel_bottombar.setLayout(new CardLayout(0, 0));
 
@@ -368,15 +366,18 @@ public class MainView extends JFrame {
 		panel_vocabulary_editbar.add(panel_serch, CardLayout_Editbar_Serch);
 
 		JLabel lblNewLabel_13 = new JLabel("serch");
+		lblNewLabel_13.setVisible(false);
 		lblNewLabel_13.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_serch.add(lblNewLabel_13);
 
 		JTextField textField = new JTextField();
+		textField.setVisible(false);
 		textField.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField.setColumns(10);
 		panel_serch.add(textField);
 
 		JComboBox<String> comboBox = new JComboBox<>();
+		comboBox.setVisible(false);
 		comboBox.setBackground(SystemColor.control);
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Vocabulary", "Translation", "Box ID" }));
 		comboBox.setFont(new Font("新細明體", Font.PLAIN, 16));
@@ -451,7 +452,7 @@ public class MainView extends JFrame {
 				}
 				v.setBox_id(iboxid);
 				if (!(vocab == null || trans == null) && !(vocab.trim().equals("") || trans.trim().equals(""))) {
-					if (new CardBoxDao().isExist(iboxid)) {
+					if (iboxid == -1 || new CardBoxDao().isExist(iboxid)) {
 						new VocabularyDao().add(v);
 						btnNewButton_topbar_vocabulary.doClick();
 					}
@@ -543,8 +544,9 @@ public class MainView extends JFrame {
 				}
 				v.setBox_id(iboxid);
 				if (trans != null && !trans.trim().equals("")) {
-					if (iboxid==-1 || new CardBoxDao().isExist(iboxid)) {
+					if (iboxid == -1 || new CardBoxDao().isExist(iboxid)) {
 						new VocabularyDao().update(v, vocabularyShowRowControl.getEventReault().getId());
+						btnNewButton_topbar_vocabulary.setActionCommand(MouseEvent_RemoteClickUnResetFromIdx);
 						btnNewButton_topbar_vocabulary.doClick();
 					}
 				}
@@ -804,6 +806,7 @@ public class MainView extends JFrame {
 		btnNewButton_9.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				vocabularyShowRowControl.resetFromIdx();
 				vocabularyShowRowControl.setEventResultIdx(-1);
 				vocabularyShowRowControl.showRow();
 				((CardLayout) panel_cardbox_vocabulary_editbar.getLayout()).show(panel_cardbox_vocabulary_editbar,
@@ -951,15 +954,18 @@ public class MainView extends JFrame {
 		panel_cardbox_vocabulary_editbar.add(panel_serch, CardLayout_Editbar_Serch);
 
 		JLabel lblNewLabel_13 = new JLabel("serch");
+		lblNewLabel_13.setVisible(false);
 		lblNewLabel_13.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_serch.add(lblNewLabel_13);
 
 		textField_7 = new JTextField();
+		textField_7.setVisible(false);
 		textField_7.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField_7.setColumns(10);
 		panel_serch.add(textField_7);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setVisible(false);
 		comboBox.setFont(new Font("新細明體", Font.PLAIN, 16));
 		comboBox.setBackground(SystemColor.menu);
 		panel_serch.add(comboBox);
@@ -1007,7 +1013,7 @@ public class MainView extends JFrame {
 				JTextField f = (JTextField) cardboxShowRowControl
 						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit).getComponent(ShowRowInfo.Name);
 				CardBox b = cardboxShowRowControl.getEventReault();
-				//b.setName(f.getText());
+				// b.setName(f.getText());
 				new CardBoxDao().update(b, b.getId());// 更新日期
 				/*
 				 * 重繪新的狀態
@@ -1152,6 +1158,7 @@ public class MainView extends JFrame {
 		panel_center.setLayout(new BoxLayout(panel_center, BoxLayout.X_AXIS));
 
 		JPanel panel = new JPanel();
+		panel.setVisible(false);
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		panel_center.add(panel);
 
@@ -1328,15 +1335,18 @@ public class MainView extends JFrame {
 		panel_cardbox_editbar.add(panel_serch, CardLayout_Editbar_Serch);
 
 		JLabel lblNewLabel_13 = new JLabel("serch");
+		lblNewLabel_13.setVisible(false);
 		lblNewLabel_13.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_serch.add(lblNewLabel_13);
 
 		textField_14 = new JTextField();
+		textField_14.setVisible(false);
 		textField_14.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField_14.setColumns(10);
 		panel_serch.add(textField_14);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setVisible(false);
 		comboBox.setFont(new Font("新細明體", Font.PLAIN, 16));
 		comboBox.setBackground(SystemColor.menu);
 		panel_serch.add(comboBox);

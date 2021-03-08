@@ -47,6 +47,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
+				((MainView)showRowControl.getEventJFrame()).getVocabularyShowRowControl().resetFromIdx();
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				if(idx>=showRowControl.getResults().size()) {
 					return ;
