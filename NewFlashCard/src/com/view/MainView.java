@@ -52,7 +52,7 @@ public class MainView extends JFrame {
 	public static final String CardLayout_topbar_Test = "test";
 	public static final String CardLayout_Test_List = "test_list";
 	public static final String CardLayout_Test_Question = "test_question";
-	public static final String CardLayout_Test_Start = "test_start";
+	public static final String CardLayout_topbar_Start = "test_start";
 	public static final String CardLayout_Editbar_Serch = "editbar_serch";
 	public static final String CardLayout_Editbar_Add = "editbar_add";
 	public static final String CardLayout_Editbar_edit = "editbar_edit";
@@ -106,6 +106,7 @@ public class MainView extends JFrame {
 	private JButton btnNewButton_topbar_cardbox;
 	private JPanel panel_cardbox_editbar;
 	private JTextField textField_14;
+	private JButton btnNewButton_topbar_test;
 
 	/**
 	 * Launch the application.
@@ -187,7 +188,7 @@ public class MainView extends JFrame {
 				}
 			});
 
-			JButton btnNewButton_topbar_test = new JButton(InfoProperty.getInfo(InfoProperty.Test));
+			btnNewButton_topbar_test = new JButton(InfoProperty.getInfo(InfoProperty.Test));
 			btnNewButton_topbar_test.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
@@ -255,7 +256,7 @@ public class MainView extends JFrame {
 		 * panel start
 		 */
 		panel_start = new JPanel();
-		panel_main_centerbar.add(panel_start, MainView.CardLayout_Test_Start);
+		panel_main_centerbar.add(panel_start, MainView.CardLayout_topbar_Start);
 		panel_start.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblNewLabel_12 = new JLabel("Welcome");
@@ -1430,6 +1431,10 @@ public class MainView extends JFrame {
 
 	public ShowRowControl<CardBox> getCardboxShowRowControl() {
 		return cardboxShowRowControl;
+	}
+
+	public JButton getBtnNewButton_topbar_test() {
+		return btnNewButton_topbar_test;
 	}
 
 }

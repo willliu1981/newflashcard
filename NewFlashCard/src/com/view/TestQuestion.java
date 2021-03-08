@@ -63,10 +63,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					if (rowIdx == 1) {
 						if (showRowControl.isLastQuestion()) {
 							if (showRowControl.reviewIsEmpty()) {
-								((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar()
-										.getLayout()).show(
-												((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
-												MainView.CardLayout_Test_Start);
+//								((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar()
+//										.getLayout()).show(
+//												((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
+//												MainView.CardLayout_topbar_Start);
+								((MainView) showRowControl.getEventJFrame()).getBtnNewButton_topbar_test().doClick();
 							} else {
 								showRowControl.setQuestionFromReviews();
 								showRowControl.startReview();
