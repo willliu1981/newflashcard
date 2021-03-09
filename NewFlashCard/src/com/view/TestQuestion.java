@@ -204,7 +204,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 									.getCardboxIdx();
 							CardBox b = new CardBoxDao().query(boxid);
 							b.setTest_times(b.getTest_times() + 1);
-							b.state();
+							boolean r=b.state();
+							if(r) {
+								info = "任務完成!!!,回測驗首頁";
+							}
 							new CardBoxDao().updateTest(b, boxid);
 						} else {
 							info = String.format("答對了 (複習題目,共%d題)", this.showRowControl.getReviews().size());

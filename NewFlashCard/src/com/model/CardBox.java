@@ -79,11 +79,24 @@ public class CardBox {
 			this.state++;
 			return true;
 		} else {
+			this.state = this.stateRuleMap.size() + 1;// 使無效
 			return false;
 		}
 	}
 
+	public boolean isFinish() {
+		boolean r = false;
+		if (this.state > 0 && !this.stateRuleMap.containsKey(this.state)) {
+			r = true;
+		}
+		return r;
+	}
+
 	private void resetState() {
+		this.state = 1;
+	}
+
+	private void clearStage() {
 		this.state = 0;
 	}
 
@@ -95,23 +108,34 @@ public class CardBox {
 		this.state = state;
 	}
 
-	public void state() {
+	/*
+	 * 回傳 是否完成任務(stage= last code)
+	 */
+	public boolean state() {
+		boolean r = false;
+		if (this.state == 0) {
+			this.resetState();
+			return r = false;
+		}
 		if (this.getStateResult() == 1) {
-			this.nextState();
+			r = !this.nextState();
 		} else if (this.getStateResult() == -1) {
 			this.resetState();
+			r = false;
 		}
+		return r;
 	}
 
 	public String getNextTestDateStr() {
-		if (this.state == 0) {
+		if (this.state == 0 || this.isFinish()) {
 			return "--";
 		}
-		return this.getNextTestDate().toString();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(this.getNextTestDate().getTime()).toString();
 	}
 
 	private Calendar getNextTestDate() {
-		if (this.state == 0) {
+		if (this.state == 0 || this.isFinish()) {
 			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -20,6 +20,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.VocabularyDao;
+import com.control.viewcontrol.MyColor;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.model.CardBox;
@@ -49,11 +50,14 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
+				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
+				if (idx >= showRowControl.getResults().size()) {
+					return;
+				}
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout()
 						.getLayout()).show(
 								((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout(),
 								MainView.CardLayout_Test_Question);
-				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryAll();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCardboxIdx(cardbox.getId());
@@ -94,8 +98,8 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_root.add(panel_rbar, BorderLayout.EAST);
 		panel_rbar.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel lblNewLabel_1 = new JLabel("test date");
-		lblNewLabel_1.setToolTipText("test date");
+		JLabel lblNewLabel_1 = new JLabel("quantity");
+		lblNewLabel_1.setToolTipText("quantity");
 		lblNewLabel_1.addMouseListener(myClickListener);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
@@ -108,12 +112,19 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		lblNewLabel_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_rbar.add(lblNewLabel_1_1);
 
-		JLabel lblNewLabel = new JLabel("quantity");
-		lblNewLabel.setToolTipText("quantity");
+		JLabel lblNewLabel = new JLabel("test date");
+		lblNewLabel.setToolTipText("test date");
 		lblNewLabel.addMouseListener(myClickListener);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_rbar.add(lblNewLabel);
+
+		JLabel lblNextDate = new JLabel("next test");
+		lblNextDate.setToolTipText("next test date");
+		lblNextDate.addMouseListener(myClickListener);
+		lblNextDate.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNextDate.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_rbar.add(lblNextDate);
 		addMouseListener(myClickListener);
 		addMouseWheelListener(myWheelListener);
 	}
@@ -140,9 +151,10 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[0]).setText("詞彙數量: " + sum);
 			((JLabel) row_right[1]).setText("已測驗次數: " + cardBox.getTest_times());
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
-			switch (showRowControl.getResults().get(idx).getStateResult()) {
+			((JLabel) row_right[3]).setText("下次: " + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
+			switch (cardBox.getStateResult()) {
 			case 0:
-				this.setBackground(Color.gray);
+				this.setBackground(MyColor.getBase());
 				break;
 			case 1:
 				this.setBackground(Color.orange);
@@ -158,6 +170,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[0]).setText(" ");
 			((JLabel) row_right[1]).setText(" ");
 			((JLabel) row_right[2]).setText(" ");
+			((JLabel) row_right[3]).setText(" ");
 		}
 
 	}
