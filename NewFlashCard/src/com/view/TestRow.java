@@ -24,6 +24,7 @@ import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import java.awt.Color;
 
 public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
@@ -139,12 +140,26 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[0]).setText("詞彙數量: " + sum);
 			((JLabel) row_right[1]).setText("已測驗次數: " + cardBox.getTest_times());
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
+			switch (showRowControl.getResults().get(idx).getStateResult()) {
+			case 0:
+				this.setBackground(Color.gray);
+				break;
+			case 1:
+				this.setBackground(Color.orange);
+				break;
+			case -1:
+				this.setBackground(Color.red);
+				break;
+			default:
+				break;
+			}
 		} else {
 			((JLabel) row_center[0]).setText(" ");
 			((JLabel) row_right[0]).setText(" ");
 			((JLabel) row_right[1]).setText(" ");
 			((JLabel) row_right[2]).setText(" ");
 		}
+
 	}
 
 	public static void setVocabularyQuantities(Map<Integer, Integer> map) {

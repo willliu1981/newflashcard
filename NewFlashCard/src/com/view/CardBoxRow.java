@@ -1,6 +1,7 @@
 package com.view;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -26,6 +27,7 @@ import com.model.CardBox;
 import com.model.Vocabulary;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
@@ -105,7 +107,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	 * Create the panel.
 	 */
 	public CardBoxRow() {
-		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		setLayout(new GridLayout(1, 0, 0, 0));
 		addMouseListener(myClickListener);
 		addMouseWheelListener(myWheelListener);
@@ -186,7 +188,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[2]).setText("" + sum);
 			((JLabel) rows[3]).setText("" + cardBox.getTest_times());
 			((JLabel) rows[4]).setText("" + cardBox.getTest_date());
-			((JLabel) rows[5]).setText("" + cardBox.getNextTestDate());
+			((JLabel) rows[5]).setText("" + cardBox.getNextTestDateStr());
 			((JLabel) rows[6]).setText("" + cardBox.getCreate_date());
 			((JLabel) rows[7]).setText("" + cardBox.getUpdate_date());
 		} else {
