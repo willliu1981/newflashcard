@@ -7,6 +7,7 @@ public class CardBox {
 	private String name;
 	private Integer test_times;
 	private String test_date;
+	private Integer state;
 	private String create_date;
 	private String update_date;
 
@@ -56,6 +57,14 @@ public class CardBox {
 
 	public void setTest_date(String test_date) {
 		this.test_date = test_date;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
 	}
 
 

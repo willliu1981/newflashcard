@@ -50,10 +50,11 @@ public class CardBoxDao extends Dao<CardBox> {
 				m = new CardBox();
 				m.setId(rs.getInt("id"));
 				m.setName(rs.getString("name"));
-				m.setCreate_date(rs.getString("create_date"));
-				m.setUpdate_date(rs.getString("update_date"));
 				m.setTest_times(rs.getInt("test_times"));
 				m.setTest_date(rs.getString("test_date"));
+				m.setState(rs.getInt("state"));
+				m.setCreate_date(rs.getString("create_date"));
+				m.setUpdate_date(rs.getString("update_date"));
 				ms.add(m);
 			}
 			rs.close();
@@ -80,10 +81,11 @@ public class CardBoxDao extends Dao<CardBox> {
 			m = new CardBox();
 			m.setId(rs.getInt("id"));
 			m.setName(rs.getString("name"));
-			m.setCreate_date(rs.getString("create_date"));
-			m.setUpdate_date(rs.getString("update_date"));
 			m.setTest_times(rs.getInt("test_times"));
 			m.setTest_date(rs.getString("test_date"));
+			m.setState(rs.getInt("state"));
+			m.setCreate_date(rs.getString("create_date"));
+			m.setUpdate_date(rs.getString("update_date"));
 			rs.close();
 			st.close();
 			myConn.close();
@@ -98,14 +100,15 @@ public class CardBoxDao extends Dao<CardBox> {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
-		String sql = "update cardbox set name=?,update_date=?,test_times=?,test_date=? where id=?";
+		String sql = "update cardbox set name=?,update_date=?,test_times=?,test_date=?,state=? where id=?";
 		try {
 			st = myConn.prepareStatement(sql);
 			st.setString(1, t.getName());
 			st.setString(2, new Date(new java.util.Date().getTime()).toString());
 			st.setInt(3, t.getTest_times());
 			st.setString(4, t.getTest_date());
-			st.setInt(5, id);
+			st.setInt(5, t.getState());
+			st.setInt(6, id);
 			st.executeUpdate();
 			st.close();
 			myConn.close();
@@ -114,18 +117,22 @@ public class CardBoxDao extends Dao<CardBox> {
 		}
 	}
 
+	/*
+	 * 測驗完成後更新
+	 */
 	public void updateTest(CardBox t, int id) {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
-		String sql = "update cardbox set name=?,update_date=?,test_times=?,test_date=? where id=?";
+		String sql = "update cardbox set name=?,update_date=?,test_times=?,test_date=?,state=? where id=?";
 		try {
 			st = myConn.prepareStatement(sql);
 			st.setString(1, t.getName());
 			st.setString(2, t.getUpdate_date());
 			st.setInt(3, t.getTest_times());
 			st.setString(4, new Date(new java.util.Date().getTime()).toString());
-			st.setInt(5, id);
+			st.setInt(5, t.getState());
+			st.setInt(6, id);
 			st.executeUpdate();
 			st.close();
 			myConn.close();

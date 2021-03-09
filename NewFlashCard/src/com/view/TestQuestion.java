@@ -63,10 +63,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					if (rowIdx == 1) {
 						if (showRowControl.isLastQuestion()) {
 							if (showRowControl.reviewIsEmpty()) {
-//								((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar()
-//										.getLayout()).show(
-//												((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
-//												MainView.CardLayout_topbar_Start);
 								((MainView) showRowControl.getEventJFrame()).getBtnNewButton_topbar_test().doClick();
 							} else {
 								showRowControl.setQuestionFromReviews();
@@ -203,14 +199,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				} else {
 					if (this.showRowControl.isLastQuestion()) {
 						if (this.showRowControl.reviewIsEmpty()) {
-							info = "已完成測驗,回首頁";
+							info = "已完成測驗,回測驗首頁";
 							int boxid = ((MainView) showRowControl.getEventJFrame()).getTestQuestionControl()
 									.getCardboxIdx();
 							CardBox b = new CardBoxDao().query(boxid);
 							b.setTest_times(b.getTest_times() + 1);
 							new CardBoxDao().updateTest(b, boxid);
 						} else {
-							info = String.format("答對了 (複習答錯的題目,共%d題)", this.showRowControl.getReviews().size());
+							info = String.format("答對了 (複習題目,共%d題)", this.showRowControl.getReviews().size());
 						}
 					} else {
 						info = "答對了 (下一題)";
