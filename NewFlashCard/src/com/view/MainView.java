@@ -1357,12 +1357,12 @@ public class MainView extends JFrame {
 		panel_title.setLayout(new GridLayout(1, 0, 0, 0));
 
 		JButton btnNewButton_3 = new JButton("ID");
-		btnNewButton_3.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_3.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_3.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3);
 
 		JButton btnNewButton_6 = new JButton("Name");
-		btnNewButton_6.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_6.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_6.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_6);
 
@@ -1371,25 +1371,31 @@ public class MainView extends JFrame {
 		btnNewButton_4.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4);
 
-		JButton btnNewButton_4_1 = new JButton("Test Times");
+		JButton btnNewButton_4_1 = new JButton("<html>Test<br/>Times</html>");
 		btnNewButton_4_1.setToolTipText("Test Times");
-		btnNewButton_4_1.setFont(new Font("Dialog", Font.PLAIN, 12));
+		btnNewButton_4_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_1);
 
-		JButton btnNewButton_4_2 = new JButton("Test Date");
+		JButton btnNewButton_4_2 = new JButton("<html>Test<br/>Date</html>");
 		btnNewButton_4_2.setToolTipText("Last Test Date");
-		btnNewButton_4_2.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnNewButton_4_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_2.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_2);
+		
+		JButton btnNewButton_4_2_1 = new JButton("<html>Next<br/>Test</html>");
+		btnNewButton_4_2_1.setToolTipText("Last Test Date");
+		btnNewButton_4_2_1.setFont(new Font("Dialog", Font.PLAIN, 16));
+		btnNewButton_4_2_1.setBackground(SystemColor.controlHighlight);
+		panel_title.add(btnNewButton_4_2_1);
 
-		JButton btnNewButton_5 = new JButton("Create Date");
-		btnNewButton_5.setFont(new Font("Dialog", Font.PLAIN, 11));
+		JButton btnNewButton_5 = new JButton("<html>Create<br/>Date</html>");
+		btnNewButton_5.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_5.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_5);
 
-		JButton btnNewButton_7 = new JButton("Update Date");
-		btnNewButton_7.setFont(new Font("Dialog", Font.PLAIN, 11));
+		JButton btnNewButton_7 = new JButton("<html>Update<br/>Date</html>");
+		btnNewButton_7.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_7.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_7);
 

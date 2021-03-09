@@ -148,6 +148,11 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		JLabel lbl_cardbox_createdate = new JLabel("create_date");
 		lbl_cardbox_createdate.addMouseListener(myClickListener);
 		lbl_cardbox_createdate.addMouseWheelListener(myWheelListener);
+		
+		JLabel lbl_cardbox_testdate_1 = new JLabel("next_test");
+		lbl_cardbox_testdate_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_cardbox_testdate_1.setFont(new Font("新細明體", Font.PLAIN, 18));
+		add(lbl_cardbox_testdate_1);
 		lbl_cardbox_createdate.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_cardbox_createdate.setFont(new Font("新細明體", Font.PLAIN, 18));
 		add(lbl_cardbox_createdate);
@@ -181,8 +186,9 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[2]).setText("" + sum);
 			((JLabel) rows[3]).setText("" + cardBox.getTest_times());
 			((JLabel) rows[4]).setText("" + cardBox.getTest_date());
-			((JLabel) rows[5]).setText("" + cardBox.getCreate_date());
-			((JLabel) rows[6]).setText("" + cardBox.getUpdate_date());
+			((JLabel) rows[5]).setText("" + cardBox.getNextTestDate());
+			((JLabel) rows[6]).setText("" + cardBox.getCreate_date());
+			((JLabel) rows[7]).setText("" + cardBox.getUpdate_date());
 		} else {
 			((JLabel) rows[0]).setText(" ");
 			((JLabel) rows[1]).setText(" ");
@@ -191,6 +197,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[4]).setText(" ");
 			((JLabel) rows[5]).setText(" ");
 			((JLabel) rows[6]).setText(" ");
+			((JLabel) rows[7]).setText(" ");
 		}
 	}
 
