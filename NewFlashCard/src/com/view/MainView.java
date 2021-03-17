@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -168,7 +169,7 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
 						btnNewButton_topbar_cardbox.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
-					}else {
+					} else {
 						cardboxShowRowControl.resetFromIdx();
 					}
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
@@ -223,7 +224,7 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
 						btnNewButton_topbar_vocabulary.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
-					}else {
+					} else {
 						vocabularyShowRowControl.resetFromIdx();
 					}
 					vocabularyShowRowControl.setEventResultIdx(-1);// 消除選中
@@ -585,6 +586,14 @@ public class MainView extends JFrame {
 		JButton btnNewButton_14_1_1 = new JButton("Delete");
 		btnNewButton_14_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String[] options = { "Delete", "Cancel" };
+				int r = JOptionPane.showOptionDialog(null,
+						String.format("Delete \"%s\" ?", getVocabularyShowRowControl().getEventReault().getVocabulary()),
+						"Delete Date", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, "Delete");
+				if (r == JOptionPane.NO_OPTION) {
+					return;
+				}
+
 				new VocabularyDao().delete(getVocabularyShowRowControl().getEventReault().getId());
 				btnNewButton_topbar_vocabulary.doClick();
 				Map<String, String> map = new HashMap<>();
@@ -596,6 +605,7 @@ public class MainView extends JFrame {
 						CardLayout_Editbar_Serch);
 				vocabularyShowRowControl.setEventResultIdx(-1);
 				vocabularyShowRowControl.showRow();
+
 			}
 		});
 		btnNewButton_14_1_1.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -935,6 +945,14 @@ public class MainView extends JFrame {
 		JButton btnNewButton = new JButton("Delete This Box");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String[] options = { "Delete", "Cancel" };
+				int r = JOptionPane.showOptionDialog(null,
+						String.format("Delete \"%s\" ?",cardboxShowRowControl.getEventReault().getName()),
+						"Delete Date", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, "Delete");
+				if (r == JOptionPane.NO_OPTION) {
+					return;
+				}
+				
 				int id = cardboxShowRowControl.getEventReault().getId();
 				new CardBoxDao().delete(id);
 				new VocabularyDao().updateClearBoxID(id);
@@ -1382,7 +1400,7 @@ public class MainView extends JFrame {
 		btnNewButton_4_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_2.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_2);
-		
+
 		JButton btnNewButton_4_2_1 = new JButton("<html>Next<br/>Test</html>");
 		btnNewButton_4_2_1.setToolTipText("Last Test Date");
 		btnNewButton_4_2_1.setFont(new Font("Dialog", Font.PLAIN, 16));
