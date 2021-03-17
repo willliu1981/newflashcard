@@ -1186,7 +1186,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_3_1_1 = new JButton("ID");
 		btnNewButton_3_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sortVocabularyByID(btnNewButton_3_1_1, e);
+				sort(SorterFactory.getSorter(VocabulrySorterType.Id), btnNewButton_3_1_1, e,
+						vocabularyShowRowControl);
 				vocabularyShowRowControl.resetEventResultMap();
 				vocabularyShowRowControl.showRow();
 			}
@@ -1196,26 +1197,66 @@ public class MainView extends JFrame {
 		panel_title.add(btnNewButton_3_1_1);
 
 		JButton btnNewButton_6_1_1 = new JButton("Vocabulary");
+		btnNewButton_6_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(VocabulrySorterType.Vocabulary), btnNewButton_6_1_1, e,
+						vocabularyShowRowControl);
+				vocabularyShowRowControl.resetEventResultMap();
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_6_1_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_6_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_6_1_1);
 
 		JButton btnNewButton_4_1_1 = new JButton("Translation");
+		btnNewButton_4_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(VocabulrySorterType.Translation), btnNewButton_4_1_1, e,
+						vocabularyShowRowControl);
+				vocabularyShowRowControl.resetEventResultMap();
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_4_1_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_1_1);
 
 		JButton btnNewButton_4_1_1_1 = new JButton("Box Id");
+		btnNewButton_4_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(VocabulrySorterType.BoxId), btnNewButton_4_1_1_1, e,
+						vocabularyShowRowControl);
+				vocabularyShowRowControl.resetEventResultMap();
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_4_1_1_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_1_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_1_1_1);
 
 		JButton btnNewButton_5_1_1_1 = new JButton("Create Date");
+		btnNewButton_5_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(VocabulrySorterType.CreateDate), btnNewButton_5_1_1_1, e,
+						vocabularyShowRowControl);
+				vocabularyShowRowControl.resetEventResultMap();
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_5_1_1_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnNewButton_5_1_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_5_1_1_1);
 
 		JButton btnNewButton_7_1_1 = new JButton("Update Date");
+		btnNewButton_7_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(VocabulrySorterType.UpdateDate), btnNewButton_7_1_1, e,
+						vocabularyShowRowControl);
+				vocabularyShowRowControl.resetEventResultMap();
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_7_1_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnNewButton_7_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_7_1_1);
