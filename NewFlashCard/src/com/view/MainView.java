@@ -636,6 +636,7 @@ public class MainView extends JFrame {
 					btnNewButton_3_1.setActionCommand("asc");
 				}
 				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.setEventResultIdx();
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -664,21 +665,85 @@ public class MainView extends JFrame {
 		panel_title.add(btnNewButton_6_1);
 
 		JButton btnNewButton_4_1 = new JButton("Translation");
+		btnNewButton_4_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Vocabulary> lst = null;
+				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x1.getTranslation().compareTo(x2.getTranslation()));
+					btnNewButton_4_1.setActionCommand("desc");
+				} else {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x2.getTranslation().compareTo(x1.getTranslation()));
+					btnNewButton_4_1.setActionCommand("asc");
+				}
+				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_4_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_1);
 
 		JButton btnNewButton_5_1 = new JButton("Box ID");
+		btnNewButton_5_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Vocabulary> lst = null;
+				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x1.getBox_id() - x2.getBox_id());
+					btnNewButton_5_1.setActionCommand("desc");
+				} else {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x2.getBox_id() - x1.getBox_id());
+					btnNewButton_5_1.setActionCommand("asc");
+				}
+				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_5_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 		btnNewButton_5_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_5_1);
 
 		JButton btnNewButton_5_1_1 = new JButton("Create Date");
+		btnNewButton_5_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Vocabulary> lst = null;
+				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x1.getCreate_date().compareTo(x2.getCreate_date()));
+					btnNewButton_5_1_1.setActionCommand("desc");
+				} else {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x2.getCreate_date().compareTo(x1.getCreate_date()));
+					btnNewButton_5_1_1.setActionCommand("asc");
+				}
+				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_5_1_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnNewButton_5_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_5_1_1);
 
 		JButton btnNewButton_7_1 = new JButton("Update Date");
+		btnNewButton_7_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Vocabulary> lst = null;
+				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x1.getUpdate_date().compareTo(x2.getUpdate_date()));
+					btnNewButton_7_1.setActionCommand("desc");
+				} else {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x2.getUpdate_date().compareTo(x1.getUpdate_date()));
+					btnNewButton_7_1.setActionCommand("asc");
+				}
+				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_7_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnNewButton_7_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_7_1);

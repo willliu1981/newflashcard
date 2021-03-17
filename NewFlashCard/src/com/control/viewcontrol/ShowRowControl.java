@@ -131,6 +131,9 @@ public class ShowRowControl<T> {
 	public void setEventResultIdx(int eventIdx) {
 		this.eventReslultIdx = eventIdx;
 	}
+	public void setEventResultIdx() {
+		this.setEventResultIdx(-1);
+	}
 
 	// get reault on click row idx
 	public T getEventReault() {
