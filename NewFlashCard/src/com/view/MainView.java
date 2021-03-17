@@ -1529,7 +1529,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_4_2_1 = new JButton("<html>Next<br/>Test</html>");
 		btnNewButton_4_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("review");
+				sort(SorterFactory.getSorter(CardBoxSorterType.NestTest), btnNewButton_4_2_1, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
 			}
 		});
 		btnNewButton_4_2_1.setToolTipText("Last Test Date");
