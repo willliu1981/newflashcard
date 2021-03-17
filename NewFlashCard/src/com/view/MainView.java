@@ -350,7 +350,7 @@ public class MainView extends JFrame {
 						CardLayout_Editbar_Add);
 			}
 		});
-		btnNewButton_8.setToolTipText("create vocabulary");
+		btnNewButton_8.setToolTipText("create new word");
 		btnNewButton_8.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_8.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 		btnNewButton_8.setBackground(SystemColor.controlHighlight);
@@ -440,6 +440,7 @@ public class MainView extends JFrame {
 		JPanel panel = new JPanel();
 		panel_add.add(panel);
 		JButton btnNewButton_14 = new JButton("Add");
+		btnNewButton_14.setToolTipText("commit");
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String vocab = ((JTextField) vocabularyShowRowControl
@@ -536,6 +537,7 @@ public class MainView extends JFrame {
 		panel_edit.add(panel_6);
 
 		JButton btnNewButton_14_1 = new JButton("Update");
+		btnNewButton_14_1.setToolTipText("update this word");
 		btnNewButton_14_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String trans = ((JTextField) vocabularyShowRowControl
@@ -593,6 +595,7 @@ public class MainView extends JFrame {
 			}
 		});
 		JButton btnNewButton_14_1_1 = new JButton("Delete");
+		btnNewButton_14_1_1.setToolTipText("delete this word");
 		btnNewButton_14_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] options = { "Delete", "Cancel" };
@@ -893,7 +896,7 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.getEventResultMap().clear();
 			}
 		});
-		btnNewButton_9.setToolTipText("add box");
+		btnNewButton_9.setToolTipText("add words from list for this card-box");
 		btnNewButton_9.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_9.setBackground(SystemColor.controlHighlight);
 		btnNewButton_9.setFont(new Font("Dialog", Font.PLAIN, 16));
@@ -904,6 +907,7 @@ public class MainView extends JFrame {
 				ShowRowInfo.EditbarEditPanel);
 		panel_addandeditname.add(panel_cardbox_vocabulary_editbar_editpanel);
 		JButton btnNewButton_10 = new JButton("Edit");
+		btnNewButton_10.setToolTipText("edit this card-box name");
 		btnNewButton_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int eventRowIdx = ShowRowControl.getEventRowIdx(cardboxShowRowControl.getEventResultIdx(),
@@ -956,6 +960,7 @@ public class MainView extends JFrame {
 		panel_cardbox_vocabulary_editbar_editpfeild.add(textField);
 
 		JButton btnNewButton_1 = new JButton("Update");
+		btnNewButton_1.setToolTipText("commit");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPanel editpanel = (JPanel) cardboxShowRowControl
@@ -992,6 +997,7 @@ public class MainView extends JFrame {
 		panel_cardbox_vocabulary_editbar_editpfeild.add(btnNewButton_1);
 
 		JButton btnNewButton = new JButton("Delete This Box");
+		btnNewButton.setToolTipText("delete this card-box");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] options = { "Delete", "Cancel" };
@@ -1061,6 +1067,7 @@ public class MainView extends JFrame {
 		panel_add.add(panel);
 
 		JButton btnNewButton_14 = new JButton("Add");
+		btnNewButton_14.setToolTipText("commit");
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int cardbox_id = cardboxShowRowControl.getEventReault().getId();
@@ -1127,6 +1134,7 @@ public class MainView extends JFrame {
 		panel_cardbox_vocabulary_editbar.add(panel_edit, CardLayout_Editbar_edit);
 		panel_edit.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JButton btnNewButton_14_1 = new JButton("Remove");
+		btnNewButton_14_1.setToolTipText("remove selected word");
 		btnNewButton_14_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int eventRowIdx = ShowRowControl.getEventRowIdx(cardboxShowRowControl.getEventResultIdx(),
@@ -1373,6 +1381,7 @@ public class MainView extends JFrame {
 		panel_1.add(lblNewLabel_11);
 
 		JButton btnNewButton_8 = new JButton(InfoProperty.getInfo(InfoProperty.Create));
+		btnNewButton_8.setToolTipText("create new card-box");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar, CardLayout_Editbar_Add);
@@ -1416,6 +1425,7 @@ public class MainView extends JFrame {
 		panel_add.add(panel_3_1);
 
 		JButton btnNewButton_14 = new JButton("Add");
+		btnNewButton_14.setToolTipText("commit");
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardBox c = new CardBox();
