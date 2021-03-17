@@ -78,6 +78,8 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 						.getLayout()).show(
 								((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
 								MainView.CardLayout_Editbar_edit);
+				showRowControl.getEventResultMap().clear();
+				showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
 			} else {
 				if(showRowControl.getEventResultMap().containsValue(showRowControl.getEventReault())) {
 					showRowControl.getEventResultMap().remove(idx);

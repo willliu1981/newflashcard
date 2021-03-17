@@ -2,6 +2,7 @@ package com.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -43,6 +44,12 @@ import com.control.viewcontrol.InfoProperty;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
 import com.control.viewcontrol.TestQuestionControl;
+import com.control.viewcontrol.sorter.Sorter;
+import com.control.viewcontrol.sorter.SorterFactory;
+import com.control.viewcontrol.sorter.vocabularysorter.VocabularyIdSorter;
+import com.control.viewcontrol.sorter.vocabularysorter.VocabularySorter.VocabulrySorterType;
+import com.control.viewcontrol.sorter.vocabularysorter.VocabularyTranslationSorter;
+import com.control.viewcontrol.sorter.vocabularysorter.VocabularyVocabularySorter;
 import com.model.CardBox;
 import com.model.Vocabulary;
 
@@ -627,16 +634,7 @@ public class MainView extends JFrame {
 		JButton btnNewButton_3_1 = new JButton("ID");
 		btnNewButton_3_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Vocabulary> lst = null;
-				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-					lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x1.getId() - x2.getId());
-					btnNewButton_3_1.setActionCommand("desc");
-				} else {
-					lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x2.getId() - x1.getId());
-					btnNewButton_3_1.setActionCommand("asc");
-				}
-				vocabularyShowRowControl.setResults(lst);
-				vocabularyShowRowControl.setEventResultIdx();
+				sort(SorterFactory.getSorter(VocabulrySorterType.Id), btnNewButton_3_1, e, vocabularyShowRowControl);
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -646,17 +644,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_6_1 = new JButton("Vocabulary");
 		btnNewButton_6_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Vocabulary> lst = null;
-				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x1.getVocabulary().compareTo(x2.getVocabulary()));
-					btnNewButton_6_1.setActionCommand("desc");
-				} else {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x2.getVocabulary().compareTo(x1.getVocabulary()));
-					btnNewButton_6_1.setActionCommand("asc");
-				}
-				vocabularyShowRowControl.setResults(lst);
+				sort(SorterFactory.getSorter(VocabulrySorterType.Vocabulary), btnNewButton_6_1, e,
+						vocabularyShowRowControl);
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -667,17 +656,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_4_1 = new JButton("Translation");
 		btnNewButton_4_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Vocabulary> lst = null;
-				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x1.getTranslation().compareTo(x2.getTranslation()));
-					btnNewButton_4_1.setActionCommand("desc");
-				} else {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x2.getTranslation().compareTo(x1.getTranslation()));
-					btnNewButton_4_1.setActionCommand("asc");
-				}
-				vocabularyShowRowControl.setResults(lst);
+				sort(SorterFactory.getSorter(VocabulrySorterType.Translation), btnNewButton_4_1, e,
+						vocabularyShowRowControl);
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -688,17 +668,7 @@ public class MainView extends JFrame {
 		JButton btnNewButton_5_1 = new JButton("Box ID");
 		btnNewButton_5_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Vocabulary> lst = null;
-				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x1.getBox_id() - x2.getBox_id());
-					btnNewButton_5_1.setActionCommand("desc");
-				} else {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x2.getBox_id() - x1.getBox_id());
-					btnNewButton_5_1.setActionCommand("asc");
-				}
-				vocabularyShowRowControl.setResults(lst);
+				sort(SorterFactory.getSorter(VocabulrySorterType.BoxId), btnNewButton_5_1, e, vocabularyShowRowControl);
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -709,17 +679,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_5_1_1 = new JButton("Create Date");
 		btnNewButton_5_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Vocabulary> lst = null;
-				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x1.getCreate_date().compareTo(x2.getCreate_date()));
-					btnNewButton_5_1_1.setActionCommand("desc");
-				} else {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x2.getCreate_date().compareTo(x1.getCreate_date()));
-					btnNewButton_5_1_1.setActionCommand("asc");
-				}
-				vocabularyShowRowControl.setResults(lst);
+				sort(SorterFactory.getSorter(VocabulrySorterType.CreateDate), btnNewButton_5_1_1, e,
+						vocabularyShowRowControl);
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -730,17 +691,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_7_1 = new JButton("Update Date");
 		btnNewButton_7_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Vocabulary> lst = null;
-				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x1.getUpdate_date().compareTo(x2.getUpdate_date()));
-					btnNewButton_7_1.setActionCommand("desc");
-				} else {
-					lst = sortResults(vocabularyShowRowControl.getResults(),
-							(x1, x2) -> x2.getUpdate_date().compareTo(x1.getUpdate_date()));
-					btnNewButton_7_1.setActionCommand("asc");
-				}
-				vocabularyShowRowControl.setResults(lst);
+				sort(SorterFactory.getSorter(VocabulrySorterType.UpdateDate), btnNewButton_7_1, e,
+						vocabularyShowRowControl);
 				vocabularyShowRowControl.showRow();
 			}
 		});
@@ -763,6 +715,23 @@ public class MainView extends JFrame {
 
 	private static <T> List<T> sortResults(List<T> datas, Comparator<T> comp) {
 		return datas.stream().sorted(comp).collect(Collectors.toList());
+	}
+
+	private void sortVocabularyByID(JButton button, ActionEvent e) {
+		List<Vocabulary> lst = null;
+		if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+			lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x1.getId() - x2.getId());
+			button.setActionCommand("desc");
+		} else {
+			lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x2.getId() - x1.getId());
+			button.setActionCommand("asc");
+		}
+		vocabularyShowRowControl.setResults(lst);
+		vocabularyShowRowControl.resetEventResultIdx();
+	}
+
+	private <T> void sort(Sorter<T> sorter, JButton button, ActionEvent e, ShowRowControl<T> control) {
+		sorter.sort(button, e, control);
 	}
 
 	private void createCardBoxVocabularyPanel() {
@@ -1215,6 +1184,13 @@ public class MainView extends JFrame {
 		panel_title.setLayout(new GridLayout(0, 6, 0, 0));
 
 		JButton btnNewButton_3_1_1 = new JButton("ID");
+		btnNewButton_3_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sortVocabularyByID(btnNewButton_3_1_1, e);
+				vocabularyShowRowControl.resetEventResultMap();
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_3_1_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 		btnNewButton_3_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3_1_1);
