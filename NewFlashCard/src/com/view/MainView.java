@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -588,7 +589,8 @@ public class MainView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String[] options = { "Delete", "Cancel" };
 				int r = JOptionPane.showOptionDialog(null,
-						String.format("Delete \"%s\" ?", getVocabularyShowRowControl().getEventReault().getVocabulary()),
+						String.format("Delete \"%s\" ?",
+								getVocabularyShowRowControl().getEventReault().getVocabulary()),
 						"Delete Date", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, "Delete");
 				if (r == JOptionPane.NO_OPTION) {
 					return;
@@ -623,13 +625,38 @@ public class MainView extends JFrame {
 		panel_title.setLayout(new GridLayout(1, 0, 0, 0));
 
 		JButton btnNewButton_3_1 = new JButton("ID");
+		btnNewButton_3_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Vocabulary> lst = null;
+				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+					lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x1.getId() - x2.getId());
+					btnNewButton_3_1.setActionCommand("desc");
+				} else {
+					lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x2.getId() - x1.getId());
+					btnNewButton_3_1.setActionCommand("asc");
+				}
+				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.showRow();
+			}
+		});
 		btnNewButton_3_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 		btnNewButton_3_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3_1);
 		JButton btnNewButton_6_1 = new JButton("Vocabulary");
 		btnNewButton_6_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				vocabularyShowRowControl.getResults();
+			public void actionPerformed(ActionEvent e) {
+				List<Vocabulary> lst = null;
+				if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x1.getVocabulary().compareTo(x2.getVocabulary()));
+					btnNewButton_6_1.setActionCommand("desc");
+				} else {
+					lst = sortResults(vocabularyShowRowControl.getResults(),
+							(x1, x2) -> x2.getVocabulary().compareTo(x1.getVocabulary()));
+					btnNewButton_6_1.setActionCommand("asc");
+				}
+				vocabularyShowRowControl.setResults(lst);
+				vocabularyShowRowControl.showRow();
 			}
 		});
 		btnNewButton_6_1.setFont(new Font("Dialog", Font.PLAIN, 16));
@@ -667,6 +694,10 @@ public class MainView extends JFrame {
 			this.vocabularyShowRowControl.add(vocabularyRow);
 		}
 
+	}
+
+	private static <T> List<T> sortResults(List<T> datas, Comparator<T> comp) {
+		return datas.stream().sorted(comp).collect(Collectors.toList());
 	}
 
 	private void createCardBoxVocabularyPanel() {
@@ -947,12 +978,12 @@ public class MainView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String[] options = { "Delete", "Cancel" };
 				int r = JOptionPane.showOptionDialog(null,
-						String.format("Delete \"%s\" ?",cardboxShowRowControl.getEventReault().getName()),
+						String.format("Delete \"%s\" ?", cardboxShowRowControl.getEventReault().getName()),
 						"Delete Date", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, "Delete");
 				if (r == JOptionPane.NO_OPTION) {
 					return;
 				}
-				
+
 				int id = cardboxShowRowControl.getEventReault().getId();
 				new CardBoxDao().delete(id);
 				new VocabularyDao().updateClearBoxID(id);

@@ -17,7 +17,7 @@ public class ShowRowControl<T> {
 	public final static Color EventColor_MultiClick = Color.cyan;
 	public final static Color EventColor_MultiUnClick =new Color(0xf0f0f0);
 	protected List<ShowRow> showRows;
-	protected List<T> results;
+	protected List<T> results;//將資料庫query來的資料存入這個 results,其index 值對應 eventResultMap
 	protected int fromIResulIdx = 0;// row 翻頁(滑鼠滾輪)起始位置,ex.fromIdx=6,Vocabulary panel component index=0,則 共列出第 6~16
 	// 個 資料於 component text 上
 	protected JFrame eventJFrame;// ex. MainView

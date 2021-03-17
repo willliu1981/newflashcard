@@ -3,6 +3,8 @@ package com.model;
 import java.sql.Date;
 
 public class Vocabulary {
+	public final static String SortBy_Vocabualry = "sortby_vocabulary";
+	public final static String SortBy_Translation = "sortby_translation";
 	private Integer id;
 	private String vocabulary;
 	private String translation;
@@ -75,7 +77,5 @@ public class Vocabulary {
 	public void setTest_date(String test_date) {
 		this.test_date = test_date;
 	}
-
-
 
 }
