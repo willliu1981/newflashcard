@@ -46,6 +46,7 @@ import com.control.viewcontrol.ShowRowInfo;
 import com.control.viewcontrol.TestQuestionControl;
 import com.control.viewcontrol.sorter.Sorter;
 import com.control.viewcontrol.sorter.SorterFactory;
+import com.control.viewcontrol.sorter.cardboxsorter.CardBoxSorter.CardBoxSorterType;
 import com.control.viewcontrol.sorter.vocabularysorter.VocabularyIdSorter;
 import com.control.viewcontrol.sorter.vocabularysorter.VocabularySorter.VocabulrySorterType;
 import com.control.viewcontrol.sorter.vocabularysorter.VocabularyTranslationSorter;
@@ -713,23 +714,6 @@ public class MainView extends JFrame {
 
 	}
 
-	private static <T> List<T> sortResults(List<T> datas, Comparator<T> comp) {
-		return datas.stream().sorted(comp).collect(Collectors.toList());
-	}
-
-	private void sortVocabularyByID(JButton button, ActionEvent e) {
-		List<Vocabulary> lst = null;
-		if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-			lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x1.getId() - x2.getId());
-			button.setActionCommand("desc");
-		} else {
-			lst = sortResults(vocabularyShowRowControl.getResults(), (x1, x2) -> x2.getId() - x1.getId());
-			button.setActionCommand("asc");
-		}
-		vocabularyShowRowControl.setResults(lst);
-		vocabularyShowRowControl.resetEventResultIdx();
-	}
-
 	private <T> void sort(Sorter<T> sorter, JButton button, ActionEvent e, ShowRowControl<T> control) {
 		sorter.sort(button, e, control);
 	}
@@ -1186,8 +1170,7 @@ public class MainView extends JFrame {
 		JButton btnNewButton_3_1_1 = new JButton("ID");
 		btnNewButton_3_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sort(SorterFactory.getSorter(VocabulrySorterType.Id), btnNewButton_3_1_1, e,
-						vocabularyShowRowControl);
+				sort(SorterFactory.getSorter(VocabulrySorterType.Id), btnNewButton_3_1_1, e, vocabularyShowRowControl);
 				vocabularyShowRowControl.resetEventResultMap();
 				vocabularyShowRowControl.showRow();
 			}
@@ -1486,46 +1469,90 @@ public class MainView extends JFrame {
 		JPanel panel_title = new JPanel();
 		panel_cardbox_title.add(panel_title);
 		panel_title.setLayout(new GridLayout(1, 0, 0, 0));
-
 		JButton btnNewButton_3 = new JButton("ID");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.Id), btnNewButton_3, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
+			}
+		});
 		btnNewButton_3.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_3.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3);
 
 		JButton btnNewButton_6 = new JButton("Name");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.Name), btnNewButton_6, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
+			}
+		});
 		btnNewButton_6.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_6.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_6);
 
 		JButton btnNewButton_4 = new JButton("Quantity");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnNewButton_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4);
 
 		JButton btnNewButton_4_1 = new JButton("<html>Test<br/>Times</html>");
+		btnNewButton_4_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.TestTimes), btnNewButton_4_1, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
+			}
+		});
 		btnNewButton_4_1.setToolTipText("Test Times");
 		btnNewButton_4_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_1);
 
 		JButton btnNewButton_4_2 = new JButton("<html>Test<br/>Date</html>");
+		btnNewButton_4_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.TestDate), btnNewButton_4_2, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
+			}
+		});
 		btnNewButton_4_2.setToolTipText("Last Test Date");
 		btnNewButton_4_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_2.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_2);
 
 		JButton btnNewButton_4_2_1 = new JButton("<html>Next<br/>Test</html>");
+		btnNewButton_4_2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("review");
+			}
+		});
 		btnNewButton_4_2_1.setToolTipText("Last Test Date");
 		btnNewButton_4_2_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_4_2_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_4_2_1);
 
 		JButton btnNewButton_5 = new JButton("<html>Create<br/>Date</html>");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.CreateDate), btnNewButton_5, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
+			}
+		});
 		btnNewButton_5.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_5.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_5);
 
 		JButton btnNewButton_7 = new JButton("<html>Update<br/>Date</html>");
+		btnNewButton_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.UpdateDate), btnNewButton_7, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
+			}
+		});
 		btnNewButton_7.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_7.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_7);
