@@ -3,6 +3,8 @@ package com.control.viewcontrol.sorter;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxCreateDateSorter;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxIdSorter;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxNameSorter;
+import com.control.viewcontrol.sorter.cardboxsorter.CardBoxNestTestSorter;
+import com.control.viewcontrol.sorter.cardboxsorter.CardBoxQuantitySorter;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxSorter.CardBoxSorterType;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxStateSorter;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxTestDateSorter;
@@ -55,6 +57,10 @@ public class SorterFactory {
 			return new CardBoxTestDateSorter();
 		case State:
 			return new CardBoxStateSorter();
+		case Quantity:
+			return new CardBoxQuantitySorter();
+		case NestTest:
+			return new CardBoxNestTestSorter();
 		default:
 			return null;
 		}

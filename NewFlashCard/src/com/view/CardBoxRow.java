@@ -31,7 +31,7 @@ import javax.swing.border.Border;
 
 public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
-	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
+	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();//Map<CardBox Id,Quantity>
 	private MouseEvent lastMouseEvent;
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {

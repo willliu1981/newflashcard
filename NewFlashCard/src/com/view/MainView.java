@@ -1494,6 +1494,8 @@ public class MainView extends JFrame {
 		JButton btnNewButton_4 = new JButton("Quantity");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				sort(SorterFactory.getSorter(CardBoxSorterType.Quantity), btnNewButton_4, e, cardboxShowRowControl);
+				cardboxShowRowControl.showRow();
 			}
 		});
 		btnNewButton_4.setFont(new Font("Dialog", Font.PLAIN, 16));
