@@ -2,6 +2,7 @@ package com.control.viewcontrol.sorter.vocabularysorter;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JButton;
 
@@ -14,17 +15,23 @@ public class VocabularyUpdateDateSorter extends VocabularySorter<Vocabulary> {
 	public void sort(JButton button, ActionEvent e, ShowRowControl<Vocabulary> control) {
 		List<Vocabulary> lst = null;
 		if (e.getActionCommand() == null || !e.getActionCommand().equalsIgnoreCase("desc")) {
-			lst = sortResults(control.getResults(),
-					(x1, x2) -> x1.getUpdate_date().compareTo(x2.getUpdate_date()));
+			lst = sortResults(control.getResults(), (x1, x2) -> {
+				Optional<String> op1 = Optional.ofNullable(x1.getUpdate_date());
+				Optional<String> op2 = Optional.ofNullable(x2.getUpdate_date());
+				return op1.orElse("--").compareTo(op2.orElse("--"));
+			});
 			button.setActionCommand("desc");
 		} else {
-			lst = sortResults(control.getResults(),
-					(x1, x2) -> x2.getUpdate_date().compareTo(x1.getUpdate_date()));
+			lst = sortResults(control.getResults(), (x1, x2) -> {
+				Optional<String> op1 = Optional.ofNullable(x1.getUpdate_date());
+				Optional<String> op2 = Optional.ofNullable(x2.getUpdate_date());
+				return op2.orElse("--").compareTo(op1.orElse("--"));
+			});
 			button.setActionCommand("asc");
 		}
 		control.setResults(lst);
 		control.resetEventResultIdx();
-		
+
 	}
 
 }
