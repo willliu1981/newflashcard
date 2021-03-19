@@ -171,6 +171,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[1]).setText(" ");
 			((JLabel) row_right[2]).setText(" ");
 			((JLabel) row_right[3]).setText(" ");
+			this.setBackground(MyColor.getBase());
 		}
 
 	}
