@@ -985,7 +985,6 @@ public class MainView extends JFrame {
 				int eventRowIdx = ShowRowControl.getEventRowIdx(cardboxShowRowControl.getEventResultIdx(),
 						cardboxShowRowControl.getFromIdx());
 				CardBoxRow eventP = (CardBoxRow) panel_cardbox.getComponent(eventRowIdx + 1);// 取得事件panel
-				btnNewButton_topbar_cardbox.doClick();
 				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
 				Map<String, String> map = new HashMap<>();
 				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
@@ -1096,7 +1095,6 @@ public class MainView extends JFrame {
 				int eventRowIdx = ShowRowControl.getEventRowIdx(cardboxShowRowControl.getEventResultIdx(),
 						cardboxShowRowControl.getFromIdx());
 				CardBoxRow eventP = (CardBoxRow) panel_cardbox.getComponent(eventRowIdx + 1);// 取得事件panel
-				btnNewButton_topbar_cardbox.doClick();
 				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
 			}
 		});
@@ -1143,11 +1141,9 @@ public class MainView extends JFrame {
 				Vocabulary v = vocabularyShowRowControl.getEventReault();
 				v.setBox_id(-1);
 				new VocabularyDao().update(v, v.getId());
-				// new
-				// VocabularyDao().delete(vocabularyShowRowControl.getEventReault().getId());
 				CardBox c = cardboxShowRowControl.getEventReault();
 				new CardBoxDao().update(c, c.getId());// 更新日期
-				btnNewButton_topbar_cardbox.doClick();
+				//btnNewButton_topbar_cardbox.doClick();
 				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
 			}
 		});
