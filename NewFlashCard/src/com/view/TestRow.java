@@ -159,11 +159,18 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			case 1:
 				this.setBackground(Color.orange);
 				break;
-			case -1:
+			case 2:
 				this.setBackground(Color.red);
+				break;
+			case -1:
+				this.setBackground(Color.black);
 				break;
 			default:
 				break;
+			}
+
+			if (cardBox.isFinish()) {
+				this.setBackground(Color.LIGHT_GRAY);
 			}
 		} else {
 			((JLabel) row_center[0]).setText(" ");

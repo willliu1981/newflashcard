@@ -14,7 +14,7 @@ public class CardBox {
 	private Integer state;
 	private String create_date;
 	private String update_date;
-	private Map<Integer, Integer> stateRuleMap;
+	private Map<Integer, Integer> stateRuleMap;// <stage,days> ,用於動態方法回傳從資料庫撈到的 state 欄位的值 的對應延遲天數
 
 	public CardBox() {
 		stateRuleMap = new HashMap<>();
@@ -23,7 +23,6 @@ public class CardBox {
 		stateRuleMap.put(3, 4);
 		stateRuleMap.put(4, 7);
 		stateRuleMap.put(5, 15);
-		stateRuleMap.put(6, 30);
 	}
 
 	public Integer getId() {
@@ -162,11 +161,18 @@ public class CardBox {
 			return 0;
 		}
 		Calendar nextDelay = (Calendar) this.getNextTestDate().clone();
-		nextDelay.add(Calendar.DAY_OF_MONTH, this.stateRuleMap.get(this.state));
+		int day = this.stateRuleMap.get(this.state);
+		//如果緩衝天數只有一天,則再加一天
+		if (day == 1) {
+			day += 1;
+		}
+		nextDelay.add(Calendar.DAY_OF_MONTH, day);
 		if (now.before(next)) {
 			result = 0;
 		} else if (now.after(next) && now.before(nextDelay)) {
 			result = 1;
+		} else if (now.equals(nextDelay)) {
+			result = 2;
 		} else {
 			result = -1;
 		}
