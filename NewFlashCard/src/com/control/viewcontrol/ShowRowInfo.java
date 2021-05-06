@@ -8,6 +8,7 @@ import java.util.Map;
 public abstract class ShowRowInfo {
 	public static final String ID = "id";
 	public static final String Name = "name";
+	public static final String IsFinish = "isfinish";
 	public static final String Test_time = "test_time";
 	public static final String Test_date = "test_date";
 	public static final String Create_date = "create_date";

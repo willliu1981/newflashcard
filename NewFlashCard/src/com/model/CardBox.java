@@ -82,6 +82,10 @@ public class CardBox {
 			return false;
 		}
 	}
+	
+	public void finish() {
+		this.state=this.stateRuleMap.size()+1;
+	}
 
 	public boolean isFinish() {
 		boolean r = false;

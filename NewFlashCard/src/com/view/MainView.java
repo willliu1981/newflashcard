@@ -53,6 +53,9 @@ import com.control.viewcontrol.sorter.vocabularysorter.VocabularyTranslationSort
 import com.control.viewcontrol.sorter.vocabularysorter.VocabularyVocabularySorter;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import javax.swing.JCheckBox;
+import java.awt.Color;
+import java.awt.Insets;
 
 public class MainView extends JFrame {
 
@@ -933,6 +936,10 @@ public class MainView extends JFrame {
 							.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
 							.getComponent(ShowRowInfo.Name);
 					f.setText(cardboxShowRowControl.getEventReault().getName());
+					JCheckBox chckbxNewCheckBox_finish = (JCheckBox) cardboxShowRowControl
+							.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+							.getComponent(ShowRowInfo.IsFinish);
+					chckbxNewCheckBox_finish.setSelected(cardboxShowRowControl.getEventReault().isFinish());
 					((CardLayout) ((MainView) cardboxShowRowControl.getEventJFrame())
 							.getPanel_cardbox_vocabulary_editbar().getLayout())
 									.show(((MainView) cardboxShowRowControl.getEventJFrame())
@@ -978,6 +985,12 @@ public class MainView extends JFrame {
 						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit).getComponent(ShowRowInfo.Name);
 				CardBox b = cardboxShowRowControl.getEventReault();
 				b.setName(f.getText());
+				JCheckBox chckbxNewCheckBox_finish = (JCheckBox) cardboxShowRowControl
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.IsFinish);
+				if (chckbxNewCheckBox_finish.isSelected()) {
+					b.finish();
+				}
 				new CardBoxDao().update(b, b.getId());
 				/*
 				 * 重繪狀態
@@ -991,6 +1004,14 @@ public class MainView extends JFrame {
 				cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 			}
 		});
+
+		JCheckBox chckbxNewCheckBox_finish = new JCheckBox("Finish");
+		chckbxNewCheckBox_finish.setBorderPaintedFlat(true);
+		chckbxNewCheckBox_finish.setBorderPainted(true);
+		chckbxNewCheckBox_finish.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		info_cardbox_vocabulary_editbar_edit.add(chckbxNewCheckBox_finish, ShowRowInfo.IsFinish);
+		chckbxNewCheckBox_finish.setFont(new Font("新細明體", Font.PLAIN, 14));
+		panel_cardbox_vocabulary_editbar_editpfeild.add(chckbxNewCheckBox_finish);
 		btnNewButton_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		btnNewButton_1.setBackground(SystemColor.controlHighlight);
 		panel_cardbox_vocabulary_editbar_editpfeild.add(btnNewButton_1);
@@ -1143,7 +1164,7 @@ public class MainView extends JFrame {
 				new VocabularyDao().update(v, v.getId());
 				CardBox c = cardboxShowRowControl.getEventReault();
 				new CardBoxDao().update(c, c.getId());// 更新日期
-				//btnNewButton_topbar_cardbox.doClick();
+				// btnNewButton_topbar_cardbox.doClick();
 				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
 			}
 		});
