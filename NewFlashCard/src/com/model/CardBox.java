@@ -162,17 +162,18 @@ public class CardBox {
 		}
 		Calendar nextDelay = (Calendar) this.getNextTestDate().clone();
 		int day = this.stateRuleMap.get(this.state);
-		//如果緩衝天數只有一天,則再加一天
+		// 如果緩衝天數只有一天,則再加一天
 		if (day == 1) {
 			day += 1;
 		}
 		nextDelay.add(Calendar.DAY_OF_MONTH, day);
 		if (now.before(next)) {
 			result = 0;
+		} else if (now.get(Calendar.YEAR) == nextDelay.get(Calendar.YEAR)
+				&& now.get(Calendar.DAY_OF_YEAR) == nextDelay.get(Calendar.DAY_OF_YEAR) - 1) {
+			result = 2;
 		} else if (now.after(next) && now.before(nextDelay)) {
 			result = 1;
-		} else if (now.equals(nextDelay)) {
-			result = 2;
 		} else {
 			result = -1;
 		}
