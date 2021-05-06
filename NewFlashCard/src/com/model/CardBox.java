@@ -116,7 +116,7 @@ public class CardBox {
 			this.resetState();
 			return r = false;
 		}
-		if (this.getStateResult() == 1) {
+		if (this.getStateResult() >= 1) {
 			r = !this.nextState();
 		} else if (this.getStateResult() == -1) {
 			this.resetState();
