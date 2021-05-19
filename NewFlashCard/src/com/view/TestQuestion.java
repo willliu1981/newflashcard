@@ -98,34 +98,37 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		panel_root_cardlayout.setLayout(new CardLayout(0, 0));
 
 		panel_question = new JPanel();
-		panel_question.setBackground(SystemColor.textHighlightText);
+		panel_question.setBackground(Color.BLACK);
 		panel_question.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_root_cardlayout.add(panel_question, CardLayout_Question);
 		panel_question.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblNewLabel = new JLabel("question");
+		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_question.add(lblNewLabel);
 
 		panel_answer = new JPanel();
 		panel_answer.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel_answer.setBackground(SystemColor.controlHighlight);
+		panel_answer.setBackground(Color.DARK_GRAY);
 		panel_root_cardlayout.add(panel_answer, CardLayout_Answer);
 		panel_answer.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblNewLabel_1 = new JLabel("answer");
+		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_answer.add(lblNewLabel_1);
 
 		panel_background = new JPanel();
-		panel_background.setBackground(SystemColor.control);
+		panel_background.setBackground(Color.BLACK);
 		panel_background.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_root_cardlayout.add(panel_background, CardLayout_Background);
 		panel_background.setLayout(new BorderLayout(0, 0));
 
 		lblNewLabel_2 = new JLabel("info");
+		lblNewLabel_2.setForeground(Color.WHITE);
 		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 18));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_background.add(lblNewLabel_2, BorderLayout.CENTER);
