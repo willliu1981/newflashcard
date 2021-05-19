@@ -60,14 +60,22 @@ public class ShowRowControl<T> {
 	}
 
 	public void towardFromIdx() {
-		this.fromIResulIdx--;
+		towardFromIdx(1);
+	}
+
+	public void towardFromIdx(int count) {
+		this.fromIResulIdx -= count;
 		if (this.fromIResulIdx <= -1) {
 			this.fromIResulIdx = 0;
 		}
 	}
 
 	public void rearwardFromIdx() {
-		this.fromIResulIdx++;
+		rearwardFromIdx(1);
+	}
+
+	public void rearwardFromIdx(int count) {
+		this.fromIResulIdx += count;
 		if (this.fromIResulIdx >= this.results.size()) {
 			this.fromIResulIdx = this.results.size() - 1;
 		}

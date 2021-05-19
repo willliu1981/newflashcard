@@ -33,13 +33,23 @@ import javax.swing.BoxLayout;
 
 public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	private ShowRowControl<Vocabulary> showRowControl;
+	private boolean wheelpress = false;// 滾輸按下
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
+
 			if (e.getWheelRotation() == 1) {
-				showRowControl.rearwardFromIdx();
+				if(wheelpress) {
+					showRowControl.rearwardFromIdx(19);
+				}else {
+					showRowControl.rearwardFromIdx();
+				}
 			} else {
-				showRowControl.towardFromIdx();
+				if(wheelpress) {
+					showRowControl.towardFromIdx(19);
+				}else {
+					showRowControl.towardFromIdx();
+				}
 			}
 			showRowControl.showRow();
 		}
@@ -47,60 +57,70 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
 		@Override
+		public void mouseReleased(MouseEvent e) {
+			wheelpress=false;
+		}
+
+		@Override
 		public void mousePressed(MouseEvent e) {
-			int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
-			if(idx>=showRowControl.getResults().size()) {
-				return ;
-			}
-			showRowControl.setEventResultIdx(idx);
-			Vocabulary v = showRowControl.getEventReault();
-			Map<String, String> map = new HashMap<>();
-			map.put(ShowRowInfo.Translation, v.getTranslation());
-			map.put(ShowRowInfo.BoxId, v.getBox_id().toString());
-			showRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Edit);
-			/*
-			 * 顯示 vocabulary editbar edit
-			 */
-			((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_vocabulary_editbar().getLayout()).show(
-					((MainView) showRowControl.getEventJFrame()).getPanel_vocabulary_editbar(),
-					MainView.CardLayout_Editbar_edit);
-			/*
-			 * cardbox-vocabulary editbar add lock state process
-			 */
-			JPanel panel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
-					.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
-					.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
-			if (panel.getName() != null && panel.getName().equals(MainView.Unlock)) {
-				/*
-				 * 顯示cardbox-vocabulary editbar edit
-				 */
-				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
-						.getLayout()).show(
-								((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
-								MainView.CardLayout_Editbar_edit);
-				showRowControl.getEventResultMap().clear();
-				showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
+			if (e.getButton() == e.BUTTON2) {
+				wheelpress=true;
 			} else {
-				if(showRowControl.getEventResultMap().containsValue(showRowControl.getEventReault())) {
-					showRowControl.getEventResultMap().remove(idx);
-				}else {
-					showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
+				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
+				if (idx >= showRowControl.getResults().size()) {
+					return;
 				}
+				showRowControl.setEventResultIdx(idx);
+				Vocabulary v = showRowControl.getEventReault();
+				Map<String, String> map = new HashMap<>();
+				map.put(ShowRowInfo.Translation, v.getTranslation());
+				map.put(ShowRowInfo.BoxId, v.getBox_id().toString());
+				showRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Edit);
+				/*
+				 * 顯示 vocabulary editbar edit
+				 */
+				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_vocabulary_editbar().getLayout())
+						.show(((MainView) showRowControl.getEventJFrame()).getPanel_vocabulary_editbar(),
+								MainView.CardLayout_Editbar_edit);
+				/*
+				 * cardbox-vocabulary editbar add lock state process
+				 */
+				JPanel panel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
+						.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
+				if (panel.getName() != null && panel.getName().equals(MainView.Unlock)) {
+					/*
+					 * 顯示cardbox-vocabulary editbar edit
+					 */
+					((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
+							.getLayout()).show(
+									((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
+									MainView.CardLayout_Editbar_edit);
+					showRowControl.getEventResultMap().clear();
+					showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
+				} else {
+					if (showRowControl.getEventResultMap().containsValue(showRowControl.getEventReault())) {
+						showRowControl.getEventResultMap().remove(idx);
+					} else {
+						showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
+					}
+				}
+				/*
+				 * 關閉Editbar EditPanel
+				 */
+				JPanel editpanel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.EditbarEditPanel);
+				JPanel fieldpanel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.EditbarEditPanel_Field);
+				if (fieldpanel.isVisible()) {
+					editpanel.setBorder(BorderFactory.createEmptyBorder());
+					fieldpanel.setVisible(false);
+				}
+				showRowControl.showRow();
 			}
-			/*
-			 * 關閉Editbar EditPanel
-			 */
-			JPanel editpanel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
-					.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
-					.getComponent(ShowRowInfo.EditbarEditPanel);
-			JPanel fieldpanel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
-					.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
-					.getComponent(ShowRowInfo.EditbarEditPanel_Field);
-			if (fieldpanel.isVisible()) {
-				editpanel.setBorder(BorderFactory.createEmptyBorder());
-				fieldpanel.setVisible(false);
-			}
-			showRowControl.showRow();
+
 		}
 	};
 	private JPanel panel_main;
@@ -185,16 +205,16 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				} else {
 					this.setBackground(ShowRowControl.EventColor_UnClick);
 				}
-				this.getComponent(0) .setBackground(ShowRowControl.EventColor_MultiUnClick);
-			} else if(panel.getName() != null && panel.getName().equals(MainView.Lock)){
+				this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiUnClick);
+			} else if (panel.getName() != null && panel.getName().equals(MainView.Lock)) {
 				if (showRowControl.getEventResultMap().containsKey(idx)) {
-					this.getComponent(0) .setBackground(ShowRowControl.EventColor_MultiClick);
+					this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiClick);
 				} else {
-					this.getComponent(0) .setBackground(ShowRowControl.EventColor_MultiUnClick);
+					this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiUnClick);
 				}
 			}
-		}else {
-			this.getComponent(0) .setBackground(ShowRowControl.EventColor_MultiUnClick);
+		} else {
+			this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiUnClick);
 		}
 	}
 

@@ -142,7 +142,7 @@ public class MainView extends JFrame {
 	 */
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 521);
+		setBounds(100, 100, 720,840);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -710,7 +710,7 @@ public class MainView extends JFrame {
 		/*
 		 * �撱� vocabulary row
 		 */
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			VocabularyRow vocabularyRow = new VocabularyRow();
 			panel_vocabulary.add(vocabularyRow);
 			vocabularyRow.setName("" + i);
