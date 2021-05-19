@@ -40,13 +40,13 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 
 			if (e.getWheelRotation() == 1) {
 				if(wheelpress) {
-					showRowControl.rearwardFromIdx(19);
+					showRowControl.rearwardFromIdx(17);//移動量取決於MainView panel_vocabulary add VocabularyRow 的數量 
 				}else {
 					showRowControl.rearwardFromIdx();
 				}
 			} else {
 				if(wheelpress) {
-					showRowControl.towardFromIdx(19);
+					showRowControl.towardFromIdx(17);
 				}else {
 					showRowControl.towardFromIdx();
 				}
@@ -63,7 +63,7 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (e.getButton() == e.BUTTON2) {
+			if (e.getButton() == MouseEvent.BUTTON2) {
 				wheelpress=true;
 			} else {
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();

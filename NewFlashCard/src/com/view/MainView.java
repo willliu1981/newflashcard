@@ -142,7 +142,7 @@ public class MainView extends JFrame {
 	 */
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720,840);
+		setBounds(100, 100, 1400,800);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -1590,7 +1590,7 @@ public class MainView extends JFrame {
 		/*
 		 * �撱� cardbox row
 		 */
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 18; i++) {
 			CardBoxRow cardBoxRow = new CardBoxRow();
 			panel_cardbox.add(cardBoxRow);
 			cardBoxRow.setName("" + i);

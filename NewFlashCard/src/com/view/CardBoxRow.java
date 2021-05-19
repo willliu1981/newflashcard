@@ -31,28 +31,43 @@ import javax.swing.border.Border;
 
 public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
-	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();//Map<CardBox Id,Quantity>
+	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();// Map<CardBox Id,Quantity>
 	private MouseEvent lastMouseEvent;
+	private boolean wheelpress = false;// 滾輸按下
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
-				showRowControl.rearwardFromIdx();
+				if (wheelpress) {
+					showRowControl.rearwardFromIdx(17);// 移動量取決於MainView panel_cardbox add CardBoxRow 的數量
+				} else {
+					showRowControl.rearwardFromIdx();
+				}
 			} else {
-				showRowControl.towardFromIdx();
+				if (wheelpress) {
+					showRowControl.towardFromIdx(17);
+				} else {
+					showRowControl.towardFromIdx();
+				}
 			}
 			showRowControl.showRow();
 		}
 	};
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			wheelpress = false;
+		}
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				((MainView)showRowControl.getEventJFrame()).getVocabularyShowRowControl().resetFromIdx();
+				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().resetFromIdx();
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
-				if(idx>=showRowControl.getResults().size()) {
-					return ;
+				if (idx >= showRowControl.getResults().size()) {
+					return;
 				}
 				lastMouseEvent = e;
 				showRowControl.setEventResultIdx(idx);
@@ -92,12 +107,13 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 					editpanel.setBorder(BorderFactory.createEmptyBorder());
 					fieldpanel.setVisible(false);
 				}
-				Map<String,String> map2=new HashMap<>();
+				Map<String, String> map2 = new HashMap<>();
 				map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MainView.Unlock);
-				showRowControl.showInfo(map2,ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
-				((MainView)showRowControl.getEventJFrame()).getVocabularyShowRowControl().setEventResultIdx(-1);
-				((MainView)showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
+				showRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
+				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setEventResultIdx(-1);
+				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
+				wheelpress = true;
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
 		}
@@ -150,7 +166,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 		JLabel lbl_cardbox_createdate = new JLabel("create_date");
 		lbl_cardbox_createdate.addMouseListener(myClickListener);
 		lbl_cardbox_createdate.addMouseWheelListener(myWheelListener);
-		
+
 		JLabel lbl_cardbox_testdate_1 = new JLabel("next_test");
 		lbl_cardbox_testdate_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_cardbox_testdate_1.setFont(new Font("新細明體", Font.PLAIN, 18));
