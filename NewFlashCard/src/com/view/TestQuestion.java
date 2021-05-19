@@ -145,15 +145,19 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(this.showRowControl.getQuestionResult()
 								.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary());
-			} else if (idx == 1 || idx == 2) {
+			} else if (idx == 1 || idx == 2 || idx == 3) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
 				if (idx == 1) {
-					// 進度
+					// 空白
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText("");
 				} else if (idx == 2) {
+					// 空白
+					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+							.setText("");
+				} else if (idx == 3) {
 					// 進度
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
@@ -204,8 +208,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 									.getCardboxIdx();
 							CardBox b = new CardBoxDao().query(boxid);
 							b.setTest_times(b.getTest_times() + 1);
-							boolean r=b.state();
-							if(r) {
+							boolean r = b.state();
+							if (r) {
 								info = "任務完成!!!,回測驗首頁";
 							}
 							new CardBoxDao().updateTest(b, boxid);

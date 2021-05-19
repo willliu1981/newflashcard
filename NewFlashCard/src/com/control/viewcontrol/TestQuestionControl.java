@@ -155,7 +155,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 
 	protected void setCorrectAnswerRowIdx(int minRowIdx, int maxRowIdx) {
 		if (minRowIdx != maxRowIdx) {
-			this.correctAnswerRowIdx = (int) (Math.random() * (maxRowIdx - minRowIdx)) + minRowIdx;
+			this.correctAnswerRowIdx = (int) (Math.random() * (maxRowIdx - minRowIdx+1)) + minRowIdx;
 		}
 	}
 

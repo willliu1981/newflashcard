@@ -1272,7 +1272,7 @@ public class MainView extends JFrame {
 		/*
 		 * �撱� vocabulary row
 		 */
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 18; i++) {
 			VocabularyRow vocabularyRow = new VocabularyRow();
 			panel_cardbox_vocabulary.add(vocabularyRow);
 			vocabularyRow.setName("" + i);
@@ -1333,7 +1333,7 @@ public class MainView extends JFrame {
 
 		JPanel panel_question = new JPanel();
 		panel_test_center_cardlayout.add(panel_question, CardLayout_Test_Question);
-		panel_question.setLayout(new GridLayout(3, 3, 0, 0));
+		panel_question.setLayout(new GridLayout(4, 4, 0, 0));
 
 		/*
 		 * �撱� test row
@@ -1349,7 +1349,7 @@ public class MainView extends JFrame {
 		/*
 		 * �撱� test question
 		 */
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 16; i++) {
 			TestQuestion testQuestion = new TestQuestion();
 			panel_question.add(testQuestion);
 			testQuestion.setName("" + i);
