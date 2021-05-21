@@ -62,7 +62,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				List<Vocabulary> list = new VocabularyDao().queryAll();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCardboxIdx(cardbox.getId());
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15);//設定問題Row 範圍區間
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15);// 設定問題Row 範圍區間
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
@@ -150,6 +150,12 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_center[0]).setText("" + cardBox.getName());
 			((JLabel) row_right[0]).setText("詞彙數量: " + sum);
 			((JLabel) row_right[1]).setText("已測驗次數: " + cardBox.getTest_times());
+			// 測驗時間為null時,標示紅色
+			if (cardBox.getTest_date() == null) {
+				((JLabel) row_right[2]).setForeground((Color.red));
+			} else {
+				((JLabel) row_right[2]).setForeground(Color.black);
+			}
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
 			((JLabel) row_right[3]).setText("下次: " + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
 			switch (cardBox.getStateResult()) {

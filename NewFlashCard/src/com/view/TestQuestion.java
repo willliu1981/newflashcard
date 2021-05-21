@@ -50,10 +50,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					if (showRowControl.clickAnswerRowInRange(rowIdx)) {
 						if (!showRowControl.isBingo()) {
 							if (showRowControl.isCorrectAnswer(rowIdx)) {
-								setBackground(Color.green);
+								setBackground(Color.blue);
 								showRowControl.nextStage();
 							} else {
-								setBackground(Color.orange);
+								setBackground(new Color(255,127,37));
 							}
 						}
 					}
@@ -105,7 +105,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 		JLabel lblNewLabel = new JLabel("question");
 		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 18));
+		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_question.add(lblNewLabel);
 
@@ -115,10 +115,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		panel_root_cardlayout.add(panel_answer, CardLayout_Answer);
 		panel_answer.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblNewLabel_1 = new JLabel("answer");
+		JLabel lblNewLabel_1 = new JLabel("隨機答案");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
+		lblNewLabel_1.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		panel_answer.add(lblNewLabel_1);
 
 		panel_background = new JPanel();
@@ -129,7 +129,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 		lblNewLabel_2 = new JLabel("info");
 		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 18));
+		lblNewLabel_2.setFont(new Font("微軟正黑體", Font.BOLD, 20));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_background.add(lblNewLabel_2, BorderLayout.CENTER);
 		addMouseListener(myClickListener);
@@ -225,7 +225,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
-				this.setBackground(Color.blue);
+				this.setBackground(Color.red);
 			}
 			break;
 		default:
