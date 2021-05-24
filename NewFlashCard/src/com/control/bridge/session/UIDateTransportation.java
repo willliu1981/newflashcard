@@ -6,10 +6,7 @@ import java.util.Map;
 import com.control.bridge.Dispatcher;
 
 public abstract class UIDateTransportation {
-	protected Dispatcher dispatcher =new Dispatcher();
-	
 
-	
 	static class Session {
 		private Map<String, Object> session = new HashMap<>();
 
@@ -22,13 +19,26 @@ public abstract class UIDateTransportation {
 		}
 	}
 
+	protected Dispatcher dispatcher = new Dispatcher(this);
+	protected final Map<String, Object> parameter = new HashMap<>();
+
 	static final Session session = new Session();
 
 	static Session getSession() {
 		return session;
 	}
-	
+
 	public Dispatcher getDispatcher() {
 		return this.dispatcher;
+	}
+
+	public abstract void doSend();
+
+	public void setParameter(String name, Object obj) {
+		this.parameter.put(name, obj);
+	}
+
+	public Object getParameter(String name) {
+		return this.parameter.get(name);
 	}
 }

@@ -91,14 +91,10 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				/*
 				 * UpdateExplanation 顯示資料
 				 */
-			 	ExplanationBridge bridge=new ExplanationBridge();
-				bridge.setParameter("vocabulary", v.getVocabulary());
-				bridge.setParameter("explanation", v.getExplanation());
-				Dispatcher dispater=bridge.getDispatcher();
+				ExplanationBridge bridge = new ExplanationBridge();
+				bridge.setParameter("vocabulary", v);
+				Dispatcher dispater = bridge.getDispatcher();
 				dispater.send(bridge);
-				
-				//MainView.updateExplantation.setVocabulary(v.getVocabulary());
-				//MainView.updateExplantation.setExplanation(v.getExplanation());
 
 				Map<String, String> map = new HashMap<>();
 				map.put(ShowRowInfo.Translation, v.getTranslation());

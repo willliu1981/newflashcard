@@ -13,6 +13,14 @@ import java.net.URLConnection;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.control.bridge.Dispatcher;
+import com.control.bridge.Transportable;
+import com.control.bridge.session.UIDateTransportation;
+import com.control.viewcontrol.ExplanationBridge;
+import com.control.viewcontrol.UpdateExplanationBridge;
+import com.model.Vocabulary;
+
 import java.awt.Dimension;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -23,12 +31,14 @@ import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
-public class UpdateExplanation extends JFrame {
+public class UpdateExplanation extends JFrame implements Transportable {
 
 	private JPanel contentPane;
 	private JTextArea textArea_explanation;
 	private JLabel lblNewLabel_vocabulary;
+	private UIDateTransportation dt;
 
 	/**
 	 * Launch the application.
@@ -61,18 +71,23 @@ public class UpdateExplanation extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(10, 45));
 		contentPane.add(panel, BorderLayout.NORTH);
-		
+
 		lblNewLabel_vocabulary = new JLabel("null");
 		lblNewLabel_vocabulary.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel.add(lblNewLabel_vocabulary);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
-
+		
 		JButton btnNewButton_update = new JButton("更新");
 		btnNewButton_update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				UpdateExplanationBridge bridge=new UpdateExplanationBridge();
+				Dispatcher disp=bridge.getDispatcher();
+				Vocabulary vocabulary=(Vocabulary) dt.getParameter("vocabulary");
+				vocabulary.setExplanation(textArea_explanation.getText());
+				bridge.setParameter("vocabulary", vocabulary);
+				disp.send(bridge);
 			}
 		});
 		btnNewButton_update.setBackground(SystemColor.controlHighlight);
@@ -82,17 +97,35 @@ public class UpdateExplanation extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setCaretColor(Color.ORANGE);
+		textArea_explanation.setForeground(Color.WHITE);
+		textArea_explanation.setBackground(Color.DARK_GRAY);
+		textArea_explanation.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		panel_1.add(textArea_explanation, BorderLayout.CENTER);
 	}
 
-	public void setExplanation(String explanation) {
+	private void setExplanation(String explanation) {
 		textArea_explanation.setText(explanation);
 	}
-	
-	public void setVocabulary(String vocabulary) {
+
+	private void setVocabulary(String vocabulary) {
 		lblNewLabel_vocabulary.setText(vocabulary);
+	}
+
+	@Override
+	public void accpet() {
+		ExplanationBridge birdge = (ExplanationBridge) dt;
+		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
+		this.setVocabulary(vocabulary.getVocabulary());
+		this.setExplanation(vocabulary.getExplanation());
+
+	}
+
+	@Override
+	public void setUIDateTransportation(UIDateTransportation dt) {
+		this.dt = dt;
 	}
 
 }
