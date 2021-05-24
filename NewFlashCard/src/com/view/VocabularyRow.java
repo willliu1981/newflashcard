@@ -7,6 +7,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import com.control.bridge.Dispatcher;
+import com.control.page.Webpage;
+import com.control.viewcontrol.ExplanationBridge;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
@@ -39,15 +52,16 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 
 			if (e.getWheelRotation() == 1) {
-				if(wheelpress) {
-					showRowControl.rearwardFromIdx(17);//移動量取決於MainView panel_vocabulary add VocabularyRow 的數量 
-				}else {
+				if (wheelpress) {
+					showRowControl.rearwardFromIdx(17);// 移動量取決於MainView panel_vocabulary add
+														// VocabularyRow 的數量
+				} else {
 					showRowControl.rearwardFromIdx();
 				}
 			} else {
-				if(wheelpress) {
+				if (wheelpress) {
 					showRowControl.towardFromIdx(17);
-				}else {
+				} else {
 					showRowControl.towardFromIdx();
 				}
 			}
@@ -58,13 +72,15 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	private MouseAdapter myClickListener = new MouseAdapter() {
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			wheelpress=false;
+			wheelpress = false;
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON2) {
-				wheelpress=true;
+				wheelpress = true;
+			} else if (e.getButton() == MouseEvent.BUTTON3) {
+
 			} else {
 				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
 				if (idx >= showRowControl.getResults().size()) {
@@ -72,6 +88,18 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				}
 				showRowControl.setEventResultIdx(idx);
 				Vocabulary v = showRowControl.getEventReault();
+				/*
+				 * UpdateExplanation 顯示資料
+				 */
+			 	ExplanationBridge bridge=new ExplanationBridge();
+				bridge.setParameter("vocabulary", v.getVocabulary());
+				bridge.setParameter("explanation", v.getExplanation());
+				Dispatcher dispater=bridge.getDispatcher();
+				dispater.send(bridge);
+				
+				//MainView.updateExplantation.setVocabulary(v.getVocabulary());
+				//MainView.updateExplantation.setExplanation(v.getExplanation());
+
 				Map<String, String> map = new HashMap<>();
 				map.put(ShowRowInfo.Translation, v.getTranslation());
 				map.put(ShowRowInfo.BoxId, v.getBox_id().toString());

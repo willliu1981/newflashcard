@@ -2,7 +2,6 @@ package com.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,18 +46,14 @@ import com.control.viewcontrol.TestQuestionControl;
 import com.control.viewcontrol.sorter.Sorter;
 import com.control.viewcontrol.sorter.SorterFactory;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxSorter.CardBoxSorterType;
-import com.control.viewcontrol.sorter.vocabularysorter.VocabularyIdSorter;
 import com.control.viewcontrol.sorter.vocabularysorter.VocabularySorter.VocabulrySorterType;
-import com.control.viewcontrol.sorter.vocabularysorter.VocabularyTranslationSorter;
-import com.control.viewcontrol.sorter.vocabularysorter.VocabularyVocabularySorter;
 import com.model.CardBox;
 import com.model.Vocabulary;
-import javax.swing.JCheckBox;
-import java.awt.Color;
-import java.awt.Insets;
 
 public class MainView extends JFrame {
-
+	public static final AddVocabulary addVocabulary=new AddVocabulary();
+	public static final UpdateExplanation updateExplantation=new UpdateExplanation();
+	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
 	public static final String CardLayout_topbar_Vocabulary = "vocabulary";
 	public static final String CardLayout_topbar_CardBox_Vocabulary = "cardboxvocabulary";
@@ -159,7 +154,13 @@ public class MainView extends JFrame {
 		mnNewMenu_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		menuBar.add(mnNewMenu_1);
 
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("刪除");
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("新增詞彙");
+		mntmNewMenuItem_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				addVocabulary.setVisible(true);
+			}
+		});
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 		contentPane = new JPanel();
@@ -399,7 +400,7 @@ public class MainView extends JFrame {
 
 		JPanel panel_add = new JPanel();
 		panel_vocabulary_editbar.add(panel_add, CardLayout_Editbar_Add);
-		panel_add.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel_add.setLayout(new GridLayout(0, 12, 0, 0));
 
 		JLabel lblNewLabel_15 = new JLabel("Vocab");
 		lblNewLabel_15.setHorizontalAlignment(SwingConstants.CENTER);
@@ -577,6 +578,18 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.showRow();
 			}
 		});
+		JButton btnNewButton_2 = new JButton("Exp.");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				updateExplantation.setVisible(true);
+			}
+		});
+		btnNewButton_2.setBackground(SystemColor.controlHighlight);
+		btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 14));
+		panel_edit.add(btnNewButton_2);
+		
+		JPanel panel_6_1 = new JPanel();
+		panel_edit.add(panel_6_1);
 		btnNewButton_14_1.setFont(new Font("新細明體", Font.PLAIN, 14));
 		btnNewButton_14_1.setBackground(SystemColor.controlHighlight);
 		panel_edit.add(btnNewButton_14_1);

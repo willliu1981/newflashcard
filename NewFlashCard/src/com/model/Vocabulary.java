@@ -1,13 +1,12 @@
 package com.model;
 
-import java.sql.Date;
-
 public class Vocabulary {
 	public final static String SortBy_Vocabualry = "sortby_vocabulary";
 	public final static String SortBy_Translation = "sortby_translation";
 	private Integer id;
 	private String vocabulary;
 	private String translation;
+	private String explanation;
 	private Integer box_id;
 	private Integer test_time;
 	private String test_date;
@@ -36,6 +35,14 @@ public class Vocabulary {
 
 	public void setTranslation(String translation) {
 		this.translation = translation;
+	}
+
+	public String getExplanation() {
+		return explanation;
+	}
+
+	public void setExplanation(String explanation) {
+		this.explanation = explanation;
 	}
 
 	public Integer getBox_id() {
