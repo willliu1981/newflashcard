@@ -18,6 +18,7 @@ import com.control.bridge.Dispatcher;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.viewcontrol.ExplanationBridge;
+import com.control.viewcontrol.MyColor;
 import com.control.viewcontrol.UpdateExplanationBridge;
 import com.model.Vocabulary;
 
@@ -32,6 +33,8 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class UpdateExplanation extends JFrame implements Transportable {
 
@@ -39,6 +42,7 @@ public class UpdateExplanation extends JFrame implements Transportable {
 	private JTextArea textArea_explanation;
 	private JLabel lblNewLabel_vocabulary;
 	private UIDateTransportation dt;
+	private JPanel panel_border;
 
 	/**
 	 * Launch the application.
@@ -79,7 +83,11 @@ public class UpdateExplanation extends JFrame implements Transportable {
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
 		
+		panel_border = new JPanel();
+		panel.add(panel_border);
+		
 		JButton btnNewButton_update = new JButton("更新");
+		panel_border.add(btnNewButton_update);
 		btnNewButton_update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				UpdateExplanationBridge bridge=new UpdateExplanationBridge();
@@ -88,17 +96,22 @@ public class UpdateExplanation extends JFrame implements Transportable {
 				vocabulary.setExplanation(textArea_explanation.getText());
 				bridge.setParameter("vocabulary", vocabulary);
 				disp.send(bridge);
+				panel_border.setBackground(MyColor.getBase());
 			}
 		});
 		btnNewButton_update.setBackground(SystemColor.controlHighlight);
 		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 14));
-		panel.add(btnNewButton_update);
 
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
-
 		textArea_explanation = new JTextArea();
+		textArea_explanation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				panel_border.setBackground(Color.red);
+			}
+		});
 		textArea_explanation.setCaretColor(Color.ORANGE);
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setBackground(Color.DARK_GRAY);

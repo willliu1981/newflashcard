@@ -1058,6 +1058,20 @@ public class MainView extends JFrame {
 				btnNewButton_topbar_cardbox.doClick();
 			}
 		});
+		
+		JButton btnNewButton_16 = new JButton("Exp.");
+		btnNewButton_16.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				updateExplantation.setVisible(true);
+			}
+		});
+		btnNewButton_16.setBackground(SystemColor.controlHighlight);
+		btnNewButton_16.setFont(new Font("新細明體", Font.PLAIN, 16));
+		panel_addandeditname.add(btnNewButton_16);
+		
+		JPanel panel_2 = new JPanel();
+		panel_addandeditname.add(panel_2);
 		btnNewButton.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton.setBackground(SystemColor.controlHighlight);
 		btnNewButton.setFont(new Font("Dialog", Font.PLAIN, 16));
