@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.control.bridge.Bridge;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
@@ -93,7 +94,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txtVocabulary.setHorizontalAlignment(SwingConstants.TRAILING);
 		txtVocabulary.setPreferredSize(new Dimension(7, 25));
 		txtVocabulary.setBorder(null);
-		txtVocabulary.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		txtVocabulary.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		panel.add(txtVocabulary);
 		txtVocabulary.setColumns(20);
 
@@ -102,7 +103,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		
 		textField_translation = new JTextField();
 		textField_translation.setBorder(null);
-		textField_translation.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		textField_translation.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		panel.add(textField_translation);
 		textField_translation.setColumns(20);
 		
@@ -111,7 +112,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 		panel_border = new JPanel();
 		panel.add(panel_border);
-
+		
 		JButton btnNewButton_update = new JButton("更新");
 		panel_border.add(btnNewButton_update);
 		btnNewButton_update.addActionListener(new ActionListener() {
@@ -120,6 +121,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				Dispatcher disp = bridge.getDispatcher();
 				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 				vocabulary.setExplanation(textArea_explanation.getText());
+				vocabulary.setTranslation(textField_translation.getText());
 				bridge.setParameter("vocabulary", vocabulary);
 				disp.send(bridge);
 				panel_border.setBackground(MyColor.getBase());
@@ -144,7 +146,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.setCaretColor(Color.ORANGE);
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setBackground(Color.DARK_GRAY);
-		textArea_explanation.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		textArea_explanation.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		/*
 		 * 此行註解,否則 WindowBuilder 會報錯 原因它已加入 scrollPane 之中
 		 */
@@ -157,7 +159,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	@Override
 	public void accpet() {
-		ExplanationBridge birdge = (ExplanationBridge) dt;
+		Bridge birdge = (Bridge) dt;
 		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());

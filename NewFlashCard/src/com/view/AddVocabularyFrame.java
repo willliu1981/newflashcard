@@ -133,6 +133,7 @@ public class AddVocabularyFrame extends JFrame {
 		panel_center_center.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		panel_center_center.add(textArea_explanation);
 
 		JPanel panel_center_top = new JPanel();
