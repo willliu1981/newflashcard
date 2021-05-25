@@ -51,9 +51,8 @@ import com.model.CardBox;
 import com.model.Vocabulary;
 
 public class MainView extends JFrame {
-	public static final AddVocabulary addVocabulary=new AddVocabulary();
-	public static final UpdateExplanation updateExplantation=new UpdateExplanation();
-	public static final TestQuestionExposition testQuestionExposition=new TestQuestionExposition();
+	public static final AddVocabularyFrame addVocabularyFrame=new AddVocabularyFrame();
+	public static final ExplanationFrame explantationFrame=new ExplanationFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
 	public static final String CardLayout_topbar_Vocabulary = "vocabulary";
@@ -159,7 +158,7 @@ public class MainView extends JFrame {
 		mntmNewMenuItem_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				addVocabulary.setVisible(true);
+				addVocabularyFrame.setVisible(true);
 			}
 		});
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
@@ -169,7 +168,7 @@ public class MainView extends JFrame {
 		mntmNewMenuItem_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				testQuestionExposition.setVisible(true);
+				addVocabularyFrame.setVisible(true);
 			}
 		});
 		mntmNewMenuItem_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
@@ -592,7 +591,7 @@ public class MainView extends JFrame {
 		JButton btnNewButton_2 = new JButton("Exp.");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				updateExplantation.setVisible(true);
+				explantationFrame.setVisible(true);
 			}
 		});
 		btnNewButton_2.setBackground(SystemColor.controlHighlight);
@@ -1064,7 +1063,7 @@ public class MainView extends JFrame {
 		btnNewButton_16.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				updateExplantation.setVisible(true);
+				explantationFrame.setVisible(true);
 			}
 		});
 		btnNewButton_16.setBackground(SystemColor.controlHighlight);

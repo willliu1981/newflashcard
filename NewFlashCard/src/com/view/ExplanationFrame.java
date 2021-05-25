@@ -44,14 +44,14 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
 
-public class UpdateExplanation extends JFrame implements Transportable {
+public class ExplanationFrame extends JFrame implements Transportable {
 
 	private JPanel contentPane;
 	private JTextArea textArea_explanation;
 	private UIDateTransportation dt;
 	private JPanel panel_border;
 	private JScrollPane scrollPane;
-	private JTextField txtRrr;
+	private JTextField txtVocabulary;
 	private JTextField textField_translation;
 	private JPanel panel_3;
 
@@ -62,7 +62,7 @@ public class UpdateExplanation extends JFrame implements Transportable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UpdateExplanation frame = new UpdateExplanation();
+					ExplanationFrame frame = new ExplanationFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -75,7 +75,7 @@ public class UpdateExplanation extends JFrame implements Transportable {
 	/**
 	 * Create the frame.
 	 */
-	public UpdateExplanation() {
+	public ExplanationFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -87,15 +87,15 @@ public class UpdateExplanation extends JFrame implements Transportable {
 		panel.setPreferredSize(new Dimension(10, 45));
 		contentPane.add(panel, BorderLayout.NORTH);
 
-		txtRrr = new JTextField();
-		txtRrr.setEditable(false);
-		txtRrr.setText("null");
-		txtRrr.setHorizontalAlignment(SwingConstants.TRAILING);
-		txtRrr.setPreferredSize(new Dimension(7, 25));
-		txtRrr.setBorder(null);
-		txtRrr.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
-		panel.add(txtRrr);
-		txtRrr.setColumns(20);
+		txtVocabulary = new JTextField();
+		txtVocabulary.setEditable(false);
+		txtVocabulary.setText("null");
+		txtVocabulary.setHorizontalAlignment(SwingConstants.TRAILING);
+		txtVocabulary.setPreferredSize(new Dimension(7, 25));
+		txtVocabulary.setBorder(null);
+		txtVocabulary.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		panel.add(txtVocabulary);
+		txtVocabulary.setColumns(20);
 
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
@@ -159,7 +159,7 @@ public class UpdateExplanation extends JFrame implements Transportable {
 	public void accpet() {
 		ExplanationBridge birdge = (ExplanationBridge) dt;
 		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
-		this.txtRrr.setText(vocabulary.getVocabulary());
+		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
 		this.textField_translation.setText(vocabulary.getTranslation());
 	}

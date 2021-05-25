@@ -9,7 +9,7 @@ public class ExplanationBridge extends  Bridge{
 	@Override
 	public void doSend() {
 		 Dispatcher disp=this.getDispatcher();
-		 disp.send(MainView.updateExplantation);
+		 disp.send(MainView.explantationFrame);
 	}
 	
 }

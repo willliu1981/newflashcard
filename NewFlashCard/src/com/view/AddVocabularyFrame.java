@@ -27,7 +27,7 @@ import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class AddVocabulary extends JFrame {
+public class AddVocabularyFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField_vocabulary;
@@ -41,7 +41,7 @@ public class AddVocabulary extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddVocabulary frame = new AddVocabulary();
+					AddVocabularyFrame frame = new AddVocabularyFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +53,7 @@ public class AddVocabulary extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddVocabulary() {
+	public AddVocabularyFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 849, 529);
 		contentPane = new JPanel();
