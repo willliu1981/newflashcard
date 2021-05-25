@@ -22,12 +22,12 @@ import com.control.bridge.ExposeExplanationBridge;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.bridge.session.UIDateTransportation.Session;
 import com.control.dao.CardBoxDao;
-import com.control.viewcontrol.MyColor;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.TestQuestionControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import com.tool.MyColor;
 
 public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public static final String CardLayout_Question = "question";

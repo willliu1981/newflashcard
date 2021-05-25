@@ -1,4 +1,4 @@
-package com.control.viewcontrol;
+package com.tool;
 
 import java.awt.Color;
 

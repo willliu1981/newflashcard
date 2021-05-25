@@ -19,9 +19,9 @@ import com.control.bridge.Dispatcher;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.viewcontrol.ExplanationBridge;
-import com.control.viewcontrol.MyColor;
 import com.control.viewcontrol.UpdateExplanationBridge;
 import com.model.Vocabulary;
+import com.tool.MyColor;
 
 import java.awt.Dimension;
 import javax.swing.JTextArea;
@@ -92,18 +92,17 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txtVocabulary.setEditable(false);
 		txtVocabulary.setText("null");
 		txtVocabulary.setHorizontalAlignment(SwingConstants.TRAILING);
-		txtVocabulary.setPreferredSize(new Dimension(7, 25));
 		txtVocabulary.setBorder(null);
-		txtVocabulary.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
+		txtVocabulary.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(txtVocabulary);
-		txtVocabulary.setColumns(20);
+		txtVocabulary.setColumns(18);
 
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
 		
 		textField_translation = new JTextField();
 		textField_translation.setBorder(null);
-		textField_translation.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
+		textField_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(textField_translation);
 		textField_translation.setColumns(20);
 		
@@ -146,7 +145,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.setCaretColor(Color.ORANGE);
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setBackground(Color.DARK_GRAY);
-		textArea_explanation.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
+		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
 		/*
 		 * 此行註解,否則 WindowBuilder 會報錯 原因它已加入 scrollPane 之中
 		 */
@@ -164,6 +163,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
 		this.textField_translation.setText(vocabulary.getTranslation());
+		this.textArea_explanation.setSelectionStart(0);
+		this.textArea_explanation.setSelectionEnd(0);
 	}
 
 	@Override

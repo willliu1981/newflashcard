@@ -1,4 +1,4 @@
-import com.control.viewcontrol.MyColor;
+import com.tool.MyColor;
 
 public class Test {
 	MyColor c;

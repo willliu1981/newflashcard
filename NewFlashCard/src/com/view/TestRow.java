@@ -20,11 +20,12 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.VocabularyDao;
-import com.control.viewcontrol.MyColor;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import com.tool.MyColor;
+
 import java.awt.Color;
 
 public class TestRow extends JPanel implements ShowRow<CardBox> {
