@@ -17,7 +17,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import com.control.bridge.Dispatcher;
+import com.control.bridge.ExposeExplanationBridge;
+import com.control.bridge.session.UIDateTransportation;
+import com.control.bridge.session.UIDateTransportation.Session;
 import com.control.dao.CardBoxDao;
+import com.control.viewcontrol.MyColor;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.TestQuestionControl;
@@ -53,8 +58,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 								setBackground(Color.blue);
 								showRowControl.nextStage();
 							} else {
-								setBackground(new Color(255,127,37));
+								setBackground(new Color(255, 127, 37));
 							}
+						}
+					} else {
+						/*
+						 * 按下了"X" 或 無法答題 按鈕
+						 */
+						if (rowIdx == 2) {
+							showRowControl.setFirstFailure();
 						}
 					}
 					showRowControl.showRow();
@@ -75,6 +87,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							showRowControl.showRow();
 							showRowControl.nextStage();
 						}
+					} else if (rowIdx >= 4) {
+						ExposeExplanationBridge bridge = new ExposeExplanationBridge();
+						Dispatcher disp = bridge.getDispatcher();
+						bridge.setParameter("id", rowIdx);
+						disp.send(bridge);
 					}
 					break;
 				default:
@@ -153,13 +170,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
 				if (idx == 1) {
-					// 空白
+					// 訊息-提示答對或錯
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText("");
 				} else if (idx == 2) {
-					// 空白
+					// 不知道答案按此
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-							.setText("");
+							.setText("X");
 				} else if (idx == 3) {
 					// 進度
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
@@ -170,14 +187,24 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				// answers
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Answer);
+				Vocabulary v = null;
 				if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
+					v = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx());
 					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-							.setText(this.showRowControl.getQuestionResult()
-									.get(this.showRowControl.getCurrentQuestionIdx()).getTranslation());
+							.setText(v.getTranslation());
 				} else {
+					v = this.showRowControl.getRandomAnswer();
 					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-							.setText(this.showRowControl.getRandomAnswer().getTranslation());
+							.setText(v.getTranslation());
 				}
+
+				Session sess = UIDateTransportation.getSession();
+				Map<Integer, Vocabulary> map = (Map<Integer, Vocabulary>) sess.getAttribute("randomAnswers");
+				if (map == null) {
+					map = new HashMap<>();
+				}
+				map.put(idx, v);
+				sess.setAttribute("randomAnswers", map);
 			}
 			this.setBackground(this.showRowControl.Color_Base);
 			break;
@@ -190,6 +217,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
+			} else if (idx == 2) {
+				// "X" 或無法答題
+				if (this.showRowControl.isFirstFailure()) {
+					this.setBackground(Color.red);
+				} else {
+					this.setBackground(MyColor.getBase());
+				}
 			}
 			break;
 		case GotAnswer:

@@ -178,6 +178,10 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public boolean isBingo() {
 		return bingo;
 	}
+	
+	public void setFirstFailure() {
+		this.firstFailure=true;
+	}
 
 	public boolean isFirstFailure() {
 		return firstFailure;

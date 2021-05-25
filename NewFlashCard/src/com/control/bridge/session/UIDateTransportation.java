@@ -7,7 +7,7 @@ import com.control.bridge.Dispatcher;
 
 public abstract class UIDateTransportation {
 
-	static class Session {
+	public static class Session {
 		private Map<String, Object> session = new HashMap<>();
 
 		public void setAttribute(String name, Object obj) {
@@ -24,7 +24,7 @@ public abstract class UIDateTransportation {
 
 	static final Session session = new Session();
 
-	static Session getSession() {
+	public static Session getSession() {
 		return session;
 	}
 

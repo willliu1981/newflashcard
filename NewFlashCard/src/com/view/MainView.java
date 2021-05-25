@@ -53,6 +53,7 @@ import com.model.Vocabulary;
 public class MainView extends JFrame {
 	public static final AddVocabulary addVocabulary=new AddVocabulary();
 	public static final UpdateExplanation updateExplantation=new UpdateExplanation();
+	public static final TestQuestionExposition testQuestionExposition=new TestQuestionExposition();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
 	public static final String CardLayout_topbar_Vocabulary = "vocabulary";
@@ -163,11 +164,21 @@ public class MainView extends JFrame {
 		});
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_1);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("開啟測驗中提示");
+		mntmNewMenuItem_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				testQuestionExposition.setVisible(true);
+			}
+		});
+		mntmNewMenuItem_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
+		mnNewMenu_1.add(mntmNewMenuItem_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-
+		
 		/*
 		 * topbar
 		 */
@@ -400,7 +411,7 @@ public class MainView extends JFrame {
 
 		JPanel panel_add = new JPanel();
 		panel_vocabulary_editbar.add(panel_add, CardLayout_Editbar_Add);
-		panel_add.setLayout(new GridLayout(0, 12, 0, 0));
+		panel_add.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel lblNewLabel_15 = new JLabel("Vocab");
 		lblNewLabel_15.setHorizontalAlignment(SwingConstants.CENTER);
