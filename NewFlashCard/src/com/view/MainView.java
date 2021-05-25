@@ -1060,6 +1060,7 @@ public class MainView extends JFrame {
 		});
 		
 		JButton btnNewButton_16 = new JButton("Exp.");
+		btnNewButton_16.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_16.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
