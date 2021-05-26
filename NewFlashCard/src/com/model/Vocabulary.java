@@ -7,6 +7,7 @@ public class Vocabulary {
 	private String vocabulary;
 	private String translation;
 	private String explanation;
+	private String example;
 	private Integer box_id;
 	private Integer test_time;
 	private String test_date;
@@ -43,6 +44,14 @@ public class Vocabulary {
 
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
+	}
+
+	public String getExample() {
+		return example;
+	}
+
+	public void setExample(String example) {
+		this.example = example;
 	}
 
 	public Integer getBox_id() {

@@ -26,6 +26,8 @@ import javax.swing.JButton;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class AddVocabularyFrame extends JFrame {
 
@@ -33,6 +35,7 @@ public class AddVocabularyFrame extends JFrame {
 	private JTextField textField_vocabulary;
 	private JTextField textField_translation;
 	private JTextArea textArea_explanation;
+	private JTextArea textArea_example;
 
 	/**
 	 * Launch the application.
@@ -109,10 +112,12 @@ public class AddVocabularyFrame extends JFrame {
 				String vocabulary = textField_vocabulary.getText();
 				String translation = textField_translation.getText();
 				String explanation = textArea_explanation.getText();
+				String example=textArea_example.getText();
 				Vocabulary m = new Vocabulary();
 				m.setVocabulary(vocabulary);
 				m.setTranslation(translation);
 				m.setExplanation(explanation);
+				m.setExample(example);
 				new VocabularyDao().add(m);
 				
 				textField_vocabulary.setText("");
@@ -126,27 +131,51 @@ public class AddVocabularyFrame extends JFrame {
 
 		JPanel panel_center = new JPanel();
 		panel.add(panel_center, BorderLayout.CENTER);
-		panel_center.setLayout(new BorderLayout(0, 0));
+		panel_center.setLayout(new BoxLayout(panel_center, BoxLayout.Y_AXIS));
+		
+				JPanel panel_center_top = new JPanel();
+				panel_center_top.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				panel_center_top.setPreferredSize(new Dimension(10, 30));
+				panel_center.add(panel_center_top);
+				panel_center_top.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+				
+						JPanel panel_1_2 = new JPanel();
+						panel_center_top.add(panel_1_2);
+						
+								JLabel lblNewLabel_2 = new JLabel("其它解釋");
+								lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 16));
+								panel_center_top.add(lblNewLabel_2);
 
 		JPanel panel_center_center = new JPanel();
-		panel_center.add(panel_center_center, BorderLayout.CENTER);
+		panel_center_center.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_center.add(panel_center_center);
 		panel_center_center.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
 		panel_center_center.add(textArea_explanation);
-
-		JPanel panel_center_top = new JPanel();
-		panel_center_top.setPreferredSize(new Dimension(10, 30));
-		panel_center.add(panel_center_top, BorderLayout.NORTH);
-		panel_center_top.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-
-		JPanel panel_1_2 = new JPanel();
-		panel_center_top.add(panel_1_2);
-
-		JLabel lblNewLabel_2 = new JLabel("其它解釋");
-		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_center_top.add(lblNewLabel_2);
+		
+		JPanel panel_center_top_1 = new JPanel();
+		panel_center_top_1.setPreferredSize(new Dimension(10, 30));
+		panel_center_top_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_center.add(panel_center_top_1);
+		panel_center_top_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		JPanel panel_1_2_1 = new JPanel();
+		panel_center_top_1.add(panel_1_2_1);
+		
+		JLabel lblNewLabel_2_1 = new JLabel("例句");
+		lblNewLabel_2_1.setFont(new Font("新細明體", Font.PLAIN, 16));
+		panel_center_top_1.add(lblNewLabel_2_1);
+		
+		JPanel panel_center_bottom = new JPanel();
+		panel_center_bottom.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panel_center.add(panel_center_bottom);
+		panel_center_bottom.setLayout(new BorderLayout(0, 0));
+		
+		textArea_example = new JTextArea();
+		panel_center_bottom.add(textArea_example, BorderLayout.CENTER);
+		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 18));
 	}
 
 }

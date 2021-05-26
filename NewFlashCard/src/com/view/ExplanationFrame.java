@@ -44,17 +44,27 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
+import java.awt.CardLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ExplanationFrame extends JFrame implements Transportable {
-
+	private static final String EXPLANATIONTYPE_EXPLANATION = "explanationtype_explanation";
+	private static final String EXPLANATIONTYPE_EXAMPLE = "explanationtype_example";
+	private static String explanationType = EXPLANATIONTYPE_EXPLANATION;
 	private JPanel contentPane;
 	private JTextArea textArea_explanation;
 	private UIDateTransportation dt;
-	private JPanel panel_border;
-	private JScrollPane scrollPane;
+	private JPanel panel_updateborder;
+	private JScrollPane scrollPane_explanation;
 	private JTextField txtVocabulary;
 	private JTextField textField_translation;
 	private JPanel panel_3;
+	private JButton btnNewButton_type;
+	private JScrollPane scrollPane_example;
+	private JTextArea textArea_example;
+	private JPanel panel_cardlayout;
+	private JPanel panel_1;
 
 	/**
 	 * Launch the application.
@@ -78,7 +88,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	 */
 	public ExplanationFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 960, 720);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -99,39 +109,59 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
-		
+
 		textField_translation = new JTextField();
 		textField_translation.setBorder(null);
 		textField_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(textField_translation);
 		textField_translation.setColumns(20);
-		
+
 		panel_3 = new JPanel();
 		panel.add(panel_3);
-
-		panel_border = new JPanel();
-		panel.add(panel_border);
+		btnNewButton_type = new JButton("例句");
+		btnNewButton_type.setBackground(SystemColor.controlHighlight);
+		btnNewButton_type.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (explanationType.equals(EXPLANATIONTYPE_EXPLANATION)) {
+					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
+							explanationType = EXPLANATIONTYPE_EXAMPLE);
+					btnNewButton_type.setText("解釋");
+				} else {
+					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
+							explanationType = EXPLANATIONTYPE_EXPLANATION);
+					btnNewButton_type.setText("例句");
+				}
+			}
+		});
+		btnNewButton_type.setFont(new Font("新細明體", Font.PLAIN, 14));
+		panel.add(btnNewButton_type);
 		
+		panel_1 = new JPanel();
+		panel.add(panel_1);
+
+		panel_updateborder = new JPanel();
+		panel.add(panel_updateborder);
+
 		JButton btnNewButton_update = new JButton("更新");
-		panel_border.add(btnNewButton_update);
+		panel_updateborder.add(btnNewButton_update);
 		btnNewButton_update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				UpdateExplanationBridge bridge = new UpdateExplanationBridge();
 				Dispatcher disp = bridge.getDispatcher();
 				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 				vocabulary.setExplanation(textArea_explanation.getText());
+				vocabulary.setExample(textArea_example.getText());
 				vocabulary.setTranslation(textField_translation.getText());
 				bridge.setParameter("vocabulary", vocabulary);
 				disp.send(bridge);
-				panel_border.setBackground(MyColor.getBase());
+				panel_updateborder.setBackground(MyColor.getBase());
 			}
 		});
 		btnNewButton_update.setBackground(SystemColor.controlHighlight);
 		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 14));
 
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		panel_cardlayout = new JPanel();
+		contentPane.add(panel_cardlayout, BorderLayout.CENTER);
 		textArea_explanation = new JTextArea();
 		textArea_explanation.setMargin(new Insets(10, 10, 10, 10));
 		textArea_explanation.setWrapStyleWord(true);
@@ -139,21 +169,35 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				panel_border.setBackground(Color.red);
+				panel_updateborder.setBackground(Color.red);
 			}
 		});
+		panel_cardlayout.setLayout(new CardLayout(0, 0));
 		textArea_explanation.setCaretColor(Color.ORANGE);
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setBackground(Color.DARK_GRAY);
-		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
-		/*
-		 * 此行註解,否則 WindowBuilder 會報錯 原因它已加入 scrollPane 之中
-		 */
-		// panel_1.add(textArea_explanation, BorderLayout.CENTER);
-		scrollPane = new JScrollPane();
-		scrollPane.setViewportView(textArea_explanation);
+		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 20));
+		scrollPane_explanation = new JScrollPane();
+		scrollPane_explanation.setViewportView(textArea_explanation);
+		panel_cardlayout.add(scrollPane_explanation, EXPLANATIONTYPE_EXPLANATION);
 
-		panel_1.add(scrollPane, BorderLayout.CENTER);
+		textArea_example = new JTextArea();
+		textArea_example.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				panel_updateborder.setBackground(Color.red);
+			}
+		});
+		textArea_example.setWrapStyleWord(true);
+		textArea_example.setMargin(new Insets(10, 10, 10, 10));
+		textArea_example.setLineWrap(true);
+		textArea_example.setForeground(Color.WHITE);
+		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 20));
+		textArea_example.setCaretColor(Color.ORANGE);
+		textArea_example.setBackground(Color.DARK_GRAY);
+		scrollPane_example = new JScrollPane();
+		scrollPane_example.setViewportView(textArea_example);
+		panel_cardlayout.add(scrollPane_example, EXPLANATIONTYPE_EXAMPLE);
 	}
 
 	@Override
@@ -162,6 +206,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
+		this.textArea_example.setText(vocabulary.getExample());
 		this.textField_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);

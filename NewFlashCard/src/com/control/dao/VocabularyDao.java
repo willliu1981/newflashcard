@@ -19,7 +19,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
-		String sql = "insert into vocabulary (vocabulary,translation,box_id,create_date,update_date,explanation) values (?,?,?,?,?,?)";
+		String sql = "insert into vocabulary (vocabulary,translation,box_id,create_date,update_date,explanation,example) values (?,?,?,?,?,?,?)";
 		try {
 			st = myConn.prepareStatement(sql);
 			st.setString(1, t.getVocabulary());
@@ -28,6 +28,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 			st.setString(4, new Date(new java.util.Date().getTime()).toString());
 			st.setString(5, t.getUpdate_date());
 			st.setString(6, t.getExplanation());
+			st.setString(7, t.getExample());
 			st.executeUpdate();
 			st.close();
 			myConn.close();
@@ -57,6 +58,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
 				m.setExplanation(rs.getString("explanation"));
+				m.setExample( rs.getString("example"));
 				ms.add(m);
 			}
 			rs.close();
@@ -88,6 +90,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
 				m.setExplanation(rs.getString("explanation"));
+				m.setExample( rs.getString("example"));
 				ms.add(m);
 			}
 			rs.close();
@@ -119,6 +122,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 			m.setCreate_date(rs.getString("create_date"));
 			m.setUpdate_date(rs.getString("update_date"));
 			m.setExplanation(rs.getString("explanation"));
+			m.setExample( rs.getString("example"));
 			rs.close();
 			st.close();
 			myConn.close();
@@ -149,6 +153,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
 				m.setExplanation(rs.getString("explanation"));
+				m.setExample( rs.getString("example"));
 				ms.add(m);
 			}
 			rs.close();
@@ -165,14 +170,15 @@ public class VocabularyDao extends Dao<Vocabulary> {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
-		String sql = "update vocabulary set translation=?,box_id=?,update_date=?,explanation=? where id=?";
+		String sql = "update vocabulary set translation=?,box_id=?,update_date=?,explanation=?,example=? where id=?";
 		try {
 			st = myConn.prepareStatement(sql);
 			st.setString(1, t.getTranslation());
 			st.setInt(2, t.getBox_id());
 			st.setString(3, new Date(new java.util.Date().getTime()).toString());
 			st.setString(4, t.getExplanation());
-			st.setInt(5, id);
+			st.setString(5, t.getExample());
+			st.setInt(6, id);
 			st.executeUpdate();
 			st.close();
 			myConn.close();

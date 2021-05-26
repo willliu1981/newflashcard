@@ -63,9 +63,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						}
 					} else {
 						/*
-						 * 按下了"X" 或 無法答題 按鈕
+						 * 無法答題
 						 */
-						if (rowIdx == 2) {
+						if (rowIdx == 1) {
 							showRowControl.setFirstFailure();
 						}
 					}
@@ -87,7 +87,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							showRowControl.showRow();
 							showRowControl.nextStage();
 						}
-					} else if (rowIdx >= 4) {
+					} else if (rowIdx >= 3) {
 						ExposeExplanationBridge bridge = new ExposeExplanationBridge();
 						Dispatcher disp = bridge.getDispatcher();
 						bridge.setParameter("id", rowIdx);
@@ -165,19 +165,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(this.showRowControl.getQuestionResult()
 								.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary());
-			} else if (idx == 1 || idx == 2 || idx == 3) {
+			} else if (idx == 1 || idx == 2 ) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
 				if (idx == 1) {
 					// 訊息-提示答對或錯
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-							.setText("");
+							.setText("不確定");
 				} else if (idx == 2) {
-					// 不知道答案按此
-					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-							.setText("X");
-				} else if (idx == 3) {
 					// 進度
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
@@ -217,13 +213,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
-			} else if (idx == 2) {
-				// "X" 或無法答題
+				
+				// 無法答題
 				if (this.showRowControl.isFirstFailure()) {
 					this.setBackground(Color.red);
 				} else {
 					this.setBackground(MyColor.getBase());
 				}
+			} else if (idx == 2) {
+				
 			}
 			break;
 		case GotAnswer:

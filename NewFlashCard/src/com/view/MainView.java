@@ -51,8 +51,8 @@ import com.model.CardBox;
 import com.model.Vocabulary;
 
 public class MainView extends JFrame {
-	public static final AddVocabularyFrame addVocabularyFrame=new AddVocabularyFrame();
-	public static final ExplanationFrame explantationFrame=new ExplanationFrame();
+	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
+	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
 	public static final String CardLayout_topbar_Vocabulary = "vocabulary";
@@ -137,7 +137,7 @@ public class MainView extends JFrame {
 	 */
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1400,800);
+		setBounds(100, 100, 1400, 800);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -163,7 +163,7 @@ public class MainView extends JFrame {
 		});
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_1);
-		
+
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("開啟測驗中提示");
 		mntmNewMenuItem_2.addMouseListener(new MouseAdapter() {
 			@Override
@@ -177,7 +177,7 @@ public class MainView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		/*
 		 * topbar
 		 */
@@ -597,7 +597,7 @@ public class MainView extends JFrame {
 		btnNewButton_2.setBackground(SystemColor.controlHighlight);
 		btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 14));
 		panel_edit.add(btnNewButton_2);
-		
+
 		JPanel panel_6_1 = new JPanel();
 		panel_edit.add(panel_6_1);
 		btnNewButton_14_1.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -1057,7 +1057,7 @@ public class MainView extends JFrame {
 				btnNewButton_topbar_cardbox.doClick();
 			}
 		});
-		
+
 		JButton btnNewButton_16 = new JButton("Exp.");
 		btnNewButton_16.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_16.addMouseListener(new MouseAdapter() {
@@ -1069,7 +1069,7 @@ public class MainView extends JFrame {
 		btnNewButton_16.setBackground(SystemColor.controlHighlight);
 		btnNewButton_16.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_addandeditname.add(btnNewButton_16);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_addandeditname.add(panel_2);
 		btnNewButton.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -1371,10 +1371,10 @@ public class MainView extends JFrame {
 
 		JPanel panel_question = new JPanel();
 		panel_test_center_cardlayout.add(panel_question, CardLayout_Test_Question);
-		panel_question.setLayout(new GridLayout(4, 4, 0, 0));
+		panel_question.setLayout(new GridLayout(0, 3, 0, 0));
 
 		/*
-		 * �撱� test row
+		 * �test row
 		 */
 		for (int i = 0; i < 12; i++) {
 			TestRow TestRow = new TestRow();
@@ -1385,9 +1385,11 @@ public class MainView extends JFrame {
 		}
 
 		/*
-		 * �撱� test question
+		 * �test question, 更改此項需一併修改TestRow 的 myClickListerner 的 ((MainView)
+		 * showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15) 初始化,
+		 * 以及 TestQuestion 相關參數
 		 */
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 12; i++) {
 			TestQuestion testQuestion = new TestQuestion();
 			panel_question.add(testQuestion);
 			testQuestion.setName("" + i);
