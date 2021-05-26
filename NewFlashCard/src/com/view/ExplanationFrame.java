@@ -49,8 +49,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ExplanationFrame extends JFrame implements Transportable {
-	private static final String EXPLANATIONTYPE_EXPLANATION = "explanationtype_explanation";
-	private static final String EXPLANATIONTYPE_EXAMPLE = "explanationtype_example";
+	private static final String EXPLANATIONTYPE_EXPLANATION = "解釋";
+	private static final String EXPLANATIONTYPE_EXAMPLE = "例句";
 	private static String explanationType = EXPLANATIONTYPE_EXPLANATION;
 	private JPanel contentPane;
 	private JTextArea textArea_explanation;
@@ -135,7 +135,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		});
 		btnNewButton_type.setFont(new Font("新細明體", Font.PLAIN, 14));
 		panel.add(btnNewButton_type);
-		
+
 		panel_1 = new JPanel();
 		panel.add(panel_1);
 
@@ -210,6 +210,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textField_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
+		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
+				explanationType = EXPLANATIONTYPE_EXPLANATION);
+		btnNewButton_type.setText(EXPLANATIONTYPE_EXAMPLE);
 	}
 
 	@Override
