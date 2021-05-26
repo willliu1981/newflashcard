@@ -137,7 +137,7 @@ public class MainView extends JFrame {
 	 */
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1400, 800);
+		setBounds(100, 100, 1000, 800);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);

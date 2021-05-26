@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.control.bridge.Dispatcher;
 import com.control.bridge.ExposeExplanationBridge;
@@ -28,6 +32,9 @@ import com.control.viewcontrol.TestQuestionControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;
+import javax.swing.JTextArea;
+import java.awt.Insets;
+import javax.swing.JTextPane;
 
 public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public static final String CardLayout_Question = "question";
@@ -103,9 +110,12 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		}
 	};
 	private JLabel lblNewLabel_2;
+	private JTextArea txtrVocabualry;
 
 	/**
 	 * Create the panel.
+	 * 
+	 * @throws InterruptedException
 	 */
 	public TestQuestion() {
 		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -120,11 +130,12 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		panel_root_cardlayout.add(panel_question, CardLayout_Question);
 		panel_question.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblNewLabel = new JLabel("question");
+		JLabel lblNewLabel = new JLabel("vocabulary");
+		lblNewLabel.setSize(200, 0);
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_question.add(lblNewLabel);
+		panel_question.add(lblNewLabel, BorderLayout.CENTER);
 
 		panel_answer = new JPanel();
 		panel_answer.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -165,7 +176,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(this.showRowControl.getQuestionResult()
 								.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary());
-			} else if (idx == 1 || idx == 2 ) {
+			} else if (idx == 1 || idx == 2) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
@@ -190,8 +201,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							.setText(v.getTranslation());
 				} else {
 					v = this.showRowControl.getRandomAnswer();
-					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-							.setText(v.getTranslation());
+					jlabelSetText((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"),
+							v.getTranslation());
 				}
 
 				Session sess = UIDateTransportation.getSession();
@@ -213,7 +224,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
-				
+
 				// 無法答題
 				if (this.showRowControl.isFirstFailure()) {
 					this.setBackground(Color.red);
@@ -221,7 +232,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					this.setBackground(MyColor.getBase());
 				}
 			} else if (idx == 2) {
-				
+
 			}
 			break;
 		case GotAnswer:
@@ -263,6 +274,33 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		default:
 			break;
 		}
+	}
+
+	/*
+	 * label 自動換行
+	 */
+	void jlabelSetText(JLabel jLabel, String longString) {
+		StringBuilder builder = new StringBuilder("<html>");
+		char[] chars = longString.toCharArray();
+		FontMetrics fontMetrics = jLabel.getFontMetrics(jLabel.getFont());
+		int start = 0;
+		int len = 0;
+		while (start + len < longString.length()) {
+			while (true) {
+				len++;
+				if (start + len > longString.length())
+					break;
+				if (fontMetrics.charsWidth(chars, start, len) > jLabel.getWidth()) {
+					break;
+				}
+			}
+			builder.append(chars, start, len - 1).append("<br/>");
+			start = start + len - 1;
+			len = 0;
+		}
+		builder.append(chars, start, longString.length() - start);
+		builder.append("</html>");
+		jLabel.setText(builder.toString());
 	}
 
 	public static void setVocabularyQuantities(Map<Integer, Integer> map) {

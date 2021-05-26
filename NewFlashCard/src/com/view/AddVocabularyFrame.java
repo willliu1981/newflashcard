@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
+import javax.swing.JScrollPane;
 
 public class AddVocabularyFrame extends JFrame {
 
@@ -58,7 +59,7 @@ public class AddVocabularyFrame extends JFrame {
 	 */
 	public AddVocabularyFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 849, 529);
+		setBounds(100, 100, 1000, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -133,49 +134,59 @@ public class AddVocabularyFrame extends JFrame {
 		panel.add(panel_center, BorderLayout.CENTER);
 		panel_center.setLayout(new BoxLayout(panel_center, BoxLayout.Y_AXIS));
 		
-				JPanel panel_center_top = new JPanel();
-				panel_center_top.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-				panel_center_top.setPreferredSize(new Dimension(10, 30));
-				panel_center.add(panel_center_top);
-				panel_center_top.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+				JPanel panel_explanation_info = new JPanel();
+				panel_explanation_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				panel_explanation_info.setPreferredSize(new Dimension(10, 30));
+				panel_center.add(panel_explanation_info);
+				panel_explanation_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 				
 						JPanel panel_1_2 = new JPanel();
-						panel_center_top.add(panel_1_2);
+						panel_explanation_info.add(panel_1_2);
 						
 								JLabel lblNewLabel_2 = new JLabel("其它解釋");
 								lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 16));
-								panel_center_top.add(lblNewLabel_2);
+								panel_explanation_info.add(lblNewLabel_2);
 
-		JPanel panel_center_center = new JPanel();
-		panel_center_center.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_center.add(panel_center_center);
-		panel_center_center.setLayout(new BorderLayout(0, 0));
+		JPanel panel_explanation = new JPanel();
+		panel_explanation.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_center.add(panel_explanation);
+		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setLineWrap(true);
+		textArea_explanation.setWrapStyleWord(true);
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
-		panel_center_center.add(textArea_explanation);
 		
-		JPanel panel_center_top_1 = new JPanel();
-		panel_center_top_1.setPreferredSize(new Dimension(10, 30));
-		panel_center_top_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_center.add(panel_center_top_1);
-		panel_center_top_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		JScrollPane scrollPane_explanation = new JScrollPane();
+		scrollPane_explanation.setViewportView(textArea_explanation);
+		panel_explanation.add(scrollPane_explanation, BorderLayout.CENTER);
+		
+		JPanel panel_example_info = new JPanel();
+		panel_example_info.setPreferredSize(new Dimension(10, 30));
+		panel_example_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_center.add(panel_example_info);
+		panel_example_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		JPanel panel_1_2_1 = new JPanel();
-		panel_center_top_1.add(panel_1_2_1);
+		panel_example_info.add(panel_1_2_1);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("例句");
 		lblNewLabel_2_1.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_center_top_1.add(lblNewLabel_2_1);
+		panel_example_info.add(lblNewLabel_2_1);
 		
-		JPanel panel_center_bottom = new JPanel();
-		panel_center_bottom.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_center.add(panel_center_bottom);
-		panel_center_bottom.setLayout(new BorderLayout(0, 0));
+		JPanel panel_example = new JPanel();
+		panel_example.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panel_center.add(panel_example);
+		panel_example.setLayout(new BorderLayout(0, 0));
 		
 		textArea_example = new JTextArea();
-		panel_center_bottom.add(textArea_example, BorderLayout.CENTER);
+		textArea_example.setWrapStyleWord(true);
+		textArea_example.setLineWrap(true);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 18));
+		
+		JScrollPane scrollPane_example = new JScrollPane();
+		scrollPane_example.setViewportView(textArea_example);
+		panel_example.add(scrollPane_example, BorderLayout.CENTER);
 	}
 
 }
