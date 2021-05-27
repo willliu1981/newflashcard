@@ -178,7 +178,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				change(e);
 			}
 		});
-		textArea_explanation.setCaretColor(Color.ORANGE);
+		textArea_explanation.setCaretColor(Color.YELLOW);
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setBackground(Color.DARK_GRAY);
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 20));
@@ -204,7 +204,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		scrollPane_example.setViewportView(textArea_example);
 		panel_cardlayout.add(scrollPane_example, EXPLANATIONTYPE_EXAMPLE);
 	}
-	
+
 	private void change(KeyEvent e) {
 		System.out.println((int) e.getKeyChar());
 		/*
@@ -212,20 +212,20 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		 */
 		if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar() != 3) {
 			panel_updateborder.setBackground(Color.red);
-			this.changed=true;
+			this.changed = true;
 		}
 	}
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
 		if (changed) {
-			int result = JOptionPane.showConfirmDialog(this,  "資料尚未儲存\nyes=儲存(更新) , no=不儲存 , cancel=取消上一步資料顯示","資料變更",
+			int result = JOptionPane.showConfirmDialog(this, "資料尚未儲存\nyes=儲存(更新) , no=不儲存 , cancel=取消上一步資料顯示", "資料變更",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 			if (result == JOptionPane.YES_OPTION) {
 				saveData();
-			} else if (result == JOptionPane.CANCEL_OPTION) {
+			} else if (result == JOptionPane.CANCEL_OPTION || result == -1) {
 				return this.dt;
-			}else if(result==JOptionPane.NO_OPTION) {
+			} else if (result == JOptionPane.NO_OPTION) {
 				changed = false;
 				panel_updateborder.setBackground(MyColor.getBase());
 			}
@@ -273,7 +273,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private boolean setExampleHighLight(Vocabulary vocabulary) {
 		boolean r = false;
 		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
-			panel_exampleborder.setBackground(new Color(0,176,0));
+			panel_exampleborder.setBackground(new Color(0, 176, 0));
 			r = true;
 		} else {
 			panel_exampleborder.setBackground(MyColor.getBase());

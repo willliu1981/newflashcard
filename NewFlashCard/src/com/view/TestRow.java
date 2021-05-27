@@ -66,6 +66,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().initialize(3, 11);// 設定問題Row 範圍區間
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
+				
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}

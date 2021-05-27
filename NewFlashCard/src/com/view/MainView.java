@@ -49,6 +49,7 @@ import com.control.viewcontrol.sorter.cardboxsorter.CardBoxSorter.CardBoxSorterT
 import com.control.viewcontrol.sorter.vocabularysorter.VocabularySorter.VocabulrySorterType;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import com.tool.MyColor;
 
 public class MainView extends JFrame {
 	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
@@ -190,6 +191,10 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_cardbox.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 			btnNewButton_topbar_cardbox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if (judgeTest()) {
+						return;
+					}
+
 					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
 						btnNewButton_topbar_cardbox.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
 					} else {
@@ -245,6 +250,10 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_vocabulary.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 			btnNewButton_topbar_vocabulary.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if (judgeTest()) {
+						return;
+					}
+
 					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
 						btnNewButton_topbar_vocabulary.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
 					} else {
@@ -309,6 +318,18 @@ public class MainView extends JFrame {
 		createCardBoxPanel();
 		createCardBoxVocabularyPanel();
 		createTestPanel();
+	}
+
+	private boolean judgeTest() {
+		boolean r = false;
+		if (testQuestionControl.isTesting()) {
+			int result = JOptionPane.showConfirmDialog(this, "測驗仍在進行中,是否離開?", "測驗中", JOptionPane.YES_NO_OPTION,
+					JOptionPane.INFORMATION_MESSAGE);
+			if (result == JOptionPane.NO_OPTION || result == -1) {
+				r = true;
+			}
+		}
+		return r;
 	}
 
 	private void createVocabularyPanel() {
@@ -1386,8 +1407,8 @@ public class MainView extends JFrame {
 
 		/*
 		 * �test question, 更改此項需一併修改TestRow 的 myClickListerner 的 ((MainView)
-		 * showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15) 初始化,
-		 * 以及 TestQuestion 相關參數
+		 * showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15) 初始化, 以及
+		 * TestQuestion 相關參數
 		 */
 		for (int i = 0; i < 12; i++) {
 			TestQuestion testQuestion = new TestQuestion();

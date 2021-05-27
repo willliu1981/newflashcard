@@ -23,6 +23,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected boolean bingo;
 	protected boolean firstFailure;
 	protected boolean isReview;
+	protected boolean isTesting;
 	// random answer <row idx,question idx>
 
 	public enum Stage {
@@ -95,6 +96,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public void initialize(int min, int max) {
 		this.init(min, max);
 		this.isReview=false;
+		this.isTesting=true;
 	}
 
 	protected void init() {
@@ -195,6 +197,14 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 
 	public void setReview() {
 		this.isReview = true;
+	}
+
+	public boolean isTesting() {
+		return isTesting;
+	}
+	
+	public void endTest() {
+		this.isTesting=false;
 	}
 
 }

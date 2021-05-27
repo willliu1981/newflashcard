@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -115,14 +117,19 @@ public class AddVocabularyFrame extends JFrame {
 				String vocabulary = textField_vocabulary.getText();
 				String translation = textField_translation.getText();
 				String explanation = textArea_explanation.getText();
-				String example=textArea_example.getText();
+				String example = textArea_example.getText();
+				if (vocabulary == null || translation == null || vocabulary.trim().equals("")
+						|| translation.trim().equals("")) {
+					JOptionPane.showMessageDialog(btnNewButton, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 				Vocabulary m = new Vocabulary();
 				m.setVocabulary(vocabulary);
 				m.setTranslation(translation);
 				m.setExplanation(explanation);
 				m.setExample(example);
 				new VocabularyDao().add(m);
-				
+
 				textField_vocabulary.setText("");
 				textField_translation.setText("");
 				textArea_explanation.setText("");
@@ -136,19 +143,19 @@ public class AddVocabularyFrame extends JFrame {
 		JPanel panel_center = new JPanel();
 		panel.add(panel_center, BorderLayout.CENTER);
 		panel_center.setLayout(new BoxLayout(panel_center, BoxLayout.Y_AXIS));
-		
-				JPanel panel_explanation_info = new JPanel();
-				panel_explanation_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-				panel_explanation_info.setPreferredSize(new Dimension(10, 30));
-				panel_center.add(panel_explanation_info);
-				panel_explanation_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-				
-						JPanel panel_1_2 = new JPanel();
-						panel_explanation_info.add(panel_1_2);
-						
-								JLabel lblNewLabel_2 = new JLabel("其它解釋");
-								lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 16));
-								panel_explanation_info.add(lblNewLabel_2);
+
+		JPanel panel_explanation_info = new JPanel();
+		panel_explanation_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_explanation_info.setPreferredSize(new Dimension(10, 30));
+		panel_center.add(panel_explanation_info);
+		panel_explanation_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+		JPanel panel_1_2 = new JPanel();
+		panel_explanation_info.add(panel_1_2);
+
+		JLabel lblNewLabel_2 = new JLabel("其它解釋");
+		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 16));
+		panel_explanation_info.add(lblNewLabel_2);
 
 		JPanel panel_explanation = new JPanel();
 		panel_explanation.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -156,43 +163,45 @@ public class AddVocabularyFrame extends JFrame {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setCaretColor(Color.YELLOW);
 		textArea_explanation.setMargin(new Insets(20, 20, 20, 20));
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setBackground(Color.DARK_GRAY);
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.setWrapStyleWord(true);
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
-		
+
 		JScrollPane scrollPane_explanation = new JScrollPane();
 		scrollPane_explanation.setViewportView(textArea_explanation);
 		panel_explanation.add(scrollPane_explanation, BorderLayout.CENTER);
-		
+
 		JPanel panel_example_info = new JPanel();
 		panel_example_info.setPreferredSize(new Dimension(10, 30));
 		panel_example_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_center.add(panel_example_info);
 		panel_example_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		
+
 		JPanel panel_1_2_1 = new JPanel();
 		panel_example_info.add(panel_1_2_1);
-		
+
 		JLabel lblNewLabel_2_1 = new JLabel("例句");
 		lblNewLabel_2_1.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_example_info.add(lblNewLabel_2_1);
-		
+
 		JPanel panel_example = new JPanel();
 		panel_example.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		panel_center.add(panel_example);
 		panel_example.setLayout(new BorderLayout(0, 0));
-		
+
 		textArea_example = new JTextArea();
+		textArea_example.setCaretColor(Color.YELLOW);
 		textArea_example.setMargin(new Insets(20, 20, 20, 20));
 		textArea_example.setForeground(Color.WHITE);
 		textArea_example.setBackground(Color.DARK_GRAY);
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setLineWrap(true);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 18));
-		
+
 		JScrollPane scrollPane_example = new JScrollPane();
 		scrollPane_example.setViewportView(textArea_example);
 		panel_example.add(scrollPane_example, BorderLayout.CENTER);
