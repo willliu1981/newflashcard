@@ -244,7 +244,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private boolean setExampleHighLight(Vocabulary vocabulary) {
 		boolean r = false;
 		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
-			panel_exampleborder.setBackground(Color.green);
+			panel_exampleborder.setBackground(Color.orange);
 			r = true;
 		} else {
 			panel_exampleborder.setBackground(MyColor.getBase());

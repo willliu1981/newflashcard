@@ -59,7 +59,7 @@ public class AddVocabularyFrame extends JFrame {
 	 */
 	public AddVocabularyFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 1000, 800);
+		setBounds(100, 100, 900, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -124,6 +124,7 @@ public class AddVocabularyFrame extends JFrame {
 				textField_vocabulary.setText("");
 				textField_translation.setText("");
 				textArea_explanation.setText("");
+				textArea_example.setText("");
 			}
 		});
 		btnNewButton.setBackground(SystemColor.controlHighlight);

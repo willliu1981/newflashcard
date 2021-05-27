@@ -112,7 +112,7 @@ public class CardBox {
 	}
 
 	/*
-	 * 回傳 是否完成任務(stage= last code)
+	 * 步進並回傳 是否完成任務(stage= last code)
 	 */
 	public boolean state() {
 		boolean r = false;

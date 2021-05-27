@@ -213,7 +213,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				map.put(idx, v);
 				sess.setAttribute("randomAnswers", map);
 			}
-			this.setBackground(this.showRowControl.Color_Base);
+			/*
+			 * 是否複習,則顯示為他色,否為預設
+			 */
+			this.setBackground(MyColor.getBase());
+			if (this.showRowControl.isReview() && idx == 0) {
+				this.setBackground(Color.red);
+			}
 			break;
 		case Guess:
 			if (idx == 1) {
@@ -243,6 +249,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
 					if (this.showRowControl.isLastQuestion()) {
 						info = String.format("複習答錯的題目,共%d題", this.showRowControl.getReviews().size());
+						this.showRowControl.setReview();
 					} else {
 						info = "下一題";
 					}
@@ -261,6 +268,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							new CardBoxDao().updateTest(b, boxid);
 						} else {
 							info = String.format("答對了 (複習題目,共%d題)", this.showRowControl.getReviews().size());
+							this.showRowControl.setReview();
 						}
 					} else {
 						info = "答對了 (下一題)";

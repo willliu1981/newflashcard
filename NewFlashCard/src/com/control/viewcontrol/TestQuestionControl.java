@@ -22,6 +22,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected Stage stage;
 	protected boolean bingo;
 	protected boolean firstFailure;
+	protected boolean isReview;
 	// random answer <row idx,question idx>
 
 	public enum Stage {
@@ -70,7 +71,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	}
 
 	public void setQuestionFromReviews() {
-		this.questions = this.reviews.stream().collect(Collectors.toList()) ;
+		this.questions = this.reviews.stream().collect(Collectors.toList());
 	}
 
 	public boolean reviewIsEmpty() {
@@ -86,9 +87,14 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	}
 
 	public T getRandomAnswer() {
-		//這個方法可能會被覆寫
+		// 這個方法可能會被覆寫
 		int idx = (int) (Math.random() * this.answers.size());
 		return this.answers.get(idx);
+	}
+	
+	public void initialize(int min, int max) {
+		this.init(min, max);
+		this.isReview=false;
 	}
 
 	protected void init() {
@@ -145,17 +151,13 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return currentQuestionIdx;
 	}
 
-//	public void setEventIdx(int eventIdx) {
-//		this.eventIdx = eventIdx;
-//	}
-
 	public int getCorrectAnswerRowIdx() {
 		return correctAnswerRowIdx;
 	}
 
 	protected void setCorrectAnswerRowIdx(int minRowIdx, int maxRowIdx) {
 		if (minRowIdx != maxRowIdx) {
-			this.correctAnswerRowIdx = (int) (Math.random() * (maxRowIdx - minRowIdx+1)) + minRowIdx;
+			this.correctAnswerRowIdx = (int) (Math.random() * (maxRowIdx - minRowIdx + 1)) + minRowIdx;
 		}
 	}
 
@@ -178,13 +180,21 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public boolean isBingo() {
 		return bingo;
 	}
-	
+
 	public void setFirstFailure() {
-		this.firstFailure=true;
+		this.firstFailure = true;
 	}
 
 	public boolean isFirstFailure() {
 		return firstFailure;
+	}
+
+	public boolean isReview() {
+		return isReview;
+	}
+
+	public void setReview() {
+		this.isReview = true;
 	}
 
 }
