@@ -33,6 +33,8 @@ import java.awt.TextArea;
 
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -66,6 +68,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_cardlayout;
 	private JPanel panel_1;
 	private JPanel panel_exampleborder;
+	private boolean changed = false;// Text資料有改變時
 
 	/**
 	 * Launch the application.
@@ -112,6 +115,12 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel.add(panel_2);
 
 		textField_translation = new JTextField();
+		textField_translation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				change(e);
+			}
+		});
 		textField_translation.setBorder(null);
 		textField_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(textField_translation);
@@ -151,19 +160,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel_updateborder.add(btnNewButton_update);
 		btnNewButton_update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(dt==null) {
-					return;
-				}
-				UpdateExplanationBridge bridge = new UpdateExplanationBridge();
-				Dispatcher disp = bridge.getDispatcher();
-				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
-				vocabulary.setExplanation(textArea_explanation.getText());
-				vocabulary.setExample(textArea_example.getText());
-				vocabulary.setTranslation(textField_translation.getText());
-				bridge.setParameter("vocabulary", vocabulary);
-				disp.send(bridge);
-				panel_updateborder.setBackground(MyColor.getBase());
-				setExampleHighLight(vocabulary);
+				saveData();
 			}
 		});
 		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -178,13 +175,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				System.out.println((int)e.getKeyChar());
-				/*
-				 * 非按下Ctrl+A 和 Ctrl+C
-				 */
-				if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar()!=3) {
-					panel_updateborder.setBackground(Color.red);
-				}
+				change(e);
 			}
 		});
 		textArea_explanation.setCaretColor(Color.ORANGE);
@@ -199,13 +190,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				System.out.println((int)e.getKeyChar());
-				/*
-				 * 非按下Ctrl+A 和 Ctrl+C
-				 */
-				if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar()!=3) {
-					panel_updateborder.setBackground(Color.red);
-				}
+				change(e);
 			}
 		});
 		textArea_example.setWrapStyleWord(true);
@@ -214,14 +199,37 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.setForeground(Color.WHITE);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 20));
 		textArea_example.setCaretColor(Color.ORANGE);
-		textArea_example.setBackground(Color.DARK_GRAY);
+		textArea_example.setBackground(new Color(0, 0, 0));
 		scrollPane_example = new JScrollPane();
 		scrollPane_example.setViewportView(textArea_example);
 		panel_cardlayout.add(scrollPane_example, EXPLANATIONTYPE_EXAMPLE);
 	}
+	
+	private void change(KeyEvent e) {
+		System.out.println((int) e.getKeyChar());
+		/*
+		 * 非按下Ctrl+A 和 Ctrl+C
+		 */
+		if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar() != 3) {
+			panel_updateborder.setBackground(Color.red);
+			this.changed=true;
+		}
+	}
 
 	@Override
-	public void accpet() {
+	public UIDateTransportation accpet(UIDateTransportation dt) {
+		if (changed) {
+			int result = JOptionPane.showConfirmDialog(this,  "資料尚未儲存\nyes=儲存(更新) , no=不儲存 , cancel=取消上一步資料顯示","資料變更",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				saveData();
+			} else if (result == JOptionPane.CANCEL_OPTION) {
+				return this.dt;
+			}else if(result==JOptionPane.NO_OPTION) {
+				changed = false;
+				panel_updateborder.setBackground(MyColor.getBase());
+			}
+		}
 		Bridge birdge = (Bridge) dt;
 		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
@@ -233,6 +241,24 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
 				explanationType = EXPLANATIONTYPE_EXPLANATION);
 		btnNewButton_type.setText(EXPLANATIONTYPE_EXAMPLE);
+		setExampleHighLight(vocabulary);
+		return dt;
+	}
+
+	private void saveData() {
+		changed = false;
+		panel_updateborder.setBackground(MyColor.getBase());
+		if (dt == null) {
+			return;
+		}
+		UpdateExplanationBridge bridge = new UpdateExplanationBridge();
+		Dispatcher disp = bridge.getDispatcher();
+		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+		vocabulary.setExplanation(textArea_explanation.getText());
+		vocabulary.setExample(textArea_example.getText());
+		vocabulary.setTranslation(textField_translation.getText());
+		bridge.setParameter("vocabulary", vocabulary);
+		disp.send(bridge);
 		setExampleHighLight(vocabulary);
 	}
 

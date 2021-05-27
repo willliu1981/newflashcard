@@ -74,6 +74,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						 */
 						if (rowIdx == 1) {
 							showRowControl.setFirstFailure();
+						}else {
+							return;
 						}
 					}
 					showRowControl.showRow();
