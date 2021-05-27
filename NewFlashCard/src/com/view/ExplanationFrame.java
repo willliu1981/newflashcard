@@ -267,10 +267,13 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.dt = dt;
 	}
 
+	/*
+	 * 有例句則高亮顯示
+	 */
 	private boolean setExampleHighLight(Vocabulary vocabulary) {
 		boolean r = false;
 		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
-			panel_exampleborder.setBackground(Color.orange);
+			panel_exampleborder.setBackground(new Color(0,176,0));
 			r = true;
 		} else {
 			panel_exampleborder.setBackground(MyColor.getBase());

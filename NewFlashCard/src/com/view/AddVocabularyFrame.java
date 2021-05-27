@@ -29,6 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.JScrollPane;
+import java.awt.Color;
+import java.awt.Insets;
 
 public class AddVocabularyFrame extends JFrame {
 
@@ -95,7 +97,7 @@ public class AddVocabularyFrame extends JFrame {
 		JPanel panel_1_1 = new JPanel();
 		panel_top_center.add(panel_1_1);
 
-		JLabel lblNewLabel_1 = new JLabel("詞彙");
+		JLabel lblNewLabel_1 = new JLabel("翻譯");
 		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_top_center.add(lblNewLabel_1);
 
@@ -154,6 +156,9 @@ public class AddVocabularyFrame extends JFrame {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setMargin(new Insets(20, 20, 20, 20));
+		textArea_explanation.setForeground(Color.WHITE);
+		textArea_explanation.setBackground(Color.DARK_GRAY);
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.setWrapStyleWord(true);
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
@@ -181,6 +186,9 @@ public class AddVocabularyFrame extends JFrame {
 		panel_example.setLayout(new BorderLayout(0, 0));
 		
 		textArea_example = new JTextArea();
+		textArea_example.setMargin(new Insets(20, 20, 20, 20));
+		textArea_example.setForeground(Color.WHITE);
+		textArea_example.setBackground(Color.DARK_GRAY);
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setLineWrap(true);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 18));
