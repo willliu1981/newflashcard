@@ -12,18 +12,18 @@ public class ExplanationBridge extends Bridge {
 
 	@Override
 	public void doSend() {
-		if (PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION)
-				|| PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE)) {
+		if (PadFactory.isChanged(PadFactory.EXPLANATIONFRAME)) {
 			int result = JOptionPane.showOptionDialog(MainView.explantationFrame, "資料尚未儲存,是否放棄當前資料?", "資料變更",
 					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[] { "是(放棄)", "取消動作" },
 					"取消動作");
 			if (result != JOptionPane.YES_OPTION) {
 				return;
+			} else {
+				PadFactory.initializeChange(PadFactory.EXPLANATIONFRAME);
 			}
 		}
 
-		Dispatcher disp = this.getDispatcher();
-		disp.send(MainView.explantationFrame);
+		this.getDispatcher().send(MainView.explantationFrame);
 	}
 
 }

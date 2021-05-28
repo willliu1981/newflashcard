@@ -34,6 +34,7 @@ import com.model.Vocabulary;
 import com.tool.MyColor;
 
 public class ExplanationFrame extends JFrame implements Transportable {
+	private ExplanationFrame thisFrame;
 	private static final String EXPLANATIONTYPE_EXPLANATION = "解釋";
 	private static final String EXPLANATIONTYPE_EXAMPLE = "例句";
 	private static String explanationType = EXPLANATIONTYPE_EXPLANATION;
@@ -74,6 +75,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	 * Create the frame.
 	 */
 	public ExplanationFrame() {
+		thisFrame = this;
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 900, 800);
 		contentPane = new JPanel();
@@ -101,7 +103,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textField_translation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// change(e);
+				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
 			}
 		});
 		textField_translation.setBorder(null);
@@ -137,13 +139,23 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 		panel_updateborder = new JPanel();
 		panel.add(panel_updateborder);
-
 		JButton btnNewButton_update = new JButton("更新");
 		btnNewButton_update.setBackground(SystemColor.controlHighlight);
 		panel_updateborder.add(btnNewButton_update);
 		btnNewButton_update.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				saveData();
+			public void actionPerformed(ActionEvent e) {
+				if (dt == null) {
+					return;
+				}
+
+				UpdateExplanationBridge bridge = new UpdateExplanationBridge();
+				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+				vocabulary.setExplanation(textArea_explanation.getText());
+				vocabulary.setExample(textArea_example.getText());
+				vocabulary.setTranslation(textField_translation.getText());
+				bridge.setParameter("parent", thisFrame);
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.getDispatcher().send();
 			}
 		});
 		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -221,55 +233,29 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
 				explanationType = EXPLANATIONTYPE_EXPLANATION);
 		btnNewButton_type.setText(EXPLANATIONTYPE_EXAMPLE);
-		setExampleHighLight(vocabulary);
-		if(PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION)
+
+		/*
+		 * set highlight
+		 */
+		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
+			panel_exampleborder.setBackground(new Color(0, 176, 0));
+		} else {
+			panel_exampleborder.setBackground(MyColor.getBase());
+		}
+
+		if (PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION)
 				|| PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE)) {
 			panel_updateborder.setBackground(Color.red);
-		}else {
+		} else {
 			panel_updateborder.setBackground(MyColor.getBase());
 		}
-		
+
 		return dt;
-	}
-
-	private void saveData() {
-		if (dt == null) {
-			return;
-		}
-
-		UpdateExplanationBridge bridge = new UpdateExplanationBridge();
-		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
-		vocabulary.setExplanation(textArea_explanation.getText());
-		vocabulary.setExample(textArea_example.getText());
-		vocabulary.setTranslation(textField_translation.getText());
-		bridge.setParameter("vocabulary", vocabulary);
-		bridge.getDispatcher().send();
-	}
-	
-	private void setUnChanged() {
-		PadFactory.getPad().setChange(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, false);
-		PadFactory.getPad().setChange(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, false);
 	}
 
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
 	}
-
-	/*
-	 * 有例句則高亮顯示
-	 */
-	private boolean setExampleHighLight(Vocabulary vocabulary) {
-		boolean r = false;
-		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
-			panel_exampleborder.setBackground(new Color(0, 176, 0));
-			r = true;
-		} else {
-			panel_exampleborder.setBackground(MyColor.getBase());
-			r = false;
-		}
-		return r;
-	}
-	
 
 }
