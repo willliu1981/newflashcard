@@ -197,6 +197,8 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
 						return;
+					}else {
+						testQuestionControl.endTest();
 					}
 
 					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
@@ -256,6 +258,8 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
 						return;
+					}else {
+						testQuestionControl.endTest();
 					}
 
 					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {

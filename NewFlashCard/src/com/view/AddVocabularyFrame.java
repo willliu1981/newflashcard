@@ -21,6 +21,7 @@ import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
 import com.control.bridge.AddVocabularyBridge;
+import com.control.bridge.CheckVocabularyExistBridge;
 import com.control.dao.Dao;
 import com.control.dao.VocabularyDao;
 import com.model.Vocabulary;
@@ -36,6 +37,7 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.border.LineBorder;
 
 public class AddVocabularyFrame extends JFrame {
 	private AddVocabularyFrame thisFrame;
@@ -67,7 +69,7 @@ public class AddVocabularyFrame extends JFrame {
 	public AddVocabularyFrame() {
 		this.thisFrame = this;
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 900, 800);
+		setBounds(100, 100, 1046, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -100,6 +102,24 @@ public class AddVocabularyFrame extends JFrame {
 		textField_vocabulary.setColumns(10);
 		panel_top_center.add(textField_vocabulary);
 
+		JButton btnNewButton_check = new JButton("ck");
+		btnNewButton_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CheckVocabularyExistBridge bridge = new CheckVocabularyExistBridge();
+				bridge.setParameter("parent",thisFrame);
+				bridge.setParameter("vocabulary", textField_vocabulary.getText());
+				bridge.getDispatcher().send();
+			}
+
+		});
+		btnNewButton_check.setBackground(SystemColor.controlHighlight);
+		btnNewButton_check.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnNewButton_check.setMinimumSize(new Dimension(21, 23));
+		btnNewButton_check.setMargin(new Insets(2, 2, 2, 2));
+		btnNewButton_check.setPreferredSize(new Dimension(21, 23));
+		btnNewButton_check.setFont(new Font("新細明體", Font.PLAIN, 12));
+		panel_top_center.add(btnNewButton_check);
+
 		JPanel panel_1_1 = new JPanel();
 		panel_top_center.add(panel_1_1);
 
@@ -109,7 +129,7 @@ public class AddVocabularyFrame extends JFrame {
 
 		textField_translation = new JTextField();
 		textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
-		textField_translation.setColumns(10);
+		textField_translation.setColumns(20);
 		panel_top_center.add(textField_translation);
 
 		JPanel panel_1_1_1 = new JPanel();
@@ -135,7 +155,7 @@ public class AddVocabularyFrame extends JFrame {
 				bridge.setParameter("example", example);
 				bridge.setParameter("parent", thisFrame);
 				int r = bridge.getDispatcher().sendAndBack();
-				
+
 				if (r == bridge.SENDANDBACK_NORMAL) {
 					textField_vocabulary.setText("");
 					textField_translation.setText("");
