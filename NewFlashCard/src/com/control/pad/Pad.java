@@ -1,0 +1,65 @@
+package com.control.pad;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class Pad {
+	private static class PadPack {
+		private String contentTemp;
+		private boolean isChanged;
+
+		public String getContentTemp() {
+			return contentTemp;
+		}
+
+		public void setContentTemp(String contentTemp) {
+			this.contentTemp = contentTemp;
+		}
+
+		public boolean isChanged() {
+			return isChanged;
+		}
+
+		public void setChanged(boolean isChanged) {
+			this.isChanged = isChanged;
+		}
+
+	}
+	
+	protected Pad() {}
+
+	protected static Map<String, PadPack> map = new HashMap<>();
+
+	protected PadPack getPadPack(String name) {
+		if (!this.map.containsKey(name)) {
+			this.map.put(name, new PadPack());
+		}
+		return this.map.get(name);
+	}
+
+	public String getContentTemp(String name) {
+		return getPadPack(name).getContentTemp();
+	}
+
+	public void setContentTemp(String name, String content) {
+		getPadPack(name).setContentTemp(content);
+	}
+
+	public boolean isChanged(String name) {
+		return getPadPack(name).isChanged;
+	}
+
+	public void setChange(String name) {
+		setChange(name, true);
+	}
+
+	public void setChange(String name, boolean change) {
+		getPadPack(name).setChanged(change);
+	}
+	
+	public  abstract void change(Component parent, String name,KeyEvent e) ;
+
+}

@@ -1,54 +1,37 @@
 package com.view;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.control.bridge.Bridge;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
-import com.control.viewcontrol.ExplanationBridge;
+import com.control.pad.Pad;
+import com.control.pad.PadFactory;
 import com.control.viewcontrol.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
-
-import java.awt.Dimension;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.TextArea;
-
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.ComponentOrientation;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
-import java.awt.CardLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ExplanationFrame extends JFrame implements Transportable {
 	private static final String EXPLANATIONTYPE_EXPLANATION = "解釋";
@@ -69,6 +52,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_1;
 	private JPanel panel_exampleborder;
 	private boolean changed = false;// Text資料有改變時
+	private String explanationTemp;// 用於反悔復原
 
 	/**
 	 * Launch the application.
@@ -173,9 +157,25 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.setWrapStyleWord(true);
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (((int) e.getKeyChar()) != 65535 && ((int) e.getKeyChar()) != 26 && ((int) e.getKeyChar()) != 3
+						&& ((int) e.getKeyChar()) != 1) {
+					explanationTemp = textArea_explanation.getText();
+				}
+			}
+
 			@Override
 			public void keyTyped(KeyEvent e) {
-				change(e);
+				PadFactory.getPad().change(panel_updateborder, PadFactory.MAINEXPLANATIONFRAME_EXPLANATION, e);
+
+				if (((int) e.getKeyChar()) == 26) {
+					String temp = textArea_explanation.getText();
+					textArea_explanation.setText(explanationTemp);
+					explanationTemp = temp;
+				}
+
 			}
 		});
 		textArea_explanation.setCaretColor(Color.YELLOW);
@@ -206,7 +206,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	}
 
 	private void change(KeyEvent e) {
-		System.out.println((int) e.getKeyChar());
 		/*
 		 * 非按下Ctrl+A 和 Ctrl+C
 		 */
