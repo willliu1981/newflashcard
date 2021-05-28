@@ -1,10 +1,11 @@
-package com.control.bridge;
+package com.control.viewcontrol.bridge;
 
 import java.awt.Component;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.control.bridge.Bridge;
 import com.control.dao.VocabularyDao;
 import com.model.Vocabulary;
 

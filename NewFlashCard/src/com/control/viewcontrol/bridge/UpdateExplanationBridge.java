@@ -1,7 +1,6 @@
-package com.control.viewcontrol;
+package com.control.viewcontrol.bridge;
 
 import com.control.bridge.Bridge;
-import com.control.bridge.session.UIDateTransportation;
 import com.control.dao.VocabularyDao;
 import com.model.Vocabulary;
 

@@ -5,10 +5,10 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 
 public class PadFactory {
-	public final static String MAINEXPLANATIONFRAME_EXPLANATION = "mainexplanationframe_explanation";
-	public final static String MAINEXPLANATIONFRAME_EXAMPLE = "mainexplanationframe_example";
-	public final static String MAINADDVOCABULARYFRAME_EXPLANATION = "mainaddvocabularyframe_explanation";
-	public final static String MAINADDVOCABULARYFRAME_EXAMPLE = "mainaddvocabularyframe_example";
+	public final static String MAIN_EXPLANATIONFRAME_EXPLANATION = "main_explanationframe_explanation";
+	public final static String MAIN_EXPLANATIONFRAME_EXAMPLE = "main_explanationframe_example";
+	public final static String MAIN_ADDVOCABULARYFRAME_EXPLANATION = "main_addvocabularyframe_explanation";
+	public final static String MAIN_ADDVOCABULARYFRAME_EXAMPLE = "main_addvocabularyframe_example";
 
 	private class MyPad extends Pad {
 		@Override

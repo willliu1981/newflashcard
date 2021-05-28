@@ -22,13 +22,13 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.control.bridge.Dispatcher;
-import com.control.bridge.ExposeExplanationBridge;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.bridge.session.UIDateTransportation.Session;
 import com.control.dao.CardBoxDao;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.TestQuestionControl;
+import com.control.viewcontrol.bridge.ExposeExplanationBridge;
 import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;

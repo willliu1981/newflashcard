@@ -1,9 +1,10 @@
-package com.control.bridge;
+package com.control.viewcontrol.bridge;
 
 import java.awt.Component;
 
 import javax.swing.JOptionPane;
 
+import com.control.bridge.Bridge;
 import com.control.dao.VocabularyDao;
 
 public class CheckVocabularyExistBridge extends Bridge {

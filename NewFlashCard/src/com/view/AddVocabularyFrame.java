@@ -20,10 +20,10 @@ import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
-import com.control.bridge.AddVocabularyBridge;
-import com.control.bridge.CheckVocabularyExistBridge;
 import com.control.dao.Dao;
 import com.control.dao.VocabularyDao;
+import com.control.viewcontrol.bridge.AddVocabularyBridge;
+import com.control.viewcontrol.bridge.CheckVocabularyExistBridge;
 import com.model.Vocabulary;
 
 import javax.swing.JButton;

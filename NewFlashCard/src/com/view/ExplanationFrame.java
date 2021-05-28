@@ -29,7 +29,7 @@ import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.Pad;
 import com.control.pad.PadFactory;
-import com.control.viewcontrol.UpdateExplanationBridge;
+import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
 
@@ -51,7 +51,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_cardlayout;
 	private JPanel panel_1;
 	private JPanel panel_exampleborder;
-	private boolean changed = false;// Text資料有改變時
 	private String explanationTemp;// 用於反悔復原
 
 	/**
@@ -102,7 +101,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textField_translation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				change(e);
+				// change(e);
 			}
 		});
 		textField_translation.setBorder(null);
@@ -168,7 +167,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				PadFactory.getPad().change(panel_updateborder, PadFactory.MAINEXPLANATIONFRAME_EXPLANATION, e);
+				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
 
 				if (((int) e.getKeyChar()) == 26) {
 					String temp = textArea_explanation.getText();
@@ -190,7 +189,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				change(e);
+				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
 			}
 		});
 		textArea_example.setWrapStyleWord(true);
@@ -205,30 +204,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel_cardlayout.add(scrollPane_example, EXPLANATIONTYPE_EXAMPLE);
 	}
 
-	private void change(KeyEvent e) {
-		/*
-		 * 非按下Ctrl+A 和 Ctrl+C
-		 */
-		if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar() != 3) {
-			panel_updateborder.setBackground(Color.red);
-			this.changed = true;
-		}
-	}
-
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
-		if (changed) {
-			int result = JOptionPane.showConfirmDialog(this, "資料尚未儲存\nyes=儲存(更新) , no=不儲存 , cancel=取消上一步資料顯示", "資料變更",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			if (result == JOptionPane.YES_OPTION) {
-				saveData();
-			} else if (result == JOptionPane.CANCEL_OPTION || result == -1) {
-				return this.dt;
-			} else if (result == JOptionPane.NO_OPTION) {
-				changed = false;
-				panel_updateborder.setBackground(MyColor.getBase());
-			}
-		}
 		Bridge birdge = (Bridge) dt;
 		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
@@ -237,28 +214,41 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textField_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
+
+		/*
+		 * init component
+		 */
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
 				explanationType = EXPLANATIONTYPE_EXPLANATION);
 		btnNewButton_type.setText(EXPLANATIONTYPE_EXAMPLE);
 		setExampleHighLight(vocabulary);
+		if(PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION)
+				|| PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE)) {
+			panel_updateborder.setBackground(Color.red);
+		}else {
+			panel_updateborder.setBackground(MyColor.getBase());
+		}
+		
 		return dt;
 	}
 
 	private void saveData() {
-		changed = false;
-		panel_updateborder.setBackground(MyColor.getBase());
 		if (dt == null) {
 			return;
 		}
+
 		UpdateExplanationBridge bridge = new UpdateExplanationBridge();
-		Dispatcher disp = bridge.getDispatcher();
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		vocabulary.setExplanation(textArea_explanation.getText());
 		vocabulary.setExample(textArea_example.getText());
 		vocabulary.setTranslation(textField_translation.getText());
 		bridge.setParameter("vocabulary", vocabulary);
-		disp.send();
-		setExampleHighLight(vocabulary);
+		bridge.getDispatcher().send();
+	}
+	
+	private void setUnChanged() {
+		PadFactory.getPad().setChange(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, false);
+		PadFactory.getPad().setChange(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, false);
 	}
 
 	@Override
@@ -280,5 +270,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		}
 		return r;
 	}
+	
 
 }
