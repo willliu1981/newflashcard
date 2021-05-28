@@ -10,11 +10,17 @@ public class Dispatcher {
 		this.dt = dt;
 	}
 
-	public void send(UIDateTransportation bridge) {
-		dt.doSend();
+	public void send(UIDateTransportation dt) {
+		this.dt.doSend(dt);
 	}
 	
 	public void send(Transportable t) {
 		t.dispatch(dt);
+	}
+	
+	public int sendAndBack(UIDateTransportation dt) {
+		int r=this.dt.doSendAndBack(dt);
+		this.dt.doSend(dt);
+		return r;
 	}
 }

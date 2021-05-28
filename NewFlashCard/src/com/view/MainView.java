@@ -52,6 +52,7 @@ import com.model.Vocabulary;
 import com.tool.MyColor;
 
 public class MainView extends JFrame {
+	private static MainView thisApp;
 	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
@@ -124,8 +125,11 @@ public class MainView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainView frame = new MainView();
-					frame.setVisible(true);
+					if(thisApp!=null) {
+						return;
+					}
+					thisApp = new MainView();
+					thisApp.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -921,7 +925,7 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.showRow();
 				((CardLayout) panel_cardbox_vocabulary_editbar.getLayout()).show(panel_cardbox_vocabulary_editbar,
 						CardLayout_Editbar_Add);
-				List<Vocabulary> list = new VocabularyDao().queryExsideHadBoxID();
+				List<Vocabulary> list = new VocabularyDao().queryExceptHadBoxID();
 				((MainView) vocabularyShowRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
 				((MainView) vocabularyShowRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 				Map<String, String> map = new HashMap<>();

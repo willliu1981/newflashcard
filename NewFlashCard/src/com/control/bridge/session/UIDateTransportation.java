@@ -32,7 +32,10 @@ public abstract class UIDateTransportation {
 		return this.dispatcher;
 	}
 
-	public abstract void doSend();
+	public abstract void doSend(UIDateTransportation dt);
+	public  int doSendAndBack(UIDateTransportation dt) {
+		return -1;
+	}
 
 	public void setParameter(String name, Object obj) {
 		this.parameter.put(name, obj);

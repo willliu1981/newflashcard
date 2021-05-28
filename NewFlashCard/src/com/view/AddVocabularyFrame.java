@@ -20,6 +20,7 @@ import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
+import com.control.bridge.AddVocabularyBridge;
 import com.control.dao.Dao;
 import com.control.dao.VocabularyDao;
 import com.model.Vocabulary;
@@ -33,9 +34,11 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AddVocabularyFrame extends JFrame {
-
+	private AddVocabularyFrame thisFrame;
 	private JPanel contentPane;
 	private JTextField textField_vocabulary;
 	private JTextField textField_translation;
@@ -62,6 +65,7 @@ public class AddVocabularyFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AddVocabularyFrame() {
+		this.thisFrame = this;
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 900, 800);
 		contentPane = new JPanel();
@@ -120,20 +124,24 @@ public class AddVocabularyFrame extends JFrame {
 				String example = textArea_example.getText();
 				if (vocabulary == null || translation == null || vocabulary.trim().equals("")
 						|| translation.trim().equals("")) {
-					JOptionPane.showMessageDialog(btnNewButton, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				Vocabulary m = new Vocabulary();
-				m.setVocabulary(vocabulary);
-				m.setTranslation(translation);
-				m.setExplanation(explanation);
-				m.setExample(example);
-				new VocabularyDao().add(m);
 
-				textField_vocabulary.setText("");
-				textField_translation.setText("");
-				textArea_explanation.setText("");
-				textArea_example.setText("");
+				AddVocabularyBridge bridge = new AddVocabularyBridge();
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.setParameter("translation", translation);
+				bridge.setParameter("explanation", explanation);
+				bridge.setParameter("example", example);
+				bridge.setParameter("parent", thisFrame);
+				int r = bridge.getDispatcher().sendAndBack(bridge);
+				
+				if (r == JOptionPane.OK_OPTION) {
+					textField_vocabulary.setText("");
+					textField_translation.setText("");
+					textArea_explanation.setText("");
+					textArea_example.setText("");
+				}
 			}
 		});
 		btnNewButton.setBackground(SystemColor.controlHighlight);
@@ -163,6 +171,12 @@ public class AddVocabularyFrame extends JFrame {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+
+			}
+		});
 		textArea_explanation.setCaretColor(Color.YELLOW);
 		textArea_explanation.setMargin(new Insets(20, 20, 20, 20));
 		textArea_explanation.setForeground(Color.WHITE);
@@ -189,11 +203,17 @@ public class AddVocabularyFrame extends JFrame {
 		panel_example_info.add(lblNewLabel_2_1);
 
 		JPanel panel_example = new JPanel();
-		panel_example.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panel_example.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_center.add(panel_example);
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
+		textArea_example.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+		});
 		textArea_example.setCaretColor(Color.YELLOW);
 		textArea_example.setMargin(new Insets(20, 20, 20, 20));
 		textArea_example.setForeground(Color.WHITE);

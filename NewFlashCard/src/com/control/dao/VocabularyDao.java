@@ -58,7 +58,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
 				m.setExplanation(rs.getString("explanation"));
-				m.setExample( rs.getString("example"));
+				m.setExample(rs.getString("example"));
 				ms.add(m);
 			}
 			rs.close();
@@ -69,7 +69,8 @@ public class VocabularyDao extends Dao<Vocabulary> {
 		}
 		return ms;
 	}
-	public List<Vocabulary> queryExsideHadBoxID() {
+
+	public List<Vocabulary> queryExceptHadBoxID() {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
@@ -90,7 +91,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
 				m.setExplanation(rs.getString("explanation"));
-				m.setExample( rs.getString("example"));
+				m.setExample(rs.getString("example"));
 				ms.add(m);
 			}
 			rs.close();
@@ -122,7 +123,7 @@ public class VocabularyDao extends Dao<Vocabulary> {
 			m.setCreate_date(rs.getString("create_date"));
 			m.setUpdate_date(rs.getString("update_date"));
 			m.setExplanation(rs.getString("explanation"));
-			m.setExample( rs.getString("example"));
+			m.setExample(rs.getString("example"));
 			rs.close();
 			st.close();
 			myConn.close();
@@ -153,7 +154,41 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setCreate_date(rs.getString("create_date"));
 				m.setUpdate_date(rs.getString("update_date"));
 				m.setExplanation(rs.getString("explanation"));
-				m.setExample( rs.getString("example"));
+				m.setExample(rs.getString("example"));
+				ms.add(m);
+			}
+			rs.close();
+			st.close();
+			myConn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ms;
+	}
+	
+	
+	public List<Vocabulary> queryByVocabulary(String vocabuary) {
+		Conn conn = new Conn();
+		Connection myConn = conn.conn();
+		PreparedStatement st = null;
+		String sql = "select * from vocabulary where vocabulary=?";
+		ResultSet rs = null;
+		List<Vocabulary> ms = new ArrayList<>();
+		Vocabulary m = null;
+		try {
+			st = myConn.prepareStatement(sql);
+			st.setString(1, vocabuary);
+			rs = st.executeQuery();
+			while (rs.next()) {
+				m = new Vocabulary();
+				m.setId(rs.getInt("id"));
+				m.setVocabulary(rs.getString("vocabulary"));
+				m.setTranslation(rs.getString("translation"));
+				m.setBox_id(rs.getInt("box_id"));
+				m.setCreate_date(rs.getString("create_date"));
+				m.setUpdate_date(rs.getString("update_date"));
+				m.setExplanation(rs.getString("explanation"));
+				m.setExample(rs.getString("example"));
 				ms.add(m);
 			}
 			rs.close();
