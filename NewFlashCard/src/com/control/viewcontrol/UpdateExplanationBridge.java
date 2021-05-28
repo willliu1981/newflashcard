@@ -8,7 +8,7 @@ import com.model.Vocabulary;
 public class UpdateExplanationBridge extends Bridge {
 
 	@Override
-	public void doSend(UIDateTransportation dt) {
+	public void doSend() {
 		VocabularyDao dao=new VocabularyDao();
 		Vocabulary voca=(Vocabulary) this.getParameter("vocabulary");
 		dao.update(voca, voca.getId());

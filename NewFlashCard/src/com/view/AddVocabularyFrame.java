@@ -134,9 +134,9 @@ public class AddVocabularyFrame extends JFrame {
 				bridge.setParameter("explanation", explanation);
 				bridge.setParameter("example", example);
 				bridge.setParameter("parent", thisFrame);
-				int r = bridge.getDispatcher().sendAndBack(bridge);
+				int r = bridge.getDispatcher().sendAndBack();
 				
-				if (r == JOptionPane.OK_OPTION) {
+				if (r == bridge.SENDANDBACK_NORMAL) {
 					textField_vocabulary.setText("");
 					textField_translation.setText("");
 					textArea_explanation.setText("");

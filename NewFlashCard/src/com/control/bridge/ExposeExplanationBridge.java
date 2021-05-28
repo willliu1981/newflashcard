@@ -9,7 +9,7 @@ import com.view.MainView;
 public class ExposeExplanationBridge extends Bridge {
 
 	@Override
-	public void doSend(UIDateTransportation dt) {
+	public void doSend() {
 		Session sess=this.getSession();
 		Map<Integer,Vocabulary> map=(Map<Integer, Vocabulary>) sess.getAttribute("randomAnswers");
 		Vocabulary v=map.get(this.getParameter("id"));

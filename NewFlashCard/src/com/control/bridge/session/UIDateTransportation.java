@@ -19,6 +19,10 @@ public abstract class UIDateTransportation {
 		}
 	}
 
+	public static final int SENDANDBACK_DEFAULT = 0;
+	public static final int SENDANDBACK_BROKEN = -1;
+	public static final int SENDANDBACK_NORMAL = 1;
+
 	protected Dispatcher dispatcher = new Dispatcher(this);
 	protected final Map<String, Object> parameter = new HashMap<>();
 
@@ -32,9 +36,10 @@ public abstract class UIDateTransportation {
 		return this.dispatcher;
 	}
 
-	public abstract void doSend(UIDateTransportation dt);
-	public  int doSendAndBack(UIDateTransportation dt) {
-		return -1;
+	public abstract void doSend();
+
+	public int doSendAndBack() {
+		return SENDANDBACK_DEFAULT;
 	}
 
 	public void setParameter(String name, Object obj) {

@@ -258,7 +258,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		vocabulary.setExample(textArea_example.getText());
 		vocabulary.setTranslation(textField_translation.getText());
 		bridge.setParameter("vocabulary", vocabulary);
-		disp.send(bridge);
+		disp.send();
 		setExampleHighLight(vocabulary);
 	}
 

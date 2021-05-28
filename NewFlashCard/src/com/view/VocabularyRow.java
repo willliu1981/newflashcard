@@ -94,7 +94,7 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				ExplanationBridge bridge = new ExplanationBridge();
 				bridge.setParameter("vocabulary", v);
 				Dispatcher dispater = bridge.getDispatcher();
-				dispater.send(bridge);
+				dispater.send();
 
 				Map<String, String> map = new HashMap<>();
 				map.put(ShowRowInfo.Translation, v.getTranslation());

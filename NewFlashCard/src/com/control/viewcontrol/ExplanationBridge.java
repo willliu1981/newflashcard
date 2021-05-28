@@ -8,7 +8,7 @@ import com.view.MainView;
 public class ExplanationBridge extends  Bridge{
 
 	@Override
-	public void doSend(UIDateTransportation dt) {
+	public void doSend() {
 		 Dispatcher disp=this.getDispatcher();
 		 disp.send(MainView.explantationFrame);
 	}

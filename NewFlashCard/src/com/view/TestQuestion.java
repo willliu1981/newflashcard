@@ -100,7 +100,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						ExposeExplanationBridge bridge = new ExposeExplanationBridge();
 						Dispatcher disp = bridge.getDispatcher();
 						bridge.setParameter("id", rowIdx);
-						disp.send(bridge);
+						disp.send();
 					}
 					break;
 				default:

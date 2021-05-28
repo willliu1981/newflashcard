@@ -10,17 +10,17 @@ public class Dispatcher {
 		this.dt = dt;
 	}
 
-	public void send(UIDateTransportation dt) {
-		this.dt.doSend(dt);
+	public void send() {
+		this.dt.doSend();
 	}
 	
 	public void send(Transportable t) {
 		t.dispatch(dt);
 	}
 	
-	public int sendAndBack(UIDateTransportation dt) {
-		int r=this.dt.doSendAndBack(dt);
-		this.dt.doSend(dt);
+	public int sendAndBack() {
+		int r=this.dt.doSendAndBack();
+		this.dt.doSend();
 		return r;
 	}
 }
