@@ -83,6 +83,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		PadFactory.setKeymap(textArea_explanation);
+		PadFactory.setKeymap(textArea_example);
 
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(10, 45));

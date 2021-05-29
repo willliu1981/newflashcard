@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 
+import javax.swing.text.JTextComponent;
+
 public class PadFactory {
 	public final static String EXPLANATIONFRAME = "explanationframe";
 	public final static String ADDVOCABULARYFRAME = "addvocabularyframe";
@@ -63,5 +65,9 @@ public class PadFactory {
 		default:
 			break;
 		}
+	}
+	
+	public static void setKeymap(JTextComponent comp) {
+		getPad().setKeymap(comp);
 	}
 }

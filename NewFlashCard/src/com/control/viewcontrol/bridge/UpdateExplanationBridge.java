@@ -22,8 +22,7 @@ public class UpdateExplanationBridge extends Bridge {
 			return;
 		}
 		
-		PadFactory.getPad().setChange(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, false);
-		PadFactory.getPad().setChange(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, false);
+		PadFactory.initializeChange(PadFactory.EXPLANATIONFRAME);
 		
 		dao.update(voca, voca.getId());
 		

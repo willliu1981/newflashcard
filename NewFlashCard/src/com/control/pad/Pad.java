@@ -6,9 +6,12 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.text.JTextComponent;
+
 public abstract class Pad {
 	private static class PadPack {
 		private String contentTemp;
+		private String reverseContent;
 		private boolean isChanged;
 
 		public String getContentTemp() {
@@ -27,9 +30,18 @@ public abstract class Pad {
 			this.isChanged = isChanged;
 		}
 
+		public String getReverseContent() {
+			return reverseContent;
+		}
+
+		public void setReverseContent(String reverseContent) {
+			this.reverseContent = reverseContent;
+		}
+
 	}
-	
-	protected Pad() {}
+
+	protected Pad() {
+	}
 
 	protected static Map<String, PadPack> map = new HashMap<>();
 
@@ -38,6 +50,14 @@ public abstract class Pad {
 			this.map.put(name, new PadPack());
 		}
 		return this.map.get(name);
+	}
+
+	public String getReverseContent(String name) {
+		return getPadPack(name).getReverseContent();
+	}
+
+	public void setReverseContent(String name, String content) {
+		getPadPack(name).setReverseContent(content);
 	}
 
 	public String getContentTemp(String name) {
@@ -59,7 +79,22 @@ public abstract class Pad {
 	public void setChange(String name, boolean change) {
 		getPadPack(name).setChanged(change);
 	}
-	
-	public  abstract void change(Component parent, String name,KeyEvent e) ;
 
+	public abstract void change(Component parent, String name, KeyEvent e);
+
+	public void setKeymap(JTextComponent comp) {
+
+	}
+
+	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
+
+	}
+
+	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
+
+	}
+
+	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
+
+	}
 }
