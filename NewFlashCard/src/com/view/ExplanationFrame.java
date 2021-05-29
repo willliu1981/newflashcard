@@ -53,6 +53,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_1;
 	private JPanel panel_exampleborder;
 	private String explanationTemp;// 用於反悔復原
+	private String exampleTemp;// 用於反悔復原
 
 	/**
 	 * Launch the application.
@@ -200,9 +201,26 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example = new JTextArea();
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
+			public void keyPressed(KeyEvent e) {
+				if (((int) e.getKeyChar()) != 65535 && ((int) e.getKeyChar()) != 26 && ((int) e.getKeyChar()) != 3
+						&& ((int) e.getKeyChar()) != 1) {
+					exampleTemp = textArea_example.getText();
+				}
+			}
+
+			@Override
 			public void keyTyped(KeyEvent e) {
 				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
+
+				if (((int) e.getKeyChar()) == 26) {
+					String temp = textArea_example.getText();
+					textArea_example.setText(exampleTemp);
+					exampleTemp = temp;
+				}
+
 			}
+			
+
 		});
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setMargin(new Insets(10, 10, 10, 10));
@@ -218,8 +236,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
-		Bridge birdge = (Bridge) dt;
-		Vocabulary vocabulary = (Vocabulary) birdge.getParameter("vocabulary");
+		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
 		this.textArea_example.setText(vocabulary.getExample());
