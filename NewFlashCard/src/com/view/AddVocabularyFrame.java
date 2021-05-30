@@ -164,6 +164,7 @@ public class AddVocabularyFrame extends JFrame {
 					textField_translation.setText("");
 					textArea_explanation.setText("");
 					textArea_example.setText("");
+					((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explantion");
 				}
 			}
 		});
@@ -291,6 +292,7 @@ public class AddVocabularyFrame extends JFrame {
 					textArea_explanation.setText("");
 					textField_vocabulary.setText("");
 					textField_translation.setText("");
+					((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explantion");
 				}
 			}
 		});

@@ -54,13 +54,17 @@ public class MyPad extends Pad {
 				comp.setSelectionStart(ls);
 				comp.setSelectionEnd(le - 1);
 				break;
-			case 24:// "w" delete line , 不刪換行符
+			case 24:// "x" delete line , 不刪換行符
 				ff = ss.substring(0, ls);
-				rr = ss.substring(le - 1, ss.length());
-				comp.setText(ff + rr);
+				rr = ss.substring(le , ss.length());
+				if(comp.getText(ls, le-ls).equals("\n")) {
+					comp.setText(ff + rr);
+				}else {
+					comp.setText(ff +"\n"+ rr);
+				}
 				resetOffset(comp, offsetLS);
 				break;
-			case 23:// "x" delete line , 刪除換行符
+			case 23:// "w" delete line , 刪除換行符
 				ff = ss.substring(0, ls);
 				rr = ss.substring(le, ss.length());
 				comp.setText(ff + rr);
