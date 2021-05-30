@@ -126,6 +126,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
 							explanationType = EXPLANATIONTYPE_EXPLANATION);
 					btnNewButton_type.setText("例句");
+					Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+					exampleHighLight(vocabulary);
 				}
 			}
 		});
@@ -165,7 +167,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.setWrapStyleWord(true);
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.addKeyListener(new KeyAdapter() {
-
 			@Override
 			public void keyPressed(KeyEvent e) {
 				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
@@ -249,14 +250,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		/*
 		 * set highlight
 		 */
-		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
-			panel_exampleborder.setBackground(new Color(0, 176, 0));
-		} else {
-			panel_exampleborder.setBackground(MyColor.getBase());
-		}
+		exampleHighLight(vocabulary);
 
-		if (PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION)
-				|| PadFactory.getPad().isChanged(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE)) {
+		if (PadFactory.isChanged(PadFactory.EXPLANATIONFRAME)) {
 			panel_updateborder.setBackground(Color.red);
 		} else {
 			panel_updateborder.setBackground(MyColor.getBase());
@@ -268,6 +264,14 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
+	}
+	
+	private void exampleHighLight(Vocabulary vocabulary) {
+		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
+			panel_exampleborder.setBackground(new Color(0, 176, 0));
+		} else {
+			panel_exampleborder.setBackground(MyColor.getBase());
+		}
 	}
 
 }

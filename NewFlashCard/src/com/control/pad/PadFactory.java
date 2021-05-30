@@ -30,10 +30,10 @@ public class PadFactory {
 		}
 	}
 
-	public static boolean isChanged(String name) {
+	public static boolean isChanged(String frame) {
 		Pad pad = getPad();
 		boolean r = false;
-		switch (name) {
+		switch (frame) {
 		case EXPLANATIONFRAME:
 			r = pad.isChanged(MAIN_EXPLANATIONFRAME_EXPLANATION) || pad.isChanged(MAIN_EXPLANATIONFRAME_EXAMPLE)
 					|| pad.isChanged(MAIN_EXPLANATIONFRAME_TRANSLATION);

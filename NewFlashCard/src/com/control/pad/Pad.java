@@ -86,16 +86,15 @@ public abstract class Pad {
 	public abstract void change(Component parent, String name, KeyEvent e);
 
 
-
 	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
-		
+
 	}
 
 	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
-	
+
 	}
 
 	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
-	
+
 	}
 }
