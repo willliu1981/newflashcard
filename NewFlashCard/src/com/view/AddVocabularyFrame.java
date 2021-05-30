@@ -135,43 +135,6 @@ public class AddVocabularyFrame extends JFrame {
 		textField_translation.setColumns(20);
 		panel_top_center.add(textField_translation);
 
-		JPanel panel_1_1_1 = new JPanel();
-		panel_top_center.add(panel_1_1_1);
-
-		JButton btnNewButton = new JButton("新增");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String vocabulary = textField_vocabulary.getText();
-				String translation = textField_translation.getText();
-				String explanation = textArea_explanation.getText();
-				String example = textArea_example.getText();
-				if (vocabulary == null || translation == null || vocabulary.trim().equals("")
-						|| translation.trim().equals("")) {
-					JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-
-				AddVocabularyBridge bridge = new AddVocabularyBridge();
-				bridge.setParameter("vocabulary", vocabulary);
-				bridge.setParameter("translation", translation);
-				bridge.setParameter("explanation", explanation);
-				bridge.setParameter("example", example);
-				bridge.setParameter("parent", thisFrame);
-				int r = bridge.getDispatcher().sendAndBack();
-
-				if (r == bridge.SENDANDBACK_NORMAL) {
-					textField_vocabulary.setText("");
-					textField_translation.setText("");
-					textArea_explanation.setText("");
-					textArea_example.setText("");
-					((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explantion");
-				}
-			}
-		});
-		btnNewButton.setBackground(SystemColor.controlHighlight);
-		btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_top_center.add(btnNewButton);
-
 		JPanel panel_center = new JPanel();
 		panel.add(panel_center, BorderLayout.CENTER);
 		panel_center.setLayout(new BorderLayout(0, 0));
@@ -254,7 +217,9 @@ public class AddVocabularyFrame extends JFrame {
 		panel_center.add(panel_center_title, BorderLayout.NORTH);
 		
 		JButton btnNewButton_1 = new JButton("解釋");
-		btnNewButton_1.setBackground(SystemColor.controlHighlight);
+		btnNewButton_1.setBorderPainted(false);
+		btnNewButton_1.setBackground(Color.DARK_GRAY);
+		btnNewButton_1.setForeground(Color.WHITE);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explanation");
@@ -267,7 +232,9 @@ public class AddVocabularyFrame extends JFrame {
 		panel_center_title.add(panel_2);
 		
 		JButton btnNewButton_2 = new JButton("例句");
-		btnNewButton_2.setBackground(SystemColor.controlHighlight);
+		btnNewButton_2.setForeground(Color.WHITE);
+		btnNewButton_2.setBorderPainted(false);
+		btnNewButton_2.setBackground(Color.BLACK);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "example");
@@ -281,6 +248,7 @@ public class AddVocabularyFrame extends JFrame {
 		panel_center_title.add(panel_3);
 		
 		JButton btnNewButton_3 = new JButton("全部清除");
+		btnNewButton_3.setPreferredSize(new Dimension(100, 30));
 		btnNewButton_3.setBackground(SystemColor.controlHighlight);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -298,6 +266,44 @@ public class AddVocabularyFrame extends JFrame {
 		});
 		btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_center_title.add(btnNewButton_3);
+				
+						JPanel panel_1_1_1 = new JPanel();
+						panel_center_title.add(panel_1_1_1);
+		
+				JButton btnNewButton = new JButton("新增");
+				btnNewButton.setPreferredSize(new Dimension(100, 30));
+				panel_center_title.add(btnNewButton);
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						String vocabulary = textField_vocabulary.getText();
+						String translation = textField_translation.getText();
+						String explanation = textArea_explanation.getText();
+						String example = textArea_example.getText();
+						if (vocabulary == null || translation == null || vocabulary.trim().equals("")
+								|| translation.trim().equals("")) {
+							JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+
+						AddVocabularyBridge bridge = new AddVocabularyBridge();
+						bridge.setParameter("vocabulary", vocabulary);
+						bridge.setParameter("translation", translation);
+						bridge.setParameter("explanation", explanation);
+						bridge.setParameter("example", example);
+						bridge.setParameter("parent", thisFrame);
+						int r = bridge.getDispatcher().sendAndBack();
+
+						if (r == bridge.SENDANDBACK_NORMAL) {
+							textField_vocabulary.setText("");
+							textField_translation.setText("");
+							textArea_explanation.setText("");
+							textArea_example.setText("");
+							((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explantion");
+						}
+					}
+				});
+				btnNewButton.setBackground(SystemColor.controlHighlight);
+				btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 16));
 		
 		panel_center_card = new JPanel();
 		panel_center.add(panel_center_card, BorderLayout.CENTER);

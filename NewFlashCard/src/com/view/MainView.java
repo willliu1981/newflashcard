@@ -11,10 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -130,6 +132,16 @@ public class MainView extends JFrame {
 					}
 					thisApp = new MainView();
 					thisApp.setVisible(true);
+					
+					Properties prop=new Properties();
+					prop.load(new FileInputStream("data//config.properties"));
+					String deisgn=prop.getProperty("design");
+					String msg="1";
+					if(deisgn.equals("true")) {
+						msg+=" Debug";
+					}
+					thisApp.setTitle(String .format("字卡 App 版本 %s", msg));
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
