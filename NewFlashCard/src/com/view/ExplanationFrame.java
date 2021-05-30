@@ -198,22 +198,22 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (((int) e.getKeyChar()) != 65535 && ((int) e.getKeyChar()) != 26 && ((int) e.getKeyChar()) != 3
-						&& ((int) e.getKeyChar()) != 1) {
-					exampleTemp = textArea_example.getText();
-				}
+				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE,
+						textArea_example, e);
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
 
-				if (((int) e.getKeyChar()) == 26) {
-					String temp = textArea_example.getText();
-					textArea_example.setText(exampleTemp);
-					exampleTemp = temp;
-				}
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example,
+						e);
+			}
 
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE,
+						textArea_example, e);
 			}
 
 		});

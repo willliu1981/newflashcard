@@ -22,6 +22,7 @@ import javax.swing.border.EtchedBorder;
 
 import com.control.dao.Dao;
 import com.control.dao.VocabularyDao;
+import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.CheckVocabularyExistBridge;
 import com.model.Vocabulary;
@@ -193,8 +194,22 @@ public class AddVocabularyFrame extends JFrame {
 		textArea_explanation = new JTextArea();
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent arg0) {
+			public void keyPressed(KeyEvent e) {
+				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
+						textArea_explanation, e);
+			}
 
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION, textArea_explanation,
+						e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
+						textArea_explanation, e);
 			}
 		});
 		textArea_explanation.setCaretColor(Color.YELLOW);
@@ -230,9 +245,23 @@ public class AddVocabularyFrame extends JFrame {
 		textArea_example = new JTextArea();
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent e) {
-
+			public void keyPressed(KeyEvent e) {
+				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
+						textArea_example, e);
 			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE, textArea_example,
+						e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
+						textArea_example, e);
+			}
+
 		});
 		textArea_example.setCaretColor(Color.YELLOW);
 		textArea_example.setMargin(new Insets(20, 20, 20, 20));
