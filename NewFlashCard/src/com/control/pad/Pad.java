@@ -83,28 +83,19 @@ public abstract class Pad {
 		getPadPack(name).setChanged(change);
 	}
 
-	protected void initialize(String frame, JTextComponent comp) {
-		if (!padPackMap.containsKey(frame)) {
-			System.out.println("pad ** initialize");
-			setKeymap(frame, comp);
-		}
-	}
-
 	public abstract void change(Component parent, String name, KeyEvent e);
 
-	protected void setKeymap(String frame, JTextComponent comp) {
 
-	}
 
 	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
-		initialize(frame, comp);
+		
 	}
 
 	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
-		initialize(frame, comp);
+	
 	}
 
 	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
-		initialize(frame, comp);
+	
 	}
 }

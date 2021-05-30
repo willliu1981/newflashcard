@@ -15,7 +15,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.Keymap;
 
 public class MyPad extends Pad {
-	private int offsetTemp=0;//用於記錄暫時的text 位置
+	private int offsetTemp = 0;// 用於記錄暫時的text 位置
 
 	@Override
 	public void change(Component parent, String name, KeyEvent e) {
@@ -29,53 +29,46 @@ public class MyPad extends Pad {
 	}
 
 	@Override
-	public void setKeymap(String name, JTextComponent comp) {
-		/*
-		 * Keymap parent = comp.getKeymap(); Keymap newmap =
-		 * JTextComponent.addKeymap("k1", parent); Hashtable<Object, Action> lookup =
-		 * new Hashtable<Object, Action>(); Action actList[] = comp.getActions(); for
-		 * (int i = 0; i < actList.length; i++) {
-		 * lookup.put(actList[i].getValue(Action.NAME), actList[i]); } KeyStroke sl =
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK); Action actSL =
-		 * (Action) lookup.get(DefaultEditorKit.selectLineAction);
-		 * 
-		 * newmap.addActionForKeyStroke(sl, actSL); comp.setKeymap(newmap);
-		 */
-	}
-
-	
-	@Override
 	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
 		super.keyAction_typed(frame, comp, e);
 
 		setContentTemp(frame, comp.getText());
-		offsetTemp=comp.getSelectionStart();
+		offsetTemp = comp.getSelectionStart();
 	}
 
 	@Override
 	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
 		super.keyAction_typed(frame, comp, e);
 
-		JTextArea textArea = (JTextArea) comp;
-
 		try {
+			int primaryOffset = comp.getCaretPosition();
+			int line = ((JTextArea) comp).getLineOfOffset(primaryOffset);
+			int ls = ((JTextArea) comp).getLineStartOffset(line);
+			int le = ((JTextArea) comp).getLineEndOffset(line);
+			int offsetLS = ls;
+			String ss = comp.getText();
+			String ff = "";
+			String rr = "";
 			switch ((int) e.getKeyChar()) {
-			case 24:// "x" delete line
-				int line = textArea.getLineOfOffset(textArea.getCaretPosition());
-				textArea.setSelectionStart(textArea.getLineStartOffset(line));
-				textArea.setSelectionEnd(textArea.getLineEndOffset(line));
-				int start=textArea.getSelectionStart();
-				String ss = textArea.getText();
-				String ff = ss.substring(0, textArea.getSelectionStart());
-				String rr = ss.substring(textArea.getSelectionEnd(), textArea.getText().length());
-				textArea.setText(ff + rr);
-				textArea.setSelectionStart(start);
-				textArea.setSelectionEnd(start);
+			case 17:// "q" select line
+				comp.setSelectionStart(ls);
+				comp.setSelectionEnd(le - 1);
+				break;
+			case 23:// "w" delete line , 不刪換行符
+				ff = ss.substring(0, ls);
+				rr = ss.substring(le - 1, ss.length());
+				comp.setText(ff + rr);
+				resetOffset(comp, offsetLS);
+				break;
+			case 24:// "x" delete line , 刪除換行符
+				ff = ss.substring(0, ls);
+				rr = ss.substring(le, ss.length());
+				comp.setText(ff + rr);
+				resetOffset(comp, offsetLS);
 				break;
 			case 26:// "z" revert content
-				textArea.setText(getReverseContent(frame));
-				textArea.setSelectionStart(offsetTemp);
-				textArea.setSelectionEnd(offsetTemp);
+				comp.setText(getReverseContent(frame));
+				resetOffset(comp, primaryOffset);
 				break;
 			default:
 
@@ -85,6 +78,11 @@ public class MyPad extends Pad {
 		} catch (NullPointerException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	private void resetOffset(JTextComponent comp, int offset) {
+		comp.setSelectionStart(offset);
+		comp.setSelectionEnd(offset);
 	}
 
 	@Override
