@@ -1,6 +1,5 @@
 package com.control.pad;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -43,13 +42,17 @@ public abstract class Pad {
 	protected Pad() {
 	}
 
-	protected static Map<String, PadPack> map = new HashMap<>();
+	protected static Map<String, PadPack> padPackMap = new HashMap<>();
+
+	public boolean containsKey(String name) {
+		return this.padPackMap.containsKey(name);
+	}
 
 	protected PadPack getPadPack(String name) {
-		if (!this.map.containsKey(name)) {
-			this.map.put(name, new PadPack());
+		if (!this.padPackMap.containsKey(name)) {
+			this.padPackMap.put(name, new PadPack());
 		}
-		return this.map.get(name);
+		return this.padPackMap.get(name);
 	}
 
 	public String getReverseContent(String name) {
@@ -80,21 +83,28 @@ public abstract class Pad {
 		getPadPack(name).setChanged(change);
 	}
 
+	protected void initialize(String frame, JTextComponent comp) {
+		if (!padPackMap.containsKey(frame)) {
+			System.out.println("pad ** initialize");
+			setKeymap(frame, comp);
+		}
+	}
+
 	public abstract void change(Component parent, String name, KeyEvent e);
 
-	public void setKeymap(JTextComponent comp) {
+	protected void setKeymap(String frame, JTextComponent comp) {
 
 	}
 
 	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
-
+		initialize(frame, comp);
 	}
 
 	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
-
+		initialize(frame, comp);
 	}
 
 	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
-
+		initialize(frame, comp);
 	}
 }

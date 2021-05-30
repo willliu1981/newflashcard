@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -23,11 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.control.bridge.Bridge;
-import com.control.bridge.Dispatcher;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
-import com.control.pad.Pad;
 import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
@@ -83,9 +79,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		PadFactory.setKeymap(textArea_explanation);
-		PadFactory.setKeymap(textArea_example);
 
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(10, 45));
@@ -175,22 +168,22 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (((int) e.getKeyChar()) != 65535 && ((int) e.getKeyChar()) != 26 && ((int) e.getKeyChar()) != 3
-						&& ((int) e.getKeyChar()) != 1) {
-					explanationTemp = textArea_explanation.getText();
-				}
+				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
+						textArea_explanation, e);
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
 
-				if (((int) e.getKeyChar()) == 26) {
-					String temp = textArea_explanation.getText();
-					textArea_explanation.setText(explanationTemp);
-					explanationTemp = temp;
-				}
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, textArea_explanation,
+						e);
+			}
 
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
+						textArea_explanation, e);
 			}
 		});
 		textArea_explanation.setCaretColor(Color.YELLOW);
@@ -222,7 +215,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				}
 
 			}
-			
 
 		});
 		textArea_example.setWrapStyleWord(true);

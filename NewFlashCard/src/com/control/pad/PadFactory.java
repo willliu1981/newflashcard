@@ -16,24 +16,18 @@ public class PadFactory {
 	public final static String MAIN_ADDVOCABULARYFRAME_EXAMPLE = "main_addvocabularyframe_example";
 	public final static String MAIN_ADDVOCABULARYFRAME_TRANSLATION = "main_addvocabularyframe_translation";
 
-	private class MyPad extends Pad {
-		@Override
-		public void change(Component parent, String name, KeyEvent e) {
-			/*
-			 * 非按下Ctrl+A 和 Ctrl+C
-			 */
-			if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar() != 3) {
-				parent.setBackground(Color.red);
-				this.setChange(name);
-			}
-		}
-	}
-
 	private static PadFactory factory = new PadFactory();
-	private Pad pad = new MyPad();
+	private Pad pad;
 
 	public static Pad getPad() {
+		factory.initialize();
 		return factory.pad;
+	}
+
+	private void initialize() {
+		if (pad == null) {
+			pad = new MyPad();
+		}
 	}
 
 	public static boolean isChanged(String name) {
@@ -66,8 +60,5 @@ public class PadFactory {
 			break;
 		}
 	}
-	
-	public static void setKeymap(JTextComponent comp) {
-		getPad().setKeymap(comp);
-	}
+
 }

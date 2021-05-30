@@ -15,10 +15,6 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.Keymap;
 
 public class MyPad extends Pad {
-	public final static String MAINEXPLANATIONFRAME_EXPLANATION = "mainexplanationframe_explanation";
-	public final static String MAINEXPLANATIONFRAME_EXAMPLE = "mainexplanationframe_example";
-	public final static String MAINADDVOCABULARYFRAME_EXPLANATION = "mainaddvocabularyframe_explanation";
-	public final static String MAINADDVOCABULARYFRAME_EXAMPLE = "mainaddvocabularyframe_example";
 
 	@Override
 	public void change(Component parent, String name, KeyEvent e) {
@@ -32,7 +28,8 @@ public class MyPad extends Pad {
 	}
 
 	@Override
-	public void setKeymap(JTextComponent comp) {
+	public void setKeymap(String name, JTextComponent comp) {
+		/*
 		Keymap parent = comp.getKeymap();
 		Keymap newmap = JTextComponent.addKeymap("k1", parent);
 		Hashtable<Object, Action> lookup = new Hashtable<Object, Action>();
@@ -45,16 +42,20 @@ public class MyPad extends Pad {
 
 		newmap.addActionForKeyStroke(sl, actSL);
 		comp.setKeymap(newmap);
+		*/
 	}
 
 	@Override
 	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
+		super.keyAction_typed(frame, comp, e);
+		
 		setContentTemp(frame, comp.getText());
 	}
 
 	@Override
 	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
-		setContentTemp(frame, comp.getText());
+		super.keyAction_typed(frame, comp, e);
+		
 		JTextArea textArea = (JTextArea) comp;
 
 		try {
@@ -83,6 +84,8 @@ public class MyPad extends Pad {
 
 	@Override
 	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
+		super.keyAction_typed(frame, comp, e);
+		
 		if (!getContentTemp(frame).equals(comp.getText())) {
 			setContentTemp(frame, getContentTemp(frame));
 		}
