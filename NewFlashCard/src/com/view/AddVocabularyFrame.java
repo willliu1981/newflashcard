@@ -39,6 +39,7 @@ import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.border.LineBorder;
+import java.awt.CardLayout;
 
 public class AddVocabularyFrame extends JFrame {
 	private AddVocabularyFrame thisFrame;
@@ -47,6 +48,7 @@ public class AddVocabularyFrame extends JFrame {
 	private JTextField textField_translation;
 	private JTextArea textArea_explanation;
 	private JTextArea textArea_example;
+	private JPanel panel_center_card;
 
 	/**
 	 * Launch the application.
@@ -171,24 +173,10 @@ public class AddVocabularyFrame extends JFrame {
 
 		JPanel panel_center = new JPanel();
 		panel.add(panel_center, BorderLayout.CENTER);
-		panel_center.setLayout(new BoxLayout(panel_center, BoxLayout.Y_AXIS));
-
-		JPanel panel_explanation_info = new JPanel();
-		panel_explanation_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_explanation_info.setPreferredSize(new Dimension(10, 30));
-		panel_center.add(panel_explanation_info);
-		panel_explanation_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-
-		JPanel panel_1_2 = new JPanel();
-		panel_explanation_info.add(panel_1_2);
-
-		JLabel lblNewLabel_2 = new JLabel("其它解釋");
-		lblNewLabel_2.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_explanation_info.add(lblNewLabel_2);
+		panel_center.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_explanation = new JPanel();
 		panel_explanation.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_center.add(panel_explanation);
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
@@ -224,22 +212,8 @@ public class AddVocabularyFrame extends JFrame {
 		scrollPane_explanation.setViewportView(textArea_explanation);
 		panel_explanation.add(scrollPane_explanation, BorderLayout.CENTER);
 
-		JPanel panel_example_info = new JPanel();
-		panel_example_info.setPreferredSize(new Dimension(10, 30));
-		panel_example_info.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_center.add(panel_example_info);
-		panel_example_info.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-
-		JPanel panel_1_2_1 = new JPanel();
-		panel_example_info.add(panel_1_2_1);
-
-		JLabel lblNewLabel_2_1 = new JLabel("例句");
-		lblNewLabel_2_1.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_example_info.add(lblNewLabel_2_1);
-
 		JPanel panel_example = new JPanel();
 		panel_example.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_center.add(panel_example);
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
@@ -265,8 +239,8 @@ public class AddVocabularyFrame extends JFrame {
 		});
 		textArea_example.setCaretColor(Color.YELLOW);
 		textArea_example.setMargin(new Insets(20, 20, 20, 20));
-		textArea_example.setForeground(Color.WHITE);
-		textArea_example.setBackground(Color.DARK_GRAY);
+		textArea_example.setForeground(new Color(255, 255, 255));
+		textArea_example.setBackground(Color.BLACK);
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setLineWrap(true);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 18));
@@ -274,6 +248,40 @@ public class AddVocabularyFrame extends JFrame {
 		JScrollPane scrollPane_example = new JScrollPane();
 		scrollPane_example.setViewportView(textArea_example);
 		panel_example.add(scrollPane_example, BorderLayout.CENTER);
+		
+		JPanel panel_center_title = new JPanel();
+		panel_center.add(panel_center_title, BorderLayout.NORTH);
+		
+		JButton btnNewButton_1 = new JButton("解釋");
+		btnNewButton_1.setBackground(SystemColor.controlHighlight);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explanation");
+			}
+		});
+		btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 16));
+		panel_center_title.add(btnNewButton_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_center_title.add(panel_2);
+		
+		JButton btnNewButton_2 = new JButton("例句");
+		btnNewButton_2.setBackground(SystemColor.controlHighlight);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "example");
+			}
+		});
+		btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 16));
+		panel_center_title.add(btnNewButton_2);
+		
+		panel_center_card = new JPanel();
+		panel_center.add(panel_center_card, BorderLayout.CENTER);
+		panel_center_card.setLayout(new CardLayout(0, 0));
+		
+		panel_center_card.add(panel_explanation, "explanation");
+		panel_center_card.add(panel_example, "example");
+	
 	}
 
 }

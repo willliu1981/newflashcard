@@ -14,7 +14,7 @@ public class CheckVocabularyExistBridge extends Bridge {
 		String vocabulary = (String) this.getParameter("vocabulary");
 		Component parent = (Component) this.getParameter("parent");
 		int count = new VocabularyDao().queryByVocabulary(vocabulary).size();
-		JOptionPane.showMessageDialog(parent, count > 0 ? String.format("找到 %d 筆重複", count) : "沒有找到重複資料", "檢查重複",
+		JOptionPane.showMessageDialog(parent, count > 0 ? String.format("找到 %d 筆", count) : "沒有找到重複資料", "檢查重複",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
