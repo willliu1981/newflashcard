@@ -86,6 +86,11 @@ public class CardBox {
 	public void finish() {
 		this.state=this.stateRuleMap.size()+1;
 	}
+	public void resetTest() {
+		this.state=0;
+		this.test_date=null;
+		this.test_times=0;
+	}
 
 	public boolean isFinish() {
 		boolean r = false;

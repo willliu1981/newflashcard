@@ -102,6 +102,14 @@ public class AddVocabularyFrame extends JFrame {
 		panel_top_center.add(panel_1);
 
 		textField_vocabulary = new JTextField();
+		textField_vocabulary.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e ) {
+				if(((int)e.getKeyChar())==27) {
+					textField_vocabulary.setText("");
+				}
+			}
+		});
 		textField_vocabulary.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField_vocabulary.setColumns(10);
 		panel_top_center.add(textField_vocabulary);
@@ -135,6 +143,28 @@ public class AddVocabularyFrame extends JFrame {
 		textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField_translation.setColumns(20);
 		panel_top_center.add(textField_translation);
+		
+		JPanel panel_4 = new JPanel();
+		panel_top_center.add(panel_4);
+		
+				JButton btnNewButton_3 = new JButton("全部清除");
+				panel_top_center.add(btnNewButton_3);
+				btnNewButton_3.setPreferredSize(new Dimension(100, 30));
+				btnNewButton_3.setBackground(SystemColor.controlHighlight);
+				btnNewButton_3.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int result = JOptionPane.showConfirmDialog(thisFrame, "將清除畫面上所有輸入的資料,請確認", "全部清除",
+								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+						if (result == JOptionPane.YES_OPTION) {
+							PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
+									textArea_explanation.getText());
+							PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
+									textArea_example.getText());
+							initializeText();
+						}
+					}
+				});
+				btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
 
 		JPanel panel_center = new JPanel();
 		panel.add(panel_center, BorderLayout.CENTER);
@@ -244,25 +274,6 @@ public class AddVocabularyFrame extends JFrame {
 		JPanel panel_3 = new JPanel();
 		panel_3.setPreferredSize(new Dimension(100, 10));
 		panel_center_title.add(panel_3);
-
-		JButton btnNewButton_3 = new JButton("全部清除");
-		btnNewButton_3.setPreferredSize(new Dimension(100, 30));
-		btnNewButton_3.setBackground(SystemColor.controlHighlight);
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(thisFrame, "將清除畫面上所有輸入的資料,請確認", "全部清除",
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (result == JOptionPane.YES_OPTION) {
-					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
-							textArea_explanation.getText());
-					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
-							textArea_example.getText());
-					initializeText();
-				}
-			}
-		});
-		btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_center_title.add(btnNewButton_3);
 
 		JPanel panel_1_1_1 = new JPanel();
 		panel_center_title.add(panel_1_1_1);

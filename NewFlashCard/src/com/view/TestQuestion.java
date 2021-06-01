@@ -277,8 +277,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					} else {
 						info = "答對了 (下一題)";
 					}
+					this.setBackground(Color.blue);
 				}
-				this.setBackground(Color.blue);
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
 			}

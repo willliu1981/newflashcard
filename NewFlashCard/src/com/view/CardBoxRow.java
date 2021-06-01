@@ -204,7 +204,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[2]).setText("" + sum);
 			((JLabel) rows[3]).setText("" + cardBox.getTest_times());
 			((JLabel) rows[4]).setText("" + cardBox.getTest_date());
-			((JLabel) rows[5]).setText("" + cardBox.getNextTestDateStr());
+			((JLabel) rows[5]).setText("" +(cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
 			((JLabel) rows[6]).setText("" + cardBox.getCreate_date());
 			((JLabel) rows[7]).setText("" + cardBox.getUpdate_date());
 		} else {

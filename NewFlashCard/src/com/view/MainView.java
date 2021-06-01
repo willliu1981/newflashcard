@@ -52,6 +52,7 @@ import com.control.viewcontrol.sorter.vocabularysorter.VocabularySorter.Vocabulr
 import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;
+import java.awt.Dimension;
 
 public class MainView extends JFrame {
 	private static MainView thisApp;
@@ -202,6 +203,8 @@ public class MainView extends JFrame {
 			JPanel panel_topbar = new JPanel();
 			contentPane.add(panel_topbar, BorderLayout.NORTH);
 			btnNewButton_topbar_cardbox = new JButton(InfoProperty.getInfo(InfoProperty.CardBox));
+			btnNewButton_topbar_cardbox.setFocusPainted(false);
+			btnNewButton_topbar_cardbox.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_cardbox.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 			btnNewButton_topbar_cardbox.setBackground(SystemColor.controlHighlight);
 			btnNewButton_topbar_cardbox.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
@@ -236,6 +239,8 @@ public class MainView extends JFrame {
 			});
 
 			btnNewButton_topbar_test = new JButton(InfoProperty.getInfo(InfoProperty.Test));
+			btnNewButton_topbar_test.setFocusPainted(false);
+			btnNewButton_topbar_test.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_test.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
@@ -257,6 +262,7 @@ public class MainView extends JFrame {
 						}
 						return r;
 					}).collect(Collectors.toList());
+					cardboxShowRowControl.resetFromIdx();
 					cardboxShowRowControl.setResults(newlist);
 					cardboxShowRowControl.showRow();
 					Map<String, String> map = new HashMap<>();
@@ -269,6 +275,8 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_test.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
 
 			btnNewButton_topbar_vocabulary = new JButton(InfoProperty.getInfo(InfoProperty.Vocabulary));
+			btnNewButton_topbar_vocabulary.setFocusPainted(false);
+			btnNewButton_topbar_vocabulary.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_vocabulary.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 			btnNewButton_topbar_vocabulary.setBackground(SystemColor.controlHighlight);
 			btnNewButton_topbar_vocabulary.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
@@ -939,6 +947,7 @@ public class MainView extends JFrame {
 		panel_cardbox_vocabulary_title.add(panel_addandeditname);
 		panel_addandeditname.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JButton btnNewButton_9 = new JButton(InfoProperty.getInfo(InfoProperty.Create));
+		btnNewButton_9.setPreferredSize(new Dimension(50, 28));
 		btnNewButton_9.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -969,6 +978,21 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.getEventResultMap().clear();
 			}
 		});
+
+		JButton btnNewButton_16 = new JButton("Explanation");
+		btnNewButton_16.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		btnNewButton_16.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				explantationFrame.setVisible(true);
+			}
+		});
+		btnNewButton_16.setBackground(SystemColor.controlHighlight);
+		btnNewButton_16.setFont(new Font("Dialog", Font.PLAIN, 16));
+		panel_addandeditname.add(btnNewButton_16);
+
+		JPanel panel_3 = new JPanel();
+		panel_addandeditname.add(panel_3);
 		btnNewButton_9.setToolTipText("add words from list for this card-box");
 		btnNewButton_9.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_9.setBackground(SystemColor.controlHighlight);
@@ -980,6 +1004,7 @@ public class MainView extends JFrame {
 				ShowRowInfo.EditbarEditPanel);
 		panel_addandeditname.add(panel_cardbox_vocabulary_editbar_editpanel);
 		JButton btnNewButton_10 = new JButton("Edit");
+		btnNewButton_10.setPreferredSize(new Dimension(50, 28));
 		btnNewButton_10.setToolTipText("edit this card-box name");
 		btnNewButton_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1009,7 +1034,10 @@ public class MainView extends JFrame {
 					JCheckBox chckbxNewCheckBox_finish = (JCheckBox) cardboxShowRowControl
 							.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
 							.getComponent(ShowRowInfo.IsFinish);
+					boolean checked = cardboxShowRowControl.getEventReault().isFinish();
+					chckbxNewCheckBox_finish.setEnabled(!checked);
 					chckbxNewCheckBox_finish.setSelected(cardboxShowRowControl.getEventReault().isFinish());
+
 					((CardLayout) ((MainView) cardboxShowRowControl.getEventJFrame())
 							.getPanel_cardbox_vocabulary_editbar().getLayout())
 									.show(((MainView) cardboxShowRowControl.getEventJFrame())
@@ -1061,6 +1089,7 @@ public class MainView extends JFrame {
 				if (chckbxNewCheckBox_finish.isSelected()) {
 					b.finish();
 				}
+
 				new CardBoxDao().update(b, b.getId());
 				/*
 				 * 重繪狀態
@@ -1105,17 +1134,34 @@ public class MainView extends JFrame {
 			}
 		});
 
-		JButton btnNewButton_16 = new JButton("Exp.");
-		btnNewButton_16.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		btnNewButton_16.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				explantationFrame.setVisible(true);
+		JButton btnNewButton_17 = new JButton("Reset");
+		btnNewButton_17.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(thisApp, "重設測驗記錄將無法回復檔案資料\n提示:可先儲存備份檔案,以便回復檔案", "重設測驗記錄",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+				if(result==JOptionPane.YES_OPTION) {
+					CardBox b = cardboxShowRowControl.getEventReault();
+					b.resetTest();
+					new CardBoxDao().update(b, b.getId());
+				}
+
+				/*
+				 * 簡易重繪UI
+				 */
+				JPanel editpanel = (JPanel) cardboxShowRowControl
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.EditbarEditPanel);
+				JPanel fieldpanel = (JPanel) cardboxShowRowControl
+						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Edit)
+						.getComponent(ShowRowInfo.EditbarEditPanel_Field);
+				editpanel.setBorder(BorderFactory.createEmptyBorder());
+				fieldpanel.setVisible(false);
+
 			}
 		});
-		btnNewButton_16.setBackground(SystemColor.controlHighlight);
-		btnNewButton_16.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_addandeditname.add(btnNewButton_16);
+		btnNewButton_17.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		btnNewButton_17.setBackground(SystemColor.controlHighlight);
+		btnNewButton_17.setFont(new Font("Dialog", Font.PLAIN, 16));
+		panel_addandeditname.add(btnNewButton_17);
 
 		JPanel panel_2 = new JPanel();
 		panel_addandeditname.add(panel_2);
