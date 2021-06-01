@@ -22,6 +22,7 @@ import javax.swing.border.EtchedBorder;
 
 import com.control.dao.Dao;
 import com.control.dao.VocabularyDao;
+import com.control.pad.Pad;
 import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.CheckVocabularyExistBridge;
@@ -109,7 +110,7 @@ public class AddVocabularyFrame extends JFrame {
 		btnNewButton_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CheckVocabularyExistBridge bridge = new CheckVocabularyExistBridge();
-				bridge.setParameter("parent",thisFrame);
+				bridge.setParameter("parent", thisFrame);
 				bridge.setParameter("vocabulary", textField_vocabulary.getText());
 				bridge.getDispatcher().send();
 			}
@@ -154,8 +155,8 @@ public class AddVocabularyFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 
-				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION, textArea_explanation,
-						e);
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
+						textArea_explanation, e);
 			}
 
 			@Override
@@ -184,20 +185,17 @@ public class AddVocabularyFrame extends JFrame {
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
-						textArea_example, e);
+				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE, textArea_example, e);
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE, textArea_example,
-						e);
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE, textArea_example, e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.getPad().keyAction_release(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
-						textArea_example, e);
+				PadFactory.getPad().keyAction_release(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE, textArea_example, e);
 			}
 
 		});
@@ -212,106 +210,109 @@ public class AddVocabularyFrame extends JFrame {
 		JScrollPane scrollPane_example = new JScrollPane();
 		scrollPane_example.setViewportView(textArea_example);
 		panel_example.add(scrollPane_example, BorderLayout.CENTER);
-		
+
 		JPanel panel_center_title = new JPanel();
 		panel_center.add(panel_center_title, BorderLayout.NORTH);
-		
+
 		JButton btnNewButton_1 = new JButton("解釋");
 		btnNewButton_1.setBorderPainted(false);
 		btnNewButton_1.setBackground(Color.DARK_GRAY);
 		btnNewButton_1.setForeground(Color.WHITE);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explanation");
+				((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
 			}
 		});
 		btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_center_title.add(btnNewButton_1);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_center_title.add(panel_2);
-		
+
 		JButton btnNewButton_2 = new JButton("例句");
 		btnNewButton_2.setForeground(Color.WHITE);
 		btnNewButton_2.setBorderPainted(false);
 		btnNewButton_2.setBackground(Color.BLACK);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "example");
+				((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "example");
 			}
 		});
 		btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_center_title.add(btnNewButton_2);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setPreferredSize(new Dimension(100, 10));
 		panel_center_title.add(panel_3);
-		
+
 		JButton btnNewButton_3 = new JButton("全部清除");
 		btnNewButton_3.setPreferredSize(new Dimension(100, 30));
 		btnNewButton_3.setBackground(SystemColor.controlHighlight);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result =JOptionPane.showConfirmDialog(thisFrame, "將清除畫面上所有輸入的資料,請確認","全部清除",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-				if(result==JOptionPane.YES_OPTION) {
-					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION, textArea_explanation.getText());
-					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE, textArea_example.getText());
-					textArea_example.setText("");
-					textArea_explanation.setText("");
-					textField_vocabulary.setText("");
-					textField_translation.setText("");
-					((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explantion");
+				int result = JOptionPane.showConfirmDialog(thisFrame, "將清除畫面上所有輸入的資料,請確認", "全部清除",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (result == JOptionPane.YES_OPTION) {
+					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
+							textArea_explanation.getText());
+					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
+							textArea_example.getText());
+					initializeText();
 				}
 			}
 		});
 		btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_center_title.add(btnNewButton_3);
-				
-						JPanel panel_1_1_1 = new JPanel();
-						panel_center_title.add(panel_1_1_1);
-		
-				JButton btnNewButton = new JButton("新增");
-				btnNewButton.setPreferredSize(new Dimension(100, 30));
-				panel_center_title.add(btnNewButton);
-				btnNewButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						String vocabulary = textField_vocabulary.getText();
-						String translation = textField_translation.getText();
-						String explanation = textArea_explanation.getText();
-						String example = textArea_example.getText();
-						if (vocabulary == null || translation == null || vocabulary.trim().equals("")
-								|| translation.trim().equals("")) {
-							JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
-							return;
-						}
 
-						AddVocabularyBridge bridge = new AddVocabularyBridge();
-						bridge.setParameter("vocabulary", vocabulary);
-						bridge.setParameter("translation", translation);
-						bridge.setParameter("explanation", explanation);
-						bridge.setParameter("example", example);
-						bridge.setParameter("parent", thisFrame);
-						int r = bridge.getDispatcher().sendAndBack();
+		JPanel panel_1_1_1 = new JPanel();
+		panel_center_title.add(panel_1_1_1);
 
-						if (r == bridge.SENDANDBACK_NORMAL) {
-							textField_vocabulary.setText("");
-							textField_translation.setText("");
-							textArea_explanation.setText("");
-							textArea_example.setText("");
-							((CardLayout)panel_center_card.getLayout()).show(panel_center_card, "explantion");
-						}
-					}
-				});
-				btnNewButton.setBackground(SystemColor.controlHighlight);
-				btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 16));
-		
+		JButton btnNewButton = new JButton("新增");
+		btnNewButton.setPreferredSize(new Dimension(100, 30));
+		panel_center_title.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String vocabulary = textField_vocabulary.getText();
+				String translation = textField_translation.getText();
+				String explanation = textArea_explanation.getText();
+				String example = textArea_example.getText();
+				if (vocabulary == null || translation == null || vocabulary.trim().equals("")
+						|| translation.trim().equals("")) {
+					JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				AddVocabularyBridge bridge = new AddVocabularyBridge();
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.setParameter("translation", translation);
+				bridge.setParameter("explanation", explanation);
+				bridge.setParameter("example", example);
+				bridge.setParameter("parent", thisFrame);
+				int r = bridge.getDispatcher().sendAndBack();
+
+				if (r == bridge.SENDANDBACK_NORMAL) {
+					initializeText();
+				}
+			}
+		});
+		btnNewButton.setBackground(SystemColor.controlHighlight);
+		btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 16));
+
 		panel_center_card = new JPanel();
 		panel_center.add(panel_center_card, BorderLayout.CENTER);
 		panel_center_card.setLayout(new CardLayout(0, 0));
-		
+
 		panel_center_card.add(panel_explanation, "explanation");
 		panel_center_card.add(panel_example, "example");
-	
+
+	}
+
+	private void initializeText() {
+		textField_vocabulary.setText("");
+		textField_translation.setText("");
+		textArea_explanation.setText("");
+		textArea_example.setText("");
+		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
 	}
 
 }

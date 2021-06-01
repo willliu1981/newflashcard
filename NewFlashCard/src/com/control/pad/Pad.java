@@ -13,6 +13,12 @@ public abstract class Pad {
 		private String reverseContent;
 		private boolean isChanged;
 
+		public void initialize() {
+			this.contentTemp = "";
+			this.reverseContent = "";
+			this.isChanged = false;
+		}
+
 		public String getContentTemp() {
 			return contentTemp;
 		}
@@ -85,7 +91,6 @@ public abstract class Pad {
 
 	public abstract void change(Component parent, String name, KeyEvent e);
 
-
 	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
 
 	}
@@ -96,5 +101,14 @@ public abstract class Pad {
 
 	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
 
+	}
+
+	public void initializeContent(String name) {
+		initializeContent(name, "");
+	}
+
+	public void initializeContent(String name, String content) {
+		getPadPack(name).setContentTemp(content);
+		getPadPack(name).setReverseContent(content);
 	}
 }

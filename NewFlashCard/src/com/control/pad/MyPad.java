@@ -56,11 +56,11 @@ public class MyPad extends Pad {
 				break;
 			case 24:// "x" delete line , 不刪換行符
 				ff = ss.substring(0, ls);
-				rr = ss.substring(le , ss.length());
-				if(comp.getText(ls, le-ls).equals("\n")) {
+				rr = ss.substring(le, ss.length());
+				if (comp.getText(ls, le - ls).equals("\n")) {
 					comp.setText(ff + rr);
-				}else {
-					comp.setText(ff +"\n"+ rr);
+				} else {
+					comp.setText(ff + "\n" + rr);
 				}
 				resetOffset(comp, offsetLS);
 				break;
@@ -97,6 +97,5 @@ public class MyPad extends Pad {
 			setReverseContent(frame, getContentTemp(frame));
 		}
 	}
-
 
 }

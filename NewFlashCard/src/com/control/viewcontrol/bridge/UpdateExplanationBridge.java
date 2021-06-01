@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import com.control.bridge.Bridge;
 import com.control.dao.VocabularyDao;
 import com.control.pad.PadFactory;
+import com.control.viewcontrol.ExplanationBridge;
 import com.model.Vocabulary;
 import com.view.MainView;
 

@@ -5,7 +5,9 @@ import javax.swing.JOptionPane;
 import com.control.bridge.Bridge;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.session.UIDateTransportation;
+import com.control.pad.Pad;
 import com.control.pad.PadFactory;
+import com.model.Vocabulary;
 import com.view.MainView;
 
 public class ExplanationBridge extends Bridge {
@@ -22,7 +24,11 @@ public class ExplanationBridge extends Bridge {
 				PadFactory.initializeChange(PadFactory.EXPLANATIONFRAME);
 			}
 		}
-
+		
+		Vocabulary v=(Vocabulary) this.getParameter("vocabulary");
+		Pad pad=PadFactory.getPad();
+		pad.initializeContent(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,v.getExplanation());
+		pad.initializeContent(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE,v.getExample());
 		this.getDispatcher().send(MainView.explantationFrame);
 	}
 

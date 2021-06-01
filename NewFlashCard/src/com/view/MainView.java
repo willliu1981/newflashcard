@@ -127,21 +127,21 @@ public class MainView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					if(thisApp!=null) {
+					if (thisApp != null) {
 						return;
 					}
 					thisApp = new MainView();
 					thisApp.setVisible(true);
-					
-					Properties prop=new Properties();
+
+					Properties prop = new Properties();
 					prop.load(new FileInputStream("data//config.properties"));
-					String deisgn=prop.getProperty("design");
-					String msg="1";
-					if(deisgn.equals("true")) {
-						msg+=" Debug";
+					String deisgn = prop.getProperty("design");
+					String msg = "1";
+					if (deisgn.equals("true")) {
+						msg += " Debug";
 					}
-					thisApp.setTitle(String .format("字卡 App 版本 %s", msg));
-					
+					thisApp.setTitle(String.format("字卡 App 版本 %s", msg));
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -209,7 +209,7 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
 						return;
-					}else {
+					} else {
 						testQuestionControl.endTest();
 					}
 
@@ -238,6 +238,12 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_test = new JButton(InfoProperty.getInfo(InfoProperty.Test));
 			btnNewButton_topbar_test.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if (judgeTest()) {
+						return;
+					} else {
+						testQuestionControl.endTest();
+					}
+
 					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
 							MainView.CardLayout_topbar_Test);
 					((CardLayout) panel_test_center_cardlayout.getLayout()).show(panel_test_center_cardlayout,
@@ -270,7 +276,7 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
 						return;
-					}else {
+					} else {
 						testQuestionControl.endTest();
 					}
 

@@ -46,9 +46,9 @@ public class PadFactory {
 		return r;
 	}
 
-	public static void initializeChange(String name) {
+	public static void initializeChange(String frame) {
 		Pad pad = getPad();
-		switch (name) {
+		switch (frame) {
 		case EXPLANATIONFRAME:
 			pad.setChange(MAIN_EXPLANATIONFRAME_EXPLANATION, false);
 			pad.setChange(MAIN_EXPLANATIONFRAME_EXAMPLE, false);
@@ -60,5 +60,7 @@ public class PadFactory {
 			break;
 		}
 	}
+	
+
 
 }

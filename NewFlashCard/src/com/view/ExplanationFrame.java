@@ -241,7 +241,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textArea_explanation.setSelectionEnd(0);
 
 		/*
-		 * init component
+		 * init
 		 */
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
 				explanationType = EXPLANATIONTYPE_EXPLANATION);
