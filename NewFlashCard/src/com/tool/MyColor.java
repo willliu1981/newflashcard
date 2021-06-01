@@ -6,4 +6,7 @@ public class MyColor {
 	public static Color getBase() {
 		return new Color(0xf0f0f0);
 	}
+	
+	
+	
 }

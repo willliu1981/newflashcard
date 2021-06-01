@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,6 +31,9 @@ import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
+import com.tool.PropertiesFactory;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ExplanationFrame extends JFrame implements Transportable {
 	private ExplanationFrame thisFrame;
@@ -48,8 +54,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_cardlayout;
 	private JPanel panel_1;
 	private JPanel panel_exampleborder;
-	private String explanationTemp;// 用於反悔復原
-	private String exampleTemp;// 用於反悔復原
+	private boolean locked = false;// input 解鎖
+	private static Color explanationBackground = PropertiesFactory.getColor("explanation_background");
+	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
 
 	/**
 	 * Launch the application.
@@ -97,10 +104,20 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel.add(panel_2);
 
 		textField_translation = new JTextField();
+		textField_translation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				locked = false;
+				lock();
+			}
+		});
+		textField_translation.setDisabledTextColor(Color.BLACK);
 		textField_translation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
+				if (!locked) {
+					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
+				}
 			}
 		});
 		textField_translation.setBorder(null);
@@ -163,6 +180,16 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		contentPane.add(panel_cardlayout, BorderLayout.CENTER);
 		panel_cardlayout.setLayout(new CardLayout(0, 0));
 		textArea_explanation = new JTextArea();
+		textArea_explanation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					locked = false;
+					lock();
+				}
+			}
+		});
+		textArea_explanation.setDisabledTextColor(Color.WHITE);
 		textArea_explanation.setMargin(new Insets(10, 10, 10, 10));
 		textArea_explanation.setWrapStyleWord(true);
 		textArea_explanation.setLineWrap(true);
@@ -175,7 +202,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
+				if (!locked) {
+					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
+				}
 
 				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, textArea_explanation,
 						e);
@@ -196,25 +225,32 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel_cardlayout.add(scrollPane_explanation, EXPLANATIONTYPE_EXPLANATION);
 
 		textArea_example = new JTextArea();
+		textArea_example.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				locked = false;
+				lock();
+			}
+		});
+		textArea_example.setDisabledTextColor(Color.WHITE);
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE,
-						textArea_example, e);
+				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
+				if (!locked) {
+					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
+				}
 
-				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example,
-						e);
+				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE,
-						textArea_example, e);
+				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
 			}
 
 		});
@@ -243,6 +279,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		/*
 		 * init
 		 */
+		this.locked = true;
+		lock();
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
 				explanationType = EXPLANATIONTYPE_EXPLANATION);
 		btnNewButton_type.setText(EXPLANATIONTYPE_EXAMPLE);
@@ -265,13 +303,30 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
 	}
-	
+
 	private void exampleHighLight(Vocabulary vocabulary) {
 		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
 			panel_exampleborder.setBackground(new Color(0, 176, 0));
 		} else {
 			panel_exampleborder.setBackground(MyColor.getBase());
 		}
+	}
+
+	private void lock() {
+		Color bcExplanation = null;
+		Color bcExample = null;
+		if (locked) {
+			bcExplanation = Color.black;
+			bcExample = Color.black;
+		} else {
+			bcExplanation = explanationBackground;
+			bcExample = exampleBackground;
+		}
+		this.textArea_explanation.setEditable(!locked);
+		this.textArea_example.setEditable(!locked);
+		this.textField_translation.setEditable(!locked);
+		this.textArea_explanation.setBackground(bcExplanation);
+		this.textArea_example.setBackground(bcExample);
 	}
 
 }
