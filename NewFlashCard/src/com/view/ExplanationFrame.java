@@ -329,6 +329,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textField_translation.setEditable(!locked);
 		this.textArea_explanation.setBackground(bcExplanation);
 		this.textArea_example.setBackground(bcExample);
+		this.textArea_explanation.transferFocus();
 	}
 
 }
