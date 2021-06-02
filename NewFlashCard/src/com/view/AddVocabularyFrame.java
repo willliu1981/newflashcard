@@ -20,11 +20,14 @@ import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
+import com.control.bridge.Transportable;
+import com.control.bridge.session.UIDateTransportation;
 import com.control.dao.Dao;
 import com.control.dao.VocabularyDao;
 import com.control.pad.Pad;
 import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
+import com.control.viewcontrol.bridge.AddVocabularyFetchBridge;
 import com.control.viewcontrol.bridge.CheckVocabularyExistBridge;
 import com.model.Vocabulary;
 
@@ -42,7 +45,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.border.LineBorder;
 import java.awt.CardLayout;
 
-public class AddVocabularyFrame extends JFrame {
+public class AddVocabularyFrame extends JFrame implements Transportable {
 	private AddVocabularyFrame thisFrame;
 	private JPanel contentPane;
 	private JTextField textField_vocabulary;
@@ -50,6 +53,7 @@ public class AddVocabularyFrame extends JFrame {
 	private JTextArea textArea_explanation;
 	private JTextArea textArea_example;
 	private JPanel panel_center_card;
+	private UIDateTransportation dt;
 
 	/**
 	 * Launch the application.
@@ -124,16 +128,38 @@ public class AddVocabularyFrame extends JFrame {
 			}
 
 		});
+		
+		JPanel panel_6 = new JPanel();
+		panel_top_center.add(panel_6);
 		btnNewButton_check.setBackground(SystemColor.controlHighlight);
 		btnNewButton_check.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnNewButton_check.setMinimumSize(new Dimension(21, 23));
 		btnNewButton_check.setMargin(new Insets(2, 2, 2, 2));
-		btnNewButton_check.setPreferredSize(new Dimension(21, 23));
-		btnNewButton_check.setFont(new Font("新細明體", Font.PLAIN, 12));
+		btnNewButton_check.setPreferredSize(new Dimension(38, 26));
+		btnNewButton_check.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_top_center.add(btnNewButton_check);
 
 		JPanel panel_1_1 = new JPanel();
 		panel_top_center.add(panel_1_1);
+		
+		JButton btnNewButton_4 = new JButton("ft");
+		btnNewButton_4.setFont(new Font("新細明體", Font.PLAIN, 16));
+		btnNewButton_4.setMargin(new Insets(2, 2, 2, 2));
+		btnNewButton_4.setPreferredSize(new Dimension(38, 26));
+		btnNewButton_4.setBackground(SystemColor.controlHighlight);
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String vocabulary=textField_vocabulary.getText();
+				AddVocabularyFetchBridge bridge=new AddVocabularyFetchBridge();
+				bridge.setParameter("parent", thisFrame);
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.getDispatcher().send();
+			}
+		});
+		panel_top_center.add(btnNewButton_4);
+		
+		JPanel panel_5 = new JPanel();
+		panel_top_center.add(panel_5);
 
 		JLabel lblNewLabel_1 = new JLabel("翻譯");
 		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
@@ -324,6 +350,22 @@ public class AddVocabularyFrame extends JFrame {
 		textArea_explanation.setText("");
 		textArea_example.setText("");
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
+	}
+
+	@Override
+	public UIDateTransportation accpet(UIDateTransportation dt) {
+		Vocabulary vocabulary=(Vocabulary) dt.getParameter("vocabulary");
+		textArea_explanation.setText(vocabulary.getExplanation());
+		textArea_example.setText(vocabulary.getExample());
+		textField_vocabulary.setText(vocabulary.getVocabulary());
+		textField_translation.setText(vocabulary.getTranslation());
+		
+		return dt;
+	}
+
+	@Override
+	public void setUIDateTransportation(UIDateTransportation dt) {
+		 this.dt=dt;
 	}
 
 }

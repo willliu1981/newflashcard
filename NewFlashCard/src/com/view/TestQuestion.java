@@ -48,6 +48,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	private JPanel panel_background;
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(e.getClickCount()==2) {
+				MainView.explantationFrame.setVisible(true);
+			}
+		}
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
