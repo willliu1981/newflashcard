@@ -227,9 +227,11 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example = new JTextArea();
 		textArea_example.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				locked = false;
-				lock();
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					locked = false;
+					lock();
+				}
 			}
 		});
 		textArea_example.setDisabledTextColor(Color.WHITE);

@@ -1,49 +1,37 @@
 package com.view;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import java.awt.Rectangle;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import java.awt.Component;
-import javax.swing.border.EtchedBorder;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
-import com.control.dao.Dao;
-import com.control.dao.VocabularyDao;
-import com.control.pad.Pad;
 import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
-import com.control.viewcontrol.bridge.AddVocabularyFetchBridge;
-import com.control.viewcontrol.bridge.CheckVocabularyExistBridge;
+import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
+import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
 import com.model.Vocabulary;
-
-import javax.swing.JButton;
-import java.awt.SystemColor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.JScrollPane;
-import java.awt.Color;
-import java.awt.Insets;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.border.LineBorder;
-import java.awt.CardLayout;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
 	private AddVocabularyFrame thisFrame;
@@ -54,6 +42,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private JTextArea textArea_example;
 	private JPanel panel_center_card;
 	private UIDateTransportation dt;
+	private JButton btnNewButton_update;
 
 	/**
 	 * Launch the application.
@@ -108,8 +97,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textField_vocabulary = new JTextField();
 		textField_vocabulary.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent e ) {
-				if(((int)e.getKeyChar())==27) {
+			public void keyTyped(KeyEvent e) {
+				if (((int) e.getKeyChar()) == 27) {
 					textField_vocabulary.setText("");
 				}
 			}
@@ -118,46 +107,24 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textField_vocabulary.setColumns(10);
 		panel_top_center.add(textField_vocabulary);
 
-		JButton btnNewButton_check = new JButton("ck");
-		btnNewButton_check.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				CheckVocabularyExistBridge bridge = new CheckVocabularyExistBridge();
-				bridge.setParameter("parent", thisFrame);
-				bridge.setParameter("vocabulary", textField_vocabulary.getText());
-				bridge.getDispatcher().send();
-			}
-
-		});
-		
-		JPanel panel_6 = new JPanel();
-		panel_top_center.add(panel_6);
-		btnNewButton_check.setBackground(SystemColor.controlHighlight);
-		btnNewButton_check.setBorder(new LineBorder(new Color(0, 0, 0)));
-		btnNewButton_check.setMinimumSize(new Dimension(21, 23));
-		btnNewButton_check.setMargin(new Insets(2, 2, 2, 2));
-		btnNewButton_check.setPreferredSize(new Dimension(38, 26));
-		btnNewButton_check.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_top_center.add(btnNewButton_check);
-
 		JPanel panel_1_1 = new JPanel();
 		panel_top_center.add(panel_1_1);
-		
-		JButton btnNewButton_4 = new JButton("ft");
+
+		JButton btnNewButton_4 = new JButton("查詢");
 		btnNewButton_4.setFont(new Font("新細明體", Font.PLAIN, 16));
 		btnNewButton_4.setMargin(new Insets(2, 2, 2, 2));
-		btnNewButton_4.setPreferredSize(new Dimension(38, 26));
 		btnNewButton_4.setBackground(SystemColor.controlHighlight);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String vocabulary=textField_vocabulary.getText();
-				AddVocabularyFetchBridge bridge=new AddVocabularyFetchBridge();
+				String vocabulary = textField_vocabulary.getText();
+				AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
 				bridge.setParameter("parent", thisFrame);
 				bridge.setParameter("vocabulary", vocabulary);
 				bridge.getDispatcher().send();
 			}
 		});
 		panel_top_center.add(btnNewButton_4);
-		
+
 		JPanel panel_5 = new JPanel();
 		panel_top_center.add(panel_5);
 
@@ -169,28 +136,28 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField_translation.setColumns(20);
 		panel_top_center.add(textField_translation);
-		
+
 		JPanel panel_4 = new JPanel();
 		panel_top_center.add(panel_4);
-		
-				JButton btnNewButton_3 = new JButton("全部清除");
-				panel_top_center.add(btnNewButton_3);
-				btnNewButton_3.setPreferredSize(new Dimension(100, 30));
-				btnNewButton_3.setBackground(SystemColor.controlHighlight);
-				btnNewButton_3.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						int result = JOptionPane.showConfirmDialog(thisFrame, "將清除畫面上所有輸入的資料,請確認", "全部清除",
-								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-						if (result == JOptionPane.YES_OPTION) {
-							PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
-									textArea_explanation.getText());
-							PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
-									textArea_example.getText());
-							initializeText();
-						}
-					}
-				});
-				btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
+
+		JButton btnNewButton_3 = new JButton("全部清除");
+		panel_top_center.add(btnNewButton_3);
+		btnNewButton_3.setPreferredSize(new Dimension(100, 30));
+		btnNewButton_3.setBackground(SystemColor.controlHighlight);
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(thisFrame, "將清除畫面上所有輸入的資料,請確認", "全部清除",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (result == JOptionPane.YES_OPTION) {
+					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
+							textArea_explanation.getText());
+					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
+							textArea_example.getText());
+					initializeComponent();
+				}
+			}
+		});
+		btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
 
 		JPanel panel_center = new JPanel();
 		panel.add(panel_center, BorderLayout.CENTER);
@@ -304,10 +271,10 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		JPanel panel_1_1_1 = new JPanel();
 		panel_center_title.add(panel_1_1_1);
 
-		JButton btnNewButton = new JButton("新增");
-		btnNewButton.setPreferredSize(new Dimension(100, 30));
-		panel_center_title.add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnNewButton_add = new JButton("新增");
+		btnNewButton_add.setPreferredSize(new Dimension(100, 30));
+		panel_center_title.add(btnNewButton_add);
+		btnNewButton_add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String vocabulary = textField_vocabulary.getText();
 				String translation = textField_translation.getText();
@@ -328,12 +295,35 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 				int r = bridge.getDispatcher().sendAndBack();
 
 				if (r == bridge.SENDANDBACK_NORMAL) {
-					initializeText();
+					initializeComponent();
 				}
 			}
 		});
-		btnNewButton.setBackground(SystemColor.controlHighlight);
-		btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 16));
+		btnNewButton_add.setBackground(SystemColor.controlHighlight);
+		btnNewButton_add.setFont(new Font("新細明體", Font.PLAIN, 16));
+
+		JPanel panel_7 = new JPanel();
+		panel_center_title.add(panel_7);
+
+		btnNewButton_update = new JButton("更新");
+		btnNewButton_update.setEnabled(false);
+		btnNewButton_update.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddVocabularyUpdateBridge bridge=new AddVocabularyUpdateBridge();
+				Vocabulary vocabulary =(Vocabulary) dt.getParameter("vocabulary");
+				vocabulary.setVocabulary(textField_vocabulary.getText());
+				vocabulary.setTranslation(textField_translation .getText());
+				vocabulary.setExplanation(textArea_explanation .getText());
+				vocabulary.setExample(textArea_example .getText());
+				bridge.setParameter("parent", thisFrame);
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.getDispatcher().send();
+			}
+		});
+		btnNewButton_update.setPreferredSize(new Dimension(100, 30));
+		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 16));
+		btnNewButton_update.setBackground(SystemColor.controlHighlight);
+		panel_center_title.add(btnNewButton_update);
 
 		panel_center_card = new JPanel();
 		panel_center.add(panel_center_card, BorderLayout.CENTER);
@@ -344,28 +334,38 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 
 	}
 
-	private void initializeText() {
+	private void initializeComponent() {
 		textField_vocabulary.setText("");
 		textField_translation.setText("");
 		textArea_explanation.setText("");
 		textArea_example.setText("");
-		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
+		btnNewButton_update.setEnabled(false);
+		textField_vocabulary.setEditable(true);
 	}
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
-		Vocabulary vocabulary=(Vocabulary) dt.getParameter("vocabulary");
-		textArea_explanation.setText(vocabulary.getExplanation());
-		textArea_example.setText(vocabulary.getExample());
-		textField_vocabulary.setText(vocabulary.getVocabulary());
-		textField_translation.setText(vocabulary.getTranslation());
-		
+		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+		boolean fetch = (boolean) dt.getParameter("fetch");
+
+		btnNewButton_update.setEnabled(fetch);
+
+		if (vocabulary != null) {
+			textArea_explanation.setText(vocabulary.getExplanation());
+			textArea_example.setText(vocabulary.getExample());
+			textField_vocabulary.setText(vocabulary.getVocabulary());
+			textField_translation.setText(vocabulary.getTranslation());
+			textField_vocabulary.setEditable(false);
+		} else {
+			initializeComponent();
+		}
+		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
 		return dt;
 	}
 
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
-		 this.dt=dt;
+		this.dt = dt;
 	}
 
 }
