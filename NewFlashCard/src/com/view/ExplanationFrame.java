@@ -183,7 +183,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
+				if (e.getButton()==3 && e.getClickCount() == 2) {
 					locked = false;
 					lock();
 				}
