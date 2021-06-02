@@ -107,8 +107,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textField_translation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				locked = false;
-				lock();
+				mouseUnlock(e);
 			}
 		});
 		textField_translation.setDisabledTextColor(Color.BLACK);
@@ -183,10 +182,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton()==3 && e.getClickCount() == 2) {
-					locked = false;
-					lock();
-				}
+				mouseUnlock(e);
 			}
 		});
 		textArea_explanation.setDisabledTextColor(Color.WHITE);
@@ -228,10 +224,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					locked = false;
-					lock();
-				}
+				mouseUnlock(e);
 			}
 		});
 		textArea_example.setDisabledTextColor(Color.WHITE);
@@ -330,6 +323,13 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textArea_explanation.setBackground(bcExplanation);
 		this.textArea_example.setBackground(bcExample);
 		this.textArea_explanation.transferFocus();
+	}
+	
+	private void mouseUnlock(MouseEvent e) {
+		if (e.getButton()==3 && e.getClickCount() == 2) {
+			locked = false;
+			lock();
+		}
 	}
 
 }

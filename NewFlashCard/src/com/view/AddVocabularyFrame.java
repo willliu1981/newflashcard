@@ -32,6 +32,7 @@ import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
 import com.model.Vocabulary;
+import com.tool.PropertiesFactory;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
 	private AddVocabularyFrame thisFrame;
@@ -43,6 +44,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private JPanel panel_center_card;
 	private UIDateTransportation dt;
 	private JButton btnNewButton_update;
+	private static Color explanationBackground = PropertiesFactory.getColor("explanation_background");
+	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
 
 	/**
 	 * Launch the application.
@@ -168,6 +171,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setBackground(explanationBackground);
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -191,10 +195,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_explanation.setCaretColor(Color.YELLOW);
 		textArea_explanation.setMargin(new Insets(20, 20, 20, 20));
 		textArea_explanation.setForeground(Color.WHITE);
-		textArea_explanation.setBackground(Color.DARK_GRAY);
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.setWrapStyleWord(true);
-		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 18));
+		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 20));
 
 		JScrollPane scrollPane_explanation = new JScrollPane();
 		scrollPane_explanation.setViewportView(textArea_explanation);
@@ -205,6 +208,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
+		textArea_example.setBackground(exampleBackground);
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -225,10 +229,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_example.setCaretColor(Color.YELLOW);
 		textArea_example.setMargin(new Insets(20, 20, 20, 20));
 		textArea_example.setForeground(new Color(255, 255, 255));
-		textArea_example.setBackground(Color.BLACK);
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setLineWrap(true);
-		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 18));
+		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 20));
 
 		JScrollPane scrollPane_example = new JScrollPane();
 		scrollPane_example.setViewportView(textArea_example);
@@ -238,8 +241,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center.add(panel_center_title, BorderLayout.NORTH);
 
 		JButton btnNewButton_1 = new JButton("解釋");
+		btnNewButton_1.setBackground( explanationBackground);
 		btnNewButton_1.setBorderPainted(false);
-		btnNewButton_1.setBackground(Color.DARK_GRAY);
 		btnNewButton_1.setForeground(Color.WHITE);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -253,9 +256,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center_title.add(panel_2);
 
 		JButton btnNewButton_2 = new JButton("例句");
+		btnNewButton_2.setBackground(this.heightenColor(exampleBackground, 1.15));
 		btnNewButton_2.setForeground(Color.WHITE);
 		btnNewButton_2.setBorderPainted(false);
-		btnNewButton_2.setBackground(Color.BLACK);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "example");
@@ -309,12 +312,12 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_update.setEnabled(false);
 		btnNewButton_update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AddVocabularyUpdateBridge bridge=new AddVocabularyUpdateBridge();
-				Vocabulary vocabulary =(Vocabulary) dt.getParameter("vocabulary");
+				AddVocabularyUpdateBridge bridge = new AddVocabularyUpdateBridge();
+				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 				vocabulary.setVocabulary(textField_vocabulary.getText());
-				vocabulary.setTranslation(textField_translation .getText());
-				vocabulary.setExplanation(textArea_explanation .getText());
-				vocabulary.setExample(textArea_example .getText());
+				vocabulary.setTranslation(textField_translation.getText());
+				vocabulary.setExplanation(textArea_explanation.getText());
+				vocabulary.setExample(textArea_example.getText());
 				bridge.setParameter("parent", thisFrame);
 				bridge.setParameter("vocabulary", vocabulary);
 				bridge.getDispatcher().send();
@@ -366,6 +369,30 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
+	}
+
+	private Color heightenColor(Color color, double rate) {
+		int r = color.getRed();
+		int g = color.getGreen();
+		int b = color.getBlue();
+		r = colorInRange(r + r * rate);
+		g = colorInRange(g + g * rate);
+		b = colorInRange(b + b * rate);
+
+		return new Color(r, g, b);
+	}
+
+	private int colorInRange(double value) {
+		return colorInRange((int) value);
+	}
+
+	private int colorInRange(int value) {
+		if (value < 0) {
+			value = 0;
+		} else if (value > 255) {
+			value = 255;
+		}
+		return value;
 	}
 
 }
