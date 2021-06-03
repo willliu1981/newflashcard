@@ -67,6 +67,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_4;
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -100,6 +101,17 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(10, 45));
 		contentPane.add(panel, BorderLayout.NORTH);
+		
+		btnNewButton = new JButton("解鎖");
+		btnNewButton.setBackground(SystemColor.controlHighlight);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mouseUnlock();
+			}
+		});
+		btnNewButton.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton.setFont(new Font("標楷體", Font.PLAIN, 14));
+		panel.add(btnNewButton);
 
 		txtVocabulary = new JTextField();
 		txtVocabulary.setEditable(false);
@@ -358,10 +370,14 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	}
 
 	private void mouseUnlock(MouseEvent e) {
-		if (e.getButton() == 3 && e.getClickCount() == 2) {
-			locked = false;
-			lock();
+		if (e.getButton() == 2 ) {
+			mouseUnlock();
 		}
+	}
+	
+	private void mouseUnlock() {
+		locked = false;
+		lock();
 	}
 
 }
