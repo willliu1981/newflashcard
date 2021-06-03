@@ -28,6 +28,7 @@ import javax.swing.border.SoftBevelBorder;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
+import com.control.pad.Pads;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
@@ -35,6 +36,8 @@ import com.model.Vocabulary;
 import com.tool.MyColor;
 import com.tool.PropertiesFactory;
 import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
 	private AddVocabularyFrame thisFrame;
@@ -162,6 +165,14 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 3) {
+					Pads.query(thisFrame, textArea_explanation.getSelectedText());
+				}
+			}
+		});
 		textArea_explanation.setBackground(Color.black);
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
@@ -199,6 +210,14 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
+		textArea_example.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 3) {
+					Pads.query(thisFrame, textArea_example.getSelectedText());
+				}
+			}
+		});
 		textArea_example.setBackground(Color.black);
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override

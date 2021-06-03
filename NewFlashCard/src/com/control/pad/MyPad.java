@@ -49,8 +49,11 @@ public class MyPad extends Pad {
 			String ss = comp.getText();
 			String ff = "";
 			String rr = "";
+			/*
+			 * ctrl+key
+			 */
 			switch ((int) e.getKeyChar()) {
-			case 17:// "q" select line
+			case 23:// "w" select line
 				comp.setSelectionStart(ls);
 				comp.setSelectionEnd(le - 1);
 				break;
@@ -64,7 +67,7 @@ public class MyPad extends Pad {
 				}
 				resetOffset(comp, offsetLS);
 				break;
-			case 23:// "w" delete line , 刪除換行符
+			case 4:// "d" delete line , 刪除換行符
 				ff = ss.substring(0, ls);
 				rr = ss.substring(le, ss.length());
 				comp.setText(ff + rr);

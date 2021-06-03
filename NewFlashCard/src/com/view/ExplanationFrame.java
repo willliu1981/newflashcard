@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
+import com.control.pad.Pads;
 import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
@@ -101,7 +102,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(10, 45));
 		contentPane.add(panel, BorderLayout.NORTH);
-		
+
 		btnNewButton = new JButton("解鎖");
 		btnNewButton.setBackground(SystemColor.controlHighlight);
 		btnNewButton.addActionListener(new ActionListener() {
@@ -180,6 +181,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				mouseUnlock(e);
+				if (e.getButton() == 3) {
+					Pads.query(thisFrame, textArea_explanation.getSelectedText());
+				}
 			}
 		});
 		textArea_explanation.setDisabledTextColor(Color.WHITE);
@@ -221,6 +225,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				mouseUnlock(e);
+				if (e.getButton() == 3) {
+					Pads.query(thisFrame, textArea_example.getSelectedText());
+				}
 			}
 		});
 		textArea_example.setDisabledTextColor(Color.WHITE);
@@ -301,7 +308,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setPreferredSize(new Dimension(55, 32));
 		lblNewLabel.setForeground(new Color(0, 128, 0));
-		lblNewLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(169, 169, 169), new Color(128, 128, 128)));
+		lblNewLabel
+				.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(169, 169, 169), new Color(128, 128, 128)));
 		lblNewLabel.setFont(new Font("標楷體", Font.BOLD, 20));
 		panel_3.add(lblNewLabel);
 	}
@@ -366,15 +374,15 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textField_translation.setEditable(!locked);
 		this.panel_explanation.setBackground(bcExplanation);
 		this.panel_example.setBackground(bcExample);
-		this.textArea_explanation.transferFocus();//這行不加,該元件會無法得到游標
+		this.textArea_explanation.transferFocus();// 這行不加,該元件會無法得到游標
 	}
 
 	private void mouseUnlock(MouseEvent e) {
-		if (e.getButton() == 2 ) {
+		if (e.getButton() == 2) {
 			mouseUnlock();
 		}
 	}
-	
+
 	private void mouseUnlock() {
 		locked = false;
 		lock();
