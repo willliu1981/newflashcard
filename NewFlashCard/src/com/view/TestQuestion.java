@@ -48,10 +48,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	private JPanel panel_background;
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
-		
+
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if(e.getClickCount()==2) {
+			if (e.getClickCount() == 2) {
 				MainView.explantationFrame.setVisible(true);
 			}
 		}
@@ -82,7 +82,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						 */
 						if (rowIdx == 1) {
 							showRowControl.setFirstFailure();
-						}else {
+						} else {
 							return;
 						}
 					}
@@ -207,13 +207,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				Vocabulary v = null;
 				if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
 					v = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx());
-					((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"))
-							.setText(v.getTranslation());
 				} else {
 					v = this.showRowControl.getRandomAnswer();
-					jlabelSetText((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"),
-							v.getTranslation());
 				}
+				jlabelSetText((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"),
+						v.getTranslation());
 
 				Session sess = UIDateTransportation.getSession();
 				Map<Integer, Vocabulary> map = (Map<Integer, Vocabulary>) sess.getAttribute("randomAnswers");

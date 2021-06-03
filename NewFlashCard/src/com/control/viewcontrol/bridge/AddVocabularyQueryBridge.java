@@ -26,6 +26,13 @@ public class AddVocabularyQueryBridge extends Bridge {
 			return;
 		} else if (vocabularies.size() > 1) {
 			class MyVocabulary extends Vocabulary {
+				protected MyVocabulary(Integer id, String vocabulary, String translation, String explanation,
+						String example, Integer box_id, Integer test_time, String test_date, String create_date,
+						String update_date) {
+					super(id, vocabulary, translation, explanation, example, box_id, test_time, test_date, create_date,
+							update_date);
+				}
+
 				@Override
 				public String toString() {
 					return this.getTranslation();
@@ -34,24 +41,15 @@ public class AddVocabularyQueryBridge extends Bridge {
 
 			Vocabulary[] arrVocabulary = new MyVocabulary[vocabularies.size()];
 			vocabularies.stream().map(x -> {
-				MyVocabulary v = new MyVocabulary();
-				v.setId(x.getId());
-				v.setVocabulary(x.getVocabulary());
-				v.setTranslation(x.getTranslation());
-				v.setExplanation(x.getExplanation());
-				v.setExample(x.getExample());
-				v.setBox_id(x.getBox_id());
-				v.setTest_time(x.getTest_time());
-				v.setTest_date(x.getTest_date());
-				v.setCreate_date(x.getCreate_date());
-				v.setUpdate_date(x.getUpdate_date());
+				MyVocabulary v = new MyVocabulary(x.getId(), x.getVocabulary(), x.getTranslation(), x.getExplanation(),
+						x.getExample(), x.getBox_id(), x.getTest_time(), x.getTest_date(), x.getCreate_date(),x.getUpdate_date());
 				return v;
 			}).collect(Collectors.toList()).toArray(arrVocabulary);
 			result = (Vocabulary) JOptionPane.showInputDialog(parent, "找到多筆資料,是否取出資料?\n確認後請選擇一筆資料", "查詢資料",
 					JOptionPane.INFORMATION_MESSAGE, null, arrVocabulary, arrVocabulary[0]);
 		} else {
-			int r = JOptionPane.showConfirmDialog(parent, "找到一筆資料,是否取出資料?\n" + vocabularies.get(0).getTranslation(), "查詢資料",
-					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			int r = JOptionPane.showConfirmDialog(parent, "找到一筆資料,是否取出資料?\n" + vocabularies.get(0).getTranslation(),
+					"查詢資料", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 			if (r == JOptionPane.YES_OPTION) {
 				result = vocabularies.get(0);
 			} else {

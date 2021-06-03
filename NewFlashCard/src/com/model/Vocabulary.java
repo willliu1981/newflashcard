@@ -14,6 +14,24 @@ public class Vocabulary {
 	private String create_date;
 	private String update_date;
 
+	public Vocabulary() {
+	}
+
+	public Vocabulary(Integer id, String vocabulary, String translation, String explanation, String example,
+			Integer box_id, Integer test_time, String test_date, String create_date, String update_date) {
+		super();
+		this.id = id;
+		this.vocabulary = vocabulary;
+		this.translation = translation;
+		this.explanation = explanation;
+		this.example = example;
+		this.box_id = box_id;
+		this.test_time = test_time;
+		this.test_date = test_date;
+		this.create_date = create_date;
+		this.update_date = update_date;
+	}
+
 	public Integer getId() {
 		return id;
 	}

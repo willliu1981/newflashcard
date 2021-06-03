@@ -274,40 +274,6 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		JPanel panel_1_1_1 = new JPanel();
 		panel_center_title.add(panel_1_1_1);
 
-		JButton btnNewButton_add = new JButton("新增");
-		btnNewButton_add.setPreferredSize(new Dimension(100, 30));
-		panel_center_title.add(btnNewButton_add);
-		btnNewButton_add.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String vocabulary = textField_vocabulary.getText();
-				String translation = textField_translation.getText();
-				String explanation = textArea_explanation.getText();
-				String example = textArea_example.getText();
-				if (vocabulary == null || translation == null || vocabulary.trim().equals("")
-						|| translation.trim().equals("")) {
-					JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-
-				AddVocabularyBridge bridge = new AddVocabularyBridge();
-				bridge.setParameter("vocabulary", vocabulary);
-				bridge.setParameter("translation", translation);
-				bridge.setParameter("explanation", explanation);
-				bridge.setParameter("example", example);
-				bridge.setParameter("parent", thisFrame);
-				int r = bridge.getDispatcher().sendAndBack();
-
-				if (r == bridge.SENDANDBACK_NORMAL) {
-					initializeComponent();
-				}
-			}
-		});
-		btnNewButton_add.setBackground(SystemColor.controlHighlight);
-		btnNewButton_add.setFont(new Font("新細明體", Font.PLAIN, 16));
-
-		JPanel panel_7 = new JPanel();
-		panel_center_title.add(panel_7);
-
 		btnNewButton_update = new JButton("更新");
 		btnNewButton_update.setEnabled(false);
 		btnNewButton_update.addActionListener(new ActionListener() {
@@ -327,6 +293,40 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 16));
 		btnNewButton_update.setBackground(SystemColor.controlHighlight);
 		panel_center_title.add(btnNewButton_update);
+				
+						JPanel panel_7 = new JPanel();
+						panel_center_title.add(panel_7);
+		
+				JButton btnNewButton_add = new JButton("新增");
+				btnNewButton_add.setPreferredSize(new Dimension(100, 30));
+				panel_center_title.add(btnNewButton_add);
+				btnNewButton_add.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						String vocabulary = textField_vocabulary.getText();
+						String translation = textField_translation.getText();
+						String explanation = textArea_explanation.getText();
+						String example = textArea_example.getText();
+						if (vocabulary == null || translation == null || vocabulary.trim().equals("")
+								|| translation.trim().equals("")) {
+							JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+
+						AddVocabularyBridge bridge = new AddVocabularyBridge();
+						bridge.setParameter("vocabulary", vocabulary);
+						bridge.setParameter("translation", translation);
+						bridge.setParameter("explanation", explanation);
+						bridge.setParameter("example", example);
+						bridge.setParameter("parent", thisFrame);
+						int r = bridge.getDispatcher().sendAndBack();
+
+						if (r == bridge.SENDANDBACK_NORMAL) {
+							initializeComponent();
+						}
+					}
+				});
+				btnNewButton_add.setBackground(SystemColor.controlHighlight);
+				btnNewButton_add.setFont(new Font("新細明體", Font.PLAIN, 16));
 
 		panel_center_card = new JPanel();
 		panel_center.add(panel_center_card, BorderLayout.CENTER);
