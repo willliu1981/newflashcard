@@ -34,12 +34,18 @@ import com.tool.MyColor;
 import com.tool.PropertiesFactory;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.JLabel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class ExplanationFrame extends JFrame implements Transportable {
 	private ExplanationFrame thisFrame;
-	private static final String EXPLANATIONTYPE_EXPLANATION = "解釋";
-	private static final String EXPLANATIONTYPE_EXAMPLE = "例句";
-	private static String explanationType = EXPLANATIONTYPE_EXPLANATION;
+	private static final String EXPLANATION = "解釋";
+	private static final String EXAMPLE = "例句";
+	private static String explanationType = EXPLANATION;
 	private JPanel contentPane;
 	private JTextArea textArea_explanation;
 	private UIDateTransportation dt;
@@ -47,7 +53,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JScrollPane scrollPane_explanation;
 	private JTextField txtVocabulary;
 	private JTextField textField_translation;
-	private JPanel panel_3;
 	private JButton btnNewButton_type;
 	private JScrollPane scrollPane_example;
 	private JTextArea textArea_example;
@@ -57,6 +62,11 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private boolean locked = false;// input 解鎖
 	private static Color explanationBackground = PropertiesFactory.getColor("explanation_background");
 	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
+	private JPanel panel_explanation;
+	private JPanel panel_example;
+	private JPanel panel_4;
+	private JPanel panel_3;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -94,7 +104,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txtVocabulary = new JTextField();
 		txtVocabulary.setEditable(false);
 		txtVocabulary.setText("null");
-		txtVocabulary.setHorizontalAlignment(SwingConstants.TRAILING);
+		txtVocabulary.setHorizontalAlignment(SwingConstants.CENTER);
 		txtVocabulary.setBorder(null);
 		txtVocabulary.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(txtVocabulary);
@@ -103,30 +113,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
 
-		textField_translation = new JTextField();
-		textField_translation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mouseUnlock(e);
-			}
-		});
-		textField_translation.setDisabledTextColor(Color.BLACK);
-		textField_translation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (!locked) {
-					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
-				}
-			}
-		});
-		textField_translation.setBorder(null);
-		textField_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
-		panel.add(textField_translation);
-		textField_translation.setColumns(20);
-
-		panel_3 = new JPanel();
-		panel.add(panel_3);
-
 		panel_exampleborder = new JPanel();
 		panel.add(panel_exampleborder);
 		btnNewButton_type = new JButton("例句");
@@ -134,13 +120,12 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel_exampleborder.add(btnNewButton_type);
 		btnNewButton_type.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (explanationType.equals(EXPLANATIONTYPE_EXPLANATION)) {
-					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
-							explanationType = EXPLANATIONTYPE_EXAMPLE);
+				if (explanationType.equals(EXPLANATION)) {
+					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXAMPLE);
 					btnNewButton_type.setText("解釋");
+					panel_exampleborder.setBackground(MyColor.getBase());
 				} else {
-					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
-							explanationType = EXPLANATIONTYPE_EXPLANATION);
+					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXPLANATION);
 					btnNewButton_type.setText("例句");
 					Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 					exampleHighLight(vocabulary);
@@ -214,11 +199,10 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		});
 		textArea_explanation.setCaretColor(Color.YELLOW);
 		textArea_explanation.setForeground(Color.WHITE);
-		textArea_explanation.setBackground(Color.DARK_GRAY);
+		textArea_explanation.setBackground(new Color(0, 0, 0));
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 20));
 		scrollPane_explanation = new JScrollPane();
 		scrollPane_explanation.setViewportView(textArea_explanation);
-		panel_cardlayout.add(scrollPane_explanation, EXPLANATIONTYPE_EXPLANATION);
 
 		textArea_example = new JTextArea();
 		textArea_example.addMouseListener(new MouseAdapter() {
@@ -258,7 +242,56 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.setBackground(new Color(0, 0, 0));
 		scrollPane_example = new JScrollPane();
 		scrollPane_example.setViewportView(textArea_example);
-		panel_cardlayout.add(scrollPane_example, EXPLANATIONTYPE_EXAMPLE);
+
+		panel_explanation = new JPanel();
+		panel_explanation.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_cardlayout.add(panel_explanation, EXPLANATION);
+		panel_explanation.setLayout(new BorderLayout(0, 0));
+		panel_explanation.add(scrollPane_explanation);
+
+		panel_4 = new JPanel();
+		panel_explanation.add(panel_4, BorderLayout.NORTH);
+
+		textField_translation = new JTextField();
+		textField_translation.setPreferredSize(new Dimension(7, 32));
+		textField_translation.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_4.add(textField_translation);
+		textField_translation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mouseUnlock(e);
+			}
+		});
+		textField_translation.setDisabledTextColor(Color.BLACK);
+		textField_translation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (!locked) {
+					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
+				}
+			}
+		});
+		textField_translation.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		textField_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
+		textField_translation.setColumns(45);
+
+		panel_example = new JPanel();
+		panel_example.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_cardlayout.add(panel_example, EXAMPLE);
+		panel_example.setLayout(new BorderLayout(0, 0));
+		panel_example.add(scrollPane_example);
+
+		panel_3 = new JPanel();
+		panel_3.setBackground(new Color(0, 0, 0));
+		panel_example.add(panel_3, BorderLayout.NORTH);
+
+		lblNewLabel = new JLabel("例句");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setPreferredSize(new Dimension(55, 32));
+		lblNewLabel.setForeground(new Color(0, 128, 0));
+		lblNewLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(169, 169, 169), new Color(128, 128, 128)));
+		lblNewLabel.setFont(new Font("標楷體", Font.BOLD, 20));
+		panel_3.add(lblNewLabel);
 	}
 
 	@Override
@@ -276,9 +309,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		 */
 		this.locked = true;
 		lock();
-		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout,
-				explanationType = EXPLANATIONTYPE_EXPLANATION);
-		btnNewButton_type.setText(EXPLANATIONTYPE_EXAMPLE);
+		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXPLANATION);
+		btnNewButton_type.setText(EXAMPLE);
 
 		/*
 		 * set highlight
@@ -320,13 +352,13 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.textArea_explanation.setEditable(!locked);
 		this.textArea_example.setEditable(!locked);
 		this.textField_translation.setEditable(!locked);
-		this.textArea_explanation.setBackground(bcExplanation);
-		this.textArea_example.setBackground(bcExample);
-		this.textArea_explanation.transferFocus();
+		this.panel_explanation.setBackground(bcExplanation);
+		this.panel_example.setBackground(bcExample);
+		this.textArea_explanation.transferFocus();//這行不加,該元件會無法得到游標
 	}
-	
+
 	private void mouseUnlock(MouseEvent e) {
-		if (e.getButton()==3 && e.getClickCount() == 2) {
+		if (e.getButton() == 3 && e.getClickCount() == 2) {
 			locked = false;
 			lock();
 		}

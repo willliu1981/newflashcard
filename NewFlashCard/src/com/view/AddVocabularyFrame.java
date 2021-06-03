@@ -32,6 +32,7 @@ import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
 import com.model.Vocabulary;
+import com.tool.MyColor;
 import com.tool.PropertiesFactory;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
@@ -256,7 +257,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center_title.add(panel_2);
 
 		JButton btnNewButton_2 = new JButton("例句");
-		btnNewButton_2.setBackground(this.heightenColor(exampleBackground, 1.15));
+		btnNewButton_2.setBackground(MyColor.heightenColor(exampleBackground, 1.15));
 		btnNewButton_2.setForeground(Color.WHITE);
 		btnNewButton_2.setBorderPainted(false);
 		btnNewButton_2.addActionListener(new ActionListener() {
@@ -344,6 +345,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_example.setText("");
 		btnNewButton_update.setEnabled(false);
 		textField_vocabulary.setEditable(true);
+		((CardLayout)panel_center_card.getLayout()).show(panel_center_card,"explanation");
 	}
 
 	@Override
@@ -371,28 +373,6 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		this.dt = dt;
 	}
 
-	private Color heightenColor(Color color, double rate) {
-		int r = color.getRed();
-		int g = color.getGreen();
-		int b = color.getBlue();
-		r = colorInRange(r + r * rate);
-		g = colorInRange(g + g * rate);
-		b = colorInRange(b + b * rate);
-
-		return new Color(r, g, b);
-	}
-
-	private int colorInRange(double value) {
-		return colorInRange((int) value);
-	}
-
-	private int colorInRange(int value) {
-		if (value < 0) {
-			value = 0;
-		} else if (value > 255) {
-			value = 255;
-		}
-		return value;
-	}
+	
 
 }
