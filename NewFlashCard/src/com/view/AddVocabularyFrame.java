@@ -34,6 +34,7 @@ import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
 import com.tool.PropertiesFactory;
+import javax.swing.SwingConstants;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
 	private AddVocabularyFrame thisFrame;
@@ -99,6 +100,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_top_center.add(panel_1);
 
 		textField_vocabulary = new JTextField();
+		textField_vocabulary.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_vocabulary.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -132,18 +134,6 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		JPanel panel_5 = new JPanel();
 		panel_top_center.add(panel_5);
 
-		JLabel lblNewLabel_1 = new JLabel("翻譯");
-		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_top_center.add(lblNewLabel_1);
-
-		textField_translation = new JTextField();
-		textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
-		textField_translation.setColumns(20);
-		panel_top_center.add(textField_translation);
-
-		JPanel panel_4 = new JPanel();
-		panel_top_center.add(panel_4);
-
 		JButton btnNewButton_3 = new JButton("全部清除");
 		panel_top_center.add(btnNewButton_3);
 		btnNewButton_3.setPreferredSize(new Dimension(100, 30));
@@ -172,7 +162,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
-		textArea_explanation.setBackground(explanationBackground);
+		textArea_explanation.setBackground(Color.black);
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -209,7 +199,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
-		textArea_example.setBackground(exampleBackground);
+		textArea_example.setBackground(Color.black);
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -242,7 +232,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center.add(panel_center_title, BorderLayout.NORTH);
 
 		JButton btnNewButton_1 = new JButton("解釋");
-		btnNewButton_1.setBackground( explanationBackground);
+		btnNewButton_1.setBackground( MyColor.heightenColor( explanationBackground,-0.5));
 		btnNewButton_1.setBorderPainted(false);
 		btnNewButton_1.setForeground(Color.WHITE);
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -257,7 +247,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center_title.add(panel_2);
 
 		JButton btnNewButton_2 = new JButton("例句");
-		btnNewButton_2.setBackground(MyColor.heightenColor(exampleBackground, 1.15));
+		btnNewButton_2.setBackground(MyColor.heightenColor(exampleBackground, -0.5));
 		btnNewButton_2.setForeground(Color.WHITE);
 		btnNewButton_2.setBorderPainted(false);
 		btnNewButton_2.addActionListener(new ActionListener() {
@@ -334,7 +324,37 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center_card.setLayout(new CardLayout(0, 0));
 
 		panel_center_card.add(panel_explanation, "explanation");
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBackground(Color.BLACK);
+		panel_explanation.add(panel_6, BorderLayout.NORTH);
+				
+						JLabel lblNewLabel_1 = new JLabel("翻譯");
+						lblNewLabel_1.setForeground(Color.WHITE);
+						panel_6.add(lblNewLabel_1);
+						lblNewLabel_1.setFont(new Font("標楷體", Font.BOLD, 18));
+				
+						JPanel panel_4 = new JPanel();
+						panel_4.setBackground(Color.BLACK);
+						panel_6.add(panel_4);
+		
+				textField_translation = new JTextField();
+				textField_translation.setHorizontalAlignment(SwingConstants.CENTER);
+				panel_6.add(textField_translation);
+				textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
+				textField_translation.setColumns(45);
 		panel_center_card.add(panel_example, "example");
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.setBackground(new Color(0, 0, 0));
+		panel_example.add(panel_8, BorderLayout.NORTH);
+		
+		JLabel lblNewLabel_2 = new JLabel("例句");
+		lblNewLabel_2.setForeground(new Color(0, 128, 0));
+		lblNewLabel_2.setFont(new Font("標楷體", Font.BOLD, 20));
+		lblNewLabel_2.setPreferredSize(new Dimension(45, 28));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_8.add(lblNewLabel_2);
 
 	}
 
