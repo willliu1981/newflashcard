@@ -26,14 +26,14 @@ import javax.swing.JScrollPane;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 
-public class QueryResult extends JFrame {
+public class QueryResultFrame extends JFrame {
 	private JTextField txt_vocabulary;
 	private JTextArea txtr_result;
 	private JLabel lblNewLabel_vocabulary;
 	private JScrollPane scrollPane_result;
 	private JPanel panel_main;
 
-	public QueryResult() {
+	public QueryResultFrame() {
 		setType(Type.UTILITY);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setBounds(0, 0, 400, 200);

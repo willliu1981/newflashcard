@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.control.bridge.Dispatcher;
+import com.tool.Mask;
 
 public abstract class UIDateTransportation {
 
@@ -19,9 +20,10 @@ public abstract class UIDateTransportation {
 		}
 	}
 
-	public static final int SENDANDBACK_DEFAULT = 0;
-	public static final int SENDANDBACK_BROKEN = -1;
-	public static final int SENDANDBACK_NORMAL = 1;
+	public static final Mask SENDANDBACK_DEFAULT = new Mask(2);
+	public static final Mask SENDANDBACK_BROKEN =  new Mask(4);
+	public static final Mask SENDANDBACK_NORMAL =  new Mask(8);
+	public static final Mask SENDANDBACK_INTERRUPT =  new Mask(16);
 
 	protected Dispatcher dispatcher = new Dispatcher(this);
 	protected final Map<String, Object> parameter = new HashMap<>();
@@ -38,7 +40,7 @@ public abstract class UIDateTransportation {
 
 	public abstract void doSend();
 
-	public int doSendAndBack() {
+	public Mask doSendAndBack() {
 		return SENDANDBACK_DEFAULT;
 	}
 

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import com.control.bridge.Bridge;
 import com.control.dao.VocabularyDao;
 import com.model.Vocabulary;
+import com.tool.Mask;
 import com.view.MainView;
 
 public class AddVocabularyQueryBridge extends Bridge {
@@ -20,8 +21,7 @@ public class AddVocabularyQueryBridge extends Bridge {
 		Component parent = (Component) this.getParameter("parent");
 		String vocabulary = (String) this.getParameter("vocabulary");
 
-		VocabularyDao dao = new VocabularyDao();
-		List<Vocabulary> vocabularies = dao.queryByVocabulary(vocabulary);
+		List<Vocabulary> vocabularies = query(vocabulary);
 		Vocabulary result = null;
 		if (vocabularies.size() == 0) {
 			JOptionPane.showMessageDialog(parent, "查無資料");
@@ -67,6 +67,21 @@ public class AddVocabularyQueryBridge extends Bridge {
 		this.setParameter("vocabulary", result);
 		this.setParameter("fetch", true);
 		this.getDispatcher().send(MainView.addVocabularyFrame);
+	}
+
+	@Override
+	public   Mask doSendAndBack() {
+		List<Vocabulary> vocabularies = query((String) this.getParameter("vocabulary"));
+		if (vocabularies.size() > 0) {
+			return SENDANDBACK_NORMAL.add(SENDANDBACK_INTERRUPT);
+		} 
+		return SENDANDBACK_DEFAULT.add(SENDANDBACK_INTERRUPT);
+	}
+
+	private List<Vocabulary> query(String query) {
+		VocabularyDao dao = new VocabularyDao();
+		List<Vocabulary> vocabularies = dao.queryByVocabulary(query);
+		return vocabularies;
 	}
 
 }

@@ -24,7 +24,7 @@ public final class Pads {
 				r = false;
 			} else {
 				r = true;
-				MainView.queryResult.query(parent, vs);
+				MainView.queryResultFrame.query(parent, vs);
 			}
 		} catch (NullPointerException e) {
 			r = false;

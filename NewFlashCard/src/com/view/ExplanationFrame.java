@@ -69,6 +69,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
 	private JButton btnNewButton;
+	private JPanel panel_4;
+	private JButton btnNewButton_speedquery;
 
 	/**
 	 * Launch the application.
@@ -110,6 +112,20 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				mouseUnlock();
 			}
 		});
+		
+		btnNewButton_speedquery = new JButton("翻譯");
+		btnNewButton_speedquery.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MainView.queryResultFrame.setVisible(true);
+			}
+		});
+		btnNewButton_speedquery.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton_speedquery.setFont(new Font("標楷體", Font.PLAIN, 14));
+		btnNewButton_speedquery.setBackground(SystemColor.controlHighlight);
+		panel.add(btnNewButton_speedquery);
+		
+		panel_4 = new JPanel();
+		panel.add(panel_4);
 		btnNewButton.setMargin(new Insets(2, 4, 2, 4));
 		btnNewButton.setFont(new Font("標楷體", Font.PLAIN, 14));
 		panel.add(btnNewButton);

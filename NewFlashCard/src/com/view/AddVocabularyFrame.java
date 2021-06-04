@@ -33,6 +33,7 @@ import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
 import com.model.Vocabulary;
+import com.tool.Mask;
 import com.tool.MyColor;
 import com.tool.PropertiesFactory;
 import javax.swing.SwingConstants;
@@ -53,6 +54,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
 	private JPanel panel_explanation_translation;
 	private JPanel panel_top_center;
+	private JButton btnNewButton_query;
+	private JPanel panel_query;
 
 	/**
 	 * Launch the application.
@@ -96,6 +99,20 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 
 		panel_top_center = new JPanel();
 		panel_top.add(panel_top_center);
+		
+		JButton btnNewButton_speedquery = new JButton("翻譯");
+		btnNewButton_speedquery.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainView.queryResultFrame.setVisible(true);
+			}
+		});
+		btnNewButton_speedquery.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton_speedquery.setFont(new Font("標楷體", Font.PLAIN, 14));
+		btnNewButton_speedquery.setBackground(SystemColor.controlHighlight);
+		panel_top_center.add(btnNewButton_speedquery);
+		
+		JPanel panel_6 = new JPanel();
+		panel_top_center.add(panel_6);
 
 		JLabel lblNewLabel = new JLabel("詞彙");
 		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 18));
@@ -113,6 +130,19 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 					textField_vocabulary.setText("");
 				}
 			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
+				bridge.setParameter("vocabulary", textField_vocabulary.getText().trim());
+				Mask r = bridge.getDispatcher().sendAndBack();
+				if (r .has(dt.SENDANDBACK_NORMAL)) {
+					panel_query .setBackground(Color.red);
+				} else {
+					panel_query.setBackground(MyColor.getBase());
+				}
+			}
+
 		});
 		textField_vocabulary.setFont(new Font("新細明體", Font.PLAIN, 18));
 		textField_vocabulary.setColumns(10);
@@ -120,21 +150,24 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 
 		JPanel panel_1_1 = new JPanel();
 		panel_top_center.add(panel_1_1);
-
-		JButton btnNewButton_4 = new JButton("查詢");
-		btnNewButton_4.setFont(new Font("新細明體", Font.PLAIN, 16));
-		btnNewButton_4.setMargin(new Insets(2, 2, 2, 2));
-		btnNewButton_4.setBackground(SystemColor.controlHighlight);
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String vocabulary = textField_vocabulary.getText();
-				AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
-				bridge.setParameter("parent", thisFrame);
-				bridge.setParameter("vocabulary", vocabulary);
-				bridge.getDispatcher().send();
-			}
-		});
-		panel_top_center.add(btnNewButton_4);
+		
+		panel_query = new JPanel();
+		panel_top_center.add(panel_query);
+		
+				btnNewButton_query = new JButton("查詢");
+				panel_query.add(btnNewButton_query);
+				btnNewButton_query.setFont(new Font("新細明體", Font.PLAIN, 16));
+				btnNewButton_query.setMargin(new Insets(2, 2, 2, 2));
+				btnNewButton_query.setBackground(SystemColor.controlHighlight);
+				btnNewButton_query.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String vocabulary = textField_vocabulary.getText();
+						AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
+						bridge.setParameter("parent", thisFrame);
+						bridge.setParameter("vocabulary", vocabulary);
+						bridge.getDispatcher().send();
+					}
+				});
 
 		JPanel panel_5 = new JPanel();
 		panel_top_center.add(panel_5);
@@ -328,9 +361,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 				bridge.setParameter("explanation", explanation);
 				bridge.setParameter("example", example);
 				bridge.setParameter("parent", thisFrame);
-				int r = bridge.getDispatcher().sendAndBack();
+				Mask r = bridge.getDispatcher().sendAndBack();
 
-				if (r == bridge.SENDANDBACK_NORMAL) {
+				if (r.has(bridge.SENDANDBACK_NORMAL)) {
 					initializeComponent();
 				}
 			}
@@ -385,6 +418,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_update.setEnabled(false);
 		textField_vocabulary.setEditable(true);
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
+		panel_query.setBackground(MyColor.getBase());
 	}
 
 	@Override

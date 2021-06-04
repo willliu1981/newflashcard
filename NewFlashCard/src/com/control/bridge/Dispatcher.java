@@ -1,6 +1,7 @@
 package com.control.bridge;
 
 import com.control.bridge.session.UIDateTransportation;
+import com.tool.Mask;
 
 public class Dispatcher {
 
@@ -18,8 +19,11 @@ public class Dispatcher {
 		t.dispatch(dt);
 	}
 	
-	public int sendAndBack() {
-		int r=this.dt.doSendAndBack();
+	public Mask sendAndBack() {
+		Mask r=this.dt.doSendAndBack();
+		if(r.has(dt.SENDANDBACK_INTERRUPT)) {
+			return r;
+		}
 		this.dt.doSend();
 		return r;
 	}

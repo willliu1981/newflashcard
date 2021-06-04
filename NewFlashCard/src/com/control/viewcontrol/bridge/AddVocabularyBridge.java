@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import com.control.bridge.Bridge;
 import com.control.dao.VocabularyDao;
 import com.model.Vocabulary;
+import com.tool.Mask;
 
 public class AddVocabularyBridge extends Bridge {
 
@@ -17,7 +18,7 @@ public class AddVocabularyBridge extends Bridge {
 	}
 
 	@Override
-	public int doSendAndBack() {
+	public Mask doSendAndBack() {
 		int r = -1;
 		Component parent = (Component) this.getParameter("parent");
 		String vocabulary = (String) this.getParameter("vocabulary");
