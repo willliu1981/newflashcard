@@ -53,7 +53,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_updateborder;
 	private JScrollPane scrollPane_explanation;
 	private JTextField txtVocabulary;
-	private JTextField textField_translation;
+	private JTextField txt_explanation_translation;
 	private JButton btnNewButton_type;
 	private JScrollPane scrollPane_example;
 	private JTextArea textArea_example;
@@ -65,7 +65,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
 	private JPanel panel_explanation;
 	private JPanel panel_example;
-	private JPanel panel_4;
+	private JPanel panel_explanation_translation;
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
 	private JButton btnNewButton;
@@ -165,7 +165,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 				vocabulary.setExplanation(textArea_explanation.getText());
 				vocabulary.setExample(textArea_example.getText());
-				vocabulary.setTranslation(textField_translation.getText());
+				vocabulary.setTranslation(txt_explanation_translation.getText().trim());
 				bridge.setParameter("parent", thisFrame);
 				bridge.setParameter("vocabulary", vocabulary);
 				bridge.getDispatcher().send();
@@ -268,31 +268,30 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 		panel_explanation.add(scrollPane_explanation);
 
-		panel_4 = new JPanel();
-		panel_explanation.add(panel_4, BorderLayout.NORTH);
+		panel_explanation_translation = new JPanel();
+		panel_explanation.add(panel_explanation_translation, BorderLayout.NORTH);
 
-		textField_translation = new JTextField();
-		textField_translation.setPreferredSize(new Dimension(7, 32));
-		textField_translation.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_4.add(textField_translation);
-		textField_translation.addMouseListener(new MouseAdapter() {
+		txt_explanation_translation = new JTextField();
+		txt_explanation_translation.setMargin(new Insets(2, 8, 2, 8));
+		panel_explanation_translation.add(txt_explanation_translation);
+		txt_explanation_translation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				mouseUnlock(e);
 			}
 		});
-		textField_translation.setDisabledTextColor(Color.BLACK);
-		textField_translation.addKeyListener(new KeyAdapter() {
+		txt_explanation_translation.setDisabledTextColor(Color.BLACK);
+		txt_explanation_translation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (!locked) {
 					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
 				}
-			}
+			}	
 		});
-		textField_translation.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		textField_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
-		textField_translation.setColumns(45);
+		txt_explanation_translation.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		txt_explanation_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
+		txt_explanation_translation.setColumns(45);
 
 		panel_example = new JPanel();
 		panel_example.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -320,7 +319,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
 		this.textArea_example.setText(vocabulary.getExample());
-		this.textField_translation.setText(vocabulary.getTranslation());
+		this.txt_explanation_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
 
@@ -365,13 +364,15 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		if (locked) {
 			bcExplanation = Color.black;
 			bcExample = Color.black;
+			thisFrame.txt_explanation_translation.setHorizontalAlignment(JTextField.CENTER);
 		} else {
 			bcExplanation = explanationBackground;
 			bcExample = exampleBackground;
+			thisFrame.txt_explanation_translation.setHorizontalAlignment(JTextField.LEADING);
 		}
 		this.textArea_explanation.setEditable(!locked);
 		this.textArea_example.setEditable(!locked);
-		this.textField_translation.setEditable(!locked);
+		this.txt_explanation_translation.setEditable(!locked);
 		this.panel_explanation.setBackground(bcExplanation);
 		this.panel_example.setBackground(bcExample);
 		this.textArea_explanation.transferFocus();// 這行不加,該元件會無法得到游標

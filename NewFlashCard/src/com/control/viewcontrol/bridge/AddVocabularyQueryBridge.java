@@ -1,7 +1,9 @@
 package com.control.viewcontrol.bridge;
 
 import java.awt.Component;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -25,28 +27,29 @@ public class AddVocabularyQueryBridge extends Bridge {
 			JOptionPane.showMessageDialog(parent, "查無資料");
 			return;
 		} else if (vocabularies.size() > 1) {
-			class MyVocabulary extends Vocabulary {
-				protected MyVocabulary(Integer id, String vocabulary, String translation, String explanation,
-						String example, Integer box_id, Integer test_time, String test_date, String create_date,
-						String update_date) {
-					super(id, vocabulary, translation, explanation, example, box_id, test_time, test_date, create_date,
-							update_date);
+			class VocabularyString {
+				String content;
+
+				VocabularyString(String translation) {
+					this.content = translation;
 				}
 
-				@Override
 				public String toString() {
-					return this.getTranslation();
+					return this.content;
 				}
 			}
 
-			Vocabulary[] arrVocabulary = new MyVocabulary[vocabularies.size()];
+			VocabularyString[] arrvstr = new VocabularyString[vocabularies.size()];
+			Map<VocabularyString, Vocabulary> map = new HashMap<>();
 			vocabularies.stream().map(x -> {
-				MyVocabulary v = new MyVocabulary(x.getId(), x.getVocabulary(), x.getTranslation(), x.getExplanation(),
-						x.getExample(), x.getBox_id(), x.getTest_time(), x.getTest_date(), x.getCreate_date(),x.getUpdate_date());
-				return v;
-			}).collect(Collectors.toList()).toArray(arrVocabulary);
-			result = (Vocabulary) JOptionPane.showInputDialog(parent, "找到多筆資料,是否取出資料?\n確認後請選擇一筆資料", "查詢資料",
-					JOptionPane.INFORMATION_MESSAGE, null, arrVocabulary, arrVocabulary[0]);
+				VocabularyString vstr = new VocabularyString(x.getTranslation());
+				map.put(vstr, x);
+				return vstr;
+			}).collect(Collectors.toList()).toArray(arrvstr);
+
+			VocabularyString vstrResult = (VocabularyString) JOptionPane.showInputDialog(parent,
+					"找到多筆資料,是否取出資料?\n確認後請選擇一筆資料", "查詢資料", JOptionPane.INFORMATION_MESSAGE, null, arrvstr, arrvstr[0]);
+			result = map.get(vstrResult);
 		} else {
 			int r = JOptionPane.showConfirmDialog(parent, "找到一筆資料,是否取出資料?\n" + vocabularies.get(0).getTranslation(),
 					"查詢資料", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);

@@ -51,6 +51,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private JButton btnNewButton_update;
 	private static Color explanationBackground = PropertiesFactory.getColor("explanation_background");
 	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
+	private JPanel panel_explanation_translation;
+	private JPanel panel_top_center;
 
 	/**
 	 * Launch the application.
@@ -92,7 +94,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_top_top.setPreferredSize(new Dimension(10, 15));
 		panel_top.add(panel_top_top, BorderLayout.NORTH);
 
-		JPanel panel_top_center = new JPanel();
+		panel_top_center = new JPanel();
 		panel_top.add(panel_top_center);
 
 		JLabel lblNewLabel = new JLabel("詞彙");
@@ -103,7 +105,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_top_center.add(panel_1);
 
 		textField_vocabulary = new JTextField();
-		textField_vocabulary.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_vocabulary.setMargin(new Insets(2, 8, 2, 8));
 		textField_vocabulary.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -251,7 +253,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center.add(panel_center_title, BorderLayout.NORTH);
 
 		JButton btnNewButton_1 = new JButton("解釋");
-		btnNewButton_1.setBackground( MyColor.heightenColor( explanationBackground,-0.5));
+		btnNewButton_1.setBackground(MyColor.heightenColor(explanationBackground, -0.5));
 		btnNewButton_1.setBorderPainted(false);
 		btnNewButton_1.setForeground(Color.WHITE);
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -290,8 +292,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 			public void actionPerformed(ActionEvent arg0) {
 				AddVocabularyUpdateBridge bridge = new AddVocabularyUpdateBridge();
 				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
-				vocabulary.setVocabulary(textField_vocabulary.getText());
-				vocabulary.setTranslation(textField_translation.getText());
+				vocabulary.setTranslation(textField_translation.getText().trim());
 				vocabulary.setExplanation(textArea_explanation.getText());
 				vocabulary.setExample(textArea_example.getText());
 				bridge.setParameter("parent", thisFrame);
@@ -303,71 +304,70 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 16));
 		btnNewButton_update.setBackground(SystemColor.controlHighlight);
 		panel_center_title.add(btnNewButton_update);
-				
-						JPanel panel_7 = new JPanel();
-						panel_center_title.add(panel_7);
-		
-				JButton btnNewButton_add = new JButton("新增");
-				btnNewButton_add.setPreferredSize(new Dimension(100, 30));
-				panel_center_title.add(btnNewButton_add);
-				btnNewButton_add.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						String vocabulary = textField_vocabulary.getText();
-						String translation = textField_translation.getText();
-						String explanation = textArea_explanation.getText();
-						String example = textArea_example.getText();
-						if (vocabulary == null || translation == null || vocabulary.trim().equals("")
-								|| translation.trim().equals("")) {
-							JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
-							return;
-						}
 
-						AddVocabularyBridge bridge = new AddVocabularyBridge();
-						bridge.setParameter("vocabulary", vocabulary);
-						bridge.setParameter("translation", translation);
-						bridge.setParameter("explanation", explanation);
-						bridge.setParameter("example", example);
-						bridge.setParameter("parent", thisFrame);
-						int r = bridge.getDispatcher().sendAndBack();
+		JPanel panel_7 = new JPanel();
+		panel_center_title.add(panel_7);
 
-						if (r == bridge.SENDANDBACK_NORMAL) {
-							initializeComponent();
-						}
-					}
-				});
-				btnNewButton_add.setBackground(SystemColor.controlHighlight);
-				btnNewButton_add.setFont(new Font("新細明體", Font.PLAIN, 16));
+		JButton btnNewButton_add = new JButton("新增");
+		btnNewButton_add.setPreferredSize(new Dimension(100, 30));
+		panel_center_title.add(btnNewButton_add);
+		btnNewButton_add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String vocabulary = textField_vocabulary.getText().trim();
+				String translation = textField_translation.getText().trim();
+				String explanation = textArea_explanation.getText();
+				String example = textArea_example.getText();
+				if (vocabulary == null || translation == null || vocabulary.equals("") || translation.equals("")) {
+					JOptionPane.showMessageDialog(thisFrame, "詞彙或翻譯未填", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				AddVocabularyBridge bridge = new AddVocabularyBridge();
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.setParameter("translation", translation);
+				bridge.setParameter("explanation", explanation);
+				bridge.setParameter("example", example);
+				bridge.setParameter("parent", thisFrame);
+				int r = bridge.getDispatcher().sendAndBack();
+
+				if (r == bridge.SENDANDBACK_NORMAL) {
+					initializeComponent();
+				}
+			}
+		});
+		btnNewButton_add.setBackground(SystemColor.controlHighlight);
+		btnNewButton_add.setFont(new Font("新細明體", Font.PLAIN, 16));
 
 		panel_center_card = new JPanel();
 		panel_center.add(panel_center_card, BorderLayout.CENTER);
 		panel_center_card.setLayout(new CardLayout(0, 0));
 
 		panel_center_card.add(panel_explanation, "explanation");
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBackground(Color.BLACK);
-		panel_explanation.add(panel_6, BorderLayout.NORTH);
-				
-						JLabel lblNewLabel_1 = new JLabel("翻譯");
-						lblNewLabel_1.setForeground(Color.WHITE);
-						panel_6.add(lblNewLabel_1);
-						lblNewLabel_1.setFont(new Font("標楷體", Font.BOLD, 18));
-				
-						JPanel panel_4 = new JPanel();
-						panel_4.setBackground(Color.BLACK);
-						panel_6.add(panel_4);
-		
-				textField_translation = new JTextField();
-				textField_translation.setHorizontalAlignment(SwingConstants.CENTER);
-				panel_6.add(textField_translation);
-				textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
-				textField_translation.setColumns(45);
+
+		panel_explanation_translation = new JPanel();
+		panel_explanation_translation.setBackground(Color.BLACK);
+		panel_explanation.add(panel_explanation_translation, BorderLayout.NORTH);
+
+		JLabel lblNewLabel_1 = new JLabel("翻譯");
+		lblNewLabel_1.setForeground(Color.WHITE);
+		panel_explanation_translation.add(lblNewLabel_1);
+		lblNewLabel_1.setFont(new Font("標楷體", Font.BOLD, 18));
+
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.BLACK);
+		panel_explanation_translation.add(panel_4);
+
+		textField_translation = new JTextField();
+		textField_translation.setColumns(45);
+		textField_translation.setMargin(new Insets(2, 8, 2, 8));
+		panel_explanation_translation.add(textField_translation);
+		textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_center_card.add(panel_example, "example");
-		
+
 		JPanel panel_8 = new JPanel();
 		panel_8.setBackground(new Color(0, 0, 0));
 		panel_example.add(panel_8, BorderLayout.NORTH);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("例句");
 		lblNewLabel_2.setForeground(new Color(0, 128, 0));
 		lblNewLabel_2.setFont(new Font("標楷體", Font.BOLD, 20));
@@ -384,7 +384,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_example.setText("");
 		btnNewButton_update.setEnabled(false);
 		textField_vocabulary.setEditable(true);
-		((CardLayout)panel_center_card.getLayout()).show(panel_center_card,"explanation");
+		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
 	}
 
 	@Override
@@ -411,7 +411,5 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
 	}
-
-	
 
 }

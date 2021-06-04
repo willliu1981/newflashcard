@@ -24,6 +24,11 @@ public class AddVocabularyBridge extends Bridge {
 		String translation = (String) this.getParameter("translation");
 		String explanation = (String) this.getParameter("explanation");
 		String example = (String) this.getParameter("example");
+		
+		if (vocabulary == null || vocabulary.equals("")) {
+			JOptionPane.showMessageDialog(parent, "詞彙為必要的資料", "資料錯誤", JOptionPane.WARNING_MESSAGE);
+			return SENDANDBACK_BROKEN;
+		}
 
 		VocabularyDao dao = new VocabularyDao();
 		List<Vocabulary> list = dao.queryByVocabulary(vocabulary);
