@@ -59,6 +59,7 @@ public class MainView extends JFrame {
 	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final QueryResultFrame queryResultFrame = new QueryResultFrame();
+	public static final HelpFrame helpFrame =new HelpFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
 	public static final String CardLayout_topbar_Vocabulary = "vocabulary";
@@ -183,7 +184,7 @@ public class MainView extends JFrame {
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("開啟測驗中提示");
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("編輯解釋和例句");
 		mntmNewMenuItem_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -192,6 +193,16 @@ public class MainView extends JFrame {
 		});
 		mntmNewMenuItem_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_2);
+		
+		JMenu mnNewMenu_2 = new JMenu("說明");
+		mnNewMenu_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				MainView.helpFrame.setVisible(true);
+			}
+		});
+		mnNewMenu_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
+		menuBar.add(mnNewMenu_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
