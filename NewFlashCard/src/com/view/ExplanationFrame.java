@@ -1,11 +1,13 @@
 package com.view;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -36,11 +38,19 @@ import com.tool.PropertiesFactory;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.StrokeBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import javax.swing.border.CompoundBorder;
 
 public class ExplanationFrame extends JFrame implements Transportable {
 	private ExplanationFrame thisFrame;
@@ -71,6 +81,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JButton btnNewButton;
 	private JPanel panel_4;
 	private JButton btnNewButton_speedquery;
+	private JLabel lblNewLabel_translation;
 
 	/**
 	 * Launch the application.
@@ -112,7 +123,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				mouseUnlock();
 			}
 		});
-		
+
 		btnNewButton_speedquery = new JButton("翻譯");
 		btnNewButton_speedquery.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -123,7 +134,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		btnNewButton_speedquery.setFont(new Font("標楷體", Font.PLAIN, 14));
 		btnNewButton_speedquery.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_speedquery);
-		
+
 		panel_4 = new JPanel();
 		panel.add(panel_4);
 		btnNewButton.setMargin(new Insets(2, 4, 2, 4));
@@ -279,7 +290,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		scrollPane_example.setViewportView(textArea_example);
 
 		panel_explanation = new JPanel();
-		panel_explanation.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_explanation.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				new LineBorder(new Color(0, 0, 0), 5)));
 		panel_cardlayout.add(panel_explanation, EXPLANATION);
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 		panel_explanation.add(scrollPane_explanation);
@@ -303,14 +315,15 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				if (!locked) {
 					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
 				}
-			}	
+			}
 		});
 		txt_explanation_translation.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		txt_explanation_translation.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		txt_explanation_translation.setColumns(45);
 
 		panel_example = new JPanel();
-		panel_example.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_example.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				new LineBorder(Color.black, 5)));
 		panel_cardlayout.add(panel_example, EXAMPLE);
 		panel_example.setLayout(new BorderLayout(0, 0));
 		panel_example.add(scrollPane_example);
@@ -318,6 +331,13 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		panel_3 = new JPanel();
 		panel_3.setBackground(new Color(0, 0, 0));
 		panel_example.add(panel_3, BorderLayout.NORTH);
+		panel_3.setLayout(new GridLayout(0, 1, 0, 0));
+
+		lblNewLabel_translation = new JLabel("null");
+		lblNewLabel_translation.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_translation.setForeground(Color.WHITE);
+		lblNewLabel_translation.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
+		panel_3.add(lblNewLabel_translation);
 
 		lblNewLabel = new JLabel("例句");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -334,6 +354,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
+		this.lblNewLabel_translation.setText(vocabulary.getTranslation());
 		this.textArea_example.setText(vocabulary.getExample());
 		this.txt_explanation_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
@@ -382,8 +403,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			bcExample = Color.black;
 			thisFrame.txt_explanation_translation.setHorizontalAlignment(JTextField.CENTER);
 		} else {
-			bcExplanation = explanationBackground;
-			bcExample = exampleBackground;
+			bcExplanation = MyColor.heightenColor(explanationBackground, 1.0);
+			bcExample = MyColor.heightenColor(exampleBackground, -0.25);
 			thisFrame.txt_explanation_translation.setHorizontalAlignment(JTextField.LEADING);
 		}
 		this.textArea_explanation.setEditable(!locked);
@@ -391,6 +412,10 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.txt_explanation_translation.setEditable(!locked);
 		this.panel_explanation.setBackground(bcExplanation);
 		this.panel_example.setBackground(bcExample);
+		panel_explanation.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				new LineBorder(bcExplanation, 5)));
+		panel_example.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				new LineBorder(bcExample, 5)));
 		this.textArea_explanation.transferFocus();// 這行不加,該元件會無法得到游標
 	}
 

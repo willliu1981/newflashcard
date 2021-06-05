@@ -437,6 +437,10 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		} else {
 			initializeComponent();
 		}
+		textArea_explanation.setSelectionStart(0);
+		textArea_explanation.setSelectionEnd(0);
+		textArea_example.setSelectionStart(0);
+		textArea_example.setSelectionEnd(0);
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
 		return dt;
 	}

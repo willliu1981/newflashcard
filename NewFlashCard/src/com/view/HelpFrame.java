@@ -74,6 +74,7 @@ public class HelpFrame extends JFrame {
 				+ "\r\n"
 				+ "通用編輯框功能:\r\n"
 				+ "	Ctrl+X : 刪行\r\n"
+				+ "	Ctrl+Z : 復原上一動\r\n"
 				+ "	框選+滑鼠右鍵 以開啟簡易即時翻譯(或按下翻譯按鈕)\r\n"
 				+ "\r\n"
 				+ "記錄檔位於 data/sample.db ,目前暫無讀/存檔功能,請手動備份還原檔案\r\n"
