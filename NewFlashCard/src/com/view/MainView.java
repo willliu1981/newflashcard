@@ -219,7 +219,7 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_cardbox.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_cardbox.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 			btnNewButton_topbar_cardbox.setBackground(SystemColor.controlHighlight);
-			btnNewButton_topbar_cardbox.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+			btnNewButton_topbar_cardbox.setFont(new Font("Dialog", Font.PLAIN, 18));
 			btnNewButton_topbar_cardbox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
@@ -284,14 +284,14 @@ public class MainView extends JFrame {
 			});
 			btnNewButton_topbar_test.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 			btnNewButton_topbar_test.setBackground(SystemColor.controlHighlight);
-			btnNewButton_topbar_test.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+			btnNewButton_topbar_test.setFont(new Font("Dialog", Font.PLAIN, 18));
 
 			btnNewButton_topbar_vocabulary = new JButton(InfoProperty.getInfo(InfoProperty.Vocabulary));
 			btnNewButton_topbar_vocabulary.setFocusPainted(false);
 			btnNewButton_topbar_vocabulary.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_vocabulary.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 			btnNewButton_topbar_vocabulary.setBackground(SystemColor.controlHighlight);
-			btnNewButton_topbar_vocabulary.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+			btnNewButton_topbar_vocabulary.setFont(new Font("Dialog", Font.PLAIN, 18));
 			btnNewButton_topbar_vocabulary.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
@@ -340,7 +340,7 @@ public class MainView extends JFrame {
 
 		JLabel lblNewLabel_12 = new JLabel("Welcome");
 		lblNewLabel_12.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_12.setFont(new Font("�蝝唳���", Font.PLAIN, 24));
+		lblNewLabel_12.setFont(new Font("Dialog", Font.PLAIN, 24));
 		panel_start.add(lblNewLabel_12, BorderLayout.CENTER);
 
 		JPanel panel_bottombar = new JPanel();
@@ -420,7 +420,7 @@ public class MainView extends JFrame {
 		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
 
 		JLabel lblNewLabel_11 = new JLabel("");
-		lblNewLabel_11.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_11.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_11);
 		JButton btnNewButton_8 = new JButton(InfoProperty.getInfo(InfoProperty.Create));
 		btnNewButton_8.addActionListener(new ActionListener() {
@@ -433,7 +433,7 @@ public class MainView extends JFrame {
 		});
 		btnNewButton_8.setToolTipText("create new word");
 		btnNewButton_8.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		btnNewButton_8.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_8.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_8.setBackground(SystemColor.controlHighlight);
 		panel_1.add(btnNewButton_8);
 
@@ -441,7 +441,7 @@ public class MainView extends JFrame {
 		lblNewLabel_10.setName(InfoProperty.getInfo(InfoProperty.Quantity));
 		info_query_vocabulary.add(lblNewLabel_10, ShowRowInfo.Vocabulary_Quantity);
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_10.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_10);
 
 		JPanel panel_2 = new JPanel();
@@ -735,7 +735,7 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.showRow();
 			}
 		});
-		btnNewButton_3_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_3_1.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_3_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3_1);
 		JButton btnNewButton_6_1 = new JButton("Vocabulary");
@@ -769,7 +769,7 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.showRow();
 			}
 		});
-		btnNewButton_5_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_5_1.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_5_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_5_1);
 
@@ -873,19 +873,19 @@ public class MainView extends JFrame {
 		JLabel lblNewLabel = new JLabel(InfoProperty.getInfo(InfoProperty.Id));
 		lblNewLabel.setToolTipText("id");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel);
 
 		JLabel lblNewLabel_4 = new JLabel(InfoProperty.getInfo(InfoProperty.Name));
 		lblNewLabel_4.setToolTipText("name");
-		lblNewLabel_4.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_4.setFont(new Font("Dialog", Font.PLAIN, 18));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_4);
 
 		JLabel lblNewLabel_1 = new JLabel(InfoProperty.getInfo(InfoProperty.Quantity));
 		lblNewLabel_1.setToolTipText("quantity");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_1.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_7_1 = new JLabel(InfoProperty.getInfo(InfoProperty.Test_Time));
@@ -903,7 +903,7 @@ public class MainView extends JFrame {
 		JLabel lblNewLabel_6 = new JLabel(InfoProperty.getInfo(InfoProperty.Create_Date));
 		lblNewLabel_6.setToolTipText("create date");
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_6.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_6.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_6);
 
 		JLabel lblNewLabel_7 = new JLabel(InfoProperty.getInfo(InfoProperty.Update_Date));
@@ -914,19 +914,19 @@ public class MainView extends JFrame {
 
 		JLabel lblNewLabel_2 = new JLabel("id");
 		info.add(lblNewLabel_2, ShowRowInfo.ID);
-		lblNewLabel_2.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_2.setFont(new Font("Dialog", Font.PLAIN, 18));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("name");
 		info.add(lblNewLabel_3, ShowRowInfo.Name);
-		lblNewLabel_3.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_3.setFont(new Font("Dialog", Font.PLAIN, 18));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_5 = new JLabel("quantity");
 		info.add(lblNewLabel_5, ShowRowInfo.CardBox_Vocabulary_Quantity);
-		lblNewLabel_5.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_5.setFont(new Font("Dialog", Font.PLAIN, 18));
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_5);
 
@@ -945,7 +945,7 @@ public class MainView extends JFrame {
 		JLabel lblNewLabel_8 = new JLabel("create date");
 		info.add(lblNewLabel_8, ShowRowInfo.Create_date);
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_8.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_8.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_8);
 
 		JLabel lblNewLabel_9 = new JLabel("update date");
@@ -1343,7 +1343,7 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.showRow();
 			}
 		});
-		btnNewButton_3_1_1.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_3_1_1.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_3_1_1.setBackground(SystemColor.controlHighlight);
 		panel_title.add(btnNewButton_3_1_1);
 
@@ -1446,19 +1446,19 @@ public class MainView extends JFrame {
 		panel_center.add(panel);
 
 		JButton btnNewButton_11 = new JButton("New button");
-		btnNewButton_11.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_11.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_11.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_11.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_11);
 
 		JButton btnNewButton_12 = new JButton("New button");
-		btnNewButton_12.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_12.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_12.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_12.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_12);
 
 		JButton btnNewButton_13 = new JButton("New button");
-		btnNewButton_13.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_13.setFont(new Font("Dialog", Font.PLAIN, 18));
 		btnNewButton_13.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_13.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_13);
@@ -1539,7 +1539,7 @@ public class MainView extends JFrame {
 		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
 
 		JLabel lblNewLabel_11 = new JLabel("");
-		lblNewLabel_11.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_11.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_11);
 
 		JButton btnNewButton_8 = new JButton(InfoProperty.getInfo(InfoProperty.Create));
@@ -1551,14 +1551,14 @@ public class MainView extends JFrame {
 		});
 		btnNewButton_8.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		btnNewButton_8.setBackground(SystemColor.controlHighlight);
-		btnNewButton_8.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		btnNewButton_8.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(btnNewButton_8);
 
 		JLabel lblNewLabel_10 = new JLabel(InfoProperty.getInfo(InfoProperty.Quantity));
 		lblNewLabel_10.setName(InfoProperty.getInfo(InfoProperty.Quantity));
 		info.add(lblNewLabel_10, ShowRowInfo.CardBox_Quantity);
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setFont(new Font("�蝝唳���", Font.PLAIN, 18));
+		lblNewLabel_10.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_10);
 
 		JPanel panel_2 = new JPanel();
