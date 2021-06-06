@@ -47,6 +47,7 @@ public class HelpFrame extends JFrame {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		textArea_help = new JTextArea();
+		textArea_help.setEditable(false);
 		textArea_help.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		textArea_help.setLineWrap(true);
 		textArea_help.setWrapStyleWord(true);

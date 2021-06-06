@@ -111,4 +111,6 @@ public abstract class Pad {
 		getPadPack(name).setContentTemp(content);
 		getPadPack(name).setReverseContent(content);
 	}
+	
+	public abstract boolean query(Component parent, String vocabulary) ;
 }

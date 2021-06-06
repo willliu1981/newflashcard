@@ -50,13 +50,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	private MouseAdapter myClickListener = new MouseAdapter() {
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
-			if (e.getClickCount() == 2) {
-				MainView.explantationFrame.setVisible(true);
-			}
-		}
-
-		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout()).show(
@@ -120,7 +113,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		}
 	};
 	private JLabel lblNewLabel_2;
-	private JTextArea txtrVocabualry;
 
 	/**
 	 * Create the panel.

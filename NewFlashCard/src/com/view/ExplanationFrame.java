@@ -1,56 +1,42 @@
 package com.view;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
-import com.control.pad.Pads;
 import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
 import com.tool.PropertiesFactory;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.StrokeBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.JLabel;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import java.awt.ComponentOrientation;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import javax.swing.border.CompoundBorder;
 
 public class ExplanationFrame extends JFrame implements Transportable {
 	private ExplanationFrame thisFrame;
@@ -209,7 +195,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			public void mouseClicked(MouseEvent e) {
 				mouseUnlock(e);
 				if (e.getButton() == 3) {
-					Pads.query(thisFrame, textArea_explanation.getSelectedText());
+					PadFactory.query(thisFrame, textArea_explanation.getSelectedText());
 				}
 			}
 		});
@@ -253,7 +239,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			public void mouseClicked(MouseEvent e) {
 				mouseUnlock(e);
 				if (e.getButton() == 3) {
-					Pads.query(thisFrame, textArea_example.getSelectedText());
+					PadFactory.query(thisFrame, textArea_example.getSelectedText());
 				}
 			}
 		});
@@ -359,6 +345,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.txt_explanation_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
+		this.setVisible(true);
 
 		/*
 		 * init

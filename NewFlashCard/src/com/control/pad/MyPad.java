@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JTextArea;
@@ -13,6 +14,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Keymap;
+
+import com.control.dao.VocabularyDao;
+import com.control.viewcontrol.bridge.QueryResultBridge;
+import com.model.Vocabulary;
+import com.tool.Mask;
 
 public class MyPad extends Pad {
 	private int offsetTemp = 0;// 用於記錄暫時的text 位置
@@ -100,5 +106,27 @@ public class MyPad extends Pad {
 			setReverseContent(frame, getContentTemp(frame));
 		}
 	}
+
+	@Override
+	public boolean query(Component parent, String vocabulary) {
+		boolean r = false;
+		try {
+			QueryResultBridge bridge = new QueryResultBridge();
+			bridge.setParameter("vocabulary", vocabulary.trim());
+			bridge.setParameter("parent", parent);
+			Mask mask=bridge.getDispatcher().sendAndBack();
+			if(mask.has(bridge.SENDANDBACK_NORMAL)) {
+				r=true;
+			}else {
+				r=false;
+			}
+		} catch (NullPointerException e) {
+			r = false;
+		}
+
+		return r;
+	}
+	
+	
 
 }
