@@ -116,14 +116,14 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				MainView.queryResultFrame.setVisible(true);
 			}
 		});
-		btnNewButton_speedquery.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton_speedquery.setMargin(new Insets(2, 4, 0, 4));
 		btnNewButton_speedquery.setFont(new Font("標楷體", Font.PLAIN, 14));
 		btnNewButton_speedquery.setBackground(SystemColor.controlHighlight);
 		panel.add(btnNewButton_speedquery);
 
 		panel_4 = new JPanel();
 		panel.add(panel_4);
-		btnNewButton.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton.setMargin(new Insets(2, 4, 0, 4));
 		btnNewButton.setFont(new Font("標楷體", Font.PLAIN, 14));
 		panel.add(btnNewButton);
 
@@ -145,7 +145,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				setTypeHighLigth();
 			}
 		});
-		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 14));
+		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 
 		txtVocabulary = new JTextField();
 		txtVocabulary.setEditable(false);
@@ -329,6 +329,11 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(169, 169, 169), new Color(128, 128, 128)));
 		lblNewLabel.setFont(new Font("標楷體", Font.BOLD, 20));
 		panel_3.add(lblNewLabel);
+
+		/*
+		 * init
+		 */
+		setTypeHighLigth();
 	}
 
 	@Override
@@ -342,7 +347,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.txt_explanation_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
-
 
 		/*
 		 * init
@@ -428,7 +432,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				exampleHighLight(vocabulary);
 			}
 		} else {
-			this.btnNewButton_type.setForeground(MyColor.heightenColor(explanationBackground, -0.75));
+			this.btnNewButton_type.setForeground(MyColor.heightenColor(explanationBackground, +0.05));
 			this.btnNewButton_type.setText(EXPLANATION);
 			exampleHighLight(null);
 		}

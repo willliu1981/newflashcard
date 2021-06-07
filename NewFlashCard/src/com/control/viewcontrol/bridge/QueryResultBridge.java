@@ -19,7 +19,13 @@ public class QueryResultBridge extends Bridge {
 		String vocabulary =(String) this.getParameter("vocabulary");
 		List<Vocabulary> vs = new VocabularyDao().queryByVocabulary(vocabulary.toLowerCase());
 		if(vs.size()==0) {
-			return this.SENDANDBACK_BROKEN;
+			/*
+			 * 嚐試query 完整大小寫字串
+			 */
+			 vs = new VocabularyDao().queryByVocabulary(vocabulary);
+			 if(vs.size()==0) {
+				 return this.SENDANDBACK_BROKEN;
+			 }
 		}
 		this.setParameter("vocabularies", vs);
 		this.dispatcher.send(MainView.queryResultFrame);

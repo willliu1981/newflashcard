@@ -26,18 +26,24 @@ import javax.swing.border.SoftBevelBorder;
 
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
+import com.control.exception.MyNullException;
 import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
+import com.control.viewcontrol.bridge.OpenToAddVocabularyFrameBridge;
 import com.model.Vocabulary;
+import com.tool.ModelCollector;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+import javax.swing.border.LineBorder;
 
 public class QueryResultFrame extends JFrame implements Transportable {
 	private QueryResultFrame thisFrame;
+	private UIDateTransportation dt;
 	private static final String EXPLANATION = "解釋";
 	private static final String EXAMPLE = "例句";
-	private final int baseHeight = 200;
+	private final int baseHeight = 250;
 	private JTextField txt_vocabulary;
 	private JTextArea txtr_result;
 	private JLabel lblNewLabel_vocabulary;
@@ -48,17 +54,23 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private JPanel panel_explanation;
 	private JScrollPane scrollPane_explanation;
 	private JTextArea textArea_explanation;
-	private JPanel panel_3;
+	private JPanel panel_rightbar;
 	private JButton btnNewButton_more;
 	private JPanel panel_example;
 	private JScrollPane scrollPane_example;
 	private JTextArea textArea_example;
 	private boolean isMoOpening = false;
-	private JPanel panel_null;
 	private String explanationType = EXPLANATION;
 	private JButton btnNewButton_type;
 	private JPanel panel;
 	private JButton btnNewButton;
+	private JPanel panel_scroll;
+	private JPanel panel_null;
+	private JPanel panel_translation;
+	private JButton btnNewButton_former;
+	private JButton btnNewButton_next;
+	private JLabel lblNewLabel_mo_translation;
+	private JButton btnNewButton_more_opento;
 
 	public QueryResultFrame() {
 		setType(Type.UTILITY);
@@ -117,22 +129,79 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_center.setLayout(new BorderLayout(0, 0));
 
 		txtr_result = new JTextArea();
+		txtr_result.setBackground(Color.BLACK);
+		txtr_result.setForeground(Color.WHITE);
 		txtr_result.setMargin(new Insets(8, 8, 8, 8));
 		txtr_result.setEditable(false);
 		txtr_result.setLineWrap(true);
 		txtr_result.setWrapStyleWord(true);
 		txtr_result.setText("null");
-		txtr_result.setFont(new Font("新細明體", Font.PLAIN, 18));
+		txtr_result.setFont(new Font("DialogInput", Font.PLAIN, 16));
 
 		scrollPane_result = new JScrollPane();
 		scrollPane_result.setBorder(null);
 		panel_center.add(scrollPane_result, BorderLayout.CENTER);
 		scrollPane_result.setViewportView(txtr_result);
 
+		panel_scroll = new JPanel();
+		// panel_center.add(panel_scroll, BorderLayout.SOUTH);
+		panel_scroll.setLayout(new BorderLayout(0, 0));
+
+		panel_translation = new JPanel();
+		panel_translation.setBackground(Color.BLACK);
+		panel_translation.setForeground(Color.WHITE);
+		panel_scroll.add(panel_translation);
+
+		lblNewLabel_mo_translation = new JLabel("null");
+		lblNewLabel_mo_translation.setFont(new Font("DialogInput", Font.PLAIN, 12));
+		lblNewLabel_mo_translation.setForeground(Color.WHITE);
+		panel_translation.add(lblNewLabel_mo_translation);
+
+		btnNewButton_former = new JButton("◁");
+		btnNewButton_former.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModelCollector mc = (ModelCollector) dt.getParameter("mc");
+				Vocabulary v = null;
+				try {
+					v = (Vocabulary) mc.getFormer();
+				} catch (MyNullException ex) {
+					ex.printStackTrace();
+				}
+				showData(v);
+			}
+		});
+		btnNewButton_former.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton_former.setForeground(Color.WHITE);
+		btnNewButton_former.setBorderPainted(false);
+		btnNewButton_former.setBackground(Color.BLACK);
+		panel_scroll.add(btnNewButton_former, BorderLayout.WEST);
+
+		btnNewButton_next = new JButton("▷");
+		btnNewButton_next.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModelCollector mc = (ModelCollector) dt.getParameter("mc");
+				Vocabulary v = null;
+				try {
+					v = (Vocabulary) mc.getNext();
+				} catch (MyNullException ex) {
+					ex.printStackTrace();
+				}
+				showData(v);
+			}
+		});
+		btnNewButton_next.setMargin(new Insets(2, 4, 2, 4));
+		btnNewButton_next.setForeground(Color.WHITE);
+		btnNewButton_next.setBorderPainted(false);
+		btnNewButton_next.setBackground(Color.BLACK);
+		panel_scroll.add(btnNewButton_next, BorderLayout.EAST);
+
 		panel_more = new JPanel();
+		panel_more.setBorder(new LineBorder(SystemColor.controlHighlight, 1, true));
 		panel_more.setBackground(Color.WHITE);
 		panel_main.add(panel_more, BorderLayout.SOUTH);
 		panel_more.setLayout(new BorderLayout(0, 0));
+
+		panel_more.add(panel_scroll, BorderLayout.NORTH);
 
 		panel_more_card = new JPanel();
 		panel_more.add(panel_more_card, BorderLayout.CENTER);
@@ -143,6 +212,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setBackground(Color.BLACK);
+		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		textArea_explanation.setMargin(new Insets(8, 8, 8, 8));
 		textArea_explanation.setLineWrap(true);
@@ -157,6 +228,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
+		textArea_example.setBackground(Color.BLACK);
+		textArea_example.setForeground(Color.WHITE);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		textArea_example.setMargin(new Insets(8, 8, 8, 8));
 		textArea_example.setWrapStyleWord(true);
@@ -167,14 +240,18 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_example.add(scrollPane_example, BorderLayout.CENTER);
 
 		panel_null = new JPanel();
+		panel_null.setBackground(Color.BLACK);
 		panel_more_card.add(panel_null, "null");
 
-		panel_3 = new JPanel();
-		panel_3.setBackground(Color.WHITE);
-		panel_more.add(panel_3, BorderLayout.EAST);
-		panel_3.setLayout(new BorderLayout(0, 0));
+		panel_rightbar = new JPanel();
+		panel_rightbar.setBorder(new LineBorder(SystemColor.controlHighlight));
+		panel_rightbar.setBackground(Color.BLACK);
+		panel_more.add(panel_rightbar, BorderLayout.EAST);
+		panel_rightbar.setLayout(new BorderLayout(0, 0));
 
-		btnNewButton_more = new JButton("更多");
+		btnNewButton_more = new JButton("更多...");
+		btnNewButton_more.setBorderPainted(false);
+		btnNewButton_more.setForeground(Color.WHITE);
 		btnNewButton_more.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (isMoOpening == true) {
@@ -186,13 +263,13 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			}
 		});
 		btnNewButton_more.setVerticalAlignment(SwingConstants.BOTTOM);
-		btnNewButton_more.setPreferredSize(new Dimension(38, 24));
-		btnNewButton_more.setBorder(new EmptyBorder(0, 0, 2, 0));
-		btnNewButton_more.setBackground(Color.WHITE);
-		panel_3.add(btnNewButton_more, BorderLayout.SOUTH);
+		btnNewButton_more.setBackground(Color.BLACK);
+		panel_rightbar.add(btnNewButton_more, BorderLayout.SOUTH);
 
 		btnNewButton_type = new JButton("Type");
-		btnNewButton_type.setBackground(Color.WHITE);
+		btnNewButton_type.setForeground(Color.WHITE);
+		btnNewButton_type.setBorderPainted(false);
+		btnNewButton_type.setBackground(Color.BLACK);
 		btnNewButton_type.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (explanationType.equals(EXPLANATION)) {
@@ -203,11 +280,33 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				initializeMo();
 			}
 		});
-		panel_3.add(btnNewButton_type, BorderLayout.NORTH);
+		panel_rightbar.add(btnNewButton_type, BorderLayout.NORTH);
+
+		btnNewButton_more_opento = new JButton("開啟至");
+		btnNewButton_more_opento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
+				Vocabulary vocabulary = (Vocabulary) mc.get();
+				OpenToAddVocabularyFrameBridge bridge = new OpenToAddVocabularyFrameBridge();
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.setParameter("parent", thisFrame);
+				bridge.getDispatcher().send();
+			}
+		});
+		btnNewButton_more_opento.setForeground(Color.WHITE);
+		btnNewButton_more_opento.setBorderPainted(false);
+		btnNewButton_more_opento.setBackground(Color.BLACK);
+		panel_rightbar.add(btnNewButton_more_opento, BorderLayout.CENTER);
+
+		/*
+		 * init
+		 */
+		initializeMo();
 	}
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
+		this.dt = dt;
 		Component parent = (Component) dt.getParameter("parent");
 		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
 
@@ -221,14 +320,22 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			sb.append(x.getTranslation() + "\n");
 		});
 
-		this.txt_vocabulary.setText(vs.get(0).getVocabulary());
-		this.lblNewLabel_vocabulary.setText(vs.get(0).getVocabulary());
+		ModelCollector mc = new ModelCollector(vs);
+		dt.setParameter("mc", mc);
+		Vocabulary v = null;
+		try {
+			v = (Vocabulary) mc.getNext();
+		} catch (MyNullException e) {
+			e.printStackTrace();
+		}
+		this.showData(v);
+
+		this.txt_vocabulary.setText(v.getVocabulary());
+		this.lblNewLabel_vocabulary.setText(v.getVocabulary());
 		this.txtr_result.setText(sb.toString());
 		this.setVisible(true);
 		this.txtr_result.setSelectionStart(0);
 		this.txtr_result.setSelectionEnd(0);
-		this.textArea_explanation.setText(vs.get(0).getExplanation());
-		this.textArea_example.setText(vs.get(0).getExample());
 		this.isMoOpening = false;
 		initializeMo();
 
@@ -244,24 +351,39 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		if (this.isMoOpening) {
 			this.btnNewButton_more.setText("收合");
 			((CardLayout) this.panel_more_card.getLayout()).show(panel_more_card, this.explanationType);
-			this.btnNewButton_type.setVisible(true);
 			this.setMoHeight(300);
 		} else {
 			this.btnNewButton_more.setText("更多");
 			((CardLayout) this.panel_more_card.getLayout()).show(panel_more_card, "null");
-			this.btnNewButton_type.setVisible(false);
 			this.explanationType = this.EXPLANATION;
 			this.setMoHeight(0);
 		}
-		this.btnNewButton_type.setText(this.explanationType.equals(EXPLANATION) ? EXAMPLE : EXPLANATION);
+		this.btnNewButton_type.setVisible(isMoOpening);
+		this.btnNewButton_more_opento.setVisible(isMoOpening);
+		this.panel_scroll.setVisible(isMoOpening);
+		this.btnNewButton_type.setText("例  句");
 	}
 
-	private void setMoHeight(int increment) {
-		this.panel_explanation
-				.setPreferredSize(new Dimension((int) panel_explanation.getPreferredSize().getWidth(), increment));
+	private void showData(Vocabulary v) {
+		ModelCollector mc = (ModelCollector) dt.getParameter("mc");
+		this.lblNewLabel_mo_translation.setText(v.getTranslation());
+		this.textArea_explanation.setText(v.getExplanation());
+		this.textArea_example.setText(v.getExample());
+		this.btnNewButton_former.setVisible(mc.hasFormer());
+		this.btnNewButton_next.setVisible(mc.hasNext());
+		initializeMoSelectText();
+	}
+
+	private void setMoHeight(int incrementHeight) {
+		this.panel_explanation.setPreferredSize(
+				new Dimension((int) panel_explanation.getPreferredSize().getWidth(), incrementHeight));
 		this.panel_example
-				.setPreferredSize(new Dimension((int) panel_example.getPreferredSize().getWidth(), increment));
-		this.setBounds(this.getX(), this.getY(), this.getWidth(), this.baseHeight + increment);
+				.setPreferredSize(new Dimension((int) panel_example.getPreferredSize().getWidth(), incrementHeight));
+		this.setBounds(this.getX(), this.getY(), this.getWidth(), this.baseHeight + incrementHeight);
+		initializeMoSelectText();
+	}
+
+	private void initializeMoSelectText() {
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
 		this.textArea_example.setSelectionStart(0);

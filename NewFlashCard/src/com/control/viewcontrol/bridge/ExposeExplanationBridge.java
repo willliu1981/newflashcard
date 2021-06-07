@@ -27,6 +27,7 @@ public class ExposeExplanationBridge extends Bridge {
 		bridge.setParameter("vocabulary", v);
 		Dispatcher dispater = bridge.getDispatcher();
 		dispater.send();
+		MainView.queryResultFrame.setVisible(false);
 	}
 
 }
