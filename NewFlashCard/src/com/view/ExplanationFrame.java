@@ -126,26 +126,26 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		btnNewButton.setMargin(new Insets(2, 4, 2, 4));
 		btnNewButton.setFont(new Font("標楷體", Font.PLAIN, 14));
 		panel.add(btnNewButton);
-				
-						JPanel panel_2 = new JPanel();
-						panel.add(panel_2);
-		
-				panel_exampleborder = new JPanel();
-				panel.add(panel_exampleborder);
-				btnNewButton_type = new JButton("例句");
-				btnNewButton_type.setBackground(SystemColor.controlHighlight);
-				panel_exampleborder.add(btnNewButton_type);
-				btnNewButton_type.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (explanationType.equals(EXPLANATION)) {
-							explanationType=EXAMPLE;
-						} else {
-							explanationType=EXPLANATION;
-						}
-						setTypeHighLigth();
-					}
-				});
-				btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 14));
+
+		JPanel panel_2 = new JPanel();
+		panel.add(panel_2);
+
+		panel_exampleborder = new JPanel();
+		panel.add(panel_exampleborder);
+		btnNewButton_type = new JButton("例句");
+		btnNewButton_type.setBackground(SystemColor.controlHighlight);
+		panel_exampleborder.add(btnNewButton_type);
+		btnNewButton_type.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (explanationType.equals(EXPLANATION)) {
+					explanationType = EXAMPLE;
+				} else {
+					explanationType = EXPLANATION;
+				}
+				setTypeHighLigth();
+			}
+		});
+		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 14));
 
 		txtVocabulary = new JTextField();
 		txtVocabulary.setEditable(false);
@@ -333,7 +333,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
-		this.dt= dt;
+		this.dt = dt;
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
@@ -342,7 +342,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		this.txt_explanation_translation.setText(vocabulary.getTranslation());
 		this.textArea_explanation.setSelectionStart(0);
 		this.textArea_explanation.setSelectionEnd(0);
-		this.setVisible(true);
+
 
 		/*
 		 * init
@@ -370,11 +370,11 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
-	
+
 	}
 
 	private void exampleHighLight(Vocabulary vocabulary) {
-		if (vocabulary!=null && vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
+		if (vocabulary != null && vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
 			panel_exampleborder.setBackground(new Color(0, 176, 0));
 		} else {
 			panel_exampleborder.setBackground(MyColor.getBase());
@@ -415,10 +415,10 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		locked = false;
 		lock();
 	}
-	
+
 	private void setTypeHighLigth() {
-		if(this.explanationType.equals(EXPLANATION)) {
-			this.btnNewButton_type.setForeground(MyColor.heightenColor( exampleBackground,-0.45));
+		if (this.explanationType.equals(EXPLANATION)) {
+			this.btnNewButton_type.setForeground(MyColor.heightenColor(exampleBackground, -0.45));
 			this.btnNewButton_type.setText(EXAMPLE);
 			panel_exampleborder.setBackground(MyColor.getBase());
 			if (dt == null) {
@@ -427,8 +427,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 				exampleHighLight(vocabulary);
 			}
-		}else {
-			this.btnNewButton_type.setForeground(MyColor.heightenColor( explanationBackground,-0.75));
+		} else {
+			this.btnNewButton_type.setForeground(MyColor.heightenColor(explanationBackground, -0.75));
 			this.btnNewButton_type.setText(EXPLANATION);
 			exampleHighLight(null);
 		}

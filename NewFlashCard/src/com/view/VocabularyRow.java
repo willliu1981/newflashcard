@@ -43,6 +43,8 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JTextField;
+import java.awt.Dimension;
 
 public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 	private ShowRowControl<Vocabulary> showRowControl;
@@ -77,6 +79,10 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if(e.getClickCount()==2) {
+				MainView.explantationFrame.setVisible(true);
+			}
+			
 			if (e.getButton() == MouseEvent.BUTTON2) {
 				wheelpress = true;
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -160,7 +166,7 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 
 		panel_main = new JPanel();
 		add(panel_main);
-		panel_main.setLayout(new GridLayout(1, 0, 0, 0));
+		panel_main.setLayout(new GridLayout(0, 6, 0, 0));
 
 		JLabel lbl_vocabulary_id = new JLabel("id");
 		lbl_vocabulary_id.setHorizontalAlignment(SwingConstants.CENTER);
@@ -203,7 +209,9 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 			Vocabulary v = this.showRowControl.getResults().get(idx);
 			((JLabel) rows[0]).setText("" + v.getId());
 			((JLabel) rows[1]).setText("" + v.getVocabulary());
-			((JLabel) rows[2]).setText("" + v.getTranslation());
+			((JLabel) rows[2])
+					.setText("" + (v.getTranslation().length() > 8 ? v.getTranslation().substring(0, 8) + "..."
+							: v.getTranslation()));
 			((JLabel) rows[3]).setText("" + v.getBox_id());
 			((JLabel) rows[4]).setText("" + v.getCreate_date());
 			((JLabel) rows[5]).setText("" + v.getUpdate_date());

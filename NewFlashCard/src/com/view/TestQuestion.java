@@ -51,6 +51,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if(e.getClickCount()==2) {
+				MainView.explantationFrame.setVisible(true);
+			}
+			
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout()).show(
 						((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
@@ -82,7 +86,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					showRowControl.showRow();
 					break;
 				case GotAnswer:
-					if (rowIdx == 1) {
+					if (rowIdx == 0) {
+						ExposeExplanationBridge bridge = new ExposeExplanationBridge();
+						Dispatcher disp = bridge.getDispatcher();
+						bridge.setParameter("correctVocabulary",
+								showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
+						disp.send();
+					} else if (rowIdx == 1) {
 						if (showRowControl.isLastQuestion()) {
 							if (showRowControl.reviewIsEmpty()) {
 								((MainView) showRowControl.getEventJFrame()).getBtnNewButton_topbar_test().doClick();
@@ -204,14 +214,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				jlabelSetText((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"),
 						v.getTranslation());
-
-				Session sess = UIDateTransportation.getSession();
-				Map<Integer, Vocabulary> map = (Map<Integer, Vocabulary>) sess.getAttribute("randomAnswers");
-				if (map == null) {
-					map = new HashMap<>();
+				Map<Integer, Vocabulary> randomAnswers = (Map<Integer, Vocabulary>) UIDateTransportation.getSession()
+						.getAttribute("randomAnswers");
+				if (randomAnswers == null) {
+					randomAnswers = new HashMap<>();
 				}
-				map.put(idx, v);
-				sess.setAttribute("randomAnswers", map);
+				randomAnswers.put(idx, v);
+				UIDateTransportation.getSession().setAttribute("randomAnswers", randomAnswers);
 			}
 			/*
 			 * 是否複習,則顯示為他色,否為預設

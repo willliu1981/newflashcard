@@ -16,9 +16,12 @@ public class ExposeExplanationBridge extends Bridge {
 
 	@Override
 	public void doSend() {
-		Session sess = this.getSession();
-		Map<Integer, Vocabulary> map = (Map<Integer, Vocabulary>) sess.getAttribute("randomAnswers");
-		Vocabulary v = map.get(this.getParameter("id"));
+		Vocabulary v =null;
+		if((v=(Vocabulary) this.getParameter("correctVocabulary"))==null) {
+			Session sess = this.getSession();
+			Map<Integer, Vocabulary> map = (Map<Integer, Vocabulary>) sess.getAttribute("randomAnswers");
+			v = map.get(this.getParameter("id"));
+		}
 		
 		ExplanationBridge bridge = new ExplanationBridge();
 		bridge.setParameter("vocabulary", v);
