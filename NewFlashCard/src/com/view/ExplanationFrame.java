@@ -147,18 +147,14 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		btnNewButton_type.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (explanationType.equals(EXPLANATION)) {
-					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXAMPLE);
-					btnNewButton_type.setText("解釋");
-					panel_exampleborder.setBackground(MyColor.getBase());
+					explanationType=EXAMPLE;
 				} else {
-					((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXPLANATION);
-					btnNewButton_type.setText("例句");
-					Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
-					exampleHighLight(vocabulary);
+					explanationType=EXPLANATION;
 				}
+				setTypeHighLigth();
 			}
 		});
-		btnNewButton_type.setFont(new Font("新細明體", Font.PLAIN, 14));
+		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 14));
 
 		panel_1 = new JPanel();
 		panel.add(panel_1);
@@ -184,7 +180,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				bridge.getDispatcher().send();
 			}
 		});
-		btnNewButton_update.setFont(new Font("新細明體", Font.PLAIN, 14));
+		btnNewButton_update.setFont(new Font("微軟正黑體", Font.BOLD, 14));
 
 		panel_cardlayout = new JPanel();
 		contentPane.add(panel_cardlayout, BorderLayout.CENTER);
@@ -337,6 +333,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
+		this.dt= dt;
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		this.txtVocabulary.setText(vocabulary.getVocabulary());
 		this.textArea_explanation.setText(vocabulary.getExplanation());
@@ -359,6 +356,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		 * set highlight
 		 */
 		exampleHighLight(vocabulary);
+		setTypeHighLigth();
 
 		if (PadFactory.isChanged(PadFactory.EXPLANATIONFRAME)) {
 			panel_updateborder.setBackground(Color.red);
@@ -371,11 +369,11 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
-		this.dt = dt;
+	
 	}
 
 	private void exampleHighLight(Vocabulary vocabulary) {
-		if (vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
+		if (vocabulary!=null && vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
 			panel_exampleborder.setBackground(new Color(0, 176, 0));
 		} else {
 			panel_exampleborder.setBackground(MyColor.getBase());
@@ -415,6 +413,25 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private void mouseUnlock() {
 		locked = false;
 		lock();
+	}
+	
+	private void setTypeHighLigth() {
+		if(this.explanationType.equals(EXPLANATION)) {
+			this.btnNewButton_type.setForeground(MyColor.heightenColor( exampleBackground,-0.45));
+			this.btnNewButton_type.setText(EXAMPLE);
+			panel_exampleborder.setBackground(MyColor.getBase());
+			if (dt == null) {
+				exampleHighLight(null);
+			} else {
+				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+				exampleHighLight(vocabulary);
+			}
+		}else {
+			this.btnNewButton_type.setForeground(MyColor.heightenColor( explanationBackground,-0.75));
+			this.btnNewButton_type.setText(EXPLANATION);
+			exampleHighLight(null);
+		}
+		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType);
 	}
 
 }

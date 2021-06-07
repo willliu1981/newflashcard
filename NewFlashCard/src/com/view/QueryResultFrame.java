@@ -143,6 +143,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		textArea_explanation.setMargin(new Insets(8, 8, 8, 8));
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.setWrapStyleWord(true);
@@ -156,6 +157,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
+		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		textArea_example.setMargin(new Insets(8, 8, 8, 8));
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setLineWrap(true);
@@ -243,7 +245,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			this.btnNewButton_more.setText("收合");
 			((CardLayout) this.panel_more_card.getLayout()).show(panel_more_card, this.explanationType);
 			this.btnNewButton_type.setVisible(true);
-			this.setMoHeight(200);
+			this.setMoHeight(300);
 		} else {
 			this.btnNewButton_more.setText("更多");
 			((CardLayout) this.panel_more_card.getLayout()).show(panel_more_card, "null");

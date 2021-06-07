@@ -40,6 +40,8 @@ import com.tool.MyColor;
 import com.tool.PropertiesFactory;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
+	private static final String EXPLANATION = "解釋";
+	private static final String EXAMPLE = "例句";
 	private AddVocabularyFrame thisFrame;
 	private JPanel contentPane;
 	private JTextField textField_vocabulary;
@@ -55,6 +57,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private JPanel panel_top_center;
 	private JButton btnNewButton_query;
 	private JPanel panel_query;
+	private String explanationType = EXPLANATION;
+	private JButton btnNewButton_type;
 
 	/**
 	 * Launch the application.
@@ -176,7 +180,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 							textArea_explanation.getText());
 					PadFactory.getPad().setReverseContent(PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE,
 							textArea_example.getText());
+					explanationType = EXPLANATION;
 					initializeComponent();
+					initializeType();
 				}
 			}
 		});
@@ -240,7 +246,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == 3) {
-					PadFactory.query(thisFrame,textArea_example.getSelectedText());
+					PadFactory.query(thisFrame, textArea_example.getSelectedText());
 				}
 			}
 		});
@@ -276,36 +282,20 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		JPanel panel_center_title = new JPanel();
 		panel_center.add(panel_center_title, BorderLayout.NORTH);
 
-		JButton btnNewButton_1 = new JButton("解釋");
-		btnNewButton_1.setBackground(MyColor.heightenColor(explanationBackground, -0.5));
-		btnNewButton_1.setBorderPainted(false);
-		btnNewButton_1.setForeground(Color.WHITE);
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnNewButton_type = new JButton("解釋");
+		btnNewButton_type.setForeground(Color.WHITE);
+		btnNewButton_type.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
+				if (explanationType.equals(EXPLANATION)) {
+					explanationType = EXAMPLE;
+				} else {
+					explanationType = EXPLANATION;
+				}
+				initializeType();
 			}
 		});
-		btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_center_title.add(btnNewButton_1);
-
-		JPanel panel_2 = new JPanel();
-		panel_center_title.add(panel_2);
-
-		JButton btnNewButton_2 = new JButton("例句");
-		btnNewButton_2.setBackground(MyColor.heightenColor(exampleBackground, -0.5));
-		btnNewButton_2.setForeground(Color.WHITE);
-		btnNewButton_2.setBorderPainted(false);
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "example");
-			}
-		});
-		btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 16));
-		panel_center_title.add(btnNewButton_2);
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setPreferredSize(new Dimension(100, 10));
-		panel_center_title.add(panel_3);
+		btnNewButton_type.setFont(new Font("新細明體", Font.PLAIN, 16));
+		panel_center_title.add(btnNewButton_type);
 
 		JPanel panel_1_1_1 = new JPanel();
 		panel_center_title.add(panel_1_1_1);
@@ -355,7 +345,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 				Mask r = bridge.getDispatcher().sendAndBack();
 
 				if (r.has(bridge.SENDANDBACK_NORMAL)) {
+					explanationType = EXPLANATION;
 					initializeComponent();
+					initializeType();
 				}
 			}
 		});
@@ -366,7 +358,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_center.add(panel_center_card, BorderLayout.CENTER);
 		panel_center_card.setLayout(new CardLayout(0, 0));
 
-		panel_center_card.add(panel_explanation, "explanation");
+		panel_center_card.add(panel_explanation, EXPLANATION);
 
 		panel_explanation_translation = new JPanel();
 		panel_explanation_translation.setBackground(Color.BLACK);
@@ -386,7 +378,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textField_translation.setMargin(new Insets(2, 8, 2, 8));
 		panel_explanation_translation.add(textField_translation);
 		textField_translation.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_center_card.add(panel_example, "example");
+		panel_center_card.add(panel_example, EXAMPLE);
 
 		JPanel panel_8 = new JPanel();
 		panel_8.setBackground(new Color(0, 0, 0));
@@ -398,7 +390,11 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		lblNewLabel_2.setPreferredSize(new Dimension(45, 28));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(lblNewLabel_2);
-
+		
+		/*
+		 * initialize
+		 */
+		initializeType();
 	}
 
 	private void initializeComponent() {
@@ -434,7 +430,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_explanation.setSelectionEnd(0);
 		textArea_example.setSelectionStart(0);
 		textArea_example.setSelectionEnd(0);
-		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
+		explanationType = EXPLANATION;
+		initializeType();
 		return dt;
 	}
 
@@ -442,7 +439,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
 	}
-	
+
 	private void queryBtnHighLight() {
 		AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
 		bridge.setParameter("vocabulary", textField_vocabulary.getText().trim());
@@ -452,6 +449,17 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		} else {
 			panel_query.setBackground(MyColor.getBase());
 		}
+	}
+	
+	private void initializeType() {
+		if(this.explanationType.equals(EXPLANATION)) {
+			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("example_background"),-0.45));
+			btnNewButton_type.setText(this.EXAMPLE);
+		}else {
+			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("explanation_background"),-0.75));
+			btnNewButton_type.setText(this.EXPLANATION);
+		}
+		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, explanationType);
 	}
 
 }
