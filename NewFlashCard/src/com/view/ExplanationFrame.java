@@ -126,6 +126,26 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		btnNewButton.setMargin(new Insets(2, 4, 2, 4));
 		btnNewButton.setFont(new Font("標楷體", Font.PLAIN, 14));
 		panel.add(btnNewButton);
+				
+						JPanel panel_2 = new JPanel();
+						panel.add(panel_2);
+		
+				panel_exampleborder = new JPanel();
+				panel.add(panel_exampleborder);
+				btnNewButton_type = new JButton("例句");
+				btnNewButton_type.setBackground(SystemColor.controlHighlight);
+				panel_exampleborder.add(btnNewButton_type);
+				btnNewButton_type.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (explanationType.equals(EXPLANATION)) {
+							explanationType=EXAMPLE;
+						} else {
+							explanationType=EXPLANATION;
+						}
+						setTypeHighLigth();
+					}
+				});
+				btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 14));
 
 		txtVocabulary = new JTextField();
 		txtVocabulary.setEditable(false);
@@ -135,26 +155,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txtVocabulary.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(txtVocabulary);
 		txtVocabulary.setColumns(18);
-
-		JPanel panel_2 = new JPanel();
-		panel.add(panel_2);
-
-		panel_exampleborder = new JPanel();
-		panel.add(panel_exampleborder);
-		btnNewButton_type = new JButton("例句");
-		btnNewButton_type.setBackground(SystemColor.controlHighlight);
-		panel_exampleborder.add(btnNewButton_type);
-		btnNewButton_type.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (explanationType.equals(EXPLANATION)) {
-					explanationType=EXAMPLE;
-				} else {
-					explanationType=EXPLANATION;
-				}
-				setTypeHighLigth();
-			}
-		});
-		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 14));
 
 		panel_1 = new JPanel();
 		panel.add(panel_1);
@@ -351,6 +351,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		lock();
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXPLANATION);
 		btnNewButton_type.setText(EXAMPLE);
+		this.setState(JFrame.NORMAL);
 
 		/*
 		 * set highlight

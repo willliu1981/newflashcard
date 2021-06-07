@@ -108,7 +108,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				bridge.getDispatcher().send();
 			}
 		});
-		btnNewButton.setPreferredSize(new Dimension(50, 23));
+		btnNewButton.setPreferredSize(new Dimension(55, 23));
 		btnNewButton.setMargin(new Insets(4, 4, 0, 4));
 		panel.add(btnNewButton, BorderLayout.EAST);
 

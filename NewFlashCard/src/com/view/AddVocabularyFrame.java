@@ -38,6 +38,7 @@ import com.model.Vocabulary;
 import com.tool.Mask;
 import com.tool.MyColor;
 import com.tool.PropertiesFactory;
+import javax.swing.border.LineBorder;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
 	private static final String EXPLANATION = "解釋";
@@ -59,6 +60,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private JPanel panel_query;
 	private String explanationType = EXPLANATION;
 	private JButton btnNewButton_type;
+	private JPanel panel_center;
 
 	/**
 	 * Launch the application.
@@ -183,12 +185,14 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 					explanationType = EXPLANATION;
 					initializeComponent();
 					initializeType();
+					highLightCauseQuery(false);
 				}
 			}
 		});
 		btnNewButton_3.setFont(new Font("新細明體", Font.PLAIN, 16));
 
-		JPanel panel_center = new JPanel();
+		panel_center = new JPanel();
+		panel_center.setBorder(new LineBorder(SystemColor.controlHighlight, 3, true));
 		panel.add(panel_center, BorderLayout.CENTER);
 		panel_center.setLayout(new BorderLayout(0, 0));
 
@@ -348,6 +352,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 					explanationType = EXPLANATION;
 					initializeComponent();
 					initializeType();
+					highLightCauseQuery(false);
 				}
 			}
 		});
@@ -423,7 +428,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 			textField_vocabulary.setText(vocabulary.getVocabulary());
 			textField_translation.setText(vocabulary.getTranslation());
 			textField_vocabulary.setEditable(false);
+			highLightCauseQuery(true);
 		} else {
+			highLightCauseQuery(false);
 			initializeComponent();
 		}
 		textArea_explanation.setSelectionStart(0);
@@ -451,12 +458,23 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		}
 	}
 	
+	private void highLightCauseQuery(boolean query) {
+		if(query) {
+			this.panel_center.setBackground(Color.red);
+			panel_center.setBorder(new LineBorder(SystemColor.red, 3, true));
+			this.panel_query .setBackground(MyColor.getBase());
+		}else {
+			this.panel_center.setBackground(MyColor.getBase());
+			panel_center.setBorder(new LineBorder(SystemColor.controlHighlight, 3, true));
+		}
+	}
+	
 	private void initializeType() {
 		if(this.explanationType.equals(EXPLANATION)) {
-			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("example_background"),-0.45));
+			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("example_background"),-0.55));
 			btnNewButton_type.setText(this.EXAMPLE);
 		}else {
-			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("explanation_background"),-0.75));
+			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("explanation_background"),-0.35));
 			btnNewButton_type.setText(this.EXPLANATION);
 		}
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, explanationType);

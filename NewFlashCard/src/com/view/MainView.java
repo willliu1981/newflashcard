@@ -179,6 +179,7 @@ public class MainView extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				addVocabularyFrame.setVisible(true);
+				addVocabularyFrame.setState(JFrame.NORMAL);
 			}
 		});
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
@@ -189,6 +190,7 @@ public class MainView extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				explantationFrame.setVisible(true);
+				explantationFrame.setState(JFrame.NORMAL);
 			}
 		});
 		mntmNewMenuItem_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
