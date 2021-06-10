@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +34,7 @@ import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.OpenToAddVocabularyFrameBridge;
 import com.model.Vocabulary;
 import com.tool.ModelCollector;
+import com.tool.MyColor;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -40,6 +42,14 @@ import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 import javax.swing.JList;
 import javax.swing.JComboBox;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EtchedBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class QueryResultFrame extends JFrame implements Transportable {
 	private QueryResultFrame thisFrame;
@@ -47,7 +57,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private static final String EXPLANATION = "解釋";
 	private static final String EXAMPLE = "例句";
 	private final int baseHeight = 225;
-	private JTextField txt_vocabulary;
+	private JTextField txt_input;
 	private JTextArea txtr_result;
 	private JLabel lblNewLabel_vocabulary;
 	private JScrollPane scrollPane_result;
@@ -66,8 +76,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private String explanationType = EXPLANATION;
 	private JButton btnNewButton_type;
 	private JPanel panel;
-	private JButton btnNewButton;
-	private JPanel panel_scroll;
+	private JButton btnNewButton_fuzzy;
+	private JPanel panel_hScroll;
 	private JPanel panel_null;
 	private JPanel panel_translation;
 	private JButton btnNewButton_former;
@@ -77,6 +87,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private String serchType = PadFactory.SERCH_EXACTLY_MATCHING;
 	private JPanel panel_vocabulary_card;
 	private JComboBox<String> comboBox_vocabularies;
+	private JPanel panel_1;
+	private JButton btnNewButton_exactly;
 
 	public QueryResultFrame() {
 		setType(Type.UTILITY);
@@ -93,37 +105,22 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_main.add(panel_top, BorderLayout.NORTH);
 		panel_top.setLayout(new BoxLayout(panel_top, BoxLayout.Y_AXIS));
 
-		txt_vocabulary = new JTextField();
-		panel_top.add(txt_vocabulary);
-		txt_vocabulary.addKeyListener(new KeyAdapter() {
+		txt_input = new JTextField();
+		panel_top.add(txt_input);
+		txt_input.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.query(null, txt_vocabulary.getText());
+				PadFactory.query(null, txt_input.getText(), serchType);
 			}
 		});
-		txt_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
-		txt_vocabulary.setHorizontalAlignment(SwingConstants.CENTER);
-		txt_vocabulary.setText("null");
-		txt_vocabulary.setColumns(20);
+		txt_input.setFont(new Font("標楷體", Font.BOLD, 16));
+		txt_input.setHorizontalAlignment(SwingConstants.CENTER);
+		txt_input.setText("null");
+		txt_input.setColumns(20);
 
 		panel = new JPanel();
 		panel_top.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
-
-		btnNewButton = new JButton("模糊");
-		btnNewButton.setBackground(SystemColor.controlHighlight);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (serchType.equals(PadFactory.SERCH_EXACTLY_MATCHING)) {
-					serchType = PadFactory.SERCH_FUZZY_SERCH;
-				} else {
-					serchType = PadFactory.SERCH_EXACTLY_MATCHING;
-				}
-				PadFactory.query(null, txt_vocabulary.getText().trim(), serchType);
-			}
-		});
-		btnNewButton.setMargin(new Insets(4, 4, 0, 4));
-		panel.add(btnNewButton, BorderLayout.EAST);
 
 		panel_vocabulary_card = new JPanel();
 		panel.add(panel_vocabulary_card, BorderLayout.CENTER);
@@ -133,10 +130,53 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_vocabulary_card.add(lblNewLabel_vocabulary, PadFactory.SERCH_EXACTLY_MATCHING);
 		lblNewLabel_vocabulary.setBorder(new EmptyBorder(0, 4, 0, 0));
 		lblNewLabel_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
-		
+
 		comboBox_vocabularies = new JComboBox();
+		comboBox_vocabularies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("qr frmae ** " + getQueryVocabulary());
+				PadFactory.query(null, getQueryVocabulary(), serchType);
+				refreshDueToInputChange();
+			}
+		});
+		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
 		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
 		panel_vocabulary_card.add(comboBox_vocabularies, PadFactory.SERCH_FUZZY_SERCH);
+
+		panel_1 = new JPanel();
+		panel.add(panel_1, BorderLayout.EAST);
+
+		btnNewButton_exactly = new JButton("精準");
+		btnNewButton_exactly.setFont(new Font("標楷體", Font.PLAIN, 13));
+		btnNewButton_exactly.setFocusPainted(false);
+		btnNewButton_exactly.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				serchType = PadFactory.SERCH_EXACTLY_MATCHING;
+				PadFactory.query(null, getQueryVocabulary(), serchType);
+				refreshDueToInputChange();
+			}
+		});
+		btnNewButton_exactly.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
+				new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
+		btnNewButton_exactly.setMargin(new Insets(4, 4, 0, 4));
+		btnNewButton_exactly.setBackground(SystemColor.controlHighlight);
+		panel_1.add(btnNewButton_exactly);
+
+		btnNewButton_fuzzy = new JButton("模糊");
+		btnNewButton_fuzzy.setFont(new Font("標楷體", Font.PLAIN, 13));
+		btnNewButton_fuzzy.setFocusPainted(false);
+		btnNewButton_fuzzy.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
+		panel_1.add(btnNewButton_fuzzy);
+		btnNewButton_fuzzy.setBackground(SystemColor.controlHighlight);
+		btnNewButton_fuzzy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				serchType = PadFactory.SERCH_FUZZY_SERCH;
+				PadFactory.query(null, getQueryVocabulary(), serchType);
+				refreshDueToInputChange();
+			}
+		});
+		btnNewButton_fuzzy.setMargin(new Insets(4, 4, 0, 4));
 
 		JPanel panel_center = new JPanel();
 		panel_main.add(panel_center, BorderLayout.CENTER);
@@ -157,13 +197,13 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_center.add(scrollPane_result, BorderLayout.CENTER);
 		scrollPane_result.setViewportView(txtr_result);
 
-		panel_scroll = new JPanel();
-		panel_scroll.setLayout(new BorderLayout(0, 0));
+		panel_hScroll = new JPanel();
+		panel_hScroll.setLayout(new BorderLayout(0, 0));
 
 		panel_translation = new JPanel();
 		panel_translation.setBackground(Color.BLACK);
 		panel_translation.setForeground(Color.WHITE);
-		panel_scroll.add(panel_translation);
+		panel_hScroll.add(panel_translation);
 
 		lblNewLabel_mo_translation = new JLabel("null");
 		lblNewLabel_mo_translation.setFont(new Font("DialogInput", Font.PLAIN, 12));
@@ -180,14 +220,14 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				} catch (MyNullException ex) {
 					ex.printStackTrace();
 				}
-				showData(v);
+				refreshDueToPressHScrollBtn(v);
 			}
 		});
 		btnNewButton_former.setMargin(new Insets(2, 4, 2, 4));
 		btnNewButton_former.setForeground(Color.WHITE);
 		btnNewButton_former.setBorderPainted(false);
 		btnNewButton_former.setBackground(Color.BLACK);
-		panel_scroll.add(btnNewButton_former, BorderLayout.WEST);
+		panel_hScroll.add(btnNewButton_former, BorderLayout.WEST);
 
 		btnNewButton_next = new JButton("▷");
 		btnNewButton_next.addActionListener(new ActionListener() {
@@ -199,14 +239,14 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				} catch (MyNullException ex) {
 					ex.printStackTrace();
 				}
-				showData(v);
+				refreshDueToPressHScrollBtn(v);
 			}
 		});
 		btnNewButton_next.setMargin(new Insets(2, 4, 2, 4));
 		btnNewButton_next.setForeground(Color.WHITE);
 		btnNewButton_next.setBorderPainted(false);
 		btnNewButton_next.setBackground(Color.BLACK);
-		panel_scroll.add(btnNewButton_next, BorderLayout.EAST);
+		panel_hScroll.add(btnNewButton_next, BorderLayout.EAST);
 
 		panel_more = new JPanel();
 		panel_more.setBorder(new LineBorder(SystemColor.controlHighlight, 1, true));
@@ -214,7 +254,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_main.add(panel_more, BorderLayout.SOUTH);
 		panel_more.setLayout(new BorderLayout(0, 0));
 
-		panel_more.add(panel_scroll, BorderLayout.NORTH);
+		panel_more.add(panel_hScroll, BorderLayout.NORTH);
 
 		panel_more_card = new JPanel();
 		panel_more.add(panel_more_card, BorderLayout.CENTER);
@@ -272,7 +312,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				} else {
 					isMoOpening = true;
 				}
-				initializeMo();
+				refreshDueToPressMoreBtn();
 			}
 		});
 		btnNewButton_more.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -290,7 +330,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				} else {
 					explanationType = EXPLANATION;
 				}
-				initializeMo();
+				refreshDueToPressMoreBtn();
 			}
 		});
 		panel_rightbar.add(btnNewButton_type, BorderLayout.NORTH);
@@ -314,31 +354,24 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		/*
 		 * init
 		 */
-		initializeMo();
+		refreshDueToPressMoreBtn();
+		refreshDueToInputChange();
 	}
 
 	@Override
 	public UIDateTransportation accpet(UIDateTransportation dt) {
 		this.dt = dt;
 		Component parent = (Component) dt.getParameter("parent");
-
 		String queryStr = (String) dt.getParameter("vocabulary");
-		String queryType = (String) dt.getParameter("type");
-		List<Vocabulary> vs = null;
+		this.serchType = (String) dt.getParameter("type");
+
 		List<String> ss = null;
-		if (queryType.equals(PadFactory.SERCH_EXACTLY_MATCHING)) {
-			vs = (List<Vocabulary>) dt.getParameter("vocabularies");
-			((CardLayout)this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, PadFactory.SERCH_EXACTLY_MATCHING);
-		} else if (queryType.equals(PadFactory.SERCH_FUZZY_SERCH)) {
+		if (this.serchType.equals(PadFactory.SERCH_FUZZY_SERCH)) {
 			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
-			((CardLayout)this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, PadFactory.SERCH_FUZZY_SERCH);
-			String [] arrs=new String[ss.size()];
-			ss.toArray(arrs);
-			this.comboBox_vocabularies=new JComboBox<String>(arrs);
-			this.panel_vocabulary_card .add(comboBox_vocabularies,PadFactory.SERCH_FUZZY_SERCH);
-			System.out.println("query result frame ** ");
-			Arrays.asList(arrs).stream().forEach(x->System.out.println(x));
+			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
 		}
+		
+		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
 
 		if (parent != null) {
 			this.setBounds(parent.getX() + (int) ((parent.getWidth() - this.getWidth()) * 0.25), parent.getY() - 35,
@@ -358,16 +391,18 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		} catch (MyNullException e) {
 			e.printStackTrace();
 		}
-		this.showData(v);
 
-		this.txt_vocabulary.setText(queryStr);
+		this.txt_input.setText(queryStr);
 		this.lblNewLabel_vocabulary.setText(v.getVocabulary());
 		this.txtr_result.setText(sb.toString());
 		this.txtr_result.setSelectionStart(0);
 		this.txtr_result.setSelectionEnd(0);
 		this.isMoOpening = false;
 		this.setVisible(true);
-		initializeMo();
+
+		refreshDueToInputChange();
+		refreshDueToPressMoreBtn();
+		refreshDueToPressHScrollBtn(v);
 
 		return dt;
 	}
@@ -377,7 +412,27 @@ public class QueryResultFrame extends JFrame implements Transportable {
 
 	}
 
-	private void initializeMo() {
+	private void refreshDueToInputChange() {
+		if (this.serchType.equals(PadFactory.SERCH_EXACTLY_MATCHING)) {
+			this.btnNewButton_exactly.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
+					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
+			this.btnNewButton_fuzzy
+					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
+							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
+		} else if (this.serchType.equals(PadFactory.SERCH_FUZZY_SERCH)) {
+			this.btnNewButton_exactly
+					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
+							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
+			this.btnNewButton_fuzzy.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
+					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
+		}
+		((CardLayout) this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, this.serchType);
+	}
+
+	/*
+	 * 基本來自於 按下"更多"或"收合"
+	 */
+	private void refreshDueToPressMoreBtn() {
 		if (this.isMoOpening) {
 			this.btnNewButton_more.setText("收合");
 			((CardLayout) this.panel_more_card.getLayout()).show(panel_more_card, this.explanationType);
@@ -389,12 +444,15 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			this.setMoHeight(0);
 		}
 		this.btnNewButton_type.setVisible(isMoOpening);
-		this.btnNewButton_more_opento.setVisible(isMoOpening);
-		this.panel_scroll.setVisible(isMoOpening);
 		this.btnNewButton_type.setText("例  句");
+		this.btnNewButton_more_opento.setVisible(isMoOpening);
+		this.panel_hScroll.setVisible(isMoOpening);
 	}
 
-	private void showData(Vocabulary v) {
+	/*
+	 * 基本來自於 按下水平捲軸
+	 */
+	private void refreshDueToPressHScrollBtn(Vocabulary v) {
 		ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
 		this.lblNewLabel_mo_translation.setText(v.getTranslation());
 		this.textArea_explanation.setText(v.getExplanation());
@@ -418,5 +476,16 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		this.textArea_explanation.setSelectionEnd(0);
 		this.textArea_example.setSelectionStart(0);
 		this.textArea_example.setSelectionEnd(0);
+	}
+
+	private String getQueryVocabulary() {
+		String query = null;
+		if (this.serchType.equals(PadFactory.SERCH_EXACTLY_MATCHING)) {
+			query = this.lblNewLabel_vocabulary.getText();
+		} else if (this.serchType.equals(PadFactory.SERCH_FUZZY_SERCH)) {
+			query = (String) this.comboBox_vocabularies.getSelectedItem();
+			System.out.println("qr frmae query** " + query);
+		}
+		return query;
 	}
 }

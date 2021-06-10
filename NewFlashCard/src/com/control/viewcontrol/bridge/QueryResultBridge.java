@@ -2,6 +2,7 @@ package com.control.viewcontrol.bridge;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.control.bridge.Bridge;
 import com.control.dao.VocabularyDao;
@@ -38,9 +39,9 @@ public class QueryResultBridge extends Bridge {
 			ss=new ArrayList<>();
 			ss.add(vocabulary);
 		}
-
+		
 		List<Vocabulary> vs = dao
-				.queryByVocabulary(ss.stream().filter(x -> x.startsWith(vocabulary)).findFirst().get());
+				.queryByVocabulary(ss.stream().filter(x -> x.startsWith(vocabulary)).findFirst().orElse(""));
 		if (vs.size() == 0) {
 			return this.SENDANDBACK_BROKEN;
 		}
