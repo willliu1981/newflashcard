@@ -110,7 +110,7 @@ public class MyPad extends Pad {
 
 	@Override
 	public boolean query(Component parent, String vocabulary) {
-		return query(parent,vocabulary,PadFactory.SERCH_EXACTLY_MATCHING);
+		return query(parent,vocabulary,PadFactory.SEARCH_EXACTLY);
 	}
 	
 	

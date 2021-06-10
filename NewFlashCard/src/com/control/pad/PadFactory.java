@@ -20,8 +20,8 @@ public class PadFactory {
 	public final static String MAIN_ADDVOCABULARYFRAME_EXPLANATION = "main_addvocabularyframe_explanation";
 	public final static String MAIN_ADDVOCABULARYFRAME_EXAMPLE = "main_addvocabularyframe_example";
 	public final static String MAIN_ADDVOCABULARYFRAME_TRANSLATION = "main_addvocabularyframe_translation";
-	public final static String SERCH_FUZZY_SERCH = "模糊";
-	public final static String SERCH_EXACTLY_MATCHING = "精準";
+	public final static String SEARCH_FUZZY = "search_fuzzy";
+	public final static String SEARCH_EXACTLY = "search_exactly";
 
 	private static PadFactory factory = new PadFactory();
 	private Pad pad;
