@@ -21,12 +21,12 @@ public class QueryResultBridge extends Bridge {
 	@Override
 	public Mask doSendAndBack() {
 		String vocabulary = (String) this.getParameter("vocabulary");
-		String type = (String) this.getParameter("type");
+		Mask type = (Mask) this.getParameter("type");
 		int limit = (int) this.getParameter("limit");
 
 		VocabularyDao dao = new VocabularyDao();
 		List<String> ss = null;
-		if (type.equals(PadFactory.SEARCH_FUZZY)) {
+		if (type.has(PadFactory.SEARCH_FUZZY)) {
 			if (limit == -1) {
 				ss = dao.queryByFuzzyVocabulary(vocabulary);
 			} else {
@@ -37,7 +37,7 @@ public class QueryResultBridge extends Bridge {
 				return this.SENDANDBACK_BROKEN;
 			}
 			this.setParameter("fuzzyvocabularies", ss);
-		} else if (type.equals(PadFactory.SEARCH_EXACTLY)) {
+		} else if (type.has(PadFactory.SEARCH_EXACTLY)) {
 			ss=new ArrayList<>();
 			ss.add(vocabulary);
 		}

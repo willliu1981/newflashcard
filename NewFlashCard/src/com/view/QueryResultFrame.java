@@ -33,6 +33,7 @@ import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.OpenToAddVocabularyFrameBridge;
 import com.model.Vocabulary;
+import com.tool.Mask;
 import com.tool.ModelCollector;
 import com.tool.MyColor;
 
@@ -52,8 +53,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 public class QueryResultFrame extends JFrame implements Transportable {
-	public final static String SEARCH_FUZZY_SERCH = "模糊";
-	public final static String SEARCH_EXACTLY_MATCHING = "精準";
+	private final static String SEARCH_EXACTLY = "精準";
+	private final static String SEARCH_FUZZY = "模糊";
 	private QueryResultFrame thisFrame;
 	private UIDateTransportation dt;
 	private static final String EXPLANATION = "解釋";
@@ -86,7 +87,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private JButton btnNewButton_next;
 	private JLabel lblNewLabel_mo_translation;
 	private JButton btnNewButton_more_opento;
-	private String serchType =this.SEARCH_EXACTLY_MATCHING;
+	private Mask searchType = PadFactory.SEARCH_EXACTLY;
+	private String searchStrType = SEARCH_EXACTLY;
 	private JPanel panel_vocabulary_card;
 	private JComboBox<String> comboBox_vocabularies;
 	private JPanel panel_1;
@@ -111,7 +113,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txt_input.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount()==2) {
+				if (e.getClickCount() == 2) {
 					txt_input.setText((String) dt.getParameter("vocabulary"));
 				}
 			}
@@ -120,7 +122,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txt_input.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.query(null,  txt_input.getText().trim(), serchType);
+				PadFactory.query(null, txt_input.getText().trim(), searchType.add(PadFactory.SEARCH_INPUT_INVALID));
 			}
 		});
 		txt_input.setFont(new Font("標楷體", Font.BOLD, 16));
@@ -137,20 +139,21 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_vocabulary_card.setLayout(new CardLayout(0, 0));
 
 		lblNewLabel_vocabulary = new JLabel("null");
-		panel_vocabulary_card.add(lblNewLabel_vocabulary,this.SEARCH_EXACTLY_MATCHING);
+		panel_vocabulary_card.add(lblNewLabel_vocabulary,this.SEARCH_EXACTLY);
 		lblNewLabel_vocabulary.setBorder(new EmptyBorder(0, 4, 0, 0));
 		lblNewLabel_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
 
 		comboBox_vocabularies = new JComboBox();
 		comboBox_vocabularies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(), PadFactory.SEARCH_EXACTLY);
+				PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
+						PadFactory.SEARCH_EXACTLY);
 				refreshDueToInputChange();
 			}
 		});
 		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
 		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
-		panel_vocabulary_card.add(comboBox_vocabularies,this.SEARCH_FUZZY_SERCH);
+		panel_vocabulary_card.add(comboBox_vocabularies, this.SEARCH_FUZZY);
 
 		panel_1 = new JPanel();
 		panel.add(panel_1, BorderLayout.EAST);
@@ -160,8 +163,9 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		btnNewButton_exactly.setFocusPainted(false);
 		btnNewButton_exactly.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				serchType = SEARCH_EXACTLY_MATCHING;
-				PadFactory.query(null, txt_input.getText().trim(), serchType);
+				searchType = PadFactory.SEARCH_EXACTLY.add(PadFactory.SEARCH_INPUT_INVALID);
+				searchStrType = SEARCH_EXACTLY;
+				PadFactory.query(null, txt_input.getText().trim(), searchType);
 				refreshDueToInputChange();
 			}
 		});
@@ -180,8 +184,9 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		btnNewButton_fuzzy.setBackground(SystemColor.controlHighlight);
 		btnNewButton_fuzzy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				serchType = SEARCH_FUZZY_SERCH;
-				PadFactory.query(null, txt_input.getText().trim(), serchType);
+				searchType = PadFactory.SEARCH_FUZZY.add(PadFactory.SEARCH_INPUT_INVALID);
+				searchStrType = SEARCH_FUZZY;
+				PadFactory.query(null, txt_input.getText().trim(), searchType);
 				refreshDueToInputChange();
 			}
 		});
@@ -372,14 +377,14 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		this.dt = dt;
 		Component parent = (Component) dt.getParameter("parent");
 		String queryStr = (String) dt.getParameter("vocabulary");
-		this.serchType = (String) dt.getParameter("type");
+		this.searchType = (Mask) dt.getParameter("type");
 
 		List<String> ss = null;
-		if (this.serchType.equals(this.SEARCH_FUZZY_SERCH)) {
+		if (this.searchType.has(PadFactory.SEARCH_FUZZY)) {
 			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
 			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
 		}
-		
+
 		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
 
 		if (parent != null) {
@@ -400,8 +405,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		} catch (MyNullException e) {
 			e.printStackTrace();
 		}
-		
-		if(this.serchType.equals(PadFactory.SEARCH_FUZZY)) {
+
+		if (!this.searchType.has(PadFactory.SEARCH_INPUT_INVALID)) {
 			this.txt_input.setText(queryStr);
 		}
 		this.lblNewLabel_vocabulary.setText(v.getVocabulary());
@@ -424,20 +429,20 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	}
 
 	private void refreshDueToInputChange() {
-		if (this.serchType.equals(this.SEARCH_EXACTLY_MATCHING)) {
+		if (this.searchType.has(PadFactory.SEARCH_EXACTLY)) {
 			this.btnNewButton_exactly.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
 					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
 			this.btnNewButton_fuzzy
 					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
 							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
-		} else if (this.serchType.equals(this.SEARCH_FUZZY_SERCH)) {
+		} else if (this.searchType.has(PadFactory.SEARCH_FUZZY)) {
 			this.btnNewButton_exactly
 					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
 							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
 			this.btnNewButton_fuzzy.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
 					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
 		}
-		((CardLayout) this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, this.serchType);
+		((CardLayout) this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, this.searchStrType);
 	}
 
 	/*
@@ -488,6 +493,5 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		this.textArea_example.setSelectionStart(0);
 		this.textArea_example.setSelectionEnd(0);
 	}
-
 
 }

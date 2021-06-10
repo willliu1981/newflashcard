@@ -115,13 +115,13 @@ public class MyPad extends Pad {
 	
 	
 	@Override
-	public boolean query(Component parent,  String vocabulary,String type) {
+	public boolean query(Component parent,  String vocabulary, Mask type) {
 		return query(parent,vocabulary,type,defaultLimit);
 
 	}
 
 	@Override
-	public boolean query(Component parent,  String vocabulary,String type,int limit) {
+	public boolean query(Component parent,  String vocabulary,Mask type,int limit) {
 		boolean r = false;
 		try {
 			QueryResultBridge bridge = new QueryResultBridge();

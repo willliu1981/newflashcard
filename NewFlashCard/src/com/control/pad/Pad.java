@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.swing.text.JTextComponent;
 
+import com.tool.Mask;
+
 public abstract class Pad {
 	private static class PadPack {
 		private String contentTemp;
@@ -115,10 +117,10 @@ public abstract class Pad {
 	public  boolean query(Component parent, String str) {
 		return query (parent,str,null);
 	}
-	public  boolean query(Component parent, String str,String type) {
+	public  boolean query(Component parent, String str,Mask type) {
 		return query(parent,str,type,-1);
 	}
-	public  boolean query(Component parent, String str,String type,int limit) {
+	public  boolean query(Component parent, String str,Mask type,int limit) {
 		return false;
 	}
 	
