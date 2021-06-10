@@ -20,6 +20,8 @@ public class PadFactory {
 	public final static String MAIN_ADDVOCABULARYFRAME_EXPLANATION = "main_addvocabularyframe_explanation";
 	public final static String MAIN_ADDVOCABULARYFRAME_EXAMPLE = "main_addvocabularyframe_example";
 	public final static String MAIN_ADDVOCABULARYFRAME_TRANSLATION = "main_addvocabularyframe_translation";
+	public final static String SERCH_FUZZY_SERCH = "模糊";
+	public final static String SERCH_EXACTLY_MATCHING = "精準";
 
 	private static PadFactory factory = new PadFactory();
 	private Pad pad;
@@ -65,9 +67,17 @@ public class PadFactory {
 			break;
 		}
 	}
-	
+
 	public static boolean query(Component parent, String vocabulary) {
 		return getPad().query(parent, vocabulary);
+	}
+
+	public static boolean query(Component parent, String vocabulary, String type) {
+		return getPad().query(parent, vocabulary, type);
+	}
+
+	public static boolean query(Component parent, String vocabulary, String type, int limit) {
+		return getPad().query(parent, vocabulary, type, limit);
 	}
 
 }

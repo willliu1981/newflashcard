@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -37,13 +38,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
+import javax.swing.JList;
+import javax.swing.JComboBox;
 
 public class QueryResultFrame extends JFrame implements Transportable {
 	private QueryResultFrame thisFrame;
 	private UIDateTransportation dt;
 	private static final String EXPLANATION = "解釋";
 	private static final String EXAMPLE = "例句";
-	private final int baseHeight = 250;
+	private final int baseHeight = 225;
 	private JTextField txt_vocabulary;
 	private JTextArea txtr_result;
 	private JLabel lblNewLabel_vocabulary;
@@ -71,11 +74,14 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private JButton btnNewButton_next;
 	private JLabel lblNewLabel_mo_translation;
 	private JButton btnNewButton_more_opento;
+	private String serchType = PadFactory.SERCH_EXACTLY_MATCHING;
+	private JPanel panel_vocabulary_card;
+	private JComboBox<String> comboBox_vocabularies;
 
 	public QueryResultFrame() {
 		setType(Type.UTILITY);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		this.setBounds(0, 0, 400, baseHeight);
+		this.setBounds(0, 0, 400, 290);
 		thisFrame = this;
 
 		panel_main = new JPanel();
@@ -104,25 +110,33 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_top.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
-		lblNewLabel_vocabulary = new JLabel("null");
-		lblNewLabel_vocabulary.setBorder(new EmptyBorder(0, 4, 0, 0));
-		panel.add(lblNewLabel_vocabulary, BorderLayout.CENTER);
-		lblNewLabel_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
-
-		btnNewButton = new JButton("開啟至");
+		btnNewButton = new JButton("模糊");
 		btnNewButton.setBackground(SystemColor.controlHighlight);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String vocabulary = lblNewLabel_vocabulary.getText().trim();
-				AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
-				bridge.setParameter("parent", thisFrame);
-				bridge.setParameter("vocabulary", vocabulary);
-				bridge.getDispatcher().send();
+				if (serchType.equals(PadFactory.SERCH_EXACTLY_MATCHING)) {
+					serchType = PadFactory.SERCH_FUZZY_SERCH;
+				} else {
+					serchType = PadFactory.SERCH_EXACTLY_MATCHING;
+				}
+				PadFactory.query(null, txt_vocabulary.getText().trim(), serchType);
 			}
 		});
-		btnNewButton.setPreferredSize(new Dimension(55, 23));
 		btnNewButton.setMargin(new Insets(4, 4, 0, 4));
 		panel.add(btnNewButton, BorderLayout.EAST);
+
+		panel_vocabulary_card = new JPanel();
+		panel.add(panel_vocabulary_card, BorderLayout.CENTER);
+		panel_vocabulary_card.setLayout(new CardLayout(0, 0));
+
+		lblNewLabel_vocabulary = new JLabel("null");
+		panel_vocabulary_card.add(lblNewLabel_vocabulary, PadFactory.SERCH_EXACTLY_MATCHING);
+		lblNewLabel_vocabulary.setBorder(new EmptyBorder(0, 4, 0, 0));
+		lblNewLabel_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
+		
+		comboBox_vocabularies = new JComboBox();
+		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
+		panel_vocabulary_card.add(comboBox_vocabularies, PadFactory.SERCH_FUZZY_SERCH);
 
 		JPanel panel_center = new JPanel();
 		panel_main.add(panel_center, BorderLayout.CENTER);
@@ -144,7 +158,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		scrollPane_result.setViewportView(txtr_result);
 
 		panel_scroll = new JPanel();
-		// panel_center.add(panel_scroll, BorderLayout.SOUTH);
 		panel_scroll.setLayout(new BorderLayout(0, 0));
 
 		panel_translation = new JPanel();
@@ -308,7 +321,24 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	public UIDateTransportation accpet(UIDateTransportation dt) {
 		this.dt = dt;
 		Component parent = (Component) dt.getParameter("parent");
-		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
+
+		String queryStr = (String) dt.getParameter("vocabulary");
+		String queryType = (String) dt.getParameter("type");
+		List<Vocabulary> vs = null;
+		List<String> ss = null;
+		if (queryType.equals(PadFactory.SERCH_EXACTLY_MATCHING)) {
+			vs = (List<Vocabulary>) dt.getParameter("vocabularies");
+			((CardLayout)this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, PadFactory.SERCH_EXACTLY_MATCHING);
+		} else if (queryType.equals(PadFactory.SERCH_FUZZY_SERCH)) {
+			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
+			((CardLayout)this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, PadFactory.SERCH_FUZZY_SERCH);
+			String [] arrs=new String[ss.size()];
+			ss.toArray(arrs);
+			this.comboBox_vocabularies=new JComboBox<String>(arrs);
+			this.panel_vocabulary_card .add(comboBox_vocabularies,PadFactory.SERCH_FUZZY_SERCH);
+			System.out.println("query result frame ** ");
+			Arrays.asList(arrs).stream().forEach(x->System.out.println(x));
+		}
 
 		if (parent != null) {
 			this.setBounds(parent.getX() + (int) ((parent.getWidth() - this.getWidth()) * 0.25), parent.getY() - 35,
@@ -320,7 +350,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			sb.append(x.getTranslation() + "\n");
 		});
 
-		ModelCollector mc = new ModelCollector(vs);
+		ModelCollector<Vocabulary> mc = new ModelCollector<Vocabulary>(vs);
 		dt.setParameter("mc", mc);
 		Vocabulary v = null;
 		try {
@@ -330,13 +360,13 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		}
 		this.showData(v);
 
-		this.txt_vocabulary.setText(v.getVocabulary());
+		this.txt_vocabulary.setText(queryStr);
 		this.lblNewLabel_vocabulary.setText(v.getVocabulary());
 		this.txtr_result.setText(sb.toString());
-		this.setVisible(true);
 		this.txtr_result.setSelectionStart(0);
 		this.txtr_result.setSelectionEnd(0);
 		this.isMoOpening = false;
+		this.setVisible(true);
 		initializeMo();
 
 		return dt;
@@ -365,7 +395,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	}
 
 	private void showData(Vocabulary v) {
-		ModelCollector mc = (ModelCollector) dt.getParameter("mc");
+		ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
 		this.lblNewLabel_mo_translation.setText(v.getTranslation());
 		this.textArea_explanation.setText(v.getExplanation());
 		this.textArea_example.setText(v.getExample());

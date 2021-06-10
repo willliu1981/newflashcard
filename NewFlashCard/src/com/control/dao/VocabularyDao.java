@@ -165,19 +165,21 @@ public class VocabularyDao extends Dao<Vocabulary> {
 		}
 		return ms;
 	}
-	
-	
+
+	/*
+	 * vocabulary to lowerCcase
+	 */
 	public List<Vocabulary> queryByVocabulary(String vocabuary) {
 		Conn conn = new Conn();
 		Connection myConn = conn.conn();
 		PreparedStatement st = null;
-		String sql = "select * from vocabulary where vocabulary=?";
+		String sql = "select * from vocabulary where lower(vocabulary) = ?";
 		ResultSet rs = null;
 		List<Vocabulary> ms = new ArrayList<>();
 		Vocabulary m = null;
 		try {
 			st = myConn.prepareStatement(sql);
-			st.setString(1, vocabuary);
+			st.setString(1, vocabuary.toLowerCase());
 			rs = st.executeQuery();
 			while (rs.next()) {
 				m = new Vocabulary();
@@ -190,6 +192,43 @@ public class VocabularyDao extends Dao<Vocabulary> {
 				m.setExplanation(rs.getString("explanation"));
 				m.setExample(rs.getString("example"));
 				ms.add(m);
+			}
+			rs.close();
+			st.close();
+			myConn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ms;
+	}
+
+	/*
+	 * vocabulary to lowerCcase, fuzzy search
+	 */
+	public List<String> queryByFuzzyVocabulary(String vocabuary) {
+		return queryByFuzzyVocabulary(vocabuary, -1);
+	}
+
+	/*
+	 * vocabulary to lowerCcase, fuzzy search , limit chause
+	 */
+	public List<String> queryByFuzzyVocabulary(String vocabuary, int limit) {
+		Conn conn = new Conn();
+		Connection myConn = conn.conn();
+		PreparedStatement st = null;
+		String sql = String.format("select distinct vocabulary from vocabulary where lower(vocabulary) like ? %s",
+				limit == -1 ? "" : " limit ?");
+		ResultSet rs = null;
+		List<String> ms = new ArrayList<>();
+		try {
+			st = myConn.prepareStatement(sql);
+			st.setString(1, String.format("%%%s%%", vocabuary.toLowerCase()));
+			if (limit != -1) {
+				st.setInt(2, limit);
+			}
+			rs = st.executeQuery();
+			while (rs.next()) {
+				ms.add(rs.getString("vocabulary"));
 			}
 			rs.close();
 			st.close();

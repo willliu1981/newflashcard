@@ -112,5 +112,16 @@ public abstract class Pad {
 		getPadPack(name).setReverseContent(content);
 	}
 	
-	public abstract boolean query(Component parent, String vocabulary) ;
+	public  boolean query(Component parent, String str) {
+		return query (parent,str,null);
+	}
+	public  boolean query(Component parent, String str,String type) {
+		return query(parent,str,type,-1);
+	}
+	public  boolean query(Component parent, String str,String type,int limit) {
+		return false;
+	}
+	
+	
+	
 }

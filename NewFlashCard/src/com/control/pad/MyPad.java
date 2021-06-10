@@ -22,6 +22,7 @@ import com.tool.Mask;
 
 public class MyPad extends Pad {
 	private int offsetTemp = 0;// 用於記錄暫時的text 位置
+	private static final int defaultLimit=100;
 
 	@Override
 	public void change(Component parent, String name, KeyEvent e) {
@@ -109,11 +110,25 @@ public class MyPad extends Pad {
 
 	@Override
 	public boolean query(Component parent, String vocabulary) {
+		return query(parent,vocabulary,PadFactory.SERCH_EXACTLY_MATCHING);
+	}
+	
+	
+	@Override
+	public boolean query(Component parent,  String vocabulary,String type) {
+		return query(parent,vocabulary,type,defaultLimit);
+
+	}
+
+	@Override
+	public boolean query(Component parent,  String vocabulary,String type,int limit) {
 		boolean r = false;
 		try {
 			QueryResultBridge bridge = new QueryResultBridge();
 			bridge.setParameter("vocabulary", vocabulary.trim());
 			bridge.setParameter("parent", parent);
+			bridge.setParameter("type", type);
+			bridge.setParameter("limit", limit);
 			Mask mask=bridge.getDispatcher().sendAndBack();
 			if(mask.has(bridge.SENDANDBACK_NORMAL)) {
 				r=true;
@@ -123,8 +138,8 @@ public class MyPad extends Pad {
 		} catch (NullPointerException e) {
 			r = false;
 		}
-
 		return r;
+
 	}
 	
 	
