@@ -21,9 +21,9 @@ public class PadFactory {
 	public final static String MAIN_ADDVOCABULARYFRAME_EXPLANATION = "main_addvocabularyframe_explanation";
 	public final static String MAIN_ADDVOCABULARYFRAME_EXAMPLE = "main_addvocabularyframe_example";
 	public final static String MAIN_ADDVOCABULARYFRAME_TRANSLATION = "main_addvocabularyframe_translation";
-	public final static Mask SEARCH_FUZZY = new Mask(1);
-	public final static Mask SEARCH_EXACTLY = new Mask(2);
-	public final static Mask SEARCH_INPUT_INVALID = new Mask(4);//使來源不作用於目標的text
+	public final static Mask SEARCH_INTERCEPT = new Mask(1);
+	public final static Mask SEARCH_INPUT = new Mask(2);
+	public final static Mask SEARCH_INPUT_COMBOBOX = new Mask(4);
 
 	private static PadFactory factory = new PadFactory();
 	private Pad pad;
@@ -74,12 +74,12 @@ public class PadFactory {
 		return getPad().query(parent, vocabulary);
 	}
 
-	public static boolean query(Component parent, String vocabulary, Mask type) {
-		return getPad().query(parent, vocabulary, type);
+	public static boolean query(Component parent, String vocabulary, Mask mask) {
+		return getPad().query(parent, vocabulary, mask);
 	}
 
-	public static boolean query(Component parent, String vocabulary, Mask type, int limit) {
-		return getPad().query(parent, vocabulary, type, limit);
+	public static boolean query(Component parent, String vocabulary, Mask mask, int limit) {
+		return getPad().query(parent, vocabulary, mask, limit);
 	}
 
 }

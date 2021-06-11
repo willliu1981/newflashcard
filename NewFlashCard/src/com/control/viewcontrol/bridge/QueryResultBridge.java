@@ -26,7 +26,7 @@ public class QueryResultBridge extends Bridge {
 
 		VocabularyDao dao = new VocabularyDao();
 		List<Vocabulary> vs = null;
-		if (type.has(PadFactory.SEARCH_FUZZY)) {
+		if (type.has(PadFactory.SEARCH_INTERCEPT)) {
 			List<String> ss = null;
 			if (limit == -1) {
 				ss = dao.queryByFuzzyVocabulary(vocabulary);
@@ -41,7 +41,7 @@ public class QueryResultBridge extends Bridge {
 			vs = dao.queryByVocabulary((v=ss.stream().filter(x -> x.startsWith(vocabulary)).findFirst().orElse(ss.get(0))));
 			this.setParameter("vocabulary", v);
 			this.setParameter("fuzzyvocabularies", ss);
-		} else if (type.has(PadFactory.SEARCH_EXACTLY)) {
+		} else if (type.has(PadFactory.SEARCH_INPUT)) {
 			vs = dao.queryByVocabulary(vocabulary);
 			if (vs.size() == 0) {
 				return this.SENDANDBACK_BROKEN;

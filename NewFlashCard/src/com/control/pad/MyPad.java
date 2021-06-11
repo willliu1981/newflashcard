@@ -17,6 +17,7 @@ import javax.swing.text.Keymap;
 
 import com.control.dao.VocabularyDao;
 import com.control.viewcontrol.bridge.QueryResultBridge;
+import com.control.viewcontrol.bridge.QueryResultBridge2;
 import com.model.Vocabulary;
 import com.tool.Mask;
 
@@ -110,27 +111,27 @@ public class MyPad extends Pad {
 
 	@Override
 	public boolean query(Component parent, String vocabulary) {
-		return query(parent,vocabulary,PadFactory.SEARCH_EXACTLY);
+		return query(parent,vocabulary,PadFactory.SEARCH_INTERCEPT);
 	}
 	
 	
 	@Override
-	public boolean query(Component parent,  String vocabulary, Mask type) {
-		return query(parent,vocabulary,type,defaultLimit);
+	public boolean query(Component parent,  String vocabulary, Mask mask) {
+		return query(parent,vocabulary,mask,defaultLimit);
 
 	}
 
 	@Override
-	public boolean query(Component parent,  String vocabulary,Mask type,int limit) {
+	public boolean query(Component parent,  String vocabulary,Mask mask,int limit) {
 		boolean r = false;
 		try {
-			QueryResultBridge bridge = new QueryResultBridge();
+			QueryResultBridge2 bridge = new QueryResultBridge2();
 			bridge.setParameter("vocabulary", vocabulary.trim());
 			bridge.setParameter("parent", parent);
-			bridge.setParameter("type", type);
+			bridge.setParameter("type", mask);
 			bridge.setParameter("limit", limit);
-			Mask mask=bridge.getDispatcher().sendAndBack();
-			if(mask.has(bridge.SENDANDBACK_NORMAL)) {
+			Mask m=bridge.getDispatcher().sendAndBack();
+			if(m.has(bridge.SENDANDBACK_NORMAL)) {
 				r=true;
 			}else {
 				r=false;

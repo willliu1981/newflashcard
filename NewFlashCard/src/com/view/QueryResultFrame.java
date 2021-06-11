@@ -62,7 +62,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private final int baseHeight = 225;
 	private JTextField txt_input;
 	private JTextArea txtr_result;
-	private JLabel lblNewLabel_vocabulary;
 	private JScrollPane scrollPane_result;
 	private JPanel panel_main;
 	private JPanel panel_more;
@@ -78,8 +77,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private boolean isMoOpening = false;
 	private String explanationType = EXPLANATION;
 	private JButton btnNewButton_type;
-	private JPanel panel;
-	private JButton btnNewButton_fuzzy;
 	private JPanel panel_hScroll;
 	private JPanel panel_null;
 	private JPanel panel_translation;
@@ -87,12 +84,9 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private JButton btnNewButton_next;
 	private JLabel lblNewLabel_mo_translation;
 	private JButton btnNewButton_more_opento;
-	private Mask searchType = PadFactory.SEARCH_EXACTLY;
-	private String searchStrType = SEARCH_EXACTLY;
-	private JPanel panel_vocabulary_card;
+	private Mask searchType = PadFactory.SEARCH_INTERCEPT;
 	private JComboBox<String> comboBox_vocabularies;
-	private JPanel panel_1;
-	private JButton btnNewButton_exactly;
+	private boolean interruptAction = false;
 
 	public QueryResultFrame() {
 		setType(Type.UTILITY);
@@ -122,8 +116,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txt_input.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				searchType=PadFactory.SEARCH_FUZZY;
-				PadFactory.query(null, txt_input.getText().trim(), searchType.add(PadFactory.SEARCH_INPUT_INVALID));
+				PadFactory.query(null, txt_input.getText().trim(), PadFactory.SEARCH_INPUT);
 			}
 		});
 		txt_input.setFont(new Font("標楷體", Font.BOLD, 16));
@@ -131,68 +124,19 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txt_input.setText("null");
 		txt_input.setColumns(20);
 
-		panel = new JPanel();
-		panel_top.add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
-
-		panel_vocabulary_card = new JPanel();
-		panel.add(panel_vocabulary_card, BorderLayout.CENTER);
-		panel_vocabulary_card.setLayout(new CardLayout(0, 0));
-
-		lblNewLabel_vocabulary = new JLabel("null");
-		panel_vocabulary_card.add(lblNewLabel_vocabulary, this.SEARCH_EXACTLY);
-		lblNewLabel_vocabulary.setBorder(new EmptyBorder(0, 4, 0, 0));
-		lblNewLabel_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
-
 		comboBox_vocabularies = new JComboBox();
+		panel_top.add(comboBox_vocabularies);
 		comboBox_vocabularies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("qr frame **");
-				PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
-						PadFactory.SEARCH_EXACTLY.add(PadFactory.SEARCH_INPUT_INVALID));
-				refreshDueToInputChange();
+				if (!interruptAction) {
+					PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
+							PadFactory.SEARCH_INPUT_COMBOBOX);
+					interruptAction = false;
+				}
 			}
 		});
 		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
 		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
-		panel_vocabulary_card.add(comboBox_vocabularies, this.SEARCH_FUZZY);
-
-		panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.EAST);
-
-		btnNewButton_exactly = new JButton("精準");
-		btnNewButton_exactly.setFont(new Font("標楷體", Font.PLAIN, 13));
-		btnNewButton_exactly.setFocusPainted(false);
-		btnNewButton_exactly.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchType = PadFactory.SEARCH_EXACTLY.add(PadFactory.SEARCH_INPUT_INVALID);
-				searchStrType = SEARCH_EXACTLY;
-				PadFactory.query(null, txt_input.getText().trim(), searchType);
-				refreshDueToInputChange();
-			}
-		});
-		btnNewButton_exactly.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
-				new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
-		btnNewButton_exactly.setMargin(new Insets(4, 4, 0, 4));
-		btnNewButton_exactly.setBackground(SystemColor.controlHighlight);
-		panel_1.add(btnNewButton_exactly);
-
-		btnNewButton_fuzzy = new JButton("模糊");
-		btnNewButton_fuzzy.setFont(new Font("標楷體", Font.PLAIN, 13));
-		btnNewButton_fuzzy.setFocusPainted(false);
-		btnNewButton_fuzzy.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
-				new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
-		panel_1.add(btnNewButton_fuzzy);
-		btnNewButton_fuzzy.setBackground(SystemColor.controlHighlight);
-		btnNewButton_fuzzy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchType = PadFactory.SEARCH_FUZZY.add(PadFactory.SEARCH_INPUT_INVALID);
-				searchStrType = SEARCH_FUZZY;
-				PadFactory.query(null, txt_input.getText().trim(), searchType);
-				refreshDueToInputChange();
-			}
-		});
-		btnNewButton_fuzzy.setMargin(new Insets(4, 4, 0, 4));
 
 		JPanel panel_center = new JPanel();
 		panel_main.add(panel_center, BorderLayout.CENTER);
@@ -371,7 +315,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		 * init
 		 */
 		refreshDueToPressMoreBtn();
-		refreshDueToInputChange();
 	}
 
 	@Override
@@ -381,14 +324,13 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		String queryStr = (String) dt.getParameter("vocabulary");
 		this.searchType = (Mask) dt.getParameter("type");
 
-		System.out.println("qr frame type ** "+this.searchType.getMask());
 		List<String> ss = null;
-		if (this.searchType.has(PadFactory.SEARCH_FUZZY)) {
-			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
-			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
-			String str = ss.stream().filter(x -> x.equals(queryStr)).findAny().get();
-			this.comboBox_vocabularies.setSelectedItem(str);
-		}
+
+		ss = (List<String>) dt.getParameter("fuzzyvocabularies");
+		this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
+		String str = ss.stream().filter(x -> x.equals(queryStr)).findAny().get();
+		this.interruptAction = true;
+		this.comboBox_vocabularies.setSelectedItem(str);
 
 		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
 
@@ -411,17 +353,15 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			e.printStackTrace();
 		}
 
-		if (!this.searchType.has(PadFactory.SEARCH_INPUT_INVALID)) {
+		if (this.searchType.has(PadFactory.SEARCH_INTERCEPT)) {
 			this.txt_input.setText(queryStr);
 		}
-		this.lblNewLabel_vocabulary.setText(v.getVocabulary());
 		this.txtr_result.setText(sb.toString());
 		this.txtr_result.setSelectionStart(0);
 		this.txtr_result.setSelectionEnd(0);
 		this.isMoOpening = false;
 		this.setVisible(true);
 
-		refreshDueToInputChange();
 		refreshDueToPressMoreBtn();
 		refreshDueToPressHScrollBtn(v);
 
@@ -431,23 +371,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
 
-	}
-
-	private void refreshDueToInputChange() {
-		if (this.searchStrType.equals(this.SEARCH_EXACTLY)) {
-			this.btnNewButton_exactly.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
-					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
-			this.btnNewButton_fuzzy
-					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
-							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
-		} else if (this.searchStrType.equals(this.SEARCH_FUZZY)) {
-			this.btnNewButton_exactly
-					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
-							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
-			this.btnNewButton_fuzzy.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
-					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
-		}
-		((CardLayout) this.panel_vocabulary_card.getLayout()).show(panel_vocabulary_card, this.searchStrType);
 	}
 
 	/*

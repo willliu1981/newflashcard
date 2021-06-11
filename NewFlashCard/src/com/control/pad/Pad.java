@@ -115,12 +115,12 @@ public abstract class Pad {
 	}
 	
 	public  boolean query(Component parent, String str) {
-		return query (parent,str,null);
+		return query (parent,str);
 	}
-	public  boolean query(Component parent, String str,Mask type) {
-		return query(parent,str,type,-1);
+	public  boolean query(Component parent, String str,Mask mask) {
+		return query(parent,str,mask,-1);
 	}
-	public  boolean query(Component parent, String str,Mask type,int limit) {
+	public  boolean query(Component parent, String str,Mask mask,int limit) {
 		return false;
 	}
 	
