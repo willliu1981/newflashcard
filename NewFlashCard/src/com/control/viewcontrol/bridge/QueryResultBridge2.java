@@ -28,7 +28,7 @@ public class QueryResultBridge2 extends Bridge {
 		limit = (int) this.getParameter("limit");
 
 		VocabularyDao dao = new VocabularyDao();
-		List<String> ss = null;
+		List<String> ss = null; 
 		if (limit == -1) {
 			ss = dao.queryByFuzzyVocabulary(vocabulary);
 		} else {

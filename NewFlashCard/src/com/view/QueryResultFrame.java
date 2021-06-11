@@ -131,8 +131,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				if (!interruptAction) {
 					PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
 							PadFactory.SEARCH_INPUT_COMBOBOX);
-					interruptAction = false;
 				}
+				interruptAction = false;
 			}
 		});
 		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
@@ -324,13 +324,14 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		String queryStr = (String) dt.getParameter("vocabulary");
 		this.searchType = (Mask) dt.getParameter("type");
 
-		List<String> ss = null;
-
-		ss = (List<String>) dt.getParameter("fuzzyvocabularies");
-		this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
-		String str = ss.stream().filter(x -> x.equals(queryStr)).findAny().get();
-		this.interruptAction = true;
-		this.comboBox_vocabularies.setSelectedItem(str);
+		if (this.searchType.hasOr(PadFactory.SEARCH_INPUT,PadFactory.SEARCH_INTERCEPT)) {
+			List<String> ss = null;
+			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
+			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
+			String str = ss.stream().filter(x -> x.equals(queryStr)).findAny().get();
+			this.interruptAction = true;
+			this.comboBox_vocabularies.setSelectedItem(str);
+		}
 
 		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
 

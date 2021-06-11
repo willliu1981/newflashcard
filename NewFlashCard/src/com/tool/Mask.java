@@ -15,9 +15,26 @@ public class Mask {
 		return (this.mask & mask.getMask()) == mask.getMask();
 	}
 
-	
+	public boolean hasOr(Mask... masks) {
+		for (Mask m : masks) {
+			if (this.has(m)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasAnd(Mask... masks) {
+		for (Mask m : masks) {
+			if (!this.has(m)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public Mask add(Mask m) {
-		this.mask= new Mask(this.mask|m.getMask()).getMask();
+		this.mask = new Mask(this.mask | m.getMask()).getMask();
 		return this;
 	}
 }

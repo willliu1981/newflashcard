@@ -200,7 +200,7 @@ public class MainView extends JFrame {
 		mnNewMenu_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				MainView.helpFrame.setVisible(true);
+				MainView.helpFrame.setVisible(true); 
 			}
 		});
 		mnNewMenu_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));

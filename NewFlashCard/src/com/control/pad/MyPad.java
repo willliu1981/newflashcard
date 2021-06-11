@@ -125,7 +125,7 @@ public class MyPad extends Pad {
 	public boolean query(Component parent,  String vocabulary,Mask mask,int limit) {
 		boolean r = false;
 		try {
-			QueryResultBridge2 bridge = new QueryResultBridge2();
+			QueryResultBridge2 bridge = new QueryResultBridge2(); 
 			bridge.setParameter("vocabulary", vocabulary.trim());
 			bridge.setParameter("parent", parent);
 			bridge.setParameter("type", mask);
