@@ -25,30 +25,30 @@ public class QueryResultBridge extends Bridge {
 		int limit = (int) this.getParameter("limit");
 
 		VocabularyDao dao = new VocabularyDao();
-		List<String> ss = null;
+		List<Vocabulary> vs = null;
 		if (type.has(PadFactory.SEARCH_FUZZY)) {
+			List<String> ss = null;
 			if (limit == -1) {
 				ss = dao.queryByFuzzyVocabulary(vocabulary);
 			} else {
 				ss = dao.queryByFuzzyVocabulary(vocabulary, limit);
 			}
-			
+
 			if (ss.size() == 0) {
 				return this.SENDANDBACK_BROKEN;
 			}
+			String v=null;
+			vs = dao.queryByVocabulary((v=ss.stream().filter(x -> x.startsWith(vocabulary)).findFirst().orElse(ss.get(0))));
+			this.setParameter("vocabulary", v);
 			this.setParameter("fuzzyvocabularies", ss);
 		} else if (type.has(PadFactory.SEARCH_EXACTLY)) {
-			ss=new ArrayList<>();
-			ss.add(vocabulary);
+			vs = dao.queryByVocabulary(vocabulary);
+			if (vs.size() == 0) {
+				return this.SENDANDBACK_BROKEN;
+			}
 		}
-		
-		List<Vocabulary> vs = dao
-				.queryByVocabulary(ss.stream().filter(x -> x.startsWith(vocabulary)).findFirst().orElse(""));
-		if (vs.size() == 0) {
-			return this.SENDANDBACK_BROKEN;
-		}
-		this.setParameter("vocabularies", vs);
 
+		this.setParameter("vocabularies", vs);
 		this.dispatcher.send(MainView.queryResultFrame);
 		return this.SENDANDBACK_NORMAL;
 	}

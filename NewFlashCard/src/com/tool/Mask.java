@@ -17,6 +17,7 @@ public class Mask {
 
 	
 	public Mask add(Mask m) {
-		return new Mask(this.mask|m.getMask());
+		this.mask= new Mask(this.mask|m.getMask()).getMask();
+		return this;
 	}
 }

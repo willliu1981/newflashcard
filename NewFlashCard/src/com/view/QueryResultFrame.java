@@ -122,6 +122,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txt_input.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+				searchType=PadFactory.SEARCH_FUZZY;
 				PadFactory.query(null, txt_input.getText().trim(), searchType.add(PadFactory.SEARCH_INPUT_INVALID));
 			}
 		});
@@ -139,15 +140,16 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_vocabulary_card.setLayout(new CardLayout(0, 0));
 
 		lblNewLabel_vocabulary = new JLabel("null");
-		panel_vocabulary_card.add(lblNewLabel_vocabulary,this.SEARCH_EXACTLY);
+		panel_vocabulary_card.add(lblNewLabel_vocabulary, this.SEARCH_EXACTLY);
 		lblNewLabel_vocabulary.setBorder(new EmptyBorder(0, 4, 0, 0));
 		lblNewLabel_vocabulary.setFont(new Font("標楷體", Font.BOLD, 16));
 
 		comboBox_vocabularies = new JComboBox();
 		comboBox_vocabularies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("qr frame **");
 				PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
-						PadFactory.SEARCH_EXACTLY);
+						PadFactory.SEARCH_EXACTLY.add(PadFactory.SEARCH_INPUT_INVALID));
 				refreshDueToInputChange();
 			}
 		});
@@ -379,10 +381,13 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		String queryStr = (String) dt.getParameter("vocabulary");
 		this.searchType = (Mask) dt.getParameter("type");
 
+		System.out.println("qr frame type ** "+this.searchType.getMask());
 		List<String> ss = null;
 		if (this.searchType.has(PadFactory.SEARCH_FUZZY)) {
 			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
 			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
+			String str = ss.stream().filter(x -> x.equals(queryStr)).findAny().get();
+			this.comboBox_vocabularies.setSelectedItem(str);
 		}
 
 		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
@@ -429,13 +434,13 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	}
 
 	private void refreshDueToInputChange() {
-		if (this.searchType.has(PadFactory.SEARCH_EXACTLY)) {
+		if (this.searchStrType.equals(this.SEARCH_EXACTLY)) {
 			this.btnNewButton_exactly.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null),
 					new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
 			this.btnNewButton_fuzzy
 					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
 							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
-		} else if (this.searchType.has(PadFactory.SEARCH_FUZZY)) {
+		} else if (this.searchStrType.equals(this.SEARCH_FUZZY)) {
 			this.btnNewButton_exactly
 					.setBorder(new CompoundBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null),
 							new BevelBorder(BevelBorder.RAISED, null, null, null, null)));
