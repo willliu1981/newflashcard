@@ -59,7 +59,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private UIDateTransportation dt;
 	private static final String EXPLANATION = "解釋";
 	private static final String EXAMPLE = "例句";
-	private final int baseHeight = 225;
+	private final int baseHeight = 250;
 	private JTextField txt_input;
 	private JTextArea txtr_result;
 	private JScrollPane scrollPane_result;
@@ -104,14 +104,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_top.setLayout(new BoxLayout(panel_top, BoxLayout.Y_AXIS));
 
 		txt_input = new JTextField();
-		txt_input.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					txt_input.setText((String) dt.getParameter("vocabulary"));
-				}
-			}
-		});
 		panel_top.add(txt_input);
 		txt_input.addKeyListener(new KeyAdapter() {
 			@Override
@@ -119,7 +111,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				PadFactory.query(null, txt_input.getText().trim(), PadFactory.SEARCH_INPUT);
 			}
 		});
-		txt_input.setFont(new Font("標楷體", Font.BOLD, 16));
+		txt_input.setFont(new Font("DialogInput", Font.BOLD, 16));
 		txt_input.setHorizontalAlignment(SwingConstants.CENTER);
 		txt_input.setText("null");
 		txt_input.setColumns(20);
@@ -135,7 +127,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				interruptAction = false;
 			}
 		});
-		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
+		comboBox_vocabularies.setFont(new Font("DialogInput", Font.BOLD, 16));
 		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
 
 		JPanel panel_center = new JPanel();
@@ -166,11 +158,12 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_hScroll.add(panel_translation);
 
 		lblNewLabel_mo_translation = new JLabel("null");
-		lblNewLabel_mo_translation.setFont(new Font("DialogInput", Font.PLAIN, 12));
+		lblNewLabel_mo_translation.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		lblNewLabel_mo_translation.setForeground(Color.WHITE);
 		panel_translation.add(lblNewLabel_mo_translation);
 
 		btnNewButton_former = new JButton("◁");
+		btnNewButton_former.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		btnNewButton_former.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ModelCollector mc = (ModelCollector) dt.getParameter("mc");
@@ -190,6 +183,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_hScroll.add(btnNewButton_former, BorderLayout.WEST);
 
 		btnNewButton_next = new JButton("▷");
+		btnNewButton_next.setFont(new Font("DialogInput", Font.PLAIN, 16));
 		btnNewButton_next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ModelCollector mc = (ModelCollector) dt.getParameter("mc");
@@ -225,6 +219,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_explanation.setLayout(new BorderLayout(0, 0));
 
 		textArea_explanation = new JTextArea();
+		textArea_explanation.setEditable(false);
 		textArea_explanation.setBackground(Color.BLACK);
 		textArea_explanation.setForeground(Color.WHITE);
 		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 16));
@@ -241,6 +236,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_example.setLayout(new BorderLayout(0, 0));
 
 		textArea_example = new JTextArea();
+		textArea_example.setEditable(false);
 		textArea_example.setBackground(Color.BLACK);
 		textArea_example.setForeground(Color.WHITE);
 		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 16));
@@ -263,6 +259,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_rightbar.setLayout(new BorderLayout(0, 0));
 
 		btnNewButton_more = new JButton("更多...");
+		btnNewButton_more.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		btnNewButton_more.setBorderPainted(false);
 		btnNewButton_more.setForeground(Color.WHITE);
 		btnNewButton_more.addActionListener(new ActionListener() {
@@ -280,6 +277,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_rightbar.add(btnNewButton_more, BorderLayout.SOUTH);
 
 		btnNewButton_type = new JButton("Type");
+		btnNewButton_type.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		btnNewButton_type.setForeground(Color.WHITE);
 		btnNewButton_type.setBorderPainted(false);
 		btnNewButton_type.setBackground(Color.BLACK);
@@ -296,6 +294,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		panel_rightbar.add(btnNewButton_type, BorderLayout.NORTH);
 
 		btnNewButton_more_opento = new JButton("開啟至");
+		btnNewButton_more_opento.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		btnNewButton_more_opento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
@@ -324,7 +323,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		String queryStr = (String) dt.getParameter("vocabulary");
 		this.searchType = (Mask) dt.getParameter("type");
 
-		if (this.searchType.hasOr(PadFactory.SEARCH_INPUT,PadFactory.SEARCH_INTERCEPT)) {
+		if (this.searchType.hasOr(PadFactory.SEARCH_INPUT, PadFactory.SEARCH_INTERCEPT)) {
 			List<String> ss = null;
 			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
 			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
