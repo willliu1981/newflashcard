@@ -37,6 +37,18 @@ public class Mask {
 		this.mask = new Mask(this.mask | m.getMask()).getMask();
 		return this;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof Mask) {
+			return this.getMask() == ((Mask) obj).getMask();
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getMask();
+	}
 
 }

@@ -351,11 +351,13 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		/*
 		 * init
 		 */
+		
 		this.locked = true;
 		lock();
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXPLANATION);
 		btnNewButton_type.setText(EXAMPLE);
 		this.setState(JFrame.NORMAL);
+		initializeText();
 
 		/*
 		 * set highlight
@@ -437,6 +439,13 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			exampleHighLight(null);
 		}
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType);
+	}
+
+	private void initializeText() {
+		String contents[] = { this.txt_explanation_translation.getText(), this.textArea_explanation.getText(),
+				this.textArea_example.getText() };
+		PadFactory.initializeChange(PadFactory.FRAMEEXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE, contents);
+		
 	}
 
 }

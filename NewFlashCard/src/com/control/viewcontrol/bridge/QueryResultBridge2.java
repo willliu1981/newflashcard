@@ -17,7 +17,7 @@ public class QueryResultBridge2 extends Bridge {
 
 	@Override
 	public void doSend() {
-	}
+	} 
 
 	@Override
 	public Mask doSendAndBack() {

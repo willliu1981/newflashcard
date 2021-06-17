@@ -16,10 +16,18 @@ public abstract class TextPad extends Pad {
 			break;
 		case PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION:
 			content = super.getContentTemp(PadFactory.FRAMEADDVOCABULARY.add(PadFactory.EXPLANATION));
-			super.setContentTemp(PadFactory.FRAMEADDVOCABULARY.add(PadFactory.EXPLANATION), content);
 			break;
 		case PadFactory.MAIN_ADDVOCABULARYFRAME_TRANSLATION:
 			content = super.getContentTemp(PadFactory.FRAMEADDVOCABULARY.add(PadFactory.TRANSLATION));
+			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE:
+			content = super.getContentTemp(PadFactory.FRAMEEXPLANATION.add(PadFactory.EXAMPLE));
+			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION:
+			content = super.getContentTemp(PadFactory.FRAMEEXPLANATION.add(PadFactory.EXPLANATION));
+			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION:
+			content = super.getContentTemp(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION));
 			break;
 		default:
 			break;
@@ -39,15 +47,20 @@ public abstract class TextPad extends Pad {
 		case PadFactory.MAIN_ADDVOCABULARYFRAME_TRANSLATION:
 			super.setContentTemp(PadFactory.FRAMEADDVOCABULARY.add(PadFactory.TRANSLATION), content);
 			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE:
+			super.setContentTemp(PadFactory.FRAMEEXPLANATION .add(PadFactory.EXAMPLE), content);
+			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION:
+			super.setContentTemp(PadFactory.FRAMEEXPLANATION.add(PadFactory.EXPLANATION), content);
+			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION:
+			super.setContentTemp(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION), content);
+			break;
 		default:
 			break;
 		}
 	}
 
-	@Override
-	public void change(Component parent, String name, KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

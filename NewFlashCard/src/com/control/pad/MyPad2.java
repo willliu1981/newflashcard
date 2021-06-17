@@ -21,24 +21,30 @@ import com.control.viewcontrol.bridge.QueryResultBridge2;
 import com.model.Vocabulary;
 import com.tool.Mask;
 
-/*
- * note: this class is deprecate!
- */
-public class MyPad extends TextPad {
+public class MyPad2 extends TextPad {
 	private static final int defaultLimit = 100;
 
 	@Override
 	public void change(Component parent, String name, KeyEvent e) {
-		/*
-		 * 非按下Ctrl+A 和 Ctrl+C
-		 */
-
-
-		if ((int) e.getKeyChar() != 1 && (int) e.getKeyChar() != 3) {
-			parent.setBackground(Color.red);
-			this.setChange(name);
+		String frame = "";
+		switch (name) {
+		case PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE:
+		case PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION:
+		case PadFactory.MAIN_ADDVOCABULARYFRAME_TRANSLATION:
+			frame = PadFactory.ADDVOCABULARYFRAME;
+			break;
+		case PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE:
+		case PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION:
+		case PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION:
+			frame = PadFactory.EXPLANATIONFRAME;
+			break;
+		default:
+			break;
 		}
 
+		if (PadFactory.isChanged(frame)) {
+			parent.setBackground(Color.red);
+		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.swing.text.JTextComponent;
@@ -15,21 +16,22 @@ public abstract class Pad {
 	private static class PadPack {
 		private Optional<String> contentTemp;
 		private String reverseContent;
-		private String firstContent;
+		private Optional< String> firstContent;
 		private boolean isChanged;
 
 		public PadPack() {
 			this.contentTemp = Optional.empty();
 			this.reverseContent = "";
 			this.isChanged = false;
-		}
+			this.firstContent=Optional.empty();
+		} 
 
 		public String getContentTemp() {
 			return contentTemp.orElse("");
 		}
 
 		public void setContentTemp(String contentTemp) {
-			this.contentTemp = Optional.of(contentTemp);
+			this.contentTemp = Optional.ofNullable( contentTemp);
 		}
 
 		public boolean isChanged() {
@@ -49,11 +51,11 @@ public abstract class Pad {
 		}
 
 		public String getFirstContent() {
-			return firstContent;
+			return firstContent.orElse("");
 		}
 
 		public void setFirstContent(String firstContent) {
-			this.firstContent = firstContent;
+			this.firstContent =Optional.ofNullable(firstContent);
 		}
 
 	}
@@ -74,7 +76,7 @@ public abstract class Pad {
 		}
 		return this.padPackMap.get(name);
 	}
-	
+
 	protected PadPack getMaskPadPack(Mask mask) {
 		if (!this.mask_padPackMap.containsKey(mask)) {
 			this.mask_padPackMap.put(mask, new PadPack());
@@ -97,11 +99,11 @@ public abstract class Pad {
 	public void setContentTemp(String name, String content) {
 		getPadPack(name).setContentTemp(content);
 	}
-	
+
 	public void setContentTemp(Mask mask, String content) {
 		getMaskPadPack(mask).setContentTemp(content);
 	}
-	
+
 	public String getContentTemp(Mask mask) {
 		return getMaskPadPack(mask).getContentTemp();
 	}
@@ -118,9 +120,12 @@ public abstract class Pad {
 		getPadPack(name).setChanged(change);
 	}
 
-	public void setFirstContent(String name, JTextComponent... comps) {
-		getPadPack(name)
-				.setFirstContent(Stream.of(comps).map(JTextComponent::getText).reduce((x1, x2) -> x1 + x2).orElse(""));
+	public void setFirstContent(Mask mask, String content) {
+		getMaskPadPack(mask).setFirstContent(content);
+	}
+
+	public String getFirstContent(Mask mask) {
+		return getMaskPadPack(mask).getFirstContent();
 	}
 
 	public abstract void change(Component parent, String name, KeyEvent e);
@@ -156,6 +161,10 @@ public abstract class Pad {
 
 	public boolean query(Component parent, String str, Mask mask, int limit) {
 		return false;
+	}
+
+	public Set<Mask> getMaskPadPackMapKeys() {
+		return mask_padPackMap.keySet();
 	}
 
 }

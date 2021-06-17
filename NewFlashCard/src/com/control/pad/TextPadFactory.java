@@ -14,20 +14,29 @@ import com.tool.Mask;
 
 public class TextPadFactory extends PadFactory {
 
-	public  boolean isChanged(String frame) {
-		Pad pad = getPad();
+	public boolean _isChanged(String frame) {
 		boolean r = false;
+
+		switch (frame) {
+		case PadFactory.ADDVOCABULARYFRAME:
+			r=this._isChanged(PadFactory.FRAMEADDVOCABULARY);
+			break;
+
+		case PadFactory.EXPLANATIONFRAME:
+			r=this._isChanged(PadFactory.FRAMEEXPLANATION);
+			break;
+		default:
+			break;
+		}
 
 		return r;
 	}
 
-	public  void initializeChange(Mask frame) {
-		Pad pad = getPad();
-		if (frame.has(EXPLANATIONFRAME)) {
 
-		} else if (frame.has(ADDVOCABULARYFRAME)) {
 
-		}
+	@Override
+	public void _initializeChange(String frame) {
+
 	}
 
 }

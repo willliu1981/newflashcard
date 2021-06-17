@@ -373,7 +373,7 @@ public class MainView extends JFrame {
 		if (testQuestionControl.isTesting()) {
 			int result = JOptionPane.showConfirmDialog(this, "測驗仍在進行中,是否離開?", "測驗中", JOptionPane.YES_NO_OPTION,
 					JOptionPane.INFORMATION_MESSAGE);
-			if (result == JOptionPane.NO_OPTION || result == -1) {
+			if (result == JOptionPane.NO_OPTION || result == -1) { 
 				r = true;
 			}
 		}
