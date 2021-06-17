@@ -443,6 +443,15 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	}
 
 	@Override
+	public Mask accpetThenBack(UIDateTransportation dt) {
+		
+		String query=(String) dt.getParameter("exist");
+		//boolean r=this.textField_vocabulary.getText().equals("") && this.
+		
+		return dt.SENDANDBACK_INTERRUPT;
+	}
+
+	@Override
 	public void setUIDateTransportation(UIDateTransportation dt) {
 		this.dt = dt;
 	}

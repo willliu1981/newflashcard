@@ -21,8 +21,7 @@ import com.control.viewcontrol.bridge.QueryResultBridge2;
 import com.model.Vocabulary;
 import com.tool.Mask;
 
-public class MyPad extends Pad {
-	private int offsetTemp = 0;// 用於記錄暫時的text 位置
+public class MyPad extends TextPad {
 	private static final int defaultLimit=100;
 
 	@Override
@@ -36,17 +35,10 @@ public class MyPad extends Pad {
 		}
 	}
 
-	@Override
-	public void keyAction_pressed(String frame, JTextComponent comp, KeyEvent e) {
-		super.keyAction_typed(frame, comp, e);
-
-		setContentTemp(frame, comp.getText());
-		offsetTemp = comp.getSelectionStart();
-	}
 
 	@Override
-	public void keyAction_typed(String frame, JTextComponent comp, KeyEvent e) {
-		super.keyAction_typed(frame, comp, e);
+	public void keyAction_typed(String name, JTextComponent comp, KeyEvent e) {
+		super.keyAction_typed(name, comp, e);
 
 		try {
 			int primaryOffset = comp.getCaretPosition();
@@ -82,7 +74,7 @@ public class MyPad extends Pad {
 				resetOffset(comp, offsetLS);
 				break;
 			case 26:// "z" revert content
-				comp.setText(getReverseContent(frame));
+				comp.setText(getReverseContent(name));
 				resetOffset(comp, primaryOffset);
 				break;
 			default:
@@ -101,11 +93,12 @@ public class MyPad extends Pad {
 	}
 
 	@Override
-	public void keyAction_release(String frame, JTextComponent comp, KeyEvent e) {
-		super.keyAction_typed(frame, comp, e);
+	public void keyAction_release(String name, JTextComponent comp, KeyEvent e) {
+		super.keyAction_typed(name, comp, e);
 
-		if (!getContentTemp(frame).equals(comp.getText())) {
-			setReverseContent(frame, getContentTemp(frame));
+		if (!getContentTemp(name).equals(comp.getText())) {
+			setReverseContent(name, getContentTemp(name));
+			setContentTemp(name, comp.getText());
 		}
 	}
 

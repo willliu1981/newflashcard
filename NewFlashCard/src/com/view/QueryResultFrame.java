@@ -111,7 +111,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				PadFactory.query(null, txt_input.getText().trim(), PadFactory.SEARCH_INPUT);
 			}
 		});
-		txt_input.setFont(new Font("DialogInput", Font.BOLD, 16));
+		txt_input.setFont(new Font("標楷體", Font.BOLD, 16));
 		txt_input.setHorizontalAlignment(SwingConstants.CENTER);
 		txt_input.setText("null");
 		txt_input.setColumns(20);
@@ -127,7 +127,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				interruptAction = false;
 			}
 		});
-		comboBox_vocabularies.setFont(new Font("DialogInput", Font.BOLD, 16));
+		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
 		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
 
 		JPanel panel_center = new JPanel();
@@ -222,7 +222,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		textArea_explanation.setEditable(false);
 		textArea_explanation.setBackground(Color.BLACK);
 		textArea_explanation.setForeground(Color.WHITE);
-		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 16));
+		textArea_explanation.setFont(new Font("DialogInput", Font.PLAIN, 20));
 		textArea_explanation.setMargin(new Insets(8, 8, 8, 8));
 		textArea_explanation.setLineWrap(true);
 		textArea_explanation.setWrapStyleWord(true);
@@ -239,7 +239,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		textArea_example.setEditable(false);
 		textArea_example.setBackground(Color.BLACK);
 		textArea_example.setForeground(Color.WHITE);
-		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 16));
+		textArea_example.setFont(new Font("DialogInput", Font.PLAIN, 20));
 		textArea_example.setMargin(new Insets(8, 8, 8, 8));
 		textArea_example.setWrapStyleWord(true);
 		textArea_example.setLineWrap(true);
@@ -335,7 +335,15 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		List<Vocabulary> vs = (List<Vocabulary>) dt.getParameter("vocabularies");
 
 		if (parent != null) {
-			this.setBounds(parent.getX() + (int) ((parent.getWidth() - this.getWidth()) * 0.25), parent.getY() - 35,
+			/*
+			 *置中
+			 */
+//			this.setBounds(parent.getX() + (int) ((parent.getWidth() - this.getWidth()) * 0.25), parent.getY() - 35,
+//					this.getWidth(), this.getHeight());
+			/*
+			 * 偏右
+			 */
+			this.setBounds(parent.getX() + (int) (parent.getWidth()  * 0.25), parent.getY() - 35,
 					this.getWidth(), this.getHeight());
 		}
 

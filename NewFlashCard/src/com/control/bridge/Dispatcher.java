@@ -27,4 +27,12 @@ public class Dispatcher {
 		this.dt.doSend();
 		return r;
 	}
+	public Mask sendAndBack(Transportable t) {
+		Mask r=t.accpetThenBack(dt);
+		if(r.has(dt.SENDANDBACK_INTERRUPT)) {
+			return r;
+		}
+		t.accpet(dt);
+		return r;
+	}
 }

@@ -21,11 +21,19 @@ public class PadFactory {
 	public final static String MAIN_ADDVOCABULARYFRAME_EXPLANATION = "main_addvocabularyframe_explanation";
 	public final static String MAIN_ADDVOCABULARYFRAME_EXAMPLE = "main_addvocabularyframe_example";
 	public final static String MAIN_ADDVOCABULARYFRAME_TRANSLATION = "main_addvocabularyframe_translation";
+	public final static String VOCABULARY_TRANSLATION_EXPLANATION_EXAMPLE = "vocabulary_translation_explanation_example";
+	public final static String TRANSLATION_EXPLANATION_EXAMPLE = "translation_explanation_example";
+	public final static Mask FRAMEEXPLANATION = new Mask(1);// "explanationframe";
+	public final static Mask FRAMEADDVOCABULARY = new Mask(2);// "addvocabularyframe";
+	public final static Mask EXPLANATION = new Mask(4);// "main_explanationframe_explanation";
+	public final static Mask EXAMPLE = new Mask(8);// "main_explanationframe_example";
+	public final static Mask TRANSLATION = new Mask(16);// "main_explanationframe_translation";
+	public final static Mask VOCABULARY = new Mask(32);// "vocabulary";
 	public final static Mask SEARCH_INTERCEPT = new Mask(1);
 	public final static Mask SEARCH_INPUT = new Mask(2);
 	public final static Mask SEARCH_INPUT_COMBOBOX = new Mask(4);
 
-	private static PadFactory factory = new PadFactory();
+	private static PadFactory factory = new TextPadFactory();
 	private Pad pad;
 
 	public static Pad getPad() {
@@ -35,11 +43,14 @@ public class PadFactory {
 
 	private void initialize() {
 		if (pad == null) {
-			pad = new MyPad();
+			pad = new MyPad2();
 		}
 	}
 
-	public static boolean isChanged(String frame) {
+	/*
+	 * note : 此方法已無效,並由子類別實作
+	 */
+	protected boolean _isChanged(String frame) {
 		Pad pad = getPad();
 		boolean r = false;
 		switch (frame) {
@@ -55,19 +66,95 @@ public class PadFactory {
 		return r;
 	}
 
-	public static void initializeChange(String frame) {
+	protected boolean _isChanged(Mask frame) {
+		return getPad().getMaskPadPackMapKeys().stream().filter(x -> {
+			if (x.has(frame)) {
+				if (!getPad().getFirstContent(x).equals(getPad().getContentTemp(x))) {
+					return true;
+				}
+			}
+			return false;
+		}).findAny().isPresent();
+	}
+
+	public static boolean isChanged(String frame) {
+		return factory._isChanged(frame);
+	}
+
+	public static void setFirstContents(Mask frame, String typeSequence, String[] contents) {
+		switch (typeSequence) {
+		case VOCABULARY_TRANSLATION_EXPLANATION_EXAMPLE:
+			getPad().setFirstContent(frame.add(PadFactory.VOCABULARY), contents[0]);
+			getPad().setFirstContent(frame.add(PadFactory.TRANSLATION), contents[1]);
+			getPad().setFirstContent(frame.add(PadFactory.EXPLANATION), contents[2]);
+			getPad().setFirstContent(frame.add(PadFactory.EXAMPLE), contents[3]);
+			break;
+		case TRANSLATION_EXPLANATION_EXAMPLE:
+			getPad().setFirstContent(frame.add(PadFactory.TRANSLATION), contents[0]);
+			getPad().setFirstContent(frame.add(PadFactory.EXPLANATION), contents[1]);
+			getPad().setFirstContent(frame.add(PadFactory.EXAMPLE), contents[2]);
+			break;
+		default:
+			break;
+
+		}
+	}
+
+	/*
+	 * note : 此方法已無效,並由子類別實作
+	 */
+	protected void _initializeChange(String frame) {
 		Pad pad = getPad();
 		switch (frame) {
 		case EXPLANATIONFRAME:
 			pad.setChange(MAIN_EXPLANATIONFRAME_EXPLANATION, false);
 			pad.setChange(MAIN_EXPLANATIONFRAME_EXAMPLE, false);
 			pad.setChange(MAIN_EXPLANATIONFRAME_TRANSLATION, false);
+
 			break;
 		case ADDVOCABULARYFRAME:
 			break;
 		default:
 			break;
 		}
+	}
+
+	protected void _initializeChange(Mask frame) {
+		//
+	}
+
+	protected void _initializeChange(Mask frame, String typeSequence, String[] contents) {
+		setFirstContents(frame, typeSequence, contents);
+	}
+
+	public static void initializeChange(String frame) {
+		factory._initializeChange(frame);
+	}
+
+	public static void initializeChange(Mask frame, String typeSequence, String[] contents) {
+		factory._initializeChange(frame, typeSequence, contents);
+	}
+
+	public void _initializeContentTemp(Mask frame, String typeSequence, String[] contents) {
+		switch (typeSequence) {
+		case VOCABULARY_TRANSLATION_EXPLANATION_EXAMPLE:
+			getPad().setContentTemp(frame.add(PadFactory.VOCABULARY), contents[0]);
+			getPad().setContentTemp(frame.add(PadFactory.TRANSLATION), contents[1]);
+			getPad().setContentTemp(frame.add(PadFactory.EXPLANATION), contents[2]);
+			getPad().setContentTemp(frame.add(PadFactory.EXAMPLE), contents[3]);
+			break;
+		case TRANSLATION_EXPLANATION_EXAMPLE:
+			getPad().setContentTemp(frame.add(PadFactory.TRANSLATION), contents[0]);
+			getPad().setContentTemp(frame.add(PadFactory.EXPLANATION), contents[1]);
+			getPad().setContentTemp(frame.add(PadFactory.EXAMPLE), contents[2]);
+			break;
+		default:
+			break;
+		}
+	}
+
+	public static void initializeContentTemp(Mask frame, String typeSequence, String[] contents) {
+		factory._initializeContentTemp(frame, typeSequence, contents);
 	}
 
 	public static boolean query(Component parent, String vocabulary) {

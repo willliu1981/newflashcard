@@ -23,7 +23,7 @@ public abstract class UIDateTransportation {
 	public static final Mask SENDANDBACK_DEFAULT = new Mask(2);
 	public static final Mask SENDANDBACK_BROKEN =  new Mask(4);
 	public static final Mask SENDANDBACK_NORMAL =  new Mask(8);
-	public static final Mask SENDANDBACK_INTERRUPT =  new Mask(16);
+	public static final Mask SENDANDBACK_INTERRUPT =  new Mask(16);//不進行下一步 send 或者 accept
 
 	protected Dispatcher dispatcher = new Dispatcher(this);
 	protected final Map<String, Object> parameter = new HashMap<>();

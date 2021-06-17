@@ -37,4 +37,6 @@ public class Mask {
 		this.mask = new Mask(this.mask | m.getMask()).getMask();
 		return this;
 	}
+	
+
 }
