@@ -18,28 +18,28 @@ public abstract class TextPad extends Pad {
 		Mask mask = null;
 		switch (name) {
 		case PadFactory.MAIN_ADDVOCABULARYFRAME_EXAMPLE:
-			mask = PadFactory.FRAMEADDVOCABULARY.add(PadFactory.EXAMPLE);
+			mask = PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.EXAMPLE);
 			break;
 		case PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION:
-			mask = PadFactory.FRAMEADDVOCABULARY.add(PadFactory.EXPLANATION);
+			mask = PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.EXPLANATION);
 			break;
 		case PadFactory.MAIN_ADDVOCABULARYFRAME_TRANSLATION:
-			mask = PadFactory.FRAMEADDVOCABULARY.add(PadFactory.TRANSLATION);
+			mask = PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.TRANSLATION);
 			break;
 		case PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE:
-			mask = PadFactory.FRAMEEXPLANATION.add(PadFactory.EXAMPLE);
+			mask = PadFactory.FRAME_EXPLANATION.add(PadFactory.EXAMPLE);
 			break;
 		case PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION:
-			mask = PadFactory.FRAMEEXPLANATION.add(PadFactory.EXPLANATION);
+			mask = PadFactory.FRAME_EXPLANATION.add(PadFactory.EXPLANATION);
 			break;
 		case PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION:
-			mask = PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION);
+			mask = PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION);
 			break;
 		case PadFactory.ADDVOCABULARYFRAME:
-			mask = PadFactory.FRAMEADDVOCABULARY;
+			mask = PadFactory.FRAME_ADDVOCABULARY;
 			break;
 		case PadFactory.EXPLANATIONFRAME:
-			mask = PadFactory.FRAMEEXPLANATION;
+			mask = PadFactory.FRAME_EXPLANATION;
 			break;
 		default:
 			mask = new Mask(0);

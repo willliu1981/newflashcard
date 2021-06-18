@@ -294,23 +294,23 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txt_explanation_translation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				PadFactory.getPad().keyAction_pressed(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION),
+				PadFactory.getPad().keyAction_pressed(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
 						txt_explanation_translation, e);
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 
-				PadFactory.getPad().keyAction_typed(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION),
+				PadFactory.getPad().keyAction_typed(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
 						txt_explanation_translation, e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.getPad().keyAction_release(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION),
+				PadFactory.getPad().keyAction_release(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
 						txt_explanation_translation, e);
 				if (!locked) {
-					PadFactory.change(panel_updateborder, PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION), e);
+					PadFactory.change(panel_updateborder, PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION), e);
 				}
 			}
 		});
@@ -448,8 +448,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 	private void initializeText(Vocabulary vocabulary) {
 		String contents[] = { vocabulary.getTranslation(), vocabulary.getExplanation(), vocabulary.getExample() };
-		PadFactory.setFirstContents(PadFactory.FRAMEEXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE, contents);
-		PadFactory.initializeContentTemp(PadFactory.FRAMEEXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE,
+		PadFactory.setFirstContents(PadFactory.FRAME_EXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE, contents);
+		PadFactory.initializeContentTemp(PadFactory.FRAME_EXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE,
 				contents);
 
 		this.txtVocabulary.setText(vocabulary.getVocabulary());

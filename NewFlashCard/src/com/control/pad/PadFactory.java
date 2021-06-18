@@ -20,8 +20,8 @@ public class PadFactory {
 	public final static String MAIN_ADDVOCABULARYFRAME_TRANSLATION = "main_addvocabularyframe_translation";
 	public final static String VOCABULARY_TRANSLATION_EXPLANATION_EXAMPLE = "vocabulary_translation_explanation_example";
 	public final static String TRANSLATION_EXPLANATION_EXAMPLE = "translation_explanation_example";
-	public final static Mask FRAMEEXPLANATION = new Mask(1);// "explanationframe";
-	public final static Mask FRAMEADDVOCABULARY = new Mask(2);// "addvocabularyframe";
+	public final static Mask FRAME_EXPLANATION = new Mask(1);// "explanationframe";
+	public final static Mask FRAME_ADDVOCABULARY = new Mask(2);// "addvocabularyframe";
 	public final static Mask EXPLANATION = new Mask(4);// "main_explanationframe_explanation";
 	public final static Mask EXAMPLE = new Mask(8);// "main_explanationframe_example";
 	public final static Mask TRANSLATION = new Mask(16);// "main_explanationframe_translation";
@@ -66,8 +66,6 @@ public class PadFactory {
 	protected boolean _isChanged(Mask frame) {
 		return getPad().getMaskPadPackMapKeys().stream().filter(x -> {
 			if (x.has(frame)) {
-				System.out.println(String.format("\nnew... \n<<first>>\n %s \n<<temp>>\n %s\n",
-						getPad().getFirstContent(x), getPad().getContentTemp(x)));
 				if (!getPad().getFirstContent(x).equals(getPad().getContentTemp(x))) {
 					return true;
 				}

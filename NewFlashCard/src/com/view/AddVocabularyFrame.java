@@ -14,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -395,7 +396,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		lblNewLabel_2.setPreferredSize(new Dimension(45, 28));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(lblNewLabel_2);
-		
+
 		/*
 		 * initialize
 		 */
@@ -443,14 +444,16 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 
 	@Override
 	public Mask accpetThenBack(UIDateTransportation dt) {
-		
-		String query=(String) dt.getParameter("exist");
-		//boolean r=this.textField_vocabulary.getText().equals("") && this.
-		
-		return dt.SENDANDBACK_INTERRUPT;
+		Optional<?> query = (Optional<?>) dt.getParameter("checkexist");
+		if (query.isPresent()) {
+			boolean r = this.textField_vocabulary.getText().equals("")
+					&& this.textField_translation.getText().equals("") && this.textArea_explanation.getText().equals("")
+					&& this.textArea_example.getText().equals("");
+			Mask empty = r ? dt.SENDANDBACK_NORMAL : dt.SENDANDBACK_BROKEN;
+			return dt.SENDANDBACK_INTERRUPT.add(empty);
+		}
+		return dt.SENDANDBACK_DEFAULT;
 	}
-
-
 
 	private void queryBtnHighLight() {
 		AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();
@@ -462,24 +465,26 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 			panel_query.setBackground(MyColor.getBase());
 		}
 	}
-	
+
 	private void highLightCauseQuery(boolean query) {
-		if(query) {
+		if (query) {
 			this.panel_center.setBackground(Color.red);
 			panel_center.setBorder(new LineBorder(SystemColor.red, 3, true));
-			this.panel_query .setBackground(MyColor.getBase());
-		}else {
+			this.panel_query.setBackground(MyColor.getBase());
+		} else {
 			this.panel_center.setBackground(MyColor.getBase());
 			panel_center.setBorder(new LineBorder(SystemColor.controlHighlight, 3, true));
 		}
 	}
-	
+
 	private void initializeType() {
-		if(this.explanationType.equals(EXPLANATION)) {
-			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("example_background"),-0.55));
+		if (this.explanationType.equals(EXPLANATION)) {
+			this.btnNewButton_type
+					.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("example_background"), -0.55));
 			btnNewButton_type.setText(this.EXAMPLE);
-		}else {
-			this.btnNewButton_type.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("explanation_background"),-0.35));
+		} else {
+			this.btnNewButton_type
+					.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("explanation_background"), -0.35));
 			btnNewButton_type.setText(this.EXPLANATION);
 		}
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, explanationType);

@@ -31,6 +31,7 @@ import com.control.bridge.session.UIDateTransportation;
 import com.control.exception.MyNullException;
 import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
+import com.control.viewcontrol.bridge.CheckChangedBridge;
 import com.control.viewcontrol.bridge.OpenToAddVocabularyFrameBridge;
 import com.model.Vocabulary;
 import com.tool.Mask;
@@ -297,12 +298,21 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		btnNewButton_more_opento.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		btnNewButton_more_opento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
-				Vocabulary vocabulary = (Vocabulary) mc.get();
-				OpenToAddVocabularyFrameBridge bridge = new OpenToAddVocabularyFrameBridge();
-				bridge.setParameter("vocabulary", vocabulary);
-				bridge.setParameter("parent", thisFrame);
-				bridge.getDispatcher().send();
+				CheckChangedBridge chkBridge=new CheckChangedBridge();
+				chkBridge.setParameter("parent", thisFrame);
+				chkBridge.setParameter("mask", PadFactory.FRAME_ADDVOCABULARY);
+				
+				Mask r=chkBridge.getDispatcher().sendAndBack();
+				if(r.has(dt.SENDANDBACK_NORMAL)) {
+					ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
+					Vocabulary vocabulary = (Vocabulary) mc.get();
+					
+					OpenToAddVocabularyFrameBridge openBridge = new OpenToAddVocabularyFrameBridge();
+					openBridge.setParameter("vocabulary", vocabulary);
+					openBridge.setParameter("parent", thisFrame);
+					openBridge.getDispatcher().send();
+				}
+				
 			}
 		});
 		btnNewButton_more_opento.setForeground(Color.WHITE);
