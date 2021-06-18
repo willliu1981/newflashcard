@@ -128,17 +128,36 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_top_center.add(panel_1);
 
 		textField_vocabulary = new JTextField();
+		textField_vocabulary.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 3) {
+					PadFactory.query(thisFrame, textField_vocabulary.getSelectedText());
+				}
+			}
+		});
 		textField_vocabulary.setMargin(new Insets(2, 8, 2, 8));
 		textField_vocabulary.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				PadFactory.getPad().keyAction_pressed(PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.VOCABULARY),
+						textField_vocabulary, e);
+			}
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (((int) e.getKeyChar()) == 27) {
 					textField_vocabulary.setText("");
 				}
+
+				PadFactory.getPad().keyAction_typed(PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.VOCABULARY),
+						textField_vocabulary, e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.VOCABULARY),
+						textField_vocabulary, e);
 				queryBtnHighLight();
 			}
 		});
@@ -380,6 +399,34 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		panel_explanation_translation.add(panel_4);
 
 		textField_translation = new JTextField();
+		textField_translation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 3) {
+					PadFactory.query(thisFrame, textField_translation.getSelectedText());
+				}
+			}
+		});
+		textField_translation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				PadFactory.getPad().keyAction_pressed(PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.TRANSLATION),
+						textField_translation, e);
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+				PadFactory.getPad().keyAction_typed(PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.TRANSLATION),
+						textField_translation, e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.FRAME_ADDVOCABULARY.add(PadFactory.TRANSLATION),
+						textField_translation, e);
+			}
+		});
 		textField_translation.setColumns(45);
 		textField_translation.setMargin(new Insets(2, 8, 2, 8));
 		panel_explanation_translation.add(textField_translation);
@@ -417,6 +464,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 
 	@Override
 	public void accpet(UIDateTransportation dt) {
+		this.dt = dt;
 		this.setVisible(true);
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		boolean fetch = (boolean) dt.getParameter("fetch");
