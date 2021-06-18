@@ -208,9 +208,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (!locked) {
-					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
-				}
 
 				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, textArea_explanation,
 						e);
@@ -220,6 +217,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			public void keyReleased(KeyEvent e) {
 				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
 						textArea_explanation, e);
+				if (!locked) {
+					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
+				}
 			}
 		});
 		textArea_explanation.setCaretColor(Color.YELLOW);
@@ -248,9 +248,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (!locked) {
-					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
-				}
 
 				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
 			}
@@ -258,6 +255,9 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
+				if (!locked) {
+					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
+				}
 			}
 
 		});
@@ -337,27 +337,20 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	}
 
 	@Override
-	public UIDateTransportation accpet(UIDateTransportation dt) {
+	public void accpet(UIDateTransportation dt) {
 		this.dt = dt;
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
-		this.txtVocabulary.setText(vocabulary.getVocabulary());
-		this.textArea_explanation.setText(vocabulary.getExplanation());
-		this.lblNewLabel_translation.setText(vocabulary.getTranslation());
-		this.textArea_example.setText(vocabulary.getExample());
-		this.txt_explanation_translation.setText(vocabulary.getTranslation());
-		this.textArea_explanation.setSelectionStart(0);
-		this.textArea_explanation.setSelectionEnd(0);
+		initializeText(vocabulary);
 
 		/*
 		 * init
 		 */
-		
+
 		this.locked = true;
 		lock();
 		((CardLayout) panel_cardlayout.getLayout()).show(panel_cardlayout, explanationType = EXPLANATION);
 		btnNewButton_type.setText(EXAMPLE);
 		this.setState(JFrame.NORMAL);
-		initializeText();
 
 		/*
 		 * set highlight
@@ -370,13 +363,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		} else {
 			panel_updateborder.setBackground(MyColor.getBase());
 		}
-
-		return dt;
-	}
-
-	@Override
-	public void setUIDateTransportation(UIDateTransportation dt) {
-
 	}
 
 	private void exampleHighLight(Vocabulary vocabulary) {
@@ -442,10 +428,22 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	}
 
 	private void initializeText() {
-		String contents[] = { this.txt_explanation_translation.getText(), this.textArea_explanation.getText(),
-				this.textArea_example.getText() };
-		PadFactory.initializeChange(PadFactory.FRAMEEXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE, contents);
-		
+		initializeText(new Vocabulary());
+	}
+
+	private void initializeText(Vocabulary vocabulary) {
+		String contents[] = { vocabulary.getTranslation(), vocabulary.getExplanation(), vocabulary.getExample() };
+		PadFactory.setFirstContents(PadFactory.FRAMEEXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE, contents);
+		PadFactory.initializeContentTemp(PadFactory.FRAMEEXPLANATION, PadFactory.TRANSLATION_EXPLANATION_EXAMPLE,
+				contents);
+
+		this.txtVocabulary.setText(vocabulary.getVocabulary());
+		this.textArea_explanation.setText(vocabulary.getExplanation());
+		this.lblNewLabel_translation.setText(vocabulary.getTranslation());
+		this.textArea_example.setText(vocabulary.getExample());
+		this.txt_explanation_translation.setText(vocabulary.getTranslation());
+		this.textArea_explanation.setSelectionStart(0);
+		this.textArea_explanation.setSelectionEnd(0);
 	}
 
 }

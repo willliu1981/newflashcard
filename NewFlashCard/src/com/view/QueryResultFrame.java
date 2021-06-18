@@ -317,7 +317,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	}
 
 	@Override
-	public UIDateTransportation accpet(UIDateTransportation dt) {
+	public void accpet(UIDateTransportation dt) {
 		this.dt = dt;
 		Component parent = (Component) dt.getParameter("parent");
 		String queryStr = (String) dt.getParameter("vocabulary");
@@ -336,15 +336,15 @@ public class QueryResultFrame extends JFrame implements Transportable {
 
 		if (parent != null) {
 			/*
-			 *置中
+			 * 置中
 			 */
 //			this.setBounds(parent.getX() + (int) ((parent.getWidth() - this.getWidth()) * 0.25), parent.getY() - 35,
 //					this.getWidth(), this.getHeight());
 			/*
 			 * 偏右
 			 */
-			this.setBounds(parent.getX() + (int) (parent.getWidth()  * 0.25), parent.getY() - 35,
-					this.getWidth(), this.getHeight());
+			this.setBounds(parent.getX() + (int) (parent.getWidth() * 0.25), parent.getY() - 35, this.getWidth(),
+					this.getHeight());
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -372,12 +372,6 @@ public class QueryResultFrame extends JFrame implements Transportable {
 
 		refreshDueToPressMoreBtn();
 		refreshDueToPressHScrollBtn(v);
-
-		return dt;
-	}
-
-	@Override
-	public void setUIDateTransportation(UIDateTransportation dt) {
 
 	}
 

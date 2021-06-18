@@ -1,15 +1,9 @@
 package com.control.pad;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.KeyEvent;
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.swing.text.JTextComponent;
-
-import com.control.dao.VocabularyDao;
-import com.control.viewcontrol.bridge.QueryResultBridge;
-import com.model.Vocabulary;
 import com.tool.Mask;
 
 public class PadFactory {
@@ -69,6 +63,8 @@ public class PadFactory {
 	protected boolean _isChanged(Mask frame) {
 		return getPad().getMaskPadPackMapKeys().stream().filter(x -> {
 			if (x.has(frame)) {
+				System.out.println(String.format("\nnew... \n<<first>>\n %s \n<<temp>>\n %s\n",
+						getPad().getFirstContent(x), getPad().getContentTemp(x)));
 				if (!getPad().getFirstContent(x).equals(getPad().getContentTemp(x))) {
 					return true;
 				}
@@ -81,7 +77,7 @@ public class PadFactory {
 		return factory._isChanged(frame);
 	}
 
-	public static void setFirstContents(Mask frame, String typeSequence, String[] contents) {
+	public void _setFirstContents(Mask frame, String typeSequence, String[] contents) {
 		switch (typeSequence) {
 		case VOCABULARY_TRANSLATION_EXPLANATION_EXAMPLE:
 			getPad().setFirstContent(frame.add(PadFactory.VOCABULARY), contents[0]);
@@ -100,39 +96,8 @@ public class PadFactory {
 		}
 	}
 
-	/*
-	 * note : 此方法已無效,並由子類別實作
-	 */
-	protected void _initializeChange(String frame) {
-		Pad pad = getPad();
-		switch (frame) {
-		case EXPLANATIONFRAME:
-			pad.setChange(MAIN_EXPLANATIONFRAME_EXPLANATION, false);
-			pad.setChange(MAIN_EXPLANATIONFRAME_EXAMPLE, false);
-			pad.setChange(MAIN_EXPLANATIONFRAME_TRANSLATION, false);
-
-			break;
-		case ADDVOCABULARYFRAME:
-			break;
-		default:
-			break;
-		}
-	}
-
-	protected void _initializeChange(Mask frame) {
-		//
-	}
-
-	protected void _initializeChange(Mask frame, String typeSequence, String[] contents) {
-		setFirstContents(frame, typeSequence, contents);
-	}
-
-	public static void initializeChange(String frame) {
-		factory._initializeChange(frame);
-	}
-
-	public static void initializeChange(Mask frame, String typeSequence, String[] contents) {
-		factory._initializeChange(frame, typeSequence, contents);
+	public static void setFirstContents(Mask frame, String typeSequence, String[] contents) {
+		factory._setFirstContents(frame, typeSequence, contents);
 	}
 
 	public void _initializeContentTemp(Mask frame, String typeSequence, String[] contents) {

@@ -3,15 +3,12 @@ package com.control.viewcontrol;
 import javax.swing.JOptionPane;
 
 import com.control.bridge.Bridge;
-import com.control.bridge.Dispatcher;
-import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.Pad;
 import com.control.pad.PadFactory;
 import com.model.Vocabulary;
 import com.view.MainView;
 
 public class ExplanationBridge extends Bridge {
-
 	@Override
 	public void doSend() {
 		if (PadFactory.isChanged(PadFactory.EXPLANATIONFRAME)) {
@@ -20,8 +17,6 @@ public class ExplanationBridge extends Bridge {
 					"取消動作");
 			if (result != JOptionPane.YES_OPTION) {
 				return;
-			} else {
-				PadFactory.initializeChange(PadFactory.EXPLANATIONFRAME);
 			}
 		}
 		
@@ -31,5 +26,4 @@ public class ExplanationBridge extends Bridge {
 		pad.initializeContent(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE,v.getExample());
 		this.getDispatcher().send(MainView.explantationFrame);
 	}
-
 }

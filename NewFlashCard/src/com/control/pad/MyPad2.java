@@ -20,6 +20,7 @@ import com.control.viewcontrol.bridge.QueryResultBridge;
 import com.control.viewcontrol.bridge.QueryResultBridge2;
 import com.model.Vocabulary;
 import com.tool.Mask;
+import com.tool.MyColor;
 
 public class MyPad2 extends TextPad {
 	private static final int defaultLimit = 100;
@@ -44,6 +45,8 @@ public class MyPad2 extends TextPad {
 
 		if (PadFactory.isChanged(frame)) {
 			parent.setBackground(Color.red);
+		}else {
+			parent.setBackground(MyColor.getBase());
 		}
 	}
 

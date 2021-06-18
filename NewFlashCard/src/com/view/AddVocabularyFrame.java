@@ -415,7 +415,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	}
 
 	@Override
-	public UIDateTransportation accpet(UIDateTransportation dt) {
+	public void accpet(UIDateTransportation dt) {
 		this.setVisible(true);
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
 		boolean fetch = (boolean) dt.getParameter("fetch");
@@ -439,7 +439,6 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_example.setSelectionEnd(0);
 		explanationType = EXPLANATION;
 		initializeType();
-		return dt;
 	}
 
 	@Override
@@ -451,10 +450,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		return dt.SENDANDBACK_INTERRUPT;
 	}
 
-	@Override
-	public void setUIDateTransportation(UIDateTransportation dt) {
-		this.dt = dt;
-	}
+
 
 	private void queryBtnHighLight() {
 		AddVocabularyQueryBridge bridge = new AddVocabularyQueryBridge();

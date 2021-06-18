@@ -16,19 +16,17 @@ public class UpdateExplanationBridge extends Bridge {
 	@Override
 	public void doSend() {
 		VocabularyDao dao = new VocabularyDao();
-		Vocabulary voca = (Vocabulary) this.getParameter("vocabulary");
+		Vocabulary vocabulary = (Vocabulary) this.getParameter("vocabulary");
 		Component parent = (Component) this.getParameter("parent");
-		if (voca.getTranslation() == null || voca.getTranslation().equals("")) {
+		if (vocabulary.getTranslation() == null || vocabulary.getTranslation().equals("")) {
 			JOptionPane.showMessageDialog(parent, "翻譯為必要的資料", "資料錯誤", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		
-		PadFactory.initializeChange(PadFactory.EXPLANATIONFRAME);
-		
-		dao.update(voca, voca.getId());
-		
+
+		dao.update(vocabulary, vocabulary.getId());
+
 		this.getDispatcher().send(MainView.explantationFrame);
-		
+
 	}
 
 }

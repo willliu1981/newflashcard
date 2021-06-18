@@ -1,17 +1,5 @@
 package com.control.pad;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.KeyEvent;
-import java.util.List;
-
-import javax.swing.text.JTextComponent;
-
-import com.control.dao.VocabularyDao;
-import com.control.viewcontrol.bridge.QueryResultBridge;
-import com.model.Vocabulary;
-import com.tool.Mask;
-
 public class TextPadFactory extends PadFactory {
 
 	public boolean _isChanged(String frame) {
@@ -34,9 +22,5 @@ public class TextPadFactory extends PadFactory {
 
 
 
-	@Override
-	public void _initializeChange(String frame) {
-
-	}
 
 }

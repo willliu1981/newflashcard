@@ -6,6 +6,9 @@ public class Mask {
 	public Mask(int mask) {
 		this.mask = mask;
 	}
+	public Mask(Mask mask) {
+		this.mask = mask.getMask();
+	}
 
 	public int getMask() {
 		return mask;
@@ -34,8 +37,7 @@ public class Mask {
 	}
 
 	public Mask add(Mask m) {
-		this.mask = new Mask(this.mask | m.getMask()).getMask();
-		return this;
+		return new Mask(this.mask | m.getMask());
 	}
 
 	@Override
