@@ -293,9 +293,24 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txt_explanation_translation.setDisabledTextColor(Color.BLACK);
 		txt_explanation_translation.addKeyListener(new KeyAdapter() {
 			@Override
+			public void keyPressed(KeyEvent e) {
+				PadFactory.getPad().keyAction_pressed(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION),
+						txt_explanation_translation, e);
+			}
+
+			@Override
 			public void keyTyped(KeyEvent e) {
+
+				PadFactory.getPad().keyAction_typed(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION),
+						txt_explanation_translation, e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PadFactory.getPad().keyAction_release(PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION),
+						txt_explanation_translation, e);
 				if (!locked) {
-					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_TRANSLATION, e);
+					PadFactory.change(panel_updateborder, PadFactory.FRAMEEXPLANATION.add(PadFactory.TRANSLATION), e);
 				}
 			}
 		});

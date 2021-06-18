@@ -1,10 +1,13 @@
 package com.control.pad;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.tool.Mask;
+import com.tool.MyColor;
 
 public class PadFactory {
 	public final static String EXPLANATIONFRAME = "explanationframe";
@@ -75,6 +78,18 @@ public class PadFactory {
 
 	public static boolean isChanged(String frame) {
 		return factory._isChanged(frame);
+	}
+
+	public static boolean isChanged(Mask mask) {
+		return factory._isChanged(mask);
+	}
+
+	public static void change(Component parent, Mask mask, KeyEvent e) {
+		if (PadFactory.isChanged(mask)) {
+			parent.setBackground(Color.red);
+		} else {
+			parent.setBackground(MyColor.getBase());
+		}
 	}
 
 	public void _setFirstContents(Mask frame, String typeSequence, String[] contents) {

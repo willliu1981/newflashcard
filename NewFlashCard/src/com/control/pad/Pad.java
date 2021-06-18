@@ -16,22 +16,22 @@ public abstract class Pad {
 	private static class PadPack {
 		private Optional<String> contentTemp;
 		private String reverseContent;
-		private Optional< String> firstContent;
+		private Optional<String> firstContent;
 		private boolean isChanged;
 
 		public PadPack() {
 			this.contentTemp = Optional.empty();
 			this.reverseContent = "";
 			this.isChanged = false;
-			this.firstContent=Optional.empty();
-		} 
+			this.firstContent = Optional.empty();
+		}
 
 		public String getContentTemp() {
 			return contentTemp.orElse("");
 		}
 
 		public void setContentTemp(String contentTemp) {
-			this.contentTemp = Optional.ofNullable( contentTemp);
+			this.contentTemp = Optional.ofNullable(contentTemp);
 		}
 
 		public boolean isChanged() {
@@ -55,7 +55,7 @@ public abstract class Pad {
 		}
 
 		public void setFirstContent(String firstContent) {
-			this.firstContent =Optional.ofNullable(firstContent);
+			this.firstContent = Optional.ofNullable(firstContent);
 		}
 
 	}
@@ -90,6 +90,14 @@ public abstract class Pad {
 
 	public void setReverseContent(String name, String content) {
 		getPadPack(name).setReverseContent(content);
+	}
+
+	public String getReverseContent(Mask mask) {
+		return getMaskPadPack(mask).getReverseContent();
+	}
+
+	public void setReverseContent(Mask mask, String content) {
+		getMaskPadPack(mask).setReverseContent(content);
 	}
 
 	public String getContentTemp(String name) {
@@ -139,6 +147,18 @@ public abstract class Pad {
 	}
 
 	public void keyAction_release(String name, JTextComponent comp, KeyEvent e) {
+
+	}
+
+	public void keyAction_pressed(Mask mask, JTextComponent comp, KeyEvent e) {
+
+	}
+
+	public void keyAction_typed(Mask mask, JTextComponent comp, KeyEvent e) {
+
+	}
+
+	public void keyAction_release(Mask mask, JTextComponent comp, KeyEvent e) {
 
 	}
 

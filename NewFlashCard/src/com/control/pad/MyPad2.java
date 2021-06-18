@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
@@ -42,23 +43,25 @@ public class MyPad2 extends TextPad {
 		default:
 			break;
 		}
-
-		if (PadFactory.isChanged(frame)) {
-			parent.setBackground(Color.red);
-		}else {
-			parent.setBackground(MyColor.getBase());
-		}
+		
+		PadFactory.change(parent, this.adaptType(frame), e);
 	}
 
 	@Override
-	public void keyAction_typed(String name, JTextComponent comp, KeyEvent e) {
-		super.keyAction_typed(name, comp, e);
-
+	public void keyAction_typed(Mask mask, JTextComponent comp, KeyEvent e) {
+		
 		try {
 			int primaryOffset = comp.getCaretPosition();
-			int line = ((JTextArea) comp).getLineOfOffset(primaryOffset);
-			int ls = ((JTextArea) comp).getLineStartOffset(line);
-			int le = ((JTextArea) comp).getLineEndOffset(line);
+			int ls = 0;
+			int le =0;
+			if(comp instanceof JTextArea) {
+				int line = ((JTextArea) comp).getLineOfOffset(primaryOffset);
+				 ls = ((JTextArea) comp).getLineStartOffset(line);
+				 le = ((JTextArea) comp).getLineEndOffset(line);
+			}else if(comp instanceof JTextField) {
+				 le =comp.getText().length();
+			}
+			
 			int offsetLS = ls;
 			String ss = comp.getText();
 			String ff = "";
@@ -88,7 +91,7 @@ public class MyPad2 extends TextPad {
 				resetOffset(comp, offsetLS);
 				break;
 			case 26:// "z" revert content
-				comp.setText(getReverseContent(name));
+				comp.setText(getReverseContent(mask));
 				resetOffset(comp, primaryOffset);
 				break;
 			default:
@@ -101,19 +104,33 @@ public class MyPad2 extends TextPad {
 		}
 	}
 
+	@Override
+	public void keyAction_typed(String name, JTextComponent comp, KeyEvent e) {
+		super.keyAction_typed(name, comp, e);
+
+		this.keyAction_typed(this.adaptType(name), comp, e);
+	}
+
 	private void resetOffset(JTextComponent comp, int offset) {
 		comp.setSelectionStart(offset);
 		comp.setSelectionEnd(offset);
 	}
 
 	@Override
+	public void keyAction_release(Mask mask, JTextComponent comp, KeyEvent e) {
+		super.keyAction_typed(mask, comp, e);
+
+		if (!getContentTemp(mask).equals(comp.getText())) {
+			setReverseContent(mask, getContentTemp(mask));
+			setContentTemp(mask, comp.getText());
+		}
+	}
+
+	@Override
 	public void keyAction_release(String name, JTextComponent comp, KeyEvent e) {
 		super.keyAction_typed(name, comp, e);
 
-		if (!getContentTemp(name).equals(comp.getText())) {
-			setReverseContent(name, getContentTemp(name));
-			setContentTemp(name, comp.getText());
-		}
+		keyAction_release(this.adaptType(name), comp, e);
 	}
 
 	@Override
