@@ -30,6 +30,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
+import com.control.PronounceBridge;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
@@ -68,6 +69,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_4;
 	private JButton btnNewButton_speedquery;
 	private JLabel lblNewLabel_translation;
+	private JButton btnNewButton_1;
+	private JPanel panel_5;
 
 	/**
 	 * Launch the application.
@@ -155,6 +158,21 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txtVocabulary.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		panel.add(txtVocabulary);
 		txtVocabulary.setColumns(18);
+		
+		panel_5 = new JPanel();
+		panel.add(panel_5);
+		
+		btnNewButton_1 = new JButton("發音");
+		btnNewButton_1.setBackground(SystemColor.control);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PronounceBridge bridge=new PronounceBridge();
+				bridge.setParameter("vocabulary", txtVocabulary.getText().trim().toLowerCase());
+				bridge.getDispatcher().send();
+			}
+		});
+		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		panel.add(btnNewButton_1);
 
 		panel_1 = new JPanel();
 		panel.add(panel_1);

@@ -54,7 +54,7 @@ public class QueryResultBridge2 extends Bridge {
 
 		String v = ss.stream().filter(x -> x.startsWith(vocabulary)).findFirst().orElse(ss.get(0));
 		List<Vocabulary> vs = dao.queryByVocabulary(v);
-		this.setParameter("vocabulary", v);
+		this.setParameter("suggestvocabulary", v);
 		this.setParameter("fuzzyvocabularies", ss);
 		
 		vs = dao.queryByVocabulary(v);

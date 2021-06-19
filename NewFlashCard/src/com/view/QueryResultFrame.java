@@ -110,9 +110,10 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				PadFactory.query(null, txt_input.getText().trim(), PadFactory.SEARCH_INPUT);
+				setQueryVocabularyMatchState();
 			}
 		});
-		txt_input.setFont(new Font("標楷體", Font.BOLD, 16));
+		txt_input.setFont(new Font("標楷體", Font.PLAIN, 20));
 		txt_input.setHorizontalAlignment(SwingConstants.CENTER);
 		txt_input.setText("null");
 		txt_input.setColumns(20);
@@ -128,7 +129,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 				interruptAction = false;
 			}
 		});
-		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 16));
+		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 20));
 		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
 
 		JPanel panel_center = new JPanel();
@@ -143,7 +144,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txtr_result.setLineWrap(true);
 		txtr_result.setWrapStyleWord(true);
 		txtr_result.setText("null");
-		txtr_result.setFont(new Font("DialogInput", Font.PLAIN, 16));
+		txtr_result.setFont(new Font("DialogInput", Font.PLAIN, 20));
 
 		scrollPane_result = new JScrollPane();
 		scrollPane_result.setBorder(null);
@@ -298,21 +299,21 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		btnNewButton_more_opento.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		btnNewButton_more_opento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CheckChangedBridge chkBridge=new CheckChangedBridge();
+				CheckChangedBridge chkBridge = new CheckChangedBridge();
 				chkBridge.setParameter("parent", thisFrame);
 				chkBridge.setParameter("mask", PadFactory.FRAME_ADDVOCABULARY);
-				
-				Mask r=chkBridge.getDispatcher().sendAndBack();
-				if(r.has(dt.SENDANDBACK_NORMAL)) {
+
+				Mask r = chkBridge.getDispatcher().sendAndBack();
+				if (r.has(dt.SENDANDBACK_NORMAL)) {
 					ModelCollector<?> mc = (ModelCollector<?>) dt.getParameter("mc");
 					Vocabulary vocabulary = (Vocabulary) mc.get();
-					
+
 					OpenToAddVocabularyFrameBridge openBridge = new OpenToAddVocabularyFrameBridge();
 					openBridge.setParameter("vocabulary", vocabulary);
 					openBridge.setParameter("parent", thisFrame);
 					openBridge.getDispatcher().send();
 				}
-				
+
 			}
 		});
 		btnNewButton_more_opento.setForeground(Color.WHITE);
@@ -330,14 +331,15 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	public void accpet(UIDateTransportation dt) {
 		this.dt = dt;
 		Component parent = (Component) dt.getParameter("parent");
-		String queryStr = (String) dt.getParameter("vocabulary");
+		String vocabulary = (String) dt.getParameter("vocabulary");
+		String suggestVocabulary = (String) dt.getParameter("suggestvocabulary");
 		this.searchType = (Mask) dt.getParameter("type");
 
 		if (this.searchType.hasOr(PadFactory.SEARCH_INPUT, PadFactory.SEARCH_INTERCEPT)) {
 			List<String> ss = null;
 			ss = (List<String>) dt.getParameter("fuzzyvocabularies");
 			this.comboBox_vocabularies.setModel(new DefaultComboBoxModel(ss.toArray(new String[ss.size()])));
-			String str = ss.stream().filter(x -> x.equals(queryStr)).findAny().get();
+			String str = ss.stream().filter(x -> x.equals(suggestVocabulary)).findAny().get();
 			this.interruptAction = true;
 			this.comboBox_vocabularies.setSelectedItem(str);
 		}
@@ -372,8 +374,9 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		}
 
 		if (this.searchType.has(PadFactory.SEARCH_INTERCEPT)) {
-			this.txt_input.setText(queryStr);
+			this.txt_input.setText(vocabulary);
 		}
+		setQueryVocabularyMatchState();
 		this.txtr_result.setText(sb.toString());
 		this.txtr_result.setSelectionStart(0);
 		this.txtr_result.setSelectionEnd(0);
@@ -432,6 +435,15 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		this.textArea_explanation.setSelectionEnd(0);
 		this.textArea_example.setSelectionStart(0);
 		this.textArea_example.setSelectionEnd(0);
+	}
+
+	private void setQueryVocabularyMatchState() {
+		Font font = this.txt_input.getFont();
+		if (this.txt_input.getText().trim().equals(this.comboBox_vocabularies.getSelectedItem())) {
+			this.txt_input.setFont(new Font(font.getName(), Font.BOLD, font.getSize()));
+		} else {
+			this.txt_input.setFont(new Font(font.getName(), Font.PLAIN, font.getSize()));
+		}
 	}
 
 }

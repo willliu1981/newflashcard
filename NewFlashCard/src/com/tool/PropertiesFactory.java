@@ -27,7 +27,7 @@ public class PropertiesFactory {
 		return color;
 	}
 	
-	public static Properties getProperties() {
+	public static Properties getInstance() {
 		return prop;
 	}
 }
