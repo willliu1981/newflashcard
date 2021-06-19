@@ -29,6 +29,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import com.control.PronounceBridge;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
@@ -116,6 +117,21 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_speedquery.setFont(new Font("標楷體", Font.PLAIN, 14));
 		btnNewButton_speedquery.setBackground(SystemColor.controlHighlight);
 		panel_top_center.add(btnNewButton_speedquery);
+
+		JPanel panel_2 = new JPanel();
+		panel_top_center.add(panel_2);
+
+		JButton btnNewButton_1 = new JButton("發音");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PronounceBridge bridge = new PronounceBridge();
+				bridge.setParameter("vocabulary", textField_vocabulary.getText().trim().toLowerCase());
+				bridge.getDispatcher().send();
+			}
+		});
+		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		btnNewButton_1.setBackground(SystemColor.menu);
+		panel_top_center.add(btnNewButton_1);
 
 		JPanel panel_6 = new JPanel();
 		panel_top_center.add(panel_6);

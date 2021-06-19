@@ -21,6 +21,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.control.PronounceBridge;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.bridge.session.UIDateTransportation.Session;
@@ -51,10 +52,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(e.getClickCount()==2) {
+			if (e.getClickCount() == 2) {
 				MainView.explantationFrame.setVisible(true);
 			}
-			
+
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout()).show(
 						((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
@@ -62,6 +63,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				int rowIdx = Integer.valueOf(getName());
 				switch (showRowControl.getStage()) {
 				case ShowQuestion:
+
 					break;
 				case Guess:
 					if (showRowControl.clickAnswerRowInRange(rowIdx)) {
@@ -74,10 +76,12 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							}
 						}
 					} else {
-						/*
-						 * 無法答題
-						 */
-						if (rowIdx == 1) {
+						if (rowIdx == 0) {
+							playSound();
+						} else if (rowIdx == 1) {
+							/*
+							 * 無法答題
+							 */
 							showRowControl.setFirstFailure();
 						} else {
 							return;
@@ -92,6 +96,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						bridge.setParameter("correctVocabulary",
 								showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
 						disp.send();
+						
+						playSound();
 					} else if (rowIdx == 1) {
 						if (showRowControl.isLastQuestion()) {
 							if (showRowControl.reviewIsEmpty()) {
@@ -347,5 +353,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	@Override
 	public void setShowRowControl(ShowRowControl<Vocabulary> control) {
 		this.showRowControl = (TestQuestionControl) control;
+	}
+	
+	protected  void playSound( ) {
+		PronounceBridge bridge = new PronounceBridge();
+		bridge.setParameter("vocabulary", showRowControl.getCurrentQueation().getVocabulary());
+		bridge.getDispatcher().send();
 	}
 }

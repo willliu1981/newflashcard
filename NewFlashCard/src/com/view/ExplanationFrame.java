@@ -149,18 +149,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			}
 		});
 		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 16));
-
-		txtVocabulary = new JTextField();
-		txtVocabulary.setEditable(false);
-		txtVocabulary.setText("null");
-		txtVocabulary.setHorizontalAlignment(SwingConstants.CENTER);
-		txtVocabulary.setBorder(null);
-		txtVocabulary.setFont(new Font("微軟正黑體", Font.BOLD, 18));
-		panel.add(txtVocabulary);
-		txtVocabulary.setColumns(18);
-		
-		panel_5 = new JPanel();
-		panel.add(panel_5);
 		
 		btnNewButton_1 = new JButton("發音");
 		btnNewButton_1.setBackground(SystemColor.control);
@@ -171,8 +159,20 @@ public class ExplanationFrame extends JFrame implements Transportable {
 				bridge.getDispatcher().send();
 			}
 		});
+		
+		panel_5 = new JPanel();
+		panel.add(panel_5);
 		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		panel.add(btnNewButton_1);
+
+		txtVocabulary = new JTextField();
+		txtVocabulary.setEditable(false);
+		txtVocabulary.setText("null");
+		txtVocabulary.setHorizontalAlignment(SwingConstants.CENTER);
+		txtVocabulary.setBorder(null);
+		txtVocabulary.setFont(new Font("微軟正黑體", Font.BOLD, 18));
+		panel.add(txtVocabulary);
+		txtVocabulary.setColumns(18);
 
 		panel_1 = new JPanel();
 		panel.add(panel_1);

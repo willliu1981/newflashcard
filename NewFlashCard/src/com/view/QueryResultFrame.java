@@ -26,6 +26,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import com.control.PronounceBridge;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.exception.MyNullException;
@@ -88,6 +89,8 @@ public class QueryResultFrame extends JFrame implements Transportable {
 	private Mask searchType = PadFactory.SEARCH_INTERCEPT;
 	private JComboBox<String> comboBox_vocabularies;
 	private boolean interruptAction = false;
+	private JPanel panel;
+	private JButton btnNewButton;
 
 	public QueryResultFrame() {
 		setType(Type.UTILITY);
@@ -117,20 +120,37 @@ public class QueryResultFrame extends JFrame implements Transportable {
 		txt_input.setHorizontalAlignment(SwingConstants.CENTER);
 		txt_input.setText("null");
 		txt_input.setColumns(20);
-
-		comboBox_vocabularies = new JComboBox();
-		panel_top.add(comboBox_vocabularies);
-		comboBox_vocabularies.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!interruptAction) {
-					PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
-							PadFactory.SEARCH_INPUT_COMBOBOX);
-				}
-				interruptAction = false;
-			}
-		});
-		comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 20));
-		comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
+		
+		panel = new JPanel();
+		panel_top.add(panel);
+				panel.setLayout(new BorderLayout(0, 0));
+		
+				comboBox_vocabularies = new JComboBox();
+				panel.add(comboBox_vocabularies);
+				comboBox_vocabularies.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if (!interruptAction) {
+							PadFactory.query(null, comboBox_vocabularies.getSelectedItem().toString().trim(),
+									PadFactory.SEARCH_INPUT_COMBOBOX);
+						}
+						interruptAction = false;
+					}
+				});
+				comboBox_vocabularies.setFont(new Font("標楷體", Font.BOLD, 20));
+				comboBox_vocabularies.setBackground(SystemColor.controlHighlight);
+				
+				btnNewButton = new JButton("發音");
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						 PronounceBridge bridge=new PronounceBridge();
+						bridge.setParameter("vocabulary", comboBox_vocabularies.getSelectedItem());
+						bridge.getDispatcher().send();
+					}
+				});
+				btnNewButton.setMargin(new Insets(2, 4, 2, 4));
+				btnNewButton.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+				btnNewButton.setBackground(SystemColor.menu);
+				panel.add(btnNewButton, BorderLayout.EAST);
 
 		JPanel panel_center = new JPanel();
 		panel_main.add(panel_center, BorderLayout.CENTER);
