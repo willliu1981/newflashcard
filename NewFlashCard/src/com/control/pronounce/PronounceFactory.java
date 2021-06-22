@@ -1,20 +1,21 @@
 package com.control.pronounce;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.tool.PropertiesFactory;
 
 public class PronounceFactory {
-	private static final String propFormatStr = "pronounce_url_formatstr";
+	private static final String propertiesKey = "pronounce_url_formatstr";
 	private static final List<String> list;
 	private static final List<String> listEffective;
+	
 	static {
-		String pronounce_url_formatstr = PropertiesFactory.getInstance().getProperty(propFormatStr);
+		String pronounce_url_formatstr = PropertiesFactory.getInstance().getProperty(propertiesKey);
 		String[] strs = pronounce_url_formatstr.split(";");
-		list = Arrays.asList(strs);
+		list = Stream.of(strs).collect(Collectors.toList());
 		listEffective = setEffectiveList();
 	}
 
@@ -30,8 +31,11 @@ public class PronounceFactory {
 	}
 
 	public static void setProperties() {
+		list.stream().forEach(System.out::println);
 		String str = list.stream().reduce((x1, x2) -> x1 + ";" + x2).orElse("");
-		PropertiesFactory.getInstance().setProperty(propFormatStr, str);
+		System.out.println(str);
+		PropertiesFactory.getInstance().setProperty(propertiesKey, str);
+		PropertiesFactory.store();
 	}
 
 	public static void add(String formatStr) {
@@ -39,8 +43,16 @@ public class PronounceFactory {
 		setEffectiveList();
 	}
 
-	public static String get(int index) {
-		return list.get(index);
+	public static void add(int index, String formatStr) {
+		list.add(index, formatStr);
+		setEffectiveList();
+	}
+
+
+
+	public static void update(int index, String str) {
+		list.set(index, str);
+		setEffectiveList();
 	}
 
 	public static void remove(int index) {
@@ -54,8 +66,8 @@ public class PronounceFactory {
 		}
 
 		int up = index - 1;
-
 		list.add(up, list.remove(index));
+		
 		setEffectiveList();
 	}
 
@@ -65,12 +77,12 @@ public class PronounceFactory {
 		}
 
 		int down = index + 1;
-
 		list.add(down, list.remove(index));
+		
 		setEffectiveList();
 	}
 
-	public static String[] getFormatStrArr() {
+	public static String[] getEffectiveArr() {
 		String[] arr = new String[listEffective.size()];
 		return listEffective.toArray(arr);
 	}

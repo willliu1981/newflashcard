@@ -14,6 +14,12 @@ import javax.swing.ListModel;
 
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
+import com.control.pronounce.PronounceFactory;
+import com.control.pronounce.bridge.AddPronounceFomatStrBridge;
+import com.control.pronounce.bridge.EditPronounceFomatStrBridge;
+import com.control.pronounce.bridge.RemovePronounceFomatStrBridge;
+import com.tool.PropertiesFactory;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
@@ -24,6 +30,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Insets;
 
 public class PronounceSourceFrame extends JFrame implements Transportable {
 	public final static String ADD = "add";
@@ -31,8 +38,8 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 	public final static String NULL = "null";
 	private static String editType = NULL;
 	private JList list_source;
-	private JTextField textField_1;
-	private JTextField textField;
+	private JTextField textField_add;
+	private JTextField textField_edit;
 	private JPanel panel_card_bottom;
 	private JLabel lblNewLabel_add;
 	private JLabel lblNewLabel_edit;
@@ -51,7 +58,7 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		list_source.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				switchEditType(NULL);
+				initEditType(NULL);
 			}
 		});
 		list_source.setFont(new Font("DialogInput", Font.PLAIN, 16));
@@ -72,7 +79,7 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		JButton btnNewButton_add = new JButton("新增");
 		btnNewButton_add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				switchEditType(ADD);
+				initEditType(ADD);
 			}
 		});
 		btnNewButton_add.setBackground(SystemColor.control);
@@ -89,7 +96,7 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		JButton btnNewButton_edit = new JButton("編輯");
 		btnNewButton_edit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				switchEditType(EDIT);
+				initEditType(EDIT);
 			}
 		});
 		btnNewButton_edit.setBackground(SystemColor.control);
@@ -104,6 +111,14 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		panel_rbar.add(panel_6);
 
 		JButton btnNewButton_remove = new JButton("移除");
+		btnNewButton_remove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RemovePronounceFomatStrBridge bridge =new RemovePronounceFomatStrBridge();
+				bridge.setParameter("index",list_source.getSelectedIndex() );
+				bridge.getDispatcher().send();
+				initEditType(NULL);
+			}
+		});
 		btnNewButton_remove.setBackground(SystemColor.control);
 		panel_6.add(btnNewButton_remove);
 		btnNewButton_remove.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
@@ -111,6 +126,23 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		JPanel panel_7 = new JPanel();
 		panel_7.setPreferredSize(new Dimension(100, 350));
 		panel_rbar.add(panel_7);
+		
+		JPanel panel_8 = new JPanel();
+		panel_rbar.add(panel_8);
+		
+		JButton btnNewButton_remove_1 = new JButton("套用");
+		btnNewButton_remove_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PronounceFactory.setProperties();
+			}
+		});
+		btnNewButton_remove_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		btnNewButton_remove_1.setBackground(SystemColor.menu);
+		panel_8.add(btnNewButton_remove_1);
+		
+		JPanel panel_9 = new JPanel();
+		panel_9.setPreferredSize(new Dimension(10, 30));
+		panel_rbar.add(panel_9);
 
 		panel_card_bottom = new JPanel();
 		panel_card_bottom.setVisible(false);
@@ -119,34 +151,51 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 
 		JPanel panel_add = new JPanel();
 		panel_card_bottom.add(panel_add, ADD);
-		
+
 		lblNewLabel_add = new JLabel("新增");
 		lblNewLabel_add.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_add.add(lblNewLabel_add);
 
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("DialogInput", Font.PLAIN, 16));
-		textField_1.setColumns(50);
-		panel_add.add(textField_1);
+		textField_add = new JTextField();
+		textField_add.setMargin(new Insets(2, 4, 2, 2));
+		textField_add.setFont(new Font("DialogInput", Font.PLAIN, 16));
+		textField_add.setColumns(50);
+		panel_add.add(textField_add);
 
 		JButton btnNewButton_1 = new JButton("確認");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddPronounceFomatStrBridge bridge =new AddPronounceFomatStrBridge();
+				bridge.setParameter("index",list_source.getSelectedIndex() );
+				bridge.setParameter("formatstr",textField_add.getText().trim() );
+				bridge.getDispatcher().send();
+			}
+		});
 		btnNewButton_1.setBackground(SystemColor.control);
 		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		panel_add.add(btnNewButton_1);
 
 		JPanel panel_edit = new JPanel();
 		panel_card_bottom.add(panel_edit, EDIT);
-		
+
 		lblNewLabel_edit = new JLabel("編輯");
 		lblNewLabel_edit.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_edit.add(lblNewLabel_edit);
 
-		textField = new JTextField();
-		textField.setFont(new Font("DialogInput", Font.PLAIN, 16));
-		textField.setColumns(50);
-		panel_edit.add(textField);
-
+		textField_edit = new JTextField();
+		textField_edit.setMargin(new Insets(2, 4, 2, 2));
+		textField_edit.setFont(new Font("DialogInput", Font.PLAIN, 16));
+		textField_edit.setColumns(50);
+		panel_edit.add(textField_edit);
 		JButton btnNewButton = new JButton("確認");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EditPronounceFomatStrBridge bridge =new EditPronounceFomatStrBridge();
+				bridge.setParameter("index",list_source.getSelectedIndex() );
+				bridge.setParameter("formatstr",textField_edit.getText().trim() );
+				bridge.getDispatcher().send();
+			}
+		});
 		btnNewButton.setBackground(SystemColor.control);
 		btnNewButton.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		panel_edit.add(btnNewButton);
@@ -161,33 +210,40 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		DefaultListModel elements = (DefaultListModel) dt.getParameter("model");
 		elements.add(elements.size(), "");
 		this.list_source.setModel(elements);
-		
-		switchEditType(NULL);
+
+		initEditType(NULL);
 	}
 
-	private  void switchEditType(String type) {
-		
+	private void initEditType(String type) {
+
+		int index = this.list_source.getSelectedIndex();
 		switch (type) {
 		case ADD:
-			((CardLayout)this.panel_card_bottom.getLayout()).show(panel_card_bottom, ADD);
-			int index=-1;
-			if((index =this.list_source.getSelectedIndex())==-1) {
-				index=this.list_source.getModel().getSize();
-			}else {
+			if (index == -1) {
+				index = this.list_source.getModel().getSize();
+			} else {
 				index++;
 			}
-			this.lblNewLabel_add.setText("新增到第 "+index+" 筆");
+			((CardLayout) this.panel_card_bottom.getLayout()).show(panel_card_bottom, ADD);
+			this.lblNewLabel_add.setText("新增到第 " + index + " 筆");
 			panel_card_bottom.setVisible(true);
+			this.textField_add.setText("");
 			break;
 		case EDIT:
-			((CardLayout)this.panel_card_bottom.getLayout()).show(panel_card_bottom, EDIT);
-			this.lblNewLabel_edit .setText("編輯第 "+(this.list_source.getSelectedIndex()+1) +" 筆");
+			if (index == -1) {
+				panel_card_bottom.setVisible(false);
+				return;
+			} else {
+				index++;
+			}
+			((CardLayout) this.panel_card_bottom.getLayout()).show(panel_card_bottom, EDIT);
+			this.lblNewLabel_edit.setText("編輯第 " + index + " 筆");
 			panel_card_bottom.setVisible(true);
+			this.textField_edit.setText(this.list_source.getSelectedValue().toString());
 			break;
 		case NULL:
 			panel_card_bottom.setVisible(false);
 			break;
-
 		default:
 			break;
 		}

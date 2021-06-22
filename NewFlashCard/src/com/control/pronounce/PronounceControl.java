@@ -44,7 +44,7 @@ public class PronounceControl {
 	}
 
 	public static void downloadUsingStream(String vocabulary)  {
-		String [] strarr=PronounceFactory .getFormatStrArr();
+		String [] strarr=PronounceFactory .getEffectiveArr();
 		for (String s:strarr) {
 			try {
 				downloadUsingStream(s,vocabulary);

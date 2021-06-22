@@ -41,11 +41,11 @@ import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
+import com.control.pronounce.bridge.OpenPronounceSourceBridge;
 import com.control.viewcontrol.InfoProperty;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
 import com.control.viewcontrol.TestQuestionControl;
-import com.control.viewcontrol.bridge.OpenPronounceSourceBridge;
 import com.control.viewcontrol.sorter.Sorter;
 import com.control.viewcontrol.sorter.SorterFactory;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxSorter.CardBoxSorterType;

@@ -1,4 +1,4 @@
-package com.control.viewcontrol.bridge;
+package com.control.pronounce.bridge;
 
 import java.awt.Component;
 
@@ -15,12 +15,14 @@ public class OpenPronounceSourceBridge extends Bridge {
 	public void doSend() {
 		Component parent =(Component) this.getParameter("parent");
 		
+		if(parent!=null) {
+			MainView.pronounceSourceFrame.setInitPosition(parent.getX(),parent.getY());
+		}
 		MainView.pronounceSourceFrame.setVisible(true);
-		MainView.pronounceSourceFrame.setInitPosition(parent.getX(),parent.getY());
 		MainView.pronounceSourceFrame.setState(JFrame.NORMAL);
 		
-		String [] arr=PronounceFactory.getFormatStrArr();
-		DefaultListModel model=	new DefaultListModel();
+		String [] arr=PronounceFactory.getEffectiveArr();
+		DefaultListModel<String> model=	new DefaultListModel<String>();
 		model.clear();
 		for(String s:arr) {
 			model.addElement(s);

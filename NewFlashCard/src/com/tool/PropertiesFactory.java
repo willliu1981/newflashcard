@@ -2,6 +2,7 @@ package com.tool;
 
 import java.awt.Color;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -9,11 +10,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PropertiesFactory {
+	private static final String path="data/config.properties";
 	private static final Properties prop=new Properties();
 	
 	 static {
 		try {
-			prop.load(new FileInputStream("data/config.properties"));
+			prop.load(new FileInputStream(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -29,5 +31,13 @@ public class PropertiesFactory {
 	
 	public static Properties getInstance() {
 		return prop;
+	}
+	
+	public static void store() {
+		try {
+			prop.store(new  FileOutputStream(path), "test");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

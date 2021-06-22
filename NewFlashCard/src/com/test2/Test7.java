@@ -3,45 +3,38 @@ package com.test2;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.tool.PropertiesFactory;
 
 public class Test7 {
 	
-	private static final List<String> list;
+	private static  List<String> list;
 	
-	static {
-		list=setList();
-	}
+
 
 	public static void main(String[] args) throws IOException {
+		String [] strs= {"aa","bb","cc"};
+		list=Stream.of(strs).collect(Collectors.toList());
 
 		System.out.println(list);
 		
-		list.add("ss");
-		list.add("ss");
-		setList();
+		list.set(1, "pp");
+
+		list.add("sdf");
 		
 		System.out.println(list);
 	
+		PropertiesFactory.getInstance().setProperty("rrr", "kkkk");
+	System.out.println("prop "+	PropertiesFactory.getInstance().getProperty("rrr"));
+	
+	PropertiesFactory.getInstance().put("sssss", "xxxx");
 		
 	}
 	
-	private static List<String > setList(){
-		List<String> newlist=null;
-		if(list==null) {
-			newlist=new ArrayList<>();
-			newlist.add("rr");
-			newlist.add("aa");
-			newlist.add("rr");
-		}else {
-			newlist=list;
-		}
-		
-		
-		newlist=	newlist.stream().distinct().collect(Collectors.toList());
-		
-		return newlist;
-	}
+
 
 }
