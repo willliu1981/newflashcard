@@ -96,7 +96,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						bridge.setParameter("correctVocabulary",
 								showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
 						disp.send();
-						
+
 						playSound();
 					} else if (rowIdx == 1) {
 						if (showRowControl.isLastQuestion()) {
@@ -239,15 +239,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		case Guess:
 			if (idx == 1) {
 				// 提示評論
-				String info = "";
 				if (this.showRowControl.isFirstFailure()) {
-					info = "猜錯了";
-				}
-				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-						.setText(info);
-
-				// 無法答題
-				if (this.showRowControl.isFirstFailure()) {
+					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
+							.setText("猜錯了");
 					this.setBackground(Color.red);
 				} else {
 					this.setBackground(MyColor.getBase());
@@ -354,8 +348,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public void setShowRowControl(ShowRowControl<Vocabulary> control) {
 		this.showRowControl = (TestQuestionControl) control;
 	}
-	
-	protected  void playSound( ) {
+
+	protected void playSound() {
 		PronounceBridge bridge = new PronounceBridge();
 		bridge.setParameter("vocabulary", showRowControl.getCurrentQueation().getVocabulary());
 		bridge.getDispatcher().send();

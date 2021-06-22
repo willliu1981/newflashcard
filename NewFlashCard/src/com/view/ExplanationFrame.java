@@ -132,6 +132,21 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
+		
+		btnNewButton_1 = new JButton("發音");
+		btnNewButton_1.setBackground(SystemColor.control);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PronounceBridge bridge=new PronounceBridge();
+				bridge.setParameter("vocabulary", txtVocabulary.getText().trim().toLowerCase());
+				bridge.getDispatcher().send();
+			}
+		});
+		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		panel.add(btnNewButton_1);
+		
+		panel_5 = new JPanel();
+		panel.add(panel_5);
 
 		panel_exampleborder = new JPanel();
 		panel.add(panel_exampleborder);
@@ -149,21 +164,6 @@ public class ExplanationFrame extends JFrame implements Transportable {
 			}
 		});
 		btnNewButton_type.setFont(new Font("微軟正黑體", Font.BOLD, 16));
-		
-		btnNewButton_1 = new JButton("發音");
-		btnNewButton_1.setBackground(SystemColor.control);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PronounceBridge bridge=new PronounceBridge();
-				bridge.setParameter("vocabulary", txtVocabulary.getText().trim().toLowerCase());
-				bridge.getDispatcher().send();
-			}
-		});
-		
-		panel_5 = new JPanel();
-		panel.add(panel_5);
-		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
-		panel.add(btnNewButton_1);
 
 		txtVocabulary = new JTextField();
 		txtVocabulary.setEditable(false);

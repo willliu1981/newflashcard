@@ -45,6 +45,7 @@ import com.control.viewcontrol.InfoProperty;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
 import com.control.viewcontrol.TestQuestionControl;
+import com.control.viewcontrol.bridge.OpenPronounceSourceBridge;
 import com.control.viewcontrol.sorter.Sorter;
 import com.control.viewcontrol.sorter.SorterFactory;
 import com.control.viewcontrol.sorter.cardboxsorter.CardBoxSorter.CardBoxSorterType;
@@ -59,7 +60,8 @@ public class MainView extends JFrame {
 	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final QueryResultFrame queryResultFrame = new QueryResultFrame();
-	public static final HelpFrame helpFrame =new HelpFrame();
+	public static final PronounceSourceFrame pronounceSourceFrame = new PronounceSourceFrame();
+	public static final HelpFrame helpFrame = new HelpFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
 	public static final String CardLayout_topbar_Vocabulary = "vocabulary";
@@ -195,12 +197,24 @@ public class MainView extends JFrame {
 		});
 		mntmNewMenuItem_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_2);
-		
+
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("發音網站來源設定");
+		mntmNewMenuItem_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				OpenPronounceSourceBridge bridge = new OpenPronounceSourceBridge();
+				bridge.setParameter("parent", thisApp);
+				bridge.getDispatcher().send();
+			}
+		});
+		mntmNewMenuItem_3.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
+		mnNewMenu_1.add(mntmNewMenuItem_3);
+
 		JMenu mnNewMenu_2 = new JMenu("說明");
 		mnNewMenu_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				MainView.helpFrame.setVisible(true); 
+				MainView.helpFrame.setVisible(true);
 			}
 		});
 		mnNewMenu_2.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
@@ -373,7 +387,7 @@ public class MainView extends JFrame {
 		if (testQuestionControl.isTesting()) {
 			int result = JOptionPane.showConfirmDialog(this, "測驗仍在進行中,是否離開?", "測驗中", JOptionPane.YES_NO_OPTION,
 					JOptionPane.INFORMATION_MESSAGE);
-			if (result == JOptionPane.NO_OPTION || result == -1) { 
+			if (result == JOptionPane.NO_OPTION || result == -1) {
 				r = true;
 			}
 		}
@@ -1151,8 +1165,9 @@ public class MainView extends JFrame {
 		JButton btnNewButton_17 = new JButton("Reset");
 		btnNewButton_17.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(thisApp, "重設測驗記錄將無法回復檔案資料\n提示:可先儲存備份檔案,以便回復檔案", "重設測驗記錄",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-				if(result==JOptionPane.YES_OPTION) {
+				int result = JOptionPane.showConfirmDialog(thisApp, "重設測驗記錄將無法回復檔案資料\n提示:可先儲存備份檔案,以便回復檔案", "重設測驗記錄",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (result == JOptionPane.YES_OPTION) {
 					CardBox b = cardboxShowRowControl.getEventReault();
 					b.resetTest();
 					new CardBoxDao().update(b, b.getId());

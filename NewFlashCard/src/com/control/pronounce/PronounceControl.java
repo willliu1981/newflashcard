@@ -1,4 +1,4 @@
-package com.control;
+package com.control.pronounce;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -15,13 +15,13 @@ import javafx.scene.media.MediaPlayer;
 public class PronounceControl {
 	final static JFXPanel fxPanel = new JFXPanel();// for javafx initialize
 	final static String soundType = PropertiesFactory.getInstance().getProperty("pronounce_sound_type");
-	final static String basePath =  PropertiesFactory.getInstance().getProperty("pronounce_sound_basepath");
+	final static String basePath = PropertiesFactory.getInstance().getProperty("pronounce_sound_basepath");
 
-	protected static boolean checkPathExist(String path) {
-		return checkPathExist(path, false);
+	protected static boolean checkSoundPathExist(String path) {
+		return checkSoundPathExist(path, false);
 	}
 
-	protected static boolean checkPathExist(String path, boolean mkdir) {
+	protected static boolean checkSoundPathExist(String path, boolean mkdir) {
 		boolean r = false;
 		File f = null;
 		r = (f = new File(path)).exists();
@@ -34,23 +34,36 @@ public class PronounceControl {
 
 	public static void playSound(String vocabulary) {
 		String path = String.format(basePath + "/%s/%s.%s", vocabulary.charAt(0), vocabulary, soundType);
-		if (!checkPathExist(path)) {
+		if (!checkSoundPathExist(path)) {
 			return;
 		}
-
 		File f = new File(path);
 		Media hit = new Media(f.toURI().toString());
 		MediaPlayer mediaPlayer = new MediaPlayer(hit);
 		mediaPlayer.play();
 	}
 
-	public static void downloadUsingStream(String urlStr, String vocabulary) throws IOException {
-		URL url = new URL(urlStr);
+	public static void downloadUsingStream(String vocabulary)  {
+		String [] strarr=PronounceFactory .getFormatStrArr();
+		for (String s:strarr) {
+			try {
+				downloadUsingStream(s,vocabulary);
+			} catch (IOException e) {
+				//e.printStackTrace();
+				continue;
+			}
+			break;
+		}
+		
+	}
+
+	public static void downloadUsingStream(String urlFormatStr, String vocabulary) throws IOException {
+		URL url = new URL(String.format( urlFormatStr,vocabulary));
 		String prefixPath = String.format(basePath + "/%s", vocabulary.charAt(0));
-		checkPathExist(prefixPath, true);
+		checkSoundPathExist(prefixPath, true);
 
 		String path = String.format(prefixPath + "/%s.%s", vocabulary, soundType);
-		if (!checkPathExist(path)) {
+		if (!checkSoundPathExist(path)) {
 			try {
 				BufferedInputStream bis = new BufferedInputStream(url.openStream());
 				FileOutputStream fis = new FileOutputStream(path);
@@ -64,7 +77,6 @@ public class PronounceControl {
 			} catch (IOException e) {
 				throw new IOException("網頁資源不存在 : " + vocabulary);
 			}
-
 		}
 
 	}

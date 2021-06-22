@@ -1,8 +1,7 @@
 package com.control;
 
-import java.io.IOException;
-
 import com.control.bridge.Bridge;
+import com.control.pronounce.PronounceControl;
 import com.tool.PropertiesFactory;
 
 public class PronounceBridge extends Bridge {
@@ -12,13 +11,8 @@ public class PronounceBridge extends Bridge {
 	public void doSend() {
 		String vocabulary=(String) this.getParameter("vocabulary");
 		
-		try {
-			PronounceControl.downloadUsingStream(String.format(urlFormatStr, vocabulary), vocabulary);
-			PronounceControl.playSound(vocabulary);
-		} catch (IOException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
+		PronounceControl.downloadUsingStream(vocabulary);
+		PronounceControl.playSound(vocabulary);
 	}
 
 }
