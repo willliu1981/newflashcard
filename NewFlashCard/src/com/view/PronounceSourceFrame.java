@@ -17,6 +17,7 @@ import com.control.bridge.session.UIDateTransportation;
 import com.control.pronounce.PronounceFactory;
 import com.control.pronounce.bridge.AddPronounceFomatStrBridge;
 import com.control.pronounce.bridge.EditPronounceFomatStrBridge;
+import com.control.pronounce.bridge.MovePronounceFomatStrBridge;
 import com.control.pronounce.bridge.RemovePronounceFomatStrBridge;
 import com.tool.PropertiesFactory;
 
@@ -122,6 +123,44 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		btnNewButton_remove.setBackground(SystemColor.control);
 		panel_6.add(btnNewButton_remove);
 		btnNewButton_remove.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		
+		JPanel panel_12 = new JPanel();
+		panel_12.setPreferredSize(new Dimension(10, 30));
+		panel_rbar.add(panel_12);
+		
+		JPanel panel_10 = new JPanel();
+		panel_rbar.add(panel_10);
+		JButton btnNewButton_remove_2 = new JButton("上移");
+		btnNewButton_remove_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MovePronounceFomatStrBridge bridge=new MovePronounceFomatStrBridge();
+				bridge.setParameter("movetype", "up");
+				bridge.setParameter("index",list_source.getSelectedIndex() );
+				list_source.setSelectedIndex((int) bridge.getDispatcher().callback());
+			}
+		});
+		btnNewButton_remove_2.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		btnNewButton_remove_2.setBackground(SystemColor.menu);
+		panel_10.add(btnNewButton_remove_2);
+		
+		JPanel panel_13 = new JPanel();
+		panel_rbar.add(panel_13);
+		
+		JPanel panel_11 = new JPanel();
+		panel_rbar.add(panel_11);
+		
+		JButton btnNewButton_remove_2_1 = new JButton("下移");
+		btnNewButton_remove_2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MovePronounceFomatStrBridge bridge=new MovePronounceFomatStrBridge();
+				bridge.setParameter("movetype", "down");
+				bridge.setParameter("index",list_source.getSelectedIndex() );
+				list_source.setSelectedIndex((int) bridge.getDispatcher().callback());
+			}
+		});
+		btnNewButton_remove_2_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		btnNewButton_remove_2_1.setBackground(SystemColor.menu);
+		panel_11.add(btnNewButton_remove_2_1);
 
 		JPanel panel_7 = new JPanel();
 		panel_7.setPreferredSize(new Dimension(100, 350));

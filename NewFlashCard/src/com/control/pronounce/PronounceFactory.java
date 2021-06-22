@@ -31,9 +31,7 @@ public class PronounceFactory {
 	}
 
 	public static void setProperties() {
-		list.stream().forEach(System.out::println);
 		String str = list.stream().reduce((x1, x2) -> x1 + ";" + x2).orElse("");
-		System.out.println(str);
 		PropertiesFactory.getInstance().setProperty(propertiesKey, str);
 		PropertiesFactory.store();
 	}
@@ -60,26 +58,30 @@ public class PronounceFactory {
 		setEffectiveList();
 	}
 
-	public static void moveUp(int index) {
+	public static int moveUp(int index) {
 		if (index <= 0) {
-			return;
+			return -1;
 		}
 
 		int up = index - 1;
 		list.add(up, list.remove(index));
 		
 		setEffectiveList();
+		
+		return up;
 	}
 
-	public static void moveDown(int index) {
+	public static int moveDown(int index) {
 		if (index >= list.size() - 1) {
-			return;
+			return -1;
 		}
 
 		int down = index + 1;
 		list.add(down, list.remove(index));
 		
 		setEffectiveList();
+		
+		return down;
 	}
 
 	public static String[] getEffectiveArr() {

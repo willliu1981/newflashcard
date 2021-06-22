@@ -6,7 +6,7 @@ import java.util.Map;
 import com.control.bridge.Dispatcher;
 import com.tool.Mask;
 
-public abstract class UIDateTransportation {
+public abstract class UIDateTransportation<T> {
 
 	public static class Session {
 		private Map<String, Object> session = new HashMap<>();
@@ -25,7 +25,7 @@ public abstract class UIDateTransportation {
 	public static final Mask SENDANDBACK_NORMAL =  new Mask(8);
 	public static final Mask SENDANDBACK_INTERRUPT =  new Mask(16);//不進行下一步 send 或者 accept
 
-	protected Dispatcher dispatcher = new Dispatcher(this);
+	protected Dispatcher<T> dispatcher = new Dispatcher<T>(this);
 	protected final Map<String, Object> parameter = new HashMap<>();
 
 	static final Session session = new Session();
@@ -34,7 +34,7 @@ public abstract class UIDateTransportation {
 		return session;
 	}
 
-	public Dispatcher getDispatcher() {
+	public Dispatcher<?> getDispatcher() {
 		return this.dispatcher;
 	}
 
@@ -42,6 +42,10 @@ public abstract class UIDateTransportation {
 
 	public Mask doSendAndBack() {
 		return SENDANDBACK_DEFAULT;
+	}
+	
+	public T callback() {
+		return null;
 	}
 
 	public void setParameter(String name, Object obj) {

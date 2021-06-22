@@ -1,11 +1,8 @@
 package com.control.bridge;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.control.bridge.session.UIDateTransportation;
 
-public abstract class Bridge extends UIDateTransportation{
+public abstract class Bridge<T> extends UIDateTransportation<T>{
 	
 
 

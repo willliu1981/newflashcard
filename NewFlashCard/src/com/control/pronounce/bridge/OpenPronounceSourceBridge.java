@@ -9,7 +9,7 @@ import com.control.bridge.Bridge;
 import com.control.pronounce.PronounceFactory;
 import com.view.MainView;
 
-public class OpenPronounceSourceBridge extends Bridge {
+public class OpenPronounceSourceBridge<T> extends  Bridge<T> {
 
 	@Override
 	public void doSend() {

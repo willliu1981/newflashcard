@@ -3,11 +3,11 @@ package com.control.bridge;
 import com.control.bridge.session.UIDateTransportation;
 import com.tool.Mask;
 
-public class Dispatcher {
+public class Dispatcher <T>{
 
-	private UIDateTransportation dt;
+	private UIDateTransportation<T> dt;
 
-	public Dispatcher(UIDateTransportation dt) {
+	public Dispatcher(UIDateTransportation<T> dt) {
 		this.dt = dt;
 	}
 
@@ -34,5 +34,17 @@ public class Dispatcher {
 		}
 		t.accpet(dt);
 		return r;
+	}
+	
+	public T callback() {
+		T o=dt.callback();
+		sendAndBack();
+		return o;
+	}
+	
+	public T callback(Transportable<T> t) {
+		T o=(T) t.acceptThenCallback(dt);
+		sendAndBack(t);
+		return o;
 	}
 }

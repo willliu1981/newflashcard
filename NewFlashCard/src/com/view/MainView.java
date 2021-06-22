@@ -643,7 +643,7 @@ public class MainView extends JFrame {
 				String boxid = ((JTextField) vocabularyShowRowControl
 						.getInfo(ShowRowInfo.InfoName_Vocabulary_Editbar_Edit).getComponent(ShowRowInfo.BoxId))
 								.getText();
-				Vocabulary v = new Vocabulary();
+				Vocabulary v = vocabularyShowRowControl.getEventReault();
 				v.setTranslation(trans);
 				int iboxid = -1;
 				try {
@@ -655,7 +655,7 @@ public class MainView extends JFrame {
 				v.setBox_id(iboxid);
 				if (trans != null && !trans.trim().equals("")) {
 					if (iboxid == -1 || new CardBoxDao().isExist(iboxid)) {
-						new VocabularyDao().update(v, vocabularyShowRowControl.getEventReault().getId());
+						new VocabularyDao().update(v, v.getId());
 						btnNewButton_topbar_vocabulary.setActionCommand(MouseEvent_RemoteClickUnResetFromIdx);
 						btnNewButton_topbar_vocabulary.doClick();
 					}
