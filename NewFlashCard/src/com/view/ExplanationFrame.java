@@ -138,7 +138,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PronounceBridge bridge=new PronounceBridge();
-				bridge.setParameter("vocabulary", txtVocabulary.getText().trim().toLowerCase());
+				bridge.setParameter("vocabulary", txtVocabulary.getText().trim());
 				bridge.getDispatcher().send();
 			}
 		});

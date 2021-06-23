@@ -125,7 +125,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PronounceBridge bridge = new PronounceBridge();
-				bridge.setParameter("vocabulary", textField_vocabulary.getText().trim().toLowerCase());
+				bridge.setParameter("vocabulary", textField_vocabulary.getText().trim());
 				bridge.getDispatcher().send();
 			}
 		});
