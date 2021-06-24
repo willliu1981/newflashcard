@@ -17,6 +17,7 @@ public class PronounceFactory {
 		String[] strs = pronounce_url_formatstr.split(";");
 		list = Stream.of(strs).collect(Collectors.toList());
 		listEffective = setEffectiveList();
+		
 	}
 
 	private static List<String> setEffectiveList() {

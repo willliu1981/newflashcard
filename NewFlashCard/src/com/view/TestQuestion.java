@@ -185,15 +185,20 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	@Override
 	public void showRow() {
 		int idx = Integer.valueOf(this.getName());
+		String vocabulary=null;
 		switch (this.showRowControl.getStage()) {
 		case ShowQuestion:
 			if (idx == 0) {
 				// 問題
+				vocabulary = this.showRowControl.getQuestionResult()
+						.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary();
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Question);
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
-						.setText(this.showRowControl.getQuestionResult()
-								.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary());
+						.setText(vocabulary);
+				PronounceBridge bridge = new PronounceBridge();
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.getDispatcher().send();
 			} else if (idx == 1 || idx == 2) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
@@ -235,6 +240,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			if (this.showRowControl.isReview() && idx == 0) {
 				this.setBackground(Color.red);
 			}
+
 			break;
 		case Guess:
 			if (idx == 1) {
@@ -288,6 +294,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
+				PronounceBridge bridge = new PronounceBridge();
+				bridge.setParameter("vocabulary", this.showRowControl.getCurrentQueation().getVocabulary());
+				bridge.getDispatcher().send();
 			}
 			break;
 		default:

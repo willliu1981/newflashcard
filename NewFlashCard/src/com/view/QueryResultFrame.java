@@ -423,7 +423,7 @@ public class QueryResultFrame extends JFrame implements Transportable {
 			this.setMoHeight(0);
 		}
 		this.btnNewButton_type.setVisible(isMoOpening);
-		this.btnNewButton_type.setText("例  句");
+		this.btnNewButton_type.setText(this.explanationType.equals(EXPLANATION)?EXAMPLE:EXPLANATION );
 		this.btnNewButton_more_opento.setVisible(isMoOpening);
 		this.panel_hScroll.setVisible(isMoOpening);
 	}
