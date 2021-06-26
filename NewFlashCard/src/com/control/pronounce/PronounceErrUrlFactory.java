@@ -24,31 +24,30 @@ public class PronounceErrUrlFactory {
 		}
 	}
 	
-	public static void initializeErrPronounceURL() {
+
+	
+	private static ErrPronounceURL getErrPronounceURL() {
 		if(epUrl==null) {
 			epUrl=new ErrPronounceURL();
 		}
+		return epUrl;
 	}
 	
 	public static boolean isError(String vocabulary) {
-		return epUrl.isExist(vocabulary);
+		return getErrPronounceURL().isExist(vocabulary);
 	}
 	
 	public static  void add(String vocabulary) {
-		initializeErrPronounceURL();
-		epUrl.add(vocabulary);
+		getErrPronounceURL().add(vocabulary);
 	}
 	
 	public static void date() {
-		initializeErrPronounceURL();
-		epUrl.setDate(new Date());
+		getErrPronounceURL().setDate(new Date());
 	}
 
 	public static void write() {
 		Gson g = new Gson();
-		if (epUrl != null) {
-			write(g.toJson(epUrl));
-		}
+		write(g.toJson(getErrPronounceURL()));
 	}
 
 	private static String load() {
