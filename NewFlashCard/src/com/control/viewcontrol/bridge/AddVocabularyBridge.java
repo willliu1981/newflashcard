@@ -21,7 +21,7 @@ public class AddVocabularyBridge extends Bridge {
 	public Mask doSendAndBack() {
 		int r = -1;
 		Component parent = (Component) this.getParameter("parent");
-		String vocabulary = (String) this.getParameter("vocabulary");
+		String vocabulary = ((String) this.getParameter("vocabulary")).trim();
 		String translation = (String) this.getParameter("translation");
 		String explanation = (String) this.getParameter("explanation");
 		String example = (String) this.getParameter("example");

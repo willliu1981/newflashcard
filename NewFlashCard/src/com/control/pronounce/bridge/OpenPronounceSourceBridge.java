@@ -6,7 +6,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import com.control.bridge.Bridge;
-import com.control.pronounce.PronounceFactory;
+import com.control.pronounce.PronounceFormatStrFactory;
 import com.view.MainView;
 
 public class OpenPronounceSourceBridge<T> extends  Bridge<T> {
@@ -21,7 +21,7 @@ public class OpenPronounceSourceBridge<T> extends  Bridge<T> {
 		MainView.pronounceSourceFrame.setVisible(true);
 		MainView.pronounceSourceFrame.setState(JFrame.NORMAL);
 		
-		String [] arr=PronounceFactory.getEffectiveArr();
+		String [] arr=PronounceFormatStrFactory.getEffectiveArr();
 		DefaultListModel<String> model=	new DefaultListModel<String>();
 		model.clear();
 		for(String s:arr) {

@@ -14,12 +14,12 @@ import javax.swing.ListModel;
 
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
-import com.control.pronounce.PronounceFactory;
+import com.control.pronounce.PronounceFormatStrFactory;
 import com.control.pronounce.bridge.AddPronounceFomatStrBridge;
 import com.control.pronounce.bridge.EditPronounceFomatStrBridge;
 import com.control.pronounce.bridge.MovePronounceFomatStrBridge;
 import com.control.pronounce.bridge.RemovePronounceFomatStrBridge;
-import com.tool.PropertiesFactory;
+import com.tool.ConfigFactory;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -172,7 +172,7 @@ public class PronounceSourceFrame extends JFrame implements Transportable {
 		JButton btnNewButton_remove_1 = new JButton("套用");
 		btnNewButton_remove_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PronounceFactory.setProperties();
+				PronounceFormatStrFactory.setProperties();
 			}
 		});
 		btnNewButton_remove_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));

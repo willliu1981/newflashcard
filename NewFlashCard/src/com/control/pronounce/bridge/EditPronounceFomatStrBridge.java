@@ -1,6 +1,6 @@
 package com.control.pronounce.bridge;
 
-import com.control.pronounce.PronounceFactory;
+import com.control.pronounce.PronounceFormatStrFactory;
 
 public class EditPronounceFomatStrBridge extends OpenPronounceSourceBridge {
 
@@ -9,7 +9,7 @@ public class EditPronounceFomatStrBridge extends OpenPronounceSourceBridge {
 		int index = (int) this.getParameter("index");
 		String formatstr = (String) this.getParameter("formatstr");
 
-		PronounceFactory.update(index, formatstr);
+		PronounceFormatStrFactory.update(index, formatstr);
 		
 		super.doSend();
 

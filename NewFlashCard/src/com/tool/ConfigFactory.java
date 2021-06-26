@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PropertiesFactory {
+public class ConfigFactory {
 	private static final String path="data/config.properties";
 	private static final Properties prop=new Properties();
 	
@@ -29,7 +29,7 @@ public class PropertiesFactory {
 		return color;
 	}
 	
-	public static Properties getInstance() {
+	public static Properties getPropInstance() {
 		return prop;
 	}
 	

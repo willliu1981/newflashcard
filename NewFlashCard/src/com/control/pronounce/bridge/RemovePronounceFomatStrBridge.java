@@ -1,6 +1,6 @@
 package com.control.pronounce.bridge;
 
-import com.control.pronounce.PronounceFactory;
+import com.control.pronounce.PronounceFormatStrFactory;
 
 public class RemovePronounceFomatStrBridge extends OpenPronounceSourceBridge {
 
@@ -11,7 +11,7 @@ public class RemovePronounceFomatStrBridge extends OpenPronounceSourceBridge {
 		if(index==-1) {
 			return;
 		}else {
-			PronounceFactory.remove(index);
+			PronounceFormatStrFactory.remove(index);
 		}
 
 		super.doSend();

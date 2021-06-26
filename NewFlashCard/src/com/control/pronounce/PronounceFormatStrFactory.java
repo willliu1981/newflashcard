@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.tool.PropertiesFactory;
+import com.tool.ConfigFactory;
 
-public class PronounceFactory {
+public class PronounceFormatStrFactory {
 	private static final String propertiesKey = "pronounce_url_formatstr";
 	private static final List<String> list;
 	private static final List<String> listEffective;
 	
 	static {
-		String pronounce_url_formatstr = PropertiesFactory.getInstance().getProperty(propertiesKey);
+		String pronounce_url_formatstr = ConfigFactory.getPropInstance().getProperty(propertiesKey);
 		String[] strs = pronounce_url_formatstr.split(";");
 		list = Stream.of(strs).collect(Collectors.toList());
 		listEffective = setEffectiveList();
@@ -33,8 +33,8 @@ public class PronounceFactory {
 
 	public static void setProperties() {
 		String str = list.stream().reduce((x1, x2) -> x1 + ";" + x2).orElse("");
-		PropertiesFactory.getInstance().setProperty(propertiesKey, str);
-		PropertiesFactory.store();
+		ConfigFactory.getPropInstance().setProperty(propertiesKey, str);
+		ConfigFactory.store();
 	}
 
 	public static void add(String formatStr) {

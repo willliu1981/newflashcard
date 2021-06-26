@@ -11,6 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.FileInputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +45,7 @@ import javax.swing.border.SoftBevelBorder;
 
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
+import com.control.pronounce.PronounceErrUrlFactory;
 import com.control.pronounce.bridge.OpenPronounceSourceBridge;
 import com.control.viewcontrol.InfoProperty;
 import com.control.viewcontrol.ShowRowControl;
@@ -160,6 +165,14 @@ public class MainView extends JFrame {
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 800);
+		
+		this.addWindowStateListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				PronounceErrUrlFactory.write();
+			}
+		});
+		
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -1792,5 +1805,9 @@ public class MainView extends JFrame {
 	public JButton getBtnNewButton_topbar_test() {
 		return btnNewButton_topbar_test;
 	}
+
+
+	
+	
 
 }

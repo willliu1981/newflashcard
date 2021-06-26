@@ -1,21 +1,22 @@
 package com.control;
 
-import org.junit.Test;
-
 import com.control.bridge.Bridge;
 import com.control.pronounce.PronounceControl;
-import com.tool.PropertiesFactory;
+import com.control.pronounce.PronounceErrUrlFactory;
 
 public class PronounceBridge extends Bridge {
 
 	@Override
 	public void doSend() {
-		String vocabulary = (String) this.getParameter("vocabulary");
+		String vocabulary = ((String) this.getParameter("vocabulary")).trim();
 
-		if(vocabulary !=null) {
-			if (!PronounceControl.play(vocabulary)) {
-				PronounceControl.download(vocabulary);
-				PronounceControl.play(vocabulary);
+		if (vocabulary != null) {
+			if (!PronounceErrUrlFactory.isError(vocabulary) && !PronounceControl.play(vocabulary)) {
+				if (PronounceControl.download(vocabulary)) {
+					PronounceControl.play(vocabulary);
+				} else {
+					PronounceErrUrlFactory.add(vocabulary);
+				}
 			}
 		}
 	}

@@ -16,7 +16,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.tool.PropertiesFactory;
+import com.tool.ConfigFactory;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -24,10 +24,11 @@ import javafx.scene.media.MediaPlayer;
 
 public class PronounceControl {
 	final static JFXPanel fxPanel = new JFXPanel();// for javafx initialize
-	final static String soundType = PropertiesFactory.getInstance().getProperty("pronounce_sound_type");
-	final static String basePath = PropertiesFactory.getInstance().getProperty("pronounce_sound_basepath");
+	final static String soundType = ConfigFactory.getPropInstance().getProperty("pronounce_sound_type");
+	final static String basePath = ConfigFactory.getPropInstance().getProperty("pronounce_sound_basepath");
 	final static String basePathFormatStr = basePath + "/%s/%s." + soundType;
 	final static Map<String, String> rule = new LinkedHashMap<>();
+	static MediaPlayer mediaPlayer;
 	static {
 		rule.put("[\\s]+", "_");
 		rule.put("[_]+", "-");
@@ -55,10 +56,10 @@ public class PronounceControl {
 	}
 
 	public static boolean play(String vocabulary) {
-		Iterator<Entry<String, String>> tab = rule.entrySet().iterator();
+		Iterator<Entry<String, String>> ruletab = rule.entrySet().iterator();
 
-		while (tab.hasNext()) {
-			Entry<String, String> k = tab.next();
+		while (ruletab.hasNext()) {
+			Entry<String, String> k = ruletab.next();
 			String path = String.format(basePathFormatStr, vocabulary.charAt(0),
 					vocabulary.replaceAll(k.getKey(), k.getValue()));
 			if (checkPath(path)) {
@@ -76,20 +77,20 @@ public class PronounceControl {
 		}
 		File f = new File(path);
 		Media hit = new Media(f.toURI().toString());
-		MediaPlayer mediaPlayer = new MediaPlayer(hit);
+		mediaPlayer = new MediaPlayer(hit);
 		mediaPlayer.play();
 	}
 
 	public static boolean download(String vocabulary) {
-		String[] strarr = PronounceFactory.getEffectiveArr();
+		String[] strarr = PronounceFormatStrFactory.getEffectiveArr();
 
-		Iterator<Entry<String, String>> it = null;
+		Iterator<Entry<String, String>> ruletab = null;
 		String v = null;
 		for (String s : strarr) {
-			it = rule.entrySet().iterator();
-			while (it.hasNext()) {
+			ruletab = rule.entrySet().iterator();
+			while (ruletab.hasNext()) {
 				try {
-					Entry<String, String> entry = it.next();
+					Entry<String, String> entry = ruletab.next();
 					v = vocabulary.replaceAll(entry.getKey(), entry.getValue());
 					download(s, v);
 					return true;

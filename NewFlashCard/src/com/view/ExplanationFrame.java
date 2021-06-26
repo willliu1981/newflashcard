@@ -37,7 +37,7 @@ import com.control.pad.PadFactory;
 import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;
-import com.tool.PropertiesFactory;
+import com.tool.ConfigFactory;
 
 public class ExplanationFrame extends JFrame implements Transportable {
 	private ExplanationFrame thisFrame;
@@ -58,8 +58,8 @@ public class ExplanationFrame extends JFrame implements Transportable {
 	private JPanel panel_1;
 	private JPanel panel_exampleborder;
 	private boolean locked = false;// input 解鎖
-	private static Color explanationBackground = PropertiesFactory.getColor("explanation_background");
-	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
+	private static Color explanationBackground = ConfigFactory.getColor("explanation_background");
+	private static Color exampleBackground = ConfigFactory.getColor("example_background");
 	private JPanel panel_explanation;
 	private JPanel panel_example;
 	private JPanel panel_explanation_translation;

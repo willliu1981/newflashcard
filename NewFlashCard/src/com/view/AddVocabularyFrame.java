@@ -39,7 +39,7 @@ import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
 import com.model.Vocabulary;
 import com.tool.Mask;
 import com.tool.MyColor;
-import com.tool.PropertiesFactory;
+import com.tool.ConfigFactory;
 import javax.swing.border.LineBorder;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
@@ -54,8 +54,8 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private JPanel panel_center_card;
 	private UIDateTransportation dt;
 	private JButton btnNewButton_update;
-	private static Color explanationBackground = PropertiesFactory.getColor("explanation_background");
-	private static Color exampleBackground = PropertiesFactory.getColor("example_background");
+	private static Color explanationBackground = ConfigFactory.getColor("explanation_background");
+	private static Color exampleBackground = ConfigFactory.getColor("example_background");
 	private JPanel panel_explanation_translation;
 	private JPanel panel_top_center;
 	private JButton btnNewButton_query;
@@ -544,11 +544,11 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private void initializeType() {
 		if (this.explanationType.equals(EXPLANATION)) {
 			this.btnNewButton_type
-					.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("example_background"), -0.55));
+					.setBackground(MyColor.heightenColor(ConfigFactory.getColor("example_background"), -0.55));
 			btnNewButton_type.setText(this.EXAMPLE);
 		} else {
 			this.btnNewButton_type
-					.setBackground(MyColor.heightenColor(PropertiesFactory.getColor("explanation_background"), -0.35));
+					.setBackground(MyColor.heightenColor(ConfigFactory.getColor("explanation_background"), -0.35));
 			btnNewButton_type.setText(this.EXPLANATION);
 		}
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, explanationType);

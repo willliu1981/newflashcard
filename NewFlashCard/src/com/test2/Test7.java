@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.tool.PropertiesFactory;
+import com.tool.ConfigFactory;
 
 public class Test7 {
 	
@@ -28,10 +28,10 @@ public class Test7 {
 		
 		System.out.println(list);
 	
-		PropertiesFactory.getInstance().setProperty("rrr", "kkkk");
-	System.out.println("prop "+	PropertiesFactory.getInstance().getProperty("rrr"));
+		ConfigFactory.getPropInstance().setProperty("rrr", "kkkk");
+	System.out.println("prop "+	ConfigFactory.getPropInstance().getProperty("rrr"));
 	
-	PropertiesFactory.getInstance().put("sssss", "xxxx");
+	ConfigFactory.getPropInstance().put("sssss", "xxxx");
 		
 	}
 	

@@ -1,6 +1,6 @@
 package com.control.pronounce.bridge;
 
-import com.control.pronounce.PronounceFactory;
+import com.control.pronounce.PronounceFormatStrFactory;
 
 public class MovePronounceFomatStrBridge extends OpenPronounceSourceBridge<Integer> {
 
@@ -22,9 +22,9 @@ public class MovePronounceFomatStrBridge extends OpenPronounceSourceBridge<Integ
 
 		int newIdx = -1;
 		if (movetype.equals("up")) {
-			newIdx = PronounceFactory.moveUp(index);
+			newIdx = PronounceFormatStrFactory.moveUp(index);
 		} else if (movetype.equals("down")) {
-			newIdx = PronounceFactory.moveDown(index);
+			newIdx = PronounceFormatStrFactory.moveDown(index);
 		}
 		
 		if(newIdx==-1) {
