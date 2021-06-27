@@ -18,28 +18,42 @@ public class PronounceBridge extends Bridge {
 	@Override
 	public void doSend() {
 		String vocabulary = ((String) this.getParameter("vocabulary")).trim();
-		JLabel lblMsg = ((TestQuestion) this.getParameter("parent")).getMsgLabel();
+		TestQuestion parent = ((TestQuestion) this.getParameter("parent"));
 
-		if (vocabulary != null) {
-			lblMsg.setVisible(false);
-			if (!PronounceErrUrlFactory.isContainError(vocabulary) && !PronounceControl.play(vocabulary)) {
-				lblMsg.setVisible(true);
-				lblMsg.setText("downloading ...");
-				lblMsg.setBackground(Color.yellow);
-				lblMsg.setForeground(Color.blue);
-				if (PronounceControl.download(vocabulary)) {
-					lblMsg.setText("download finish");
-					lblMsg.setBackground(Color.green);
+		if (parent != null) {
+			JLabel lblMsg = parent.getMsgLabel();
+			if (vocabulary != null) {
+				lblMsg.setVisible(false);
+				if (!PronounceErrUrlFactory.isContainError(vocabulary) && !PronounceControl.play(vocabulary)) {
+					lblMsg.setVisible(true);
+					lblMsg.setText("downloading ...");
+					lblMsg.setBackground(Color.yellow);
 					lblMsg.setForeground(Color.blue);
-					PronounceControl.play(vocabulary);
-				} else {
-					lblMsg.setText("download fail");
-					lblMsg.setBackground(Color.red);
-					lblMsg.setForeground(Color.yellow);
-					PronounceErrUrlFactory.add(vocabulary);
+					if (PronounceControl.download(vocabulary)) {
+						lblMsg.setText("download finish");
+						lblMsg.setBackground(Color.green);
+						lblMsg.setForeground(Color.blue);
+						PronounceControl.play(vocabulary);
+					} else {
+						lblMsg.setText("download fail");
+						lblMsg.setBackground(Color.red);
+						lblMsg.setForeground(Color.yellow);
+						PronounceErrUrlFactory.add(vocabulary);
+					}
+				}
+			}
+		} else {
+			if (vocabulary != null) {
+				if (!PronounceErrUrlFactory.isContainError(vocabulary) && !PronounceControl.play(vocabulary)) {
+					if (PronounceControl.download(vocabulary)) {
+						PronounceControl.play(vocabulary);
+					} else {
+						PronounceErrUrlFactory.add(vocabulary);
+					}
 				}
 			}
 		}
+
 	}
 
 }

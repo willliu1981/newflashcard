@@ -77,7 +77,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						}
 					} else {
 						if (rowIdx == 0) {
-							playSound();
+							pronounce(showRowControl.getCurrentQueation().getVocabulary());
 						} else if (rowIdx == 1) {
 							/*
 							 * 無法答題
@@ -97,7 +97,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 								showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
 						disp.send();
 
-						playSound();
+						pronounce(showRowControl.getCurrentQueation().getVocabulary());
 					} else if (rowIdx == 1) {
 						if (showRowControl.isLastQuestion()) {
 							if (showRowControl.reviewIsEmpty()) {
@@ -206,14 +206,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						CardLayout_Question);
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(vocabulary);
-				String v=vocabulary;
-				new Thread() {
-					@Override
-					public void run() {
-						pronounece(v);
-						
-					}
-				}.start() ;
+				pronounce(vocabulary);
 			} else if (idx == 1 || idx == 2) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
@@ -309,7 +302,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
-				pronounece(this.showRowControl.getCurrentQueation().getVocabulary());
+				pronounce(this.showRowControl.getCurrentQueation().getVocabulary());
 			}
 			break;
 		default:
@@ -373,12 +366,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		this.showRowControl = (TestQuestionControl) control;
 	}
 
-	protected void playSound() {
-		PronounceBridge bridge = new PronounceBridge();
-		bridge.setParameter("vocabulary", showRowControl.getCurrentQueation().getVocabulary());
-		bridge.getDispatcher().send();
-	}
-	private void pronounece( String vocabulary) {
+
+	private void pronounce( String vocabulary) {
 		PronounceBridge bridge = new PronounceBridge();
 		bridge.setParameter("vocabulary", vocabulary);
 		bridge.setParameter("parent", this);
