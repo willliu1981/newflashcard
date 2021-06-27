@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.junit.Test;
 
 import com.control.pronounce.PronounceErrUrlFactory;
@@ -24,7 +27,7 @@ import com.tool.ConfigFactory;
 public class Test9 {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		new Test9().test5();
+		new Test9().test7();
 
 	}
 
@@ -113,7 +116,7 @@ public class Test9 {
 		
 	}
 	
-	@Test
+	//@Test
 	public void test6() {
 		List<String > list1=new ArrayList<>();
 		list1.add("a");
@@ -134,6 +137,30 @@ public class Test9 {
 		
 	}
 
+	@Test
+	public void test7() {
+		JFrame frame=new JFrame();
+		JLabel label=new JLabel();
+		frame .add(label);
+		frame.setBounds(100,100,200,200);
+		frame.setVisible(true);
+		ttt(label);
+		
+	}
+	
+	public void ttt(JLabel label) {
+		int count=0;
+		while(true) {
+			try {
+				Thread.sleep(100);
+				label.setText(""+count++);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
 }
 
 /*

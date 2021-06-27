@@ -129,6 +129,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		}
 	};
 	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_msg;
 
 	/**
 	 * Create the panel.
@@ -154,6 +155,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_question.add(lblNewLabel, BorderLayout.CENTER);
+		
+		lblNewLabel_msg = new JLabel("download...");
+		lblNewLabel_msg.setVisible(false);
+		lblNewLabel_msg.setForeground(Color.RED);
+		lblNewLabel_msg.setFont(new Font("新細明體", Font.BOLD, 16));
+		lblNewLabel_msg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_msg.setOpaque(true);
+		lblNewLabel_msg.setBackground(Color.YELLOW);
+		panel_question.add(lblNewLabel_msg, BorderLayout.SOUTH);
 
 		panel_answer = new JPanel();
 		panel_answer.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -196,9 +206,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						CardLayout_Question);
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(vocabulary);
-				PronounceBridge bridge = new PronounceBridge();
-				bridge.setParameter("vocabulary", vocabulary);
-				bridge.getDispatcher().send();
+				String v=vocabulary;
+				new Thread() {
+					@Override
+					public void run() {
+						pronounece(v);
+						
+					}
+				}.start() ;
 			} else if (idx == 1 || idx == 2) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
@@ -294,15 +309,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
-				PronounceBridge bridge = new PronounceBridge();
-				bridge.setParameter("vocabulary", this.showRowControl.getCurrentQueation().getVocabulary());
-				bridge.getDispatcher().send();
+				pronounece(this.showRowControl.getCurrentQueation().getVocabulary());
 			}
 			break;
 		default:
 			break;
 		}
 	}
+	
+
 
 	/*
 	 * label 自動換行
@@ -362,5 +377,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		PronounceBridge bridge = new PronounceBridge();
 		bridge.setParameter("vocabulary", showRowControl.getCurrentQueation().getVocabulary());
 		bridge.getDispatcher().send();
+	}
+	private void pronounece( String vocabulary) {
+		PronounceBridge bridge = new PronounceBridge();
+		bridge.setParameter("vocabulary", vocabulary);
+		bridge.setParameter("parent", this);
+		bridge.getDispatcher().send();
+	}
+	
+	public JLabel getMsgLabel() {
+		return this.lblNewLabel_msg;
 	}
 }

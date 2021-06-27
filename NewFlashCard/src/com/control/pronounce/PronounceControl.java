@@ -2,6 +2,7 @@ package com.control.pronounce;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.Component;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +14,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.junit.Test;
 
@@ -82,22 +93,22 @@ public class PronounceControl {
 	}
 
 	public static boolean download(String vocabulary) {
+
 		String[] strarr = PronounceFormatStrFactory.getEffectiveArr();
 
 		Iterator<Entry<String, String>> ruletab = null;
-		String v = null;
 		for (String s : strarr) {
 			ruletab = rule.entrySet().iterator();
 			while (ruletab.hasNext()) {
+				Entry<String, String> entry = ruletab.next();
+				String v = vocabulary.replaceAll(entry.getKey(), entry.getValue());
 				try {
-					Entry<String, String> entry = ruletab.next();
-					v = vocabulary.replaceAll(entry.getKey(), entry.getValue());
 					download(s, v);
-					return true;
 				} catch (IOException e) {
 					// e.printStackTrace();
 					continue;
 				}
+				return true;
 			}
 		}
 		return false;
