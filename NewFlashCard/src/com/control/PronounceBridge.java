@@ -11,7 +11,7 @@ public class PronounceBridge extends Bridge {
 		String vocabulary = ((String) this.getParameter("vocabulary")).trim();
 
 		if (vocabulary != null) {
-			if (!PronounceErrUrlFactory.isError(vocabulary) && !PronounceControl.play(vocabulary)) {
+			if (!PronounceErrUrlFactory.isContainError(vocabulary) && !PronounceControl.play(vocabulary)) {
 				if (PronounceControl.download(vocabulary)) {
 					PronounceControl.play(vocabulary);
 				} else {

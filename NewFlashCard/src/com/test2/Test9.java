@@ -104,12 +104,33 @@ public class Test9 {
 		
 	}
 	
-	@Test
+	//@Test
 	public void test5() {
 		PronounceErrUrlFactory.add("among");
 		PronounceErrUrlFactory.add("test1");
 		PronounceErrUrlFactory.date();
 		PronounceErrUrlFactory.write();
+		
+	}
+	
+	@Test
+	public void test6() {
+		List<String > list1=new ArrayList<>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+
+		List<String > list2=new ArrayList<>();
+		list2.add("a");
+		list2.add("b");
+		//list2.add("e");
+		
+		boolean r=false;
+		
+	r=list1.containsAll(list2) && list2.containsAll(list1) ;
+	
+	assertEquals(true,r);
+	
 		
 	}
 

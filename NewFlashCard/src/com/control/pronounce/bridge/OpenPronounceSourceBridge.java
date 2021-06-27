@@ -21,7 +21,7 @@ public class OpenPronounceSourceBridge<T> extends  Bridge<T> {
 		MainView.pronounceSourceFrame.setVisible(true);
 		MainView.pronounceSourceFrame.setState(JFrame.NORMAL);
 		
-		String [] arr=PronounceFormatStrFactory.getEffectiveArr();
+		String [] arr=PronounceFormatStrFactory.getArr();
 		DefaultListModel<String> model=	new DefaultListModel<String>();
 		model.clear();
 		for(String s:arr) {

@@ -9,45 +9,44 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gson.Gson;
-import com.model.ErrPronounceURL;
+import com.model.ErrPronounceURLModel;
 
 public class PronounceErrUrlFactory {
-	private static ErrPronounceURL epUrl;
+	private static ErrPronounceURLModel epUrlModel;
 	private static final String path = "data/sound/errdata.txt";
 	static {
 		Gson g = new Gson();
 		String str = null;
 		if ((str = load()) != null) {
-			epUrl = g.fromJson(str, ErrPronounceURL.class);
+			epUrlModel = g.fromJson(str, ErrPronounceURLModel.class);
 		}
 	}
-	
 
-	
-	private static ErrPronounceURL getErrPronounceURL() {
-		if(epUrl==null) {
-			epUrl=new ErrPronounceURL();
+	private static ErrPronounceURLModel getErrPronounceURLModel() {
+		if (epUrlModel == null) {
+			epUrlModel = new ErrPronounceURLModel();
 		}
-		return epUrl;
+		return epUrlModel;
 	}
-	
-	public static boolean isError(String vocabulary) {
-		return getErrPronounceURL().isExist(vocabulary);
+
+	public static boolean isContainError(String vocabulary) {
+		return getErrPronounceURLModel().isExist(vocabulary);
 	}
-	
-	public static  void add(String vocabulary) {
-		getErrPronounceURL().add(vocabulary);
+
+	public static void add(String vocabulary) {
+		getErrPronounceURLModel().add(vocabulary);
 	}
-	
+
 	public static void date() {
-		getErrPronounceURL().setDate(new Date());
+		getErrPronounceURLModel().setDate(new Date());
 	}
 
 	public static void write() {
 		Gson g = new Gson();
-		write(g.toJson(getErrPronounceURL()));
+		write(g.toJson(getErrPronounceURLModel()));
 	}
 
 	private static String load() {
@@ -85,6 +84,19 @@ public class PronounceErrUrlFactory {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void initialize() {
+		epUrlModel.initialize();
+	}
+
+	public static boolean isEffectiveListChanged() {
+		boolean r = false;
+		List<String> oriList = PronounceFormatStrFactory.PronounceFormatStrTool
+				.transformToEffectiveList(PronounceFormatStrFactory.getNewFromProperties());
+		List<String> currentList = PronounceFormatStrFactory.getEffectiveList();
+		r = oriList.containsAll(currentList) && currentList.containsAll(oriList);
+		return !r;
 	}
 
 }

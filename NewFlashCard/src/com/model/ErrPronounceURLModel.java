@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ErrPronounceURL {
+public class ErrPronounceURLModel {
 	private Date date;
-	private List<String> errVocabulary = new ArrayList<>();
+	private List<String> errVocabulary ;
+	
+	public ErrPronounceURLModel() {
+		this.initialize();
+	}
 
 	public Date getDate() {
 		return date;
@@ -27,5 +31,10 @@ public class ErrPronounceURL {
 	
 	public void remove(String vocabulary) {
 		this.errVocabulary.remove(vocabulary);
+	}
+	
+	public void initialize() {
+		this.errVocabulary=new ArrayList<String>();
+		this.date=new Date();
 	}
 }

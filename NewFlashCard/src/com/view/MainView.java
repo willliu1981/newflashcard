@@ -165,14 +165,14 @@ public class MainView extends JFrame {
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 800);
-		
-		this.addWindowStateListener(new WindowAdapter() {
+
+		this.addWindowListener(new WindowAdapter() {
+
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				PronounceErrUrlFactory.write();
 			}
 		});
-		
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -1805,9 +1805,5 @@ public class MainView extends JFrame {
 	public JButton getBtnNewButton_topbar_test() {
 		return btnNewButton_topbar_test;
 	}
-
-
-	
-	
 
 }
