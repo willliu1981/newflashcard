@@ -206,7 +206,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						CardLayout_Question);
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(vocabulary);
-				pronounce(vocabulary);
+				String v=vocabulary;
+				new Thread() {
+					@Override 
+					public void run() {
+						pronounce(v);
+						
+					}
+				}.start();
+				
 			} else if (idx == 1 || idx == 2) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
