@@ -30,10 +30,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
-import com.control.PronounceBridge;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
+import com.control.pronounce.bridge.PronounceBridge;
 import com.control.viewcontrol.bridge.UpdateExplanationBridge;
 import com.model.Vocabulary;
 import com.tool.MyColor;

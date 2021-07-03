@@ -1,4 +1,4 @@
-package com.control;
+package com.control.pronounce.bridge;
 
 import java.awt.Color;
 import java.awt.Component;

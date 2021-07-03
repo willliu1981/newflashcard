@@ -1,1 +1,1 @@
-{"date":"Jun 27, 2021 6:47:43 PM","errVocabulary":[]}
+{"date":"Jun 27, 2021 6:47:43 PM","errVocabulary":["value-free","curiosity","lead","concatenate","fissile"]}

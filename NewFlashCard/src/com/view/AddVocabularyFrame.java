@@ -29,10 +29,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import com.control.PronounceBridge;
 import com.control.bridge.Transportable;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.pad.PadFactory;
+import com.control.pronounce.bridge.PronounceBridge;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;

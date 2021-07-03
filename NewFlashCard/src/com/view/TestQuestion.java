@@ -21,11 +21,11 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.control.PronounceBridge;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.bridge.session.UIDateTransportation.Session;
 import com.control.dao.CardBoxDao;
+import com.control.pronounce.bridge.PronounceBridge;
 import com.control.viewcontrol.ShowRow;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.TestQuestionControl;
@@ -41,6 +41,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public static final String CardLayout_Question = "question";
 	public static final String CardLayout_Answer = "answer";
 	public static final String CardLayout_Background = "background";
+	private static final Integer IDX_VOCABULARY=0;
+	private static final Integer IDX_MESSAGE=1;
+	private static final Integer IDX_PROGRESS=2;
+	private static final Integer IDX_QUESTION=3;
 	private TestQuestionControl<Vocabulary> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
 	private JPanel panel_root_cardlayout;
@@ -52,79 +56,85 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (e.getClickCount() == 2) {
+			if (e.getClickCount() == TestQuestion.IDX_PROGRESS) {
 				MainView.explantationFrame.setVisible(true);
-			}
+			} else {
 
-			if (e.getButton() == MouseEvent.BUTTON1) {
-				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout()).show(
-						((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
-						MainView.CardLayout_Test_Question);
-				int rowIdx = Integer.valueOf(getName());
-				switch (showRowControl.getStage()) {
-				case ShowQuestion:
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout())
+							.show(((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
+									MainView.CardLayout_Test_Question);
+					int rowIdx = Integer.valueOf(getName());
+					switch (showRowControl.getStage()) {
+					case ShowQuestion:
 
-					break;
-				case Guess:
-					if (showRowControl.clickAnswerRowInRange(rowIdx)) {
-						if (!showRowControl.isBingo()) {
-							if (showRowControl.isCorrectAnswer(rowIdx)) {
-								setBackground(Color.blue);
-								showRowControl.nextStage();
+						break;
+					case Guess:
+						if (showRowControl.clickAnswerRowInRange(rowIdx)) {
+							if (!showRowControl.isBingo()) {
+								if (showRowControl.isCorrectAnswer(rowIdx)) {
+									setBackground(Color.blue);
+									showRowControl.nextStage();
+								} else {
+									setBackground(new Color(255, 127, 37));
+								}
+							}
+						} else {
+							if (rowIdx == TestQuestion.IDX_VOCABULARY) {
+								pronounce(showRowControl.getCurrentQueation().getVocabulary());
+							} else if (rowIdx == TestQuestion.IDX_MESSAGE) {
+								/*
+								 * 無法答題
+								 */
+								showRowControl.setFirstFailure();
 							} else {
-								setBackground(new Color(255, 127, 37));
+								return;
 							}
 						}
-					} else {
-						if (rowIdx == 0) {
-							pronounce(showRowControl.getCurrentQueation().getVocabulary());
-						} else if (rowIdx == 1) {
-							/*
-							 * 無法答題
-							 */
-							showRowControl.setFirstFailure();
-						} else {
-							return;
-						}
-					}
-					showRowControl.showRow();
-					break;
-				case GotAnswer:
-					if (rowIdx == 0) {
-						ExposeExplanationBridge bridge = new ExposeExplanationBridge();
-						Dispatcher disp = bridge.getDispatcher();
-						bridge.setParameter("correctVocabulary",
-								showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
-						disp.send();
+						showRowControl.showRow();
+						break;
+					case GotAnswer:
+						if (rowIdx == TestQuestion.IDX_VOCABULARY) {
+							ExposeExplanationBridge bridge = new ExposeExplanationBridge();
+							Dispatcher disp = bridge.getDispatcher();
+							bridge.setParameter("correctVocabulary",
+									showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
+							disp.send();
 
-						pronounce(showRowControl.getCurrentQueation().getVocabulary());
-					} else if (rowIdx == 1) {
-						if (showRowControl.isLastQuestion()) {
-							if (showRowControl.reviewIsEmpty()) {
-								((MainView) showRowControl.getEventJFrame()).getBtnNewButton_topbar_test().doClick();
+							pronounce(showRowControl.getCurrentQueation().getVocabulary());
+						} else if (rowIdx == TestQuestion.IDX_MESSAGE) {
+							if (showRowControl.isLastQuestion()) {
+								if (showRowControl.reviewIsEmpty()) {
+									((MainView) showRowControl.getEventJFrame()).getBtnNewButton_topbar_test()
+											.doClick();
+								} else {
+									showRowControl.setQuestionFromReviews();
+									showRowControl.startReview();
+									showRowControl.showRow();
+									showRowControl.nextStage();
+								}
 							} else {
-								showRowControl.setQuestionFromReviews();
-								showRowControl.startReview();
+								showRowControl.questionReset();
 								showRowControl.showRow();
 								showRowControl.nextStage();
 							}
-						} else {
-							showRowControl.questionReset();
-							showRowControl.showRow();
-							showRowControl.nextStage();
+						} else if (rowIdx >= TestQuestion.IDX_QUESTION) {
+							ExposeExplanationBridge bridge = new ExposeExplanationBridge();
+							Dispatcher disp = bridge.getDispatcher();
+							bridge.setParameter("id", rowIdx);
+							disp.send();
+
+							if (rowIdx == showRowControl.getCorrectAnswerRowIdx()) {
+								pronounce(showRowControl.getCurrentQueation().getVocabulary());
+							}
 						}
-					} else if (rowIdx >= 3) {
-						ExposeExplanationBridge bridge = new ExposeExplanationBridge();
-						Dispatcher disp = bridge.getDispatcher();
-						bridge.setParameter("id", rowIdx);
-						disp.send();
+						break;
+					default:
+						break;
 					}
-					break;
-				default:
-					break;
+				} else if (e.getButton() == MouseEvent.BUTTON2) {
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
 				}
-			} else if (e.getButton() == MouseEvent.BUTTON2) {
-			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
 		}
 	};
@@ -155,7 +165,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_question.add(lblNewLabel, BorderLayout.CENTER);
-		
+
 		lblNewLabel_msg = new JLabel("download...");
 		lblNewLabel_msg.setVisible(false);
 		lblNewLabel_msg.setForeground(Color.RED);
@@ -195,35 +205,35 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	@Override
 	public void showRow() {
 		int idx = Integer.valueOf(this.getName());
-		String vocabulary=null;
+		String vocabulary = null;
 		switch (this.showRowControl.getStage()) {
 		case ShowQuestion:
-			if (idx == 0) {
+			if (idx == TestQuestion.IDX_VOCABULARY) {
 				// 問題
-				vocabulary = this.showRowControl.getQuestionResult()
-						.get(this.showRowControl.getCurrentQuestionIdx()).getVocabulary();
+				vocabulary = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx())
+						.getVocabulary();
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Question);
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
 						.setText(vocabulary);
-				String v=vocabulary;
+				String v = vocabulary;
 				new Thread() {
-					@Override 
+					@Override
 					public void run() {
 						pronounce(v);
-						
+
 					}
 				}.start();
-				
-			} else if (idx == 1 || idx == 2) {
+
+			} else if (idx == TestQuestion.IDX_MESSAGE || idx == TestQuestion.IDX_PROGRESS) {
 				// info
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Background);
-				if (idx == 1) {
+				if (idx == TestQuestion.IDX_MESSAGE) {
 					// 訊息-提示答對或錯
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText("不確定");
-				} else if (idx == 2) {
+				} else if (idx == TestQuestion.IDX_PROGRESS) {
 					// 進度
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
@@ -253,13 +263,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			 * 是否複習,則顯示為他色,否為預設
 			 */
 			this.setBackground(MyColor.getBase());
-			if (this.showRowControl.isReview() && idx == 0) {
+			if (this.showRowControl.isReview() && idx == TestQuestion.IDX_VOCABULARY) {
 				this.setBackground(Color.red);
 			}
 
 			break;
 		case Guess:
-			if (idx == 1) {
+			if (idx == TestQuestion.IDX_MESSAGE) {
 				// 提示評論
 				if (this.showRowControl.isFirstFailure()) {
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
@@ -268,12 +278,12 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				} else {
 					this.setBackground(MyColor.getBase());
 				}
-			} else if (idx == 2) {
+			} else if (idx == TestQuestion.IDX_PROGRESS) {
 
 			}
 			break;
 		case GotAnswer:
-			if (idx == 1) {
+			if (idx == TestQuestion.IDX_MESSAGE) {
 				// 提示評論
 				String info = "";
 				if (this.showRowControl.isFirstFailure()) {
@@ -310,6 +320,12 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
+				
+				ExposeExplanationBridge bridge = new ExposeExplanationBridge();
+				Dispatcher disp = bridge.getDispatcher();
+				bridge.setParameter("id", showRowControl.getCorrectAnswerRowIdx());
+				disp.send();
+				
 				pronounce(this.showRowControl.getCurrentQueation().getVocabulary());
 			}
 			break;
@@ -317,8 +333,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			break;
 		}
 	}
-	
-
 
 	/*
 	 * label 自動換行
@@ -374,14 +388,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		this.showRowControl = (TestQuestionControl) control;
 	}
 
-
-	private void pronounce( String vocabulary) {
+	private void pronounce(String vocabulary) {
 		PronounceBridge bridge = new PronounceBridge();
 		bridge.setParameter("vocabulary", vocabulary);
 		bridge.setParameter("parent", this);
 		bridge.getDispatcher().send();
 	}
-	
+
 	public JLabel getMsgLabel() {
 		return this.lblNewLabel_msg;
 	}
