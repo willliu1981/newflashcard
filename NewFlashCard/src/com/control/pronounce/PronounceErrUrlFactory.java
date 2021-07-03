@@ -53,6 +53,10 @@ public class PronounceErrUrlFactory {
 		File f = new File(path);
 
 		if (!f.exists()) {
+			File parent =null;
+			if(!(parent=new File(f.getParent())).exists()) {
+				parent.mkdirs();
+			}
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
