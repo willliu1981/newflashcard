@@ -21,6 +21,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.control.ScoreControl;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.session.UIDateTransportation;
 import com.control.bridge.session.UIDateTransportation.Session;
@@ -41,16 +42,17 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public static final String CardLayout_Question = "question";
 	public static final String CardLayout_Answer = "answer";
 	public static final String CardLayout_Background = "background";
-	private static final Integer IDX_VOCABULARY=0;
-	private static final Integer IDX_MESSAGE=1;
-	private static final Integer IDX_PROGRESS=2;
-	private static final Integer IDX_QUESTION=3;
+	private static final Integer IDX_VOCABULARY = 0;
+	private static final Integer IDX_MESSAGE = 1;
+	private static final Integer IDX_PROGRESS = 2;
+	private static final Integer IDX_QUESTION = 3;
 	private TestQuestionControl<Vocabulary> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
 	private JPanel panel_root_cardlayout;
 	private JPanel panel_question;
 	private JPanel panel_answer;
 	private JPanel panel_background;
+	private double rate = 1.0;
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
 
@@ -285,12 +287,31 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		case GotAnswer:
 			if (idx == TestQuestion.IDX_MESSAGE) {
 				// 提示評論
+				int boxid = ((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().getCardboxIdx();
+				CardBox box = new CardBoxDao().query(boxid);
+				if (showRowControl.isReview()) {
+					if (box.getTest_times() == 0) {
+						ScoreControl.primaryExp(ScoreControl.RATE_DEFAULT * rate);
+					} else {
+						ScoreControl.secondaryExp(ScoreControl.RATE_DEFAULT * rate);
+					}
+				} else {
+					rate = 1.0;
+					if (box.getTest_times() == 0) {
+						ScoreControl.primaryExp();
+					} else {
+						ScoreControl.secondaryExp();
+					}
+				}
+
 				String info = "";
+
 				if (this.showRowControl.isFirstFailure()) {
 					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
 					if (this.showRowControl.isLastQuestion()) {
 						info = String.format("複習答錯的題目,共%d題", this.showRowControl.getReviews().size());
 						this.showRowControl.setReview();
+						rate *= 0.6;
 					} else {
 						info = "下一題";
 					}
@@ -299,19 +320,26 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					if (this.showRowControl.isLastQuestion()) {
 						if (this.showRowControl.reviewIsEmpty()) {
 							info = "已完成測驗,回測驗首頁";
-							int boxid = ((MainView) showRowControl.getEventJFrame()).getTestQuestionControl()
-									.getCardboxIdx();
-							CardBox b = new CardBoxDao().query(boxid);
-							b.setTest_times(b.getTest_times() + 1);
-							boolean r = b.state();
+
+							box.setTest_times(box.getTest_times() + 1);
+							boolean r = box.state();
 							if (r) {
 								info = "任務完成!!!,回測驗首頁";
 							}
-							new CardBoxDao().updateTest(b, boxid);
+							new CardBoxDao().updateTest(box, boxid);
 							showRowControl.endTest();
+
+							if (box.isFinish()) {
+								ScoreControl.gainAllFinishCoin(
+										ScoreControl.model.getRate(box.getState() == 0 ? 1 : box.getState()));
+							} else {
+								ScoreControl.gainBaseCoin(
+										ScoreControl.model.getRate(box.getState() == 0 ? 1 : box.getState()));
+							}
 						} else {
 							info = String.format("答對了 (複習題目,共%d題)", this.showRowControl.getReviews().size());
 							this.showRowControl.setReview();
+							rate *= 0.6;
 						}
 					} else {
 						info = "答對了 (下一題)";
@@ -320,13 +348,17 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				}
 				((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 						.setText(info);
-				
+
 				ExposeExplanationBridge bridge = new ExposeExplanationBridge();
 				Dispatcher disp = bridge.getDispatcher();
 				bridge.setParameter("id", showRowControl.getCorrectAnswerRowIdx());
 				disp.send();
-				
+
 				pronounce(this.showRowControl.getCurrentQueation().getVocabulary());
+
+				MainView.setCoin(ScoreControl.getScore().getStarcoin().toString());
+				MainView.setExp(ScoreControl.getScore().getExperience().toString());
+
 			}
 			break;
 		default:

@@ -43,6 +43,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import com.control.ScoreControl;
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
 import com.control.pronounce.PronounceErrUrlFactory;
@@ -59,6 +60,7 @@ import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;
 import java.awt.Dimension;
+import java.awt.Color;
 
 public class MainView extends JFrame {
 	private static MainView thisApp;
@@ -129,6 +131,8 @@ public class MainView extends JFrame {
 	private JPanel panel_cardbox_editbar;
 	private JTextField textField_14;
 	private JButton btnNewButton_topbar_test;
+	private JLabel lblNewLabel_exp;
+	private JLabel lblNewLabel_coin;
 
 	/**
 	 * Launch the application.
@@ -171,7 +175,15 @@ public class MainView extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				PronounceErrUrlFactory.write();
+				ScoreControl.store();
 			}
+
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				setCoin(ScoreControl.getScore().getStarcoin().toString());
+				setExp(ScoreControl.getScore().getExperience().toString());
+			}
+
 		});
 
 		JMenuBar menuBar = new JMenuBar();
@@ -243,43 +255,35 @@ public class MainView extends JFrame {
 		{
 			JPanel panel_topbar = new JPanel();
 			contentPane.add(panel_topbar, BorderLayout.NORTH);
+			panel_topbar.setLayout(new BorderLayout(0, 0));
+
+			JPanel panel = new JPanel();
+			panel_topbar.add(panel);
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+			JPanel panel_5 = new JPanel();
+			panel.add(panel_5);
+
+			JPanel panel_4 = new JPanel();
+			panel.add(panel_4);
+
+			btnNewButton_topbar_vocabulary = new JButton(InfoProperty.getInfo(InfoProperty.Vocabulary));
+			panel_4.add(btnNewButton_topbar_vocabulary);
+			btnNewButton_topbar_vocabulary.setFocusPainted(false);
+			btnNewButton_topbar_vocabulary.setPreferredSize(new Dimension(100, 28));
+			btnNewButton_topbar_vocabulary.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+			btnNewButton_topbar_vocabulary.setBackground(SystemColor.controlHighlight);
+			btnNewButton_topbar_vocabulary.setFont(new Font("Dialog", Font.PLAIN, 18));
 			btnNewButton_topbar_cardbox = new JButton(InfoProperty.getInfo(InfoProperty.CardBox));
+			panel_4.add(btnNewButton_topbar_cardbox);
 			btnNewButton_topbar_cardbox.setFocusPainted(false);
 			btnNewButton_topbar_cardbox.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_cardbox.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 			btnNewButton_topbar_cardbox.setBackground(SystemColor.controlHighlight);
 			btnNewButton_topbar_cardbox.setFont(new Font("Dialog", Font.PLAIN, 18));
-			btnNewButton_topbar_cardbox.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (judgeTest()) {
-						return;
-					} else {
-						testQuestionControl.endTest();
-					}
-
-					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
-						btnNewButton_topbar_cardbox.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
-					} else {
-						cardboxShowRowControl.resetFromIdx();
-					}
-					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
-							MainView.CardLayout_topbar_CardBox);
-					List<CardBox> list = new CardBoxDao().queryAll();
-					CardBoxRow.setVocabularyQuantities(new VocabularyDao().queryAll());
-					cardboxShowRowControl.setResults(list);
-					cardboxShowRowControl.showRow();
-					Map<String, String> map = new HashMap<>();
-					map.put(ShowRowInfo.CardBox_Quantity, String.valueOf(list.size()));
-					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox);
-					((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar,
-							CardLayout_Editbar_Serch);
-					Map<String, String> map2 = new HashMap<>();
-					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
-					cardboxShowRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
-				}
-			});
 
 			btnNewButton_topbar_test = new JButton(InfoProperty.getInfo(InfoProperty.Test));
+			panel_4.add(btnNewButton_topbar_test);
 			btnNewButton_topbar_test.setFocusPainted(false);
 			btnNewButton_topbar_test.setPreferredSize(new Dimension(100, 28));
 			btnNewButton_topbar_test.addActionListener(new ActionListener() {
@@ -315,12 +319,37 @@ public class MainView extends JFrame {
 			btnNewButton_topbar_test.setBackground(SystemColor.controlHighlight);
 			btnNewButton_topbar_test.setFont(new Font("Dialog", Font.PLAIN, 18));
 
-			btnNewButton_topbar_vocabulary = new JButton(InfoProperty.getInfo(InfoProperty.Vocabulary));
-			btnNewButton_topbar_vocabulary.setFocusPainted(false);
-			btnNewButton_topbar_vocabulary.setPreferredSize(new Dimension(100, 28));
-			btnNewButton_topbar_vocabulary.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-			btnNewButton_topbar_vocabulary.setBackground(SystemColor.controlHighlight);
-			btnNewButton_topbar_vocabulary.setFont(new Font("Dialog", Font.PLAIN, 18));
+			JPanel panel_6 = new JPanel();
+			panel.add(panel_6);
+			btnNewButton_topbar_cardbox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (judgeTest()) {
+						return;
+					} else {
+						testQuestionControl.endTest();
+					}
+
+					if (e.getActionCommand().equalsIgnoreCase(MainView.MouseEvent_RemoteClickUnResetFromIdx)) {
+						btnNewButton_topbar_cardbox.setActionCommand(MouseEvent_RemoteClickResetFromIdx);
+					} else {
+						cardboxShowRowControl.resetFromIdx();
+					}
+					((CardLayout) panel_main_centerbar.getLayout()).show(panel_main_centerbar,
+							MainView.CardLayout_topbar_CardBox);
+					List<CardBox> list = new CardBoxDao().queryAll();
+					CardBoxRow.setVocabularyQuantities(new VocabularyDao().queryAll());
+					cardboxShowRowControl.setResults(list);
+					cardboxShowRowControl.showRow();
+					Map<String, String> map = new HashMap<>();
+					map.put(ShowRowInfo.CardBox_Quantity, String.valueOf(list.size()));
+					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox);
+					((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar,
+							CardLayout_Editbar_Serch);
+					Map<String, String> map2 = new HashMap<>();
+					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
+					cardboxShowRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
+				}
+			});
 			btnNewButton_topbar_vocabulary.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (judgeTest()) {
@@ -351,9 +380,46 @@ public class MainView extends JFrame {
 					vocabularyShowRowControl.showRow();
 				}
 			});
-			panel_topbar.add(btnNewButton_topbar_vocabulary);
-			panel_topbar.add(btnNewButton_topbar_cardbox);
-			panel_topbar.add(btnNewButton_topbar_test);
+
+			JPanel panel_1 = new JPanel();
+			panel_topbar.add(panel_1, BorderLayout.EAST);
+			panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
+
+			JPanel panel_2 = new JPanel();
+			panel_2.setBackground(new Color(0, 0, 0));
+			panel_1.add(panel_2);
+
+			JLabel lblNewLabel_20 = new JLabel("coin:");
+			lblNewLabel_20.setOpaque(true);
+			lblNewLabel_20.setBackground(new Color(0, 0, 0));
+			lblNewLabel_20.setForeground(new Color(255, 215, 0));
+			lblNewLabel_20.setFont(new Font("Impact", Font.PLAIN, 16));
+			panel_2.add(lblNewLabel_20);
+
+			lblNewLabel_coin = new JLabel("0");
+			lblNewLabel_coin.setOpaque(true);
+			lblNewLabel_coin.setBackground(new Color(0, 0, 0));
+			lblNewLabel_coin.setForeground(new Color(255, 215, 0));
+			lblNewLabel_coin.setFont(new Font("Impact", Font.PLAIN, 16));
+			panel_2.add(lblNewLabel_coin);
+
+			JPanel panel_3 = new JPanel();
+			panel_3.setBackground(new Color(255, 140, 0));
+			panel_1.add(panel_3);
+
+			JLabel lblNewLabel_21 = new JLabel("exp:");
+			lblNewLabel_21.setBackground(new Color(255, 140, 0));
+			lblNewLabel_21.setOpaque(true);
+			lblNewLabel_21.setForeground(new Color(0, 100, 0));
+			lblNewLabel_21.setFont(new Font("Impact", Font.PLAIN, 16));
+			panel_3.add(lblNewLabel_21);
+
+			lblNewLabel_exp = new JLabel("0");
+			lblNewLabel_exp.setBackground(new Color(255, 140, 0));
+			lblNewLabel_exp.setOpaque(true);
+			lblNewLabel_exp.setForeground(new Color(0, 100, 0));
+			lblNewLabel_exp.setFont(new Font("Impact", Font.PLAIN, 16));
+			panel_3.add(lblNewLabel_exp);
 		}
 		panel_main_centerbar = new JPanel();
 		panel_main_centerbar.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -1804,6 +1870,14 @@ public class MainView extends JFrame {
 
 	public JButton getBtnNewButton_topbar_test() {
 		return btnNewButton_topbar_test;
+	}
+
+	public static void setCoin(String str) {
+		thisApp.lblNewLabel_coin.setText(str);
+	}
+
+	public static void setExp(String str) {
+		thisApp.lblNewLabel_exp.setText(str);
 	}
 
 }
