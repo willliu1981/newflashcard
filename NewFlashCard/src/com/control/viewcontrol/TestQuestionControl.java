@@ -64,7 +64,9 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	}
 
 	public void addReviewsVocabulary(T t) {
-		this.reviews.add(t);
+		if (!this.reviews.contains(t)) {
+			this.reviews.add(t);
+		}
 	}
 
 	public List<T> getReviews() {
@@ -92,11 +94,11 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		int idx = (int) (Math.random() * this.answers.size());
 		return this.answers.get(idx);
 	}
-	
+
 	public void initialize(int min, int max) {
 		this.init(min, max);
-		this.isReview=false;
-		this.isTesting=true;
+		this.isReview = false;
+		this.isTesting = true;
 	}
 
 	protected void init() {
@@ -202,9 +204,9 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	public boolean isTesting() {
 		return isTesting;
 	}
-	
+
 	public void endTest() {
-		this.isTesting=false;
+		this.isTesting = false;
 	}
 
 }

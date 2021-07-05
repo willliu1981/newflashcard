@@ -19,7 +19,7 @@ public class App {
 		String deisgn = ConfigFactory.getPropInstance().getProperty("design");
 		String msg = version;
 		if (deisgn.equals("true")) {
-			msg += " Debug";
+			msg += " (Debug)";
 		}
 		mainView.setTitle(String.format("字卡 App 版本 %s", msg));
 		return mainView;

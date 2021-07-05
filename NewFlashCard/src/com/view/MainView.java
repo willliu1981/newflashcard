@@ -153,7 +153,7 @@ public class MainView extends JFrame {
 					Properties prop = new Properties();
 					prop.load(new FileInputStream("data//config.properties"));
 					String deisgn = prop.getProperty("design");
-					String msg = "1";
+					String msg = "1 (deprecated)";
 					if (deisgn.equals("true")) {
 						msg += " Debug";
 					}

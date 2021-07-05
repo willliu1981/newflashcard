@@ -193,21 +193,20 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		panel_answer.add(lblNewLabel_1);
-		
+
 		panel = new JPanel();
 		panel.setBorder(null);
 		panel.setBackground(Color.DARK_GRAY);
 		panel_answer.add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
-		
+
 		btnNewButton_mark = new JButton("☆");
 		btnNewButton_mark.setContentAreaFilled(false);
-		btnNewButton_mark.setOpaque(false);
-		
+
 		btnNewButton_mark.setFocusPainted(false);
 		btnNewButton_mark.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				btnNewButton_mark.setText("★");
+				mark();
 				showRowControl.addReviewsVocabulary(showRowControl.getCurrentQueation());
 			}
 		});
@@ -215,7 +214,6 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		btnNewButton_mark.setFont(new Font("DialogInput", Font.BOLD, 20));
 		btnNewButton_mark.setBorderPainted(false);
 		btnNewButton_mark.setForeground(Color.ORANGE);
-		btnNewButton_mark.setBackground(Color.DARK_GRAY);
 		panel.add(btnNewButton_mark, BorderLayout.EAST);
 
 		panel_background = new JPanel();
@@ -239,9 +237,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		String vocabulary = null;
 		switch (this.showRowControl.getStage()) {
 		case ShowQuestion:
-			//initialize
+			// initialize
 			btnNewButton_mark.setVisible(false);
-			
+
 			if (idx == TestQuestion.IDX_VOCABULARY) {
 				// 問題
 				vocabulary = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx())
@@ -348,6 +346,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						info = "下一題";
 					}
 					this.setBackground(Color.red);
+
 				} else {
 					if (this.showRowControl.isLastQuestion()) {
 						if (this.showRowControl.reviewIsEmpty()) {
@@ -391,9 +390,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				MainView.setCoin(ScoreControl.getScore().getStarcoin().toString());
 				MainView.setExp(ScoreControl.getScore().getExperience().toString());
 
-			}else if(idx==showRowControl.getCorrectAnswerRowIdx()) {
-				btnNewButton_mark.setText("☆");
+			} else if (idx == showRowControl.getCorrectAnswerRowIdx()) {
+				if (showRowControl.isFirstFailure()) {
+					this.mark();
+				} else {
+					this.removeMark();
+				}
 				btnNewButton_mark.setVisible(true);
+
 			}
 			break;
 		default:
@@ -464,5 +468,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 	public JLabel getMsgLabel() {
 		return this.lblNewLabel_msg;
+	}
+
+	private void mark() {
+		btnNewButton_mark.setText("★");
+	}
+
+	private void removeMark() {
+		btnNewButton_mark.setText("☆");
 	}
 }
