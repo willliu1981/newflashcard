@@ -63,7 +63,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		return this.answers;
 	}
 
-	public void addReviews(T t) {
+	public void addReviewsVocabulary(T t) {
 		this.reviews.add(t);
 	}
 

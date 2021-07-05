@@ -37,6 +37,9 @@ import com.tool.MyColor;
 import javax.swing.JTextArea;
 import java.awt.Insets;
 import javax.swing.JTextPane;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public static final String CardLayout_Question = "question";
@@ -142,6 +145,8 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	};
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_msg;
+	private JPanel panel;
+	private JButton btnNewButton_mark;
 
 	/**
 	 * Create the panel.
@@ -188,6 +193,30 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		panel_answer.add(lblNewLabel_1);
+		
+		panel = new JPanel();
+		panel.setBorder(null);
+		panel.setBackground(Color.DARK_GRAY);
+		panel_answer.add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		btnNewButton_mark = new JButton("☆");
+		btnNewButton_mark.setContentAreaFilled(false);
+		btnNewButton_mark.setOpaque(false);
+		
+		btnNewButton_mark.setFocusPainted(false);
+		btnNewButton_mark.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnNewButton_mark.setText("★");
+				showRowControl.addReviewsVocabulary(showRowControl.getCurrentQueation());
+			}
+		});
+		btnNewButton_mark.setMargin(new Insets(0, 0, 0, 3));
+		btnNewButton_mark.setFont(new Font("DialogInput", Font.BOLD, 20));
+		btnNewButton_mark.setBorderPainted(false);
+		btnNewButton_mark.setForeground(Color.ORANGE);
+		btnNewButton_mark.setBackground(Color.DARK_GRAY);
+		panel.add(btnNewButton_mark, BorderLayout.EAST);
 
 		panel_background = new JPanel();
 		panel_background.setBackground(Color.BLACK);
@@ -210,6 +239,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		String vocabulary = null;
 		switch (this.showRowControl.getStage()) {
 		case ShowQuestion:
+			//initialize
+			btnNewButton_mark.setVisible(false);
+			
 			if (idx == TestQuestion.IDX_VOCABULARY) {
 				// 問題
 				vocabulary = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx())
@@ -307,7 +339,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				String info = "";
 
 				if (this.showRowControl.isFirstFailure()) {
-					this.showRowControl.addReviews(this.showRowControl.getCurrentQueation());
+					this.showRowControl.addReviewsVocabulary(this.showRowControl.getCurrentQueation());
 					if (this.showRowControl.isLastQuestion()) {
 						info = String.format("複習答錯的題目,共%d題", this.showRowControl.getReviews().size());
 						this.showRowControl.setReview();
@@ -359,6 +391,9 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 				MainView.setCoin(ScoreControl.getScore().getStarcoin().toString());
 				MainView.setExp(ScoreControl.getScore().getExperience().toString());
 
+			}else if(idx==showRowControl.getCorrectAnswerRowIdx()) {
+				btnNewButton_mark.setText("☆");
+				btnNewButton_mark.setVisible(true);
 			}
 			break;
 		default:

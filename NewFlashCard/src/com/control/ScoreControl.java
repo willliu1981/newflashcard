@@ -58,7 +58,7 @@ public class ScoreControl {
 		try {
 			prop.setProperty(KEY_STARCOIN, score.getStarcoin().toString());
 			prop.setProperty(KEY_EXPERIENCE, score.getExperience().toString());
-			prop.store(new FileOutputStream(new File(path)), new Date().toString());
+			prop.store(new FileOutputStream(new File(path)),null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

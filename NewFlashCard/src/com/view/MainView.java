@@ -43,6 +43,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import com.control.App;
 import com.control.ScoreControl;
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
@@ -63,7 +64,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 
 public class MainView extends JFrame {
-	private static MainView thisApp;
+	private static MainView thisApp=App.getMainView();
 	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final QueryResultFrame queryResultFrame = new QueryResultFrame();
@@ -138,6 +139,8 @@ public class MainView extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		//deprecated
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -1873,11 +1876,11 @@ public class MainView extends JFrame {
 	}
 
 	public static void setCoin(String str) {
-		thisApp.lblNewLabel_coin.setText(str);
+		App.getMainView().lblNewLabel_coin.setText(str);
 	}
 
 	public static void setExp(String str) {
-		thisApp.lblNewLabel_exp.setText(str);
+		App.getMainView() .lblNewLabel_exp.setText(str);
 	}
 
 }

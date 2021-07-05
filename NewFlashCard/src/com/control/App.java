@@ -6,18 +6,17 @@ import com.tool.ConfigFactory;
 import com.view.MainView;
 
 public class App {
-	private static final String version="1.0";
-	private  static JFrame mainView;
-	
-	
-	
+	private static final String version = "1.1";
+	private static MainView mainView;
+
 	public static JFrame initialize() {
-		if(mainView==null) {
-			mainView=new MainView();
+
+		if (mainView == null) {
+			mainView = new MainView();
 		}
 		mainView.setVisible(true);
 
-		String deisgn =  ConfigFactory.getPropInstance(). getProperty("design");
+		String deisgn = ConfigFactory.getPropInstance().getProperty("design");
 		String msg = version;
 		if (deisgn.equals("true")) {
 			msg += " Debug";
@@ -25,8 +24,12 @@ public class App {
 		mainView.setTitle(String.format("字卡 App 版本 %s", msg));
 		return mainView;
 	}
-	
+
 	public static String getVersion() {
 		return version;
+	}
+	
+	public static MainView getMainView() {
+		return mainView;
 	}
 }
