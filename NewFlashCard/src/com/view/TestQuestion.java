@@ -5,26 +5,25 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.SystemColor;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import com.control.ScoreControl;
 import com.control.bridge.Dispatcher;
 import com.control.bridge.session.UIDateTransportation;
-import com.control.bridge.session.UIDateTransportation.Session;
 import com.control.dao.CardBoxDao;
 import com.control.pronounce.bridge.PronounceBridge;
 import com.control.viewcontrol.ShowRow;
@@ -34,28 +33,22 @@ import com.control.viewcontrol.bridge.ExposeExplanationBridge;
 import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;
-import javax.swing.JTextArea;
-import java.awt.Insets;
-import javax.swing.JTextPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public static final String CardLayout_Question = "question";
 	public static final String CardLayout_Answer = "answer";
 	public static final String CardLayout_Background = "background";
-	private static final Integer IDX_VOCABULARY = 0;
+	private static final Integer IDX_QUESTION = 0;
 	private static final Integer IDX_MESSAGE = 1;
 	private static final Integer IDX_PROGRESS = 2;
-	private static final Integer IDX_QUESTION = 3;
-	private TestQuestionControl<Vocabulary> showRowControl;
+	private static final Integer IDX_ANSWER = 3;
+	private TestQuestionControl<Vocabulary> testQuestionShowRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
 	private JPanel panel_root_cardlayout;
 	private JPanel panel_question;
 	private JPanel panel_answer;
 	private JPanel panel_background;
-	private double rate = 1.0;
+	private double expRate = 1.0;
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
 
@@ -66,71 +59,72 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			} else {
 
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar().getLayout())
-							.show(((MainView) showRowControl.getEventJFrame()).getPanel_main_centerbar(),
+					((CardLayout) ((MainView) testQuestionShowRowControl.getEventJFrame()).getPanel_main_centerbar()
+							.getLayout()).show(
+									((MainView) testQuestionShowRowControl.getEventJFrame()).getPanel_main_centerbar(),
 									MainView.CardLayout_Test_Question);
 					int rowIdx = Integer.valueOf(getName());
-					switch (showRowControl.getStage()) {
+					switch (testQuestionShowRowControl.getStage()) {
 					case ShowQuestion:
 
 						break;
 					case Guess:
-						if (showRowControl.clickAnswerRowInRange(rowIdx)) {
-							if (!showRowControl.isBingo()) {
-								if (showRowControl.isCorrectAnswer(rowIdx)) {
+						if (testQuestionShowRowControl.clickAnswerRowInRange(rowIdx)) {
+							if (!testQuestionShowRowControl.isBingo()) {
+								if (testQuestionShowRowControl.isCorrectAnswer(rowIdx)) {
 									setBackground(Color.blue);
-									showRowControl.nextStage();
+									testQuestionShowRowControl.nextStage();
 								} else {
 									setBackground(new Color(255, 127, 37));
 								}
 							}
 						} else {
-							if (rowIdx == TestQuestion.IDX_VOCABULARY) {
-								pronounce(showRowControl.getCurrentQueation().getVocabulary());
+							if (rowIdx == TestQuestion.IDX_QUESTION) {
+								pronounce(testQuestionShowRowControl.getCurrentQueation().getVocabulary());
 							} else if (rowIdx == TestQuestion.IDX_MESSAGE) {
 								/*
 								 * 無法答題
 								 */
-								showRowControl.setFirstFailure();
+								testQuestionShowRowControl.setFirstFailure();
 							} else {
 								return;
 							}
 						}
-						showRowControl.showRow();
+						testQuestionShowRowControl.showRow();
 						break;
 					case GotAnswer:
-						if (rowIdx == TestQuestion.IDX_VOCABULARY) {
+						if (rowIdx == TestQuestion.IDX_QUESTION) {
 							ExposeExplanationBridge bridge = new ExposeExplanationBridge();
 							Dispatcher disp = bridge.getDispatcher();
-							bridge.setParameter("correctVocabulary",
-									showRowControl.getQuestionResult().get(showRowControl.getCurrentQuestionIdx()));
+							bridge.setParameter("correctVocabulary", testQuestionShowRowControl.getQuestionResult()
+									.get(testQuestionShowRowControl.getCurrentQuestionIdx()));
 							disp.send();
 
-							pronounce(showRowControl.getCurrentQueation().getVocabulary());
+							pronounce(testQuestionShowRowControl.getCurrentQueation().getVocabulary());
 						} else if (rowIdx == TestQuestion.IDX_MESSAGE) {
-							if (showRowControl.isLastQuestion()) {
-								if (showRowControl.reviewIsEmpty()) {
-									((MainView) showRowControl.getEventJFrame()).getBtnNewButton_topbar_test()
-											.doClick();
+							if (testQuestionShowRowControl.isLastQuestion()) {
+								if (testQuestionShowRowControl.reviewIsEmpty()) {
+									((MainView) testQuestionShowRowControl.getEventJFrame())
+											.getBtnNewButton_topbar_test().doClick();
 								} else {
-									showRowControl.setQuestionFromReviews();
-									showRowControl.startReview();
-									showRowControl.showRow();
-									showRowControl.nextStage();
+									testQuestionShowRowControl.setQuestionFromReviews();
+									testQuestionShowRowControl.startReview();
+									testQuestionShowRowControl.showRow();
+									testQuestionShowRowControl.nextStage();
 								}
 							} else {
-								showRowControl.questionReset();
-								showRowControl.showRow();
-								showRowControl.nextStage();
+								testQuestionShowRowControl.questionReset();
+								testQuestionShowRowControl.showRow();
+								testQuestionShowRowControl.nextStage();
 							}
-						} else if (rowIdx >= TestQuestion.IDX_QUESTION) {
+						} else if (rowIdx >= TestQuestion.IDX_ANSWER) {
 							ExposeExplanationBridge bridge = new ExposeExplanationBridge();
 							Dispatcher disp = bridge.getDispatcher();
 							bridge.setParameter("id", rowIdx);
 							disp.send();
 
-							if (rowIdx == showRowControl.getCorrectAnswerRowIdx()) {
-								pronounce(showRowControl.getCurrentQueation().getVocabulary());
+							if (rowIdx == testQuestionShowRowControl.getCorrectAnswerRowIdx()) {
+								pronounce(testQuestionShowRowControl.getCurrentQueation().getVocabulary());
 							}
 						}
 						break;
@@ -207,7 +201,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		btnNewButton_mark.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mark();
-				showRowControl.addReviewsVocabulary(showRowControl.getCurrentQueation());
+				testQuestionShowRowControl.addReviewsVocabulary(testQuestionShowRowControl.getCurrentQueation());
 			}
 		});
 		btnNewButton_mark.setMargin(new Insets(0, 0, 0, 3));
@@ -235,15 +229,15 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	public void showRow() {
 		int idx = Integer.valueOf(this.getName());
 		String vocabulary = null;
-		switch (this.showRowControl.getStage()) {
+		switch (this.testQuestionShowRowControl.getStage()) {
 		case ShowQuestion:
 			// initialize
 			btnNewButton_mark.setVisible(false);
 
-			if (idx == TestQuestion.IDX_VOCABULARY) {
+			if (idx == TestQuestion.IDX_QUESTION) {
 				// 問題
-				vocabulary = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx())
-						.getVocabulary();
+				vocabulary = this.testQuestionShowRowControl.getQuestionResult()
+						.get(this.testQuestionShowRowControl.getCurrentQuestionIdx()).getVocabulary();
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Question);
 				((JLabel) ((BorderLayout) this.panel_question.getLayout()).getLayoutComponent("Center"))
@@ -267,19 +261,20 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							.setText("不確定");
 				} else if (idx == TestQuestion.IDX_PROGRESS) {
 					// 進度
-					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
-							.setText(String.format("%d / %d", this.showRowControl.getCurrentQuestionIdx() + 1,
-									this.showRowControl.getQuestionResult().size()));
+					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center")).setText(
+							String.format("%d / %d", this.testQuestionShowRowControl.getCurrentQuestionIdx() + 1,
+									this.testQuestionShowRowControl.getQuestionResult().size()));
 				}
 			} else {
 				// answers
 				((CardLayout) this.panel_root_cardlayout.getLayout()).show(this.panel_root_cardlayout,
 						CardLayout_Answer);
 				Vocabulary v = null;
-				if (this.showRowControl.getCorrectAnswerRowIdx() == idx) {
-					v = this.showRowControl.getQuestionResult().get(this.showRowControl.getCurrentQuestionIdx());
+				if (this.testQuestionShowRowControl.getCorrectAnswerRowIdx() == idx) {
+					v = this.testQuestionShowRowControl.getQuestionResult()
+							.get(this.testQuestionShowRowControl.getCurrentQuestionIdx());
 				} else {
-					v = this.showRowControl.getRandomAnswer();
+					v = this.testQuestionShowRowControl.getRandomAnswer();
 				}
 				jlabelSetText((JLabel) ((BorderLayout) this.panel_answer.getLayout()).getLayoutComponent("Center"),
 						v.getTranslation());
@@ -295,7 +290,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			 * 是否複習,則顯示為他色,否為預設
 			 */
 			this.setBackground(MyColor.getBase());
-			if (this.showRowControl.isReview() && idx == TestQuestion.IDX_VOCABULARY) {
+			if (this.testQuestionShowRowControl.isReview() && idx == TestQuestion.IDX_QUESTION) {
 				this.setBackground(Color.red);
 			}
 
@@ -303,7 +298,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		case Guess:
 			if (idx == TestQuestion.IDX_MESSAGE) {
 				// 提示評論
-				if (this.showRowControl.isFirstFailure()) {
+				if (this.testQuestionShowRowControl.isFirstFailure()) {
 					((JLabel) ((BorderLayout) this.panel_background.getLayout()).getLayoutComponent("Center"))
 							.setText("猜錯了");
 					this.setBackground(Color.red);
@@ -317,16 +312,17 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		case GotAnswer:
 			if (idx == TestQuestion.IDX_MESSAGE) {
 				// 提示評論
-				int boxid = ((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().getCardboxIdx();
+				int boxid = ((MainView) testQuestionShowRowControl.getEventJFrame()).getTestQuestionControl()
+						.getCardboxIdx();
 				CardBox box = new CardBoxDao().query(boxid);
-				if (showRowControl.isReview()) {
+				if (testQuestionShowRowControl.isReview()) {
 					if (box.getTest_times() == 0) {
-						ScoreControl.primaryExp(ScoreControl.RATE_DEFAULT * rate);
+						ScoreControl.primaryExp(ScoreControl.RATE_DEFAULT * expRate);
 					} else {
-						ScoreControl.secondaryExp(ScoreControl.RATE_DEFAULT * rate);
+						ScoreControl.secondaryExp(ScoreControl.RATE_DEFAULT * expRate);
 					}
 				} else {
-					rate = 1.0;
+					expRate = 1.0;
 					if (box.getTest_times() == 0) {
 						ScoreControl.primaryExp();
 					} else {
@@ -336,21 +332,29 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 				String info = "";
 
-				if (this.showRowControl.isFirstFailure()) {
-					this.showRowControl.addReviewsVocabulary(this.showRowControl.getCurrentQueation());
-					if (this.showRowControl.isLastQuestion()) {
-						info = String.format("複習答錯的題目,共%d題", this.showRowControl.getReviews().size());
-						this.showRowControl.setReview();
-						rate *= 0.6;
+				if (this.testQuestionShowRowControl.isFirstFailure()) {
+					this.testQuestionShowRowControl
+							.addReviewsVocabulary(this.testQuestionShowRowControl.getCurrentQueation());
+					if (this.testQuestionShowRowControl.isLastQuestion()) {
+						info = String.format("複習答錯的題目,共%d題", this.testQuestionShowRowControl.getReviews().size());
+						this.testQuestionShowRowControl.setReview();
+						expRate *= 0.6;
 					} else {
 						info = "下一題";
 					}
 					this.setBackground(Color.red);
 
 				} else {
-					if (this.showRowControl.isLastQuestion()) {
-						if (this.showRowControl.reviewIsEmpty()) {
+					if (this.testQuestionShowRowControl.isLastQuestion()) {
+						if (this.testQuestionShowRowControl.reviewIsEmpty()) {
 							info = "已完成測驗,回測驗首頁";
+
+							// 在state 還沒變動前先取得rate,避免誤判為即期重複測驗
+							double rerate = 1;
+							if (box.getStateResult() == 0) {
+								// 即期重複測驗,獎利減少
+								rerate = 0.5;
+							}
 
 							box.setTest_times(box.getTest_times() + 1);
 							boolean r = box.state();
@@ -358,19 +362,21 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 								info = "任務完成!!!,回測驗首頁";
 							}
 							new CardBoxDao().updateTest(box, boxid);
-							showRowControl.endTest();
+							testQuestionShowRowControl.endTest();
 
+							double rate = ScoreControl.model.getRate(box.getState()) * rerate;
+							ScoreControl.gainCoin(rate, testQuestionShowRowControl.getOriginQuestionQuantity());
+							// state 變動後判斷是否 all finish, 再額外獲得bonus
 							if (box.isFinish()) {
-								ScoreControl.gainAllFinishCoin(
-										ScoreControl.model.getRate(box.getState() == 0 ? 1 : box.getState()));
-							} else {
-								ScoreControl.gainBaseCoin(
-										ScoreControl.model.getRate(box.getState() == 0 ? 1 : box.getState()));
+								ScoreControl.gainBonusCoin(rate,
+										testQuestionShowRowControl.getOriginQuestionQuantity());
 							}
+
 						} else {
-							info = String.format("答對了 (複習題目,共%d題)", this.showRowControl.getReviews().size());
-							this.showRowControl.setReview();
-							rate *= 0.6;
+							info = String.format("答對了 (複習題目,共%d題)",
+									this.testQuestionShowRowControl.getReviews().size());
+							this.testQuestionShowRowControl.setReview();
+							expRate *= 0.6;
 						}
 					} else {
 						info = "答對了 (下一題)";
@@ -382,22 +388,21 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 				ExposeExplanationBridge bridge = new ExposeExplanationBridge();
 				Dispatcher disp = bridge.getDispatcher();
-				bridge.setParameter("id", showRowControl.getCorrectAnswerRowIdx());
+				bridge.setParameter("id", testQuestionShowRowControl.getCorrectAnswerRowIdx());
 				disp.send();
 
-				pronounce(this.showRowControl.getCurrentQueation().getVocabulary());
+				pronounce(this.testQuestionShowRowControl.getCurrentQueation().getVocabulary());
 
 				MainView.setCoin(ScoreControl.getScore().getStarcoin().toString());
 				MainView.setExp(ScoreControl.getScore().getExperience().toString());
 
-			} else if (idx == showRowControl.getCorrectAnswerRowIdx()) {
-				if (showRowControl.isFirstFailure()) {
+			} else if (idx == testQuestionShowRowControl.getCorrectAnswerRowIdx()) {
+				if (testQuestionShowRowControl.isFirstFailure()) {
 					this.mark();
 				} else {
 					this.removeMark();
 				}
 				btnNewButton_mark.setVisible(true);
-
 			}
 			break;
 		default:
@@ -456,7 +461,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 	@Override
 	public void setShowRowControl(ShowRowControl<Vocabulary> control) {
-		this.showRowControl = (TestQuestionControl) control;
+		this.testQuestionShowRowControl = (TestQuestionControl) control;
 	}
 
 	private void pronounce(String vocabulary) {

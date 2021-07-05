@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * 注意:更改state 規則將會影響TestQuestion 的 獎利獲得方法(ScoreControl),有可能會造成邏輯錯誤
+ */
 public class CardBox {
 	private Integer id;
 	private String name;
@@ -82,14 +85,15 @@ public class CardBox {
 			return false;
 		}
 	}
-	
+
 	public void finish() {
-		this.state=this.stateRuleMap.size()+1;
+		this.state = this.stateRuleMap.size() + 1;
 	}
+
 	public void resetTest() {
-		this.state=0;
-		this.test_date=null;
-		this.test_times=0;
+		this.state = 0;
+		this.test_date = null;
+		this.test_times = 0;
 	}
 
 	public boolean isFinish() {
@@ -159,9 +163,6 @@ public class CardBox {
 		return cal;
 	}
 
-	/*
-	 * 取得next state result 0:即期重複測驗 1:即期第一次測驗 -1:過期測驗
-	 */
 	public int getStateResult() {
 		int result = -1;
 		Calendar now = Calendar.getInstance();
@@ -177,14 +178,14 @@ public class CardBox {
 		}
 		nextDelay.add(Calendar.DAY_OF_MONTH, day);
 		if (now.before(next)) {
-			result = 0;
+			result = 0;// 即期重複測驗
 		} else if (now.get(Calendar.YEAR) == nextDelay.get(Calendar.YEAR)
 				&& now.get(Calendar.DAY_OF_YEAR) == nextDelay.get(Calendar.DAY_OF_YEAR) - 1) {
-			result = 2;
+			result = 2;// 即期第一次測驗,但是在即期前一天
 		} else if (now.after(next) && now.before(nextDelay)) {
-			result = 1;
+			result = 1;// 即期第一次測驗
 		} else {
-			result = -1;
+			result = -1;// 過期測驗
 		}
 		return result;
 	}

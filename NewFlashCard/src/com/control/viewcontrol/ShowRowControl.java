@@ -85,7 +85,7 @@ public class ShowRowControl<T> {
 		this.fromIResulIdx = 0;
 	}
 
-	public void add(ShowRow showRow) {
+	public void addShowRow(ShowRow showRow) {
 		this.showRows.add(showRow);
 	}
 

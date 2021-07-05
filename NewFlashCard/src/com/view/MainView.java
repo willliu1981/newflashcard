@@ -101,6 +101,7 @@ public class MainView extends JFrame {
 			}).collect(Collectors.toList());
 			Collections.shuffle(list);
 			this.questions = list;
+			this.originQuestionsQuantity=list.size();
 		}
 
 		@Override
@@ -903,7 +904,7 @@ public class MainView extends JFrame {
 			panel_vocabulary.add(vocabularyRow);
 			vocabularyRow.setName("" + i);
 			vocabularyRow.setShowRowControl(vocabularyShowRowControl);
-			this.vocabularyShowRowControl.add(vocabularyRow);
+			this.vocabularyShowRowControl.addShowRow(vocabularyRow);
 		}
 
 	}
@@ -1519,7 +1520,7 @@ public class MainView extends JFrame {
 			panel_cardbox_vocabulary.add(vocabularyRow);
 			vocabularyRow.setName("" + i);
 			vocabularyRow.setShowRowControl(vocabularyShowRowControl);
-			this.vocabularyShowRowControl.add(vocabularyRow);
+			this.vocabularyShowRowControl.addShowRow(vocabularyRow);
 		}
 	}
 
@@ -1585,7 +1586,7 @@ public class MainView extends JFrame {
 			panel_test_list.add(TestRow);
 			TestRow.setName("" + i);
 			TestRow.setShowRowControl(cardboxShowRowControl);
-			this.cardboxShowRowControl.add(TestRow);
+			this.cardboxShowRowControl.addShowRow(TestRow);
 		}
 
 		/*
@@ -1598,7 +1599,7 @@ public class MainView extends JFrame {
 			panel_question.add(testQuestion);
 			testQuestion.setName("" + i);
 			testQuestion.setShowRowControl(testQuestionControl);
-			this.testQuestionControl.add(testQuestion);
+			this.testQuestionControl.addShowRow(testQuestion);
 		}
 	}
 
@@ -1839,7 +1840,7 @@ public class MainView extends JFrame {
 			panel_cardbox.add(cardBoxRow);
 			cardBoxRow.setName("" + i);
 			cardBoxRow.setShowRowControl(cardboxShowRowControl);
-			this.cardboxShowRowControl.add(cardBoxRow);
+			this.cardboxShowRowControl.addShowRow(cardBoxRow);
 		}
 	}
 

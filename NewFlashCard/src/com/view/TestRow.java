@@ -62,11 +62,13 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryAll();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCardboxIdx(cardbox.getId());
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);// 這個部分可能會被覆寫,可能在MainView
+																										// 定義TestQuestionControl
+																										// 時即便override
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().initialize(3, 11);// 設定問題Row 範圍區間
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
-				
+
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}

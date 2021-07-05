@@ -24,6 +24,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 	protected boolean firstFailure;
 	protected boolean isReview;
 	protected boolean isTesting;
+	protected int originQuestionsQuantity;
 	// random answer <row idx,question idx>
 
 	public enum Stage {
@@ -209,4 +210,7 @@ public class TestQuestionControl<T> extends ShowRowControl<T> {
 		this.isTesting = false;
 	}
 
+	public int getOriginQuestionQuantity() {
+		return this.originQuestionsQuantity;
+	}
 }

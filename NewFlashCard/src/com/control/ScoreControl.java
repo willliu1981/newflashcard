@@ -11,7 +11,7 @@ import com.model.Score;
 
 public class ScoreControl {
 	public static class Model {
-		private static final double[] rate = { 1.0, 1.2, 1.33, 1.47, 1.6, 1.77, 2.0, 2.2, 2.4, 2.64 };
+		private static final double[] rate = { 1.0,1.0, 1.2, 1.33, 1.47, 1.6, 1.77, 2.0, 2.2, 2.4, 2.64 };
 
 		public static double getRate(int index) {
 			double r = 0;
@@ -31,8 +31,8 @@ public class ScoreControl {
 	public static final double RATE_DEFAULT = 0.5;
 	private static final int PRIMARYEXPERIENCE = 100;
 	private static final int SECONDARYEXPERIENCE = 50;
-	private static final int BASECOIN = 50;
-	private static final int ALLFINISHCOIN = 250;
+	private static final int BASECOIN = 5;
+	private static final int ALLFINISHCOIN = 25;
 	private static Score score = new Score();
 	public static Model model = new Model();
 
@@ -58,7 +58,7 @@ public class ScoreControl {
 		try {
 			prop.setProperty(KEY_STARCOIN, score.getStarcoin().toString());
 			prop.setProperty(KEY_EXPERIENCE, score.getExperience().toString());
-			prop.store(new FileOutputStream(new File(path)),null);
+			prop.store(new FileOutputStream(new File(path)), null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -84,15 +84,23 @@ public class ScoreControl {
 		return SECONDARYEXPERIENCE;
 	}
 
-	public static int gainBaseCoin(double rate) {
+	public static int gainCoin(double rate) {
+		return gainCoin(rate, 1);
+	}
+
+	public static int gainCoin(double rate, int count) {
 		int v = 0;
-		score.addCoin(v = (int) (BASECOIN * rate));
+		score.addCoin(v = (int) (BASECOIN * rate * count));
 		return v;
 	}
 
-	public static int gainAllFinishCoin(double rate) {
+	public static int gainBonusCoin(double rate) {
+		return gainBonusCoin(rate, 1);
+	}
+
+	public static int gainBonusCoin(double rate, int count) {
 		int v = 0;
-		score.addCoin(v = (int) (ALLFINISHCOIN * rate));
+		score.addCoin(v = (int) (ALLFINISHCOIN * rate * count));
 		return v;
 	}
 
