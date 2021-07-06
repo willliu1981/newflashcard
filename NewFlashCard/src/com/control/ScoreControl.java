@@ -11,7 +11,7 @@ import com.model.Score;
 
 public class ScoreControl {
 	public static class Model {
-		private static final double[] rate = { 1.0,1.0, 1.2, 1.33, 1.47, 1.6, 1.77, 2.0, 2.2, 2.4, 2.64 };
+		private static final double[] rate = { 1.0, 1.0, 1.2, 1.33, 1.47, 1.6, 1.77, 2.0, 2.2, 2.4, 2.64 };
 
 		public static double getRate(int index) {
 			double r = 0;
@@ -28,7 +28,10 @@ public class ScoreControl {
 	private static final Properties prop = new Properties();
 	private static final String KEY_STARCOIN = "starcoin";
 	private static final String KEY_EXPERIENCE = "experience";
-	public static final double RATE_DEFAULT = 0.5;
+	public static final double DECAYRATE_GAINEXP = 0.6;
+	public static final double RETESTRATE_GAINEXP = 0.5;
+	public static final double RERATE_GAINEXP = 0.5;
+	public static final double RERATE_GAINCOIN = 0.5;
 	private static final int PRIMARYEXPERIENCE = 100;
 	private static final int SECONDARYEXPERIENCE = 50;
 	private static final int BASECOIN = 5;
@@ -64,18 +67,10 @@ public class ScoreControl {
 		}
 	}
 
-	public static int primaryExp() {
-		return primaryExp(1.0);
-	}
-
 	public static int primaryExp(double rate) {
 		int v = 0;
 		score.addExperience(v = (int) (PRIMARYEXPERIENCE * rate));
 		return v;
-	}
-
-	public static int secondaryExp() {
-		return secondaryExp(1.0);
 	}
 
 	public static int secondaryExp(double rate) {

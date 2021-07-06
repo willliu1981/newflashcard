@@ -12,6 +12,10 @@ import org.junit.Test;
  * 注意:更改state 規則將會影響TestQuestion 的 獎利獲得方法(ScoreControl),有可能會造成邏輯錯誤
  */
 public class CardBox {
+	public static enum StateResult{
+		Retest,Primary,BeforeDay,Overdue,Default
+	}
+	
 	private Integer id;
 	private String name;
 	private Integer test_times;
@@ -127,9 +131,9 @@ public class CardBox {
 			this.resetState();
 			return r = false;
 		}
-		if (this.getStateResult() >= 1) {
+		if (this.getStateResult() == StateResult.Primary || this.getStateResult() == StateResult.BeforeDay) {
 			r = !this.nextState();
-		} else if (this.getStateResult() == -1) {
+		} else if (this.getStateResult() == StateResult.Overdue) {
 			this.resetState();
 			r = false;
 		}
@@ -161,13 +165,14 @@ public class CardBox {
 		return cal;
 	}
 
-	public int getStateResult() {
-		int result = -1;
+	public StateResult getStateResult() {
+		StateResult result = StateResult.Default;
 		Calendar now = Calendar.getInstance();
 		Calendar next = this.getNextTestDate();
 		if (next == null) {
-			return 0;
+			return StateResult.Default;
 		}
+		
 		Calendar nextDelay = (Calendar) this.getNextTestDate().clone();
 		int day = this.stateRuleMap.get(this.state);
 		// 如果緩衝天數只有一天,則再加一天
@@ -176,14 +181,14 @@ public class CardBox {
 		}
 		nextDelay.add(Calendar.DAY_OF_MONTH, day);
 		if (now.before(next)) {
-			result = 0;// 即期重複測驗
+			result = StateResult.Retest;// 即期重複測驗
 		} else if (now.get(Calendar.YEAR) == nextDelay.get(Calendar.YEAR)
 				&& now.get(Calendar.DAY_OF_YEAR) == nextDelay.get(Calendar.DAY_OF_YEAR) - 1) {
-			result = 2;// 即期第一次測驗,但是在即期前一天
+			result = StateResult.BeforeDay;// 即期第一次測驗,但是在即期前一天
 		} else if (now.after(next) && now.before(nextDelay)) {
-			result = 1;// 即期第一次測驗
+			result = StateResult.Primary;// 即期第一次測驗
 		} else {
-			result = -1;// 過期測驗
+			result = StateResult.Overdue;// 逾期測驗
 		}
 		return result;
 	}

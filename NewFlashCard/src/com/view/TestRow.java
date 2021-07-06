@@ -163,16 +163,16 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
 			((JLabel) row_right[3]).setText("下次: " + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
 			switch (cardBox.getStateResult()) {
-			case 0:
+			case Retest:
 				this.setBackground(MyColor.getBase());
 				break;
-			case 1:
+			case Primary:
 				this.setBackground(Color.orange);
 				break;
-			case 2:
+			case BeforeDay:
 				this.setBackground(Color.red);
 				break;
-			case -1:
+			case Overdue:
 				this.setBackground(Color.black);
 				break;
 			default:

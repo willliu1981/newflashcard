@@ -48,7 +48,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 	private JPanel panel_question;
 	private JPanel panel_answer;
 	private JPanel panel_background;
-	private double expRate = 1.0;
+	private double expDecayRerate = 1.0;
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
 
@@ -316,17 +316,28 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 						.getCardboxIdx();
 				CardBox box = new CardBoxDao().query(boxid);
 				if (testQuestionShowRowControl.isReview()) {
+					double gainexp_rerate = ScoreControl.RERATE_GAINEXP * expDecayRerate;
+					double gainexp_rate = gainexp_rerate;
+					if (box.getStateResult() == CardBox.StateResult.Retest) {
+						gainexp_rate = gainexp_rerate * ScoreControl.RETESTRATE_GAINEXP;
+					}
+
 					if (box.getTest_times() == 0) {
-						ScoreControl.primaryExp(ScoreControl.RATE_DEFAULT * expRate);
+						ScoreControl.primaryExp(gainexp_rate);
 					} else {
-						ScoreControl.secondaryExp(ScoreControl.RATE_DEFAULT * expRate);
+						ScoreControl.secondaryExp(gainexp_rate);
 					}
 				} else {
-					expRate = 1.0;
+					expDecayRerate = 1.0;
+					double gainexp_rate = 1;
+					if (box.getStateResult() == CardBox.StateResult.Retest) {
+						gainexp_rate *= ScoreControl.RETESTRATE_GAINEXP;
+					}
+
 					if (box.getTest_times() == 0) {
-						ScoreControl.primaryExp();
+						ScoreControl.primaryExp(gainexp_rate);
 					} else {
-						ScoreControl.secondaryExp();
+						ScoreControl.secondaryExp(gainexp_rate);
 					}
 				}
 
@@ -338,7 +349,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 					if (this.testQuestionShowRowControl.isLastQuestion()) {
 						info = String.format("複習答錯的題目,共%d題", this.testQuestionShowRowControl.getReviews().size());
 						this.testQuestionShowRowControl.setReview();
-						expRate *= 0.6;
+						expDecayRerate *= ScoreControl.DECAYRATE_GAINEXP;
 					} else {
 						info = "下一題";
 					}
@@ -350,10 +361,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							info = "已完成測驗,回測驗首頁";
 
 							// 在state 還沒變動前先取得rate,避免誤判為即期重複測驗
-							double rerate = 1;
-							if (box.getStateResult() == 0 || box.isFinish()) {
+							double gaincoin_rerate = 1;
+							if (box.getStateResult() == CardBox.StateResult.Retest || box.isFinish()) {
 								// 即期重複測驗,獎利減少
-								rerate = 0.5;
+								gaincoin_rerate = ScoreControl.RERATE_GAINCOIN;
 							}
 							boolean isBeforeFinish = box.isFinish();
 
@@ -365,11 +376,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							new CardBoxDao().updateTest(box, boxid);
 							testQuestionShowRowControl.endTest();
 
-							double rate = ScoreControl.model.getRate(box.getStateWithScore()) * rerate;
-							ScoreControl.gainCoin(rate, testQuestionShowRowControl.getOriginQuestionQuantity());
+							double gaincoin_rate = ScoreControl.model.getRate(box.getStateWithScore()) * gaincoin_rerate;
+							ScoreControl.gainCoin(gaincoin_rate, testQuestionShowRowControl.getOriginQuestionQuantity());
 							// state 變動後判斷是否 all finish, 再額外獲得bonus
 							if (box.isFinish() && !isBeforeFinish) {
-								ScoreControl.gainBonusCoin(rate,
+								ScoreControl.gainBonusCoin(gaincoin_rate,
 										testQuestionShowRowControl.getOriginQuestionQuantity());
 							}
 
@@ -377,7 +388,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							info = String.format("答對了 (複習題目,共%d題)",
 									this.testQuestionShowRowControl.getReviews().size());
 							this.testQuestionShowRowControl.setReview();
-							expRate *= 0.6;
+							expDecayRerate *= 0.6;
 						}
 					} else {
 						info = "答對了 (下一題)";
