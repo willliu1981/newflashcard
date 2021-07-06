@@ -119,13 +119,13 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							}
 						} else if (rowIdx >= TestQuestion.IDX_ANSWER) {
 							ExposeExplanationBridge bridge = new ExposeExplanationBridge();
-							Dispatcher disp = bridge.getDispatcher();
+							Dispatcher<?> disp = bridge.getDispatcher();
 							bridge.setParameter("id", rowIdx);
 							disp.send();
 
-							if (rowIdx == testQuestionShowRowControl.getCorrectAnswerRowIdx()) {
-								pronounce(testQuestionShowRowControl.getCurrentQueation().getVocabulary());
-							}
+							Map<Integer, Vocabulary> randomAnswers = (Map<Integer, Vocabulary>) UIDateTransportation
+									.getSession().getAttribute("randomAnswers");
+							pronounce(randomAnswers.get(rowIdx).getVocabulary());
 						}
 						break;
 					default:
@@ -351,10 +351,11 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 							// 在state 還沒變動前先取得rate,避免誤判為即期重複測驗
 							double rerate = 1;
-							if (box.getStateResult() == 0) {
+							if (box.getStateResult() == 0 || box.isFinish()) {
 								// 即期重複測驗,獎利減少
 								rerate = 0.5;
 							}
+							boolean isBeforeFinish = box.isFinish();
 
 							box.setTest_times(box.getTest_times() + 1);
 							boolean r = box.state();
@@ -364,10 +365,10 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							new CardBoxDao().updateTest(box, boxid);
 							testQuestionShowRowControl.endTest();
 
-							double rate = ScoreControl.model.getRate(box.getState()) * rerate;
+							double rate = ScoreControl.model.getRate(box.getStateWithScore()) * rerate;
 							ScoreControl.gainCoin(rate, testQuestionShowRowControl.getOriginQuestionQuantity());
 							// state 變動後判斷是否 all finish, 再額外獲得bonus
-							if (box.isFinish()) {
+							if (box.isFinish() && !isBeforeFinish) {
 								ScoreControl.gainBonusCoin(rate,
 										testQuestionShowRowControl.getOriginQuestionQuantity());
 							}

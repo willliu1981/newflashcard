@@ -123,7 +123,6 @@ public class MainView extends JFrame {
 	private JPanel panel_cardbox_vocabulary;
 	private JPanel panel_test_center_cardlayout;
 	private JPanel panel_start;
-	private JTextField textField_1;
 	private JPanel panel_vocabulary_editbar;
 	private JButton btnNewButton_topbar_vocabulary;
 	private JTextField textField_7;
@@ -172,7 +171,7 @@ public class MainView extends JFrame {
 	 */
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 800);
+		setBounds(100, 100, 1000, 794);
 
 		this.addWindowListener(new WindowAdapter() {
 
@@ -443,21 +442,15 @@ public class MainView extends JFrame {
 		panel_start.add(lblNewLabel_12, BorderLayout.CENTER);
 
 		JPanel panel_bottombar = new JPanel();
-		panel_bottombar.setVisible(false);
 		contentPane.add(panel_bottombar, BorderLayout.SOUTH);
 		panel_bottombar.setLayout(new CardLayout(0, 0));
 
 		JPanel panel = new JPanel();
 		panel_bottombar.add(panel, "name_165616982003200");
 
-		JLabel lblNewLabel_14 = new JLabel("New label");
+		JLabel lblNewLabel_14 = new JLabel("Product by Kuanwei ");
 		lblNewLabel_14.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel.add(lblNewLabel_14);
-
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel.add(textField_1);
-		textField_1.setColumns(10);
 
 		createVocabularyPanel();
 		createCardBoxPanel();

@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Test;
+
 /*
  * 注意:更改state 規則將會影響TestQuestion 的 獎利獲得方法(ScoreControl),有可能會造成邏輯錯誤
  */
@@ -108,10 +110,6 @@ public class CardBox {
 		this.state = 1;
 	}
 
-	private void clearStage() {
-		this.state = 0;
-	}
-
 	public Integer getState() {
 		return state;
 	}
@@ -188,6 +186,24 @@ public class CardBox {
 			result = -1;// 過期測驗
 		}
 		return result;
+	}
+
+	public int getStateMaxKey() {
+		return this.stateRuleMap.keySet().stream().max((x1, x2) -> x1 - x2).get();
+	}
+
+	public int getStateWithScore() {
+		if (this.getState() > this.getStateMaxKey()) {
+			return this.getStateMaxKey();
+		} else {
+			return this.getState();
+		}
+	}
+
+	@Test
+	public void test1() {
+		CardBox box = new CardBox();
+		System.out.println(box.getStateMaxKey());
 	}
 
 }
