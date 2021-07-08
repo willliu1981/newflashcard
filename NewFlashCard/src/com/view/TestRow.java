@@ -37,19 +37,36 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private  static LineBorder BlackLineBorder= new LineBorder(Color.black, 3);
 	private  static LineBorder GreenLineBorder= new LineBorder(MyColor.darkGreen(), 3);
 	private  static LineBorder DefaultLineBorder= new LineBorder(MyColor.defaultColor(), 3);
+	private boolean wheelpress = false;// 滾輸按下
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
-				showRowControl.rearwardFromIdx(3);
+				if (wheelpress) {
+					showRowControl.rearwardFromIdx(12);// 移動量取決於MainView panel_vocabulary add
+														// VocabularyRow 的數量
+				} else {
+					showRowControl.rearwardFromIdx(3);
+				}
 			} else {
-				showRowControl.towardFromIdx(3);
+				if (wheelpress) {
+					showRowControl.towardFromIdx(12);
+				} else {
+					showRowControl.towardFromIdx(3);
+				}
 			}
 			showRowControl.showRow();
+			
 		}
 	};
 
 	private MouseAdapter myClickListener = new MouseAdapter() {
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			wheelpress = false;
+		}
+
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
@@ -72,6 +89,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
 
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
+				wheelpress = true;
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 			}
 		}
@@ -176,7 +194,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			if (cardBox.getTest_date() == null && !cardBox.isFinish()) {
 				((JLabel) row_right[2]).setForeground((Color.red));
 			} else {
-				((JLabel) row_right[2]).setForeground(Color.LIGHT_GRAY);
+				((JLabel) row_right[2]).setForeground(Color.black);
 			}
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
 			((JLabel) row_right[3]).setText("下次: " + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
