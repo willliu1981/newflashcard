@@ -27,21 +27,23 @@ import com.model.Vocabulary;
 import com.tool.MyColor;
 
 import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
+	private  static LineBorder OrangeLineBorder= new LineBorder(Color.orange, 3);
+	private  static LineBorder RedLineBorder= new LineBorder(Color.red, 3);
+	private  static LineBorder BlackLineBorder= new LineBorder(Color.black, 3);
+	private  static LineBorder GreenLineBorder= new LineBorder(MyColor.darkGreen(), 3);
+	private  static LineBorder DefaultLineBorder= new LineBorder(MyColor.defaultColor(), 3);
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
-				showRowControl.rearwardFromIdx();
-				showRowControl.rearwardFromIdx();
-				showRowControl.rearwardFromIdx();
+				showRowControl.rearwardFromIdx(3);
 			} else {
-				showRowControl.towardFromIdx();
-				showRowControl.towardFromIdx();
-				showRowControl.towardFromIdx();
+				showRowControl.towardFromIdx(3);
 			}
 			showRowControl.showRow();
 		}
@@ -84,6 +86,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		setLayout(new BorderLayout(0, 0));
 
 		panel_root = new JPanel();
+		panel_root.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		add(panel_root);
 		panel_root.setLayout(new BorderLayout(0, 0));
 
@@ -92,6 +95,9 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_center.setLayout(new GridLayout(1, 0, 0, 0));
 
 		JLabel lblNewLabel_2 = new JLabel("name");
+		lblNewLabel_2.setForeground(Color.BLACK);
+		lblNewLabel_2.setOpaque(true);
+		lblNewLabel_2.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_2.setToolTipText("box name");
 		lblNewLabel_2.addMouseListener(myClickListener);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -103,6 +109,9 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_rbar.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel lblNewLabel_1 = new JLabel("quantity");
+		lblNewLabel_1.setForeground(Color.BLACK);
+		lblNewLabel_1.setOpaque(true);
+		lblNewLabel_1.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_1.setToolTipText("quantity");
 		lblNewLabel_1.addMouseListener(myClickListener);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,6 +119,9 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_rbar.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_1_1 = new JLabel("test times");
+		lblNewLabel_1_1.setForeground(Color.BLACK);
+		lblNewLabel_1_1.setOpaque(true);
+		lblNewLabel_1_1.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_1_1.setToolTipText("test times");
 		lblNewLabel_1_1.addMouseListener(myClickListener);
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -117,6 +129,9 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_rbar.add(lblNewLabel_1_1);
 
 		JLabel lblNewLabel = new JLabel("test date");
+		lblNewLabel.setForeground(Color.BLACK);
+		lblNewLabel.setOpaque(true);
+		lblNewLabel.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel.setToolTipText("test date");
 		lblNewLabel.addMouseListener(myClickListener);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -124,6 +139,9 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 		panel_rbar.add(lblNewLabel);
 
 		JLabel lblNextDate = new JLabel("next test");
+		lblNextDate.setForeground(Color.BLACK);
+		lblNextDate.setOpaque(true);
+		lblNextDate.setBackground(Color.LIGHT_GRAY);
 		lblNextDate.setToolTipText("next test date");
 		lblNextDate.addMouseListener(myClickListener);
 		lblNextDate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -155,32 +173,33 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[0]).setText("詞彙數量: " + sum);
 			((JLabel) row_right[1]).setText("已測驗次數: " + cardBox.getTest_times());
 			// 測驗時間為null時,標示紅色
-			if (cardBox.getTest_date() == null) {
+			if (cardBox.getTest_date() == null && !cardBox.isFinish()) {
 				((JLabel) row_right[2]).setForeground((Color.red));
 			} else {
-				((JLabel) row_right[2]).setForeground(Color.black);
+				((JLabel) row_right[2]).setForeground(Color.LIGHT_GRAY);
 			}
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
 			((JLabel) row_right[3]).setText("下次: " + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
 			switch (cardBox.getStateResult()) {
 			case Retest:
-				this.setBackground(MyColor.getBase());
+				panel_root.setBorder(DefaultLineBorder);
 				break;
 			case Primary:
-				this.setBackground(Color.orange);
+				panel_root.setBorder(OrangeLineBorder);
 				break;
 			case BeforeDay:
-				this.setBackground(Color.red);
+				panel_root.setBorder(RedLineBorder);
 				break;
 			case Overdue:
-				this.setBackground(Color.black);
+				panel_root.setBorder(BlackLineBorder);
 				break;
 			default:
+				panel_root.setBorder(DefaultLineBorder);
 				break;
 			}
 
 			if (cardBox.isFinish()) {
-				this.setBackground(Color.LIGHT_GRAY);
+				panel_root.setBorder(GreenLineBorder);
 			}
 		} else {
 			((JLabel) row_center[0]).setText(" ");
@@ -188,7 +207,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) row_right[1]).setText(" ");
 			((JLabel) row_right[2]).setText(" ");
 			((JLabel) row_right[3]).setText(" ");
-			this.setBackground(MyColor.getBase());
+			panel_root.setBorder(DefaultLineBorder);
 		}
 
 	}

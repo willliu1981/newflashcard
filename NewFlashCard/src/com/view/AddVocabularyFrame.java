@@ -474,7 +474,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		btnNewButton_update.setEnabled(false);
 		textField_vocabulary.setEditable(true);
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
-		panel_query.setBackground(MyColor.getBase());
+		panel_query.setBackground(MyColor.defaultColor());
 		queryBtnHighLight();
 	}
 
@@ -526,7 +526,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		if (r.has(dt.SENDANDBACK_NORMAL)) {
 			panel_query.setBackground(Color.red);
 		} else {
-			panel_query.setBackground(MyColor.getBase());
+			panel_query.setBackground(MyColor.defaultColor());
 		}
 	}
 
@@ -534,9 +534,9 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		if (query) {
 			this.panel_center.setBackground(Color.red);
 			panel_center.setBorder(new LineBorder(SystemColor.red, 3, true));
-			this.panel_query.setBackground(MyColor.getBase());
+			this.panel_query.setBackground(MyColor.defaultColor());
 		} else {
-			this.panel_center.setBackground(MyColor.getBase());
+			this.panel_center.setBackground(MyColor.defaultColor());
 			panel_center.setBorder(new LineBorder(SystemColor.controlHighlight, 3, true));
 		}
 	}

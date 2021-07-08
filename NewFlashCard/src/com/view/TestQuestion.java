@@ -289,7 +289,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 			/*
 			 * 是否複習,則顯示為他色,否為預設
 			 */
-			this.setBackground(MyColor.getBase());
+			this.setBackground(MyColor.defaultColor());
 			if (this.testQuestionShowRowControl.isReview() && idx == TestQuestion.IDX_QUESTION) {
 				this.setBackground(Color.red);
 			}
@@ -303,7 +303,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 							.setText("猜錯了");
 					this.setBackground(Color.red);
 				} else {
-					this.setBackground(MyColor.getBase());
+					this.setBackground(MyColor.defaultColor());
 				}
 			} else if (idx == TestQuestion.IDX_PROGRESS) {
 

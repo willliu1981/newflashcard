@@ -59,25 +59,29 @@ public class ShowRowControl<T> {
 		return fromIResulIdx;
 	}
 
-	public void towardFromIdx() {
-		towardFromIdx(1);
+	public boolean towardFromIdx() {
+		return towardFromIdx(1);
 	}
 
-	public void towardFromIdx(int count) {
-		this.fromIResulIdx -= count;
-		if (this.fromIResulIdx <= -1) {
-			this.fromIResulIdx = 0;
+	public boolean towardFromIdx(int count) {
+		if (this.fromIResulIdx - count <= -1) {
+			return false;
+		} else {
+			this.fromIResulIdx -= count;
+			return true;
 		}
 	}
 
-	public void rearwardFromIdx() {
-		rearwardFromIdx(1);
+	public boolean rearwardFromIdx() {
+		return rearwardFromIdx(1);
 	}
 
-	public void rearwardFromIdx(int count) {
-		this.fromIResulIdx += count;
-		if (this.fromIResulIdx >= this.results.size()) {
-			this.fromIResulIdx = this.results.size() - 1;
+	public boolean rearwardFromIdx(int count) {
+		if (this.fromIResulIdx + count >= this.results.size()) {
+			return false;
+		} else {
+			this.fromIResulIdx += count;
+			return true;
 		}
 	}
 

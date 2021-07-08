@@ -3,9 +3,14 @@ package com.tool;
 import java.awt.Color;
 
 public class MyColor {
-	public static Color getBase() {
+	
+	public static Color defaultColor() {
 		return new Color(0xf0f0f0);
 	}
+	public static Color darkGreen() {
+		return new Color(0,96,24);
+	}
+	
 
 	public static Color heightenColor(Color color, double rate) {
 		int r = color.getRed();

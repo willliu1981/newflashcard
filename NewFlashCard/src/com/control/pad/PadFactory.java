@@ -86,7 +86,7 @@ public class PadFactory {
 		if (PadFactory.isChanged(mask)) {
 			parent.setBackground(Color.red);
 		} else {
-			parent.setBackground(MyColor.getBase());
+			parent.setBackground(MyColor.defaultColor());
 		}
 	}
 

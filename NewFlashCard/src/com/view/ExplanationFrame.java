@@ -394,7 +394,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		if (PadFactory.isChanged(PadFactory.EXPLANATIONFRAME)) {
 			panel_updateborder.setBackground(Color.red);
 		} else {
-			panel_updateborder.setBackground(MyColor.getBase());
+			panel_updateborder.setBackground(MyColor.defaultColor());
 		}
 	}
 
@@ -402,7 +402,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		if (vocabulary != null && vocabulary.getExample() != null && !(vocabulary.getExample().equals(""))) {
 			panel_exampleborder.setBackground(new Color(0, 176, 0));
 		} else {
-			panel_exampleborder.setBackground(MyColor.getBase());
+			panel_exampleborder.setBackground(MyColor.defaultColor());
 		}
 	}
 
@@ -445,7 +445,7 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		if (this.explanationType.equals(EXPLANATION)) {
 			this.btnNewButton_type.setForeground(MyColor.heightenColor(exampleBackground, -0.45));
 			this.btnNewButton_type.setText(EXAMPLE);
-			panel_exampleborder.setBackground(MyColor.getBase());
+			panel_exampleborder.setBackground(MyColor.defaultColor());
 			if (dt == null) {
 				exampleHighLight(null);
 			} else {
