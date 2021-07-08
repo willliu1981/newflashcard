@@ -132,19 +132,19 @@ public class ExplanationFrame extends JFrame implements Transportable {
 
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
-		
+
 		btnNewButton_1 = new JButton("發音");
 		btnNewButton_1.setBackground(SystemColor.control);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PronounceBridge bridge=new PronounceBridge();
+				PronounceBridge bridge = new PronounceBridge();
 				bridge.setParameter("vocabulary", txtVocabulary.getText().trim());
 				bridge.getDispatcher().send();
 			}
 		});
 		btnNewButton_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		panel.add(btnNewButton_1);
-		
+
 		panel_5 = new JPanel();
 		panel.add(panel_5);
 
@@ -220,22 +220,25 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_explanation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
-						textArea_explanation, e);
+				if (!locked) {
+					PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
+							textArea_explanation, e);
+				}
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-
-				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, textArea_explanation,
-						e);
+				if (!locked) {
+					PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
+							textArea_explanation, e);
+				}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
-						textArea_explanation, e);
 				if (!locked) {
+					PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION,
+							textArea_explanation, e);
 					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXPLANATION, e);
 				}
 			}
@@ -261,19 +264,24 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		textArea_example.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
+				if (!locked) {
+					PadFactory.getPad().keyAction_pressed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example,
+							e);
+				}
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-
-				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
+				if (!locked) {
+					PadFactory.getPad().keyAction_typed(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
+				}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example, e);
 				if (!locked) {
+					PadFactory.getPad().keyAction_release(PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, textArea_example,
+							e);
 					PadFactory.getPad().change(panel_updateborder, PadFactory.MAIN_EXPLANATIONFRAME_EXAMPLE, e);
 				}
 			}
@@ -312,22 +320,25 @@ public class ExplanationFrame extends JFrame implements Transportable {
 		txt_explanation_translation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				PadFactory.getPad().keyAction_pressed(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
-						txt_explanation_translation, e);
+				if (!locked) {
+					PadFactory.getPad().keyAction_pressed(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
+							txt_explanation_translation, e);
+				}
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-
-				PadFactory.getPad().keyAction_typed(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
-						txt_explanation_translation, e);
+				if (!locked) {
+					PadFactory.getPad().keyAction_typed(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
+							txt_explanation_translation, e);
+				}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				PadFactory.getPad().keyAction_release(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
-						txt_explanation_translation, e);
 				if (!locked) {
+					PadFactory.getPad().keyAction_release(PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION),
+							txt_explanation_translation, e);
 					PadFactory.change(panel_updateborder, PadFactory.FRAME_EXPLANATION.add(PadFactory.TRANSLATION), e);
 				}
 			}

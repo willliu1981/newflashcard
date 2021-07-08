@@ -255,7 +255,6 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-
 				PadFactory.getPad().keyAction_typed(PadFactory.MAIN_ADDVOCABULARYFRAME_EXPLANATION,
 						textArea_explanation, e);
 			}
