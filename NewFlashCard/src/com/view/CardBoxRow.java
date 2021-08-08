@@ -109,7 +109,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 					fieldpanel.setVisible(false);
 				}
 				Map<String, String> map2 = new HashMap<>();
-				map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MainView.MultiType);
+				map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MainView.CardVocabulary_Eidt);
 				showRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setEventResultIdx(-1);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();

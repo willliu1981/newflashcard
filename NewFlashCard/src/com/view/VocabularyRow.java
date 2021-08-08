@@ -118,9 +118,10 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				JPanel panel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
 						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
 						.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
-				if (panel.getName() != null && panel.getName().equals(MainView.SingleType)) {
+				if (panel.getName() != null && panel.getName().equals(MainView.Normal)) {
+					// **政策性選用
 					/**
-					 * 政策性選用 顯示cardbox-vocabulary editbar edit
+					 * 顯示cardbox-vocabulary editbar edit
 					 * 
 					 * ((CardLayout) ((MainView)
 					 * showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
@@ -137,19 +138,22 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 						showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
 					}
 
-					if (showRowControl.getEventResultMap().size() > 0) {
-						((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
-								.getLayout())
-										.show(((MainView) showRowControl.getEventJFrame())
-												.getPanel_cardbox_vocabulary_editbar(),
-												MainView.CardLayout_Editbar_edit);
-					} else {
-						((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
-								.getLayout())
-										.show(((MainView) showRowControl.getEventJFrame())
-												.getPanel_cardbox_vocabulary_editbar(),
-												MainView.CardLayout_Editbar_Search);
+					if (panel.getName() != null && panel.getName().equals(MainView.CardVocabulary_Eidt)) {
+						if (showRowControl.getEventResultMap().size() > 0) {
+							((CardLayout) ((MainView) showRowControl.getEventJFrame())
+									.getPanel_cardbox_vocabulary_editbar().getLayout())
+											.show(((MainView) showRowControl.getEventJFrame())
+													.getPanel_cardbox_vocabulary_editbar(),
+													MainView.CardLayout_Editbar_edit);
+						} else {
+							((CardLayout) ((MainView) showRowControl.getEventJFrame())
+									.getPanel_cardbox_vocabulary_editbar().getLayout())
+											.show(((MainView) showRowControl.getEventJFrame())
+													.getPanel_cardbox_vocabulary_editbar(),
+													MainView.CardLayout_Editbar_Search);
+						}
 					}
+
 				}
 				/*
 				 * 關閉Editbar EditPanel
@@ -248,14 +252,15 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
 				.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
 		if (idx < size) {
-			if (panel.getName() != null && panel.getName().equals(MainView.SingleType)) {
+			if (panel.getName() != null && panel.getName().equals(MainView.Normal)) {
 				if (idx == showRowControl.getEventResultIdx()) {
 					this.setBackground(ShowRowControl.EventColor_Click);
 				} else {
 					this.setBackground(ShowRowControl.EventColor_UnClick);
 				}
 				this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiUnClick);
-			} else if (panel.getName() != null && panel.getName().equals(MainView.MultiType)) {
+			} else if (panel.getName() != null && (panel.getName().equals(MainView.CardVocabulary_Add)
+					|| panel.getName().equals(MainView.CardVocabulary_Eidt))) {
 				if (showRowControl.getEventResultMap().containsKey(idx)) {
 					this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiClick);
 				} else {
