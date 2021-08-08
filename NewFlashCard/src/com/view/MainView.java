@@ -353,6 +353,11 @@ public class MainView extends JFrame {
 					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox);
 					((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar,
 							CardLayout_Editbar_Search);
+					
+					Map<String, String> map2 = new HashMap<>();
+					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, CardVocabulary_Eidt);
+					vocabularyShowRowControl.getEventResultMap().clear();
+					cardboxShowRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				
 				}
 			});
