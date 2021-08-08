@@ -94,7 +94,8 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
 						.getLayout()).show(
 								((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
-								MainView.CardLayout_Editbar_Serch);
+								MainView.CardLayout_Editbar_Search);
+
 				/*
 				 * 關閉Editbar EditPanel
 				 */
@@ -108,7 +109,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 					fieldpanel.setVisible(false);
 				}
 				Map<String, String> map2 = new HashMap<>();
-				map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MainView.Unlock);
+				map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MainView.MultiType);
 				showRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().setEventResultIdx(-1);
 				((MainView) showRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
@@ -204,7 +205,7 @@ public class CardBoxRow extends JPanel implements ShowRow<CardBox> {
 			((JLabel) rows[2]).setText("" + sum);
 			((JLabel) rows[3]).setText("" + cardBox.getTest_times());
 			((JLabel) rows[4]).setText("" + cardBox.getTest_date());
-			((JLabel) rows[5]).setText("" +(cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
+			((JLabel) rows[5]).setText("" + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
 			((JLabel) rows[6]).setText("" + cardBox.getCreate_date());
 			((JLabel) rows[7]).setText("" + cardBox.getUpdate_date());
 		} else {

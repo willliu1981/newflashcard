@@ -79,10 +79,10 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(e.getClickCount()==2) {
+			if (e.getClickCount() == 2) {
 				MainView.explantationFrame.setVisible(true);
 			}
-			
+
 			if (e.getButton() == MouseEvent.BUTTON2) {
 				wheelpress = true;
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -118,21 +118,38 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				JPanel panel = (JPanel) ((MainView) showRowControl.getEventJFrame()).getCardboxShowRowControl()
 						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
 						.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
-				if (panel.getName() != null && panel.getName().equals(MainView.Unlock)) {
+				if (panel.getName() != null && panel.getName().equals(MainView.SingleType)) {
 					/*
 					 * 顯示cardbox-vocabulary editbar edit
+					 * 
+					 * ((CardLayout) ((MainView)
+					 * showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
+					 * .getLayout()).show( ((MainView)
+					 * showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
+					 * MainView.CardLayout_Editbar_edit);
+					 * showRowControl.getEventResultMap().clear();
+					 * showRowControl.addEventResultMap(idx, showRowControl.getEventReault()); //
 					 */
-					((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
-							.getLayout()).show(
-									((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
-									MainView.CardLayout_Editbar_edit);
-					showRowControl.getEventResultMap().clear();
-					showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
 				} else {
+
 					if (showRowControl.getEventResultMap().containsValue(showRowControl.getEventReault())) {
 						showRowControl.getEventResultMap().remove(idx);
 					} else {
 						showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
+					}
+
+					if (showRowControl.getEventResultMap().size() > 0) {
+						((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
+								.getLayout())
+										.show(((MainView) showRowControl.getEventJFrame())
+												.getPanel_cardbox_vocabulary_editbar(),
+												MainView.CardLayout_Editbar_edit);
+					} else {
+						((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
+								.getLayout())
+										.show(((MainView) showRowControl.getEventJFrame())
+												.getPanel_cardbox_vocabulary_editbar(),
+												MainView.CardLayout_Editbar_Search);
 					}
 				}
 				/*
@@ -222,8 +239,9 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 			((JLabel) rows[3]).setText(" ");
 			((JLabel) rows[4]).setText(" ");
 			((JLabel) rows[5]).setText(" ");
-			this.setBackground(ShowRowControl.EventColor_UnClick);
 		}
+		this.setBackground(ShowRowControl.EventColor_UnClick);
+
 		/*
 		 * cardbox-vocabulary editbar add lock state process
 		 */
@@ -231,14 +249,14 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 				.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
 				.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
 		if (idx < size) {
-			if (panel.getName() != null && panel.getName().equals(MainView.Unlock)) {
+			if (panel.getName() != null && panel.getName().equals(MainView.SingleType)) {
 				if (idx == showRowControl.getEventResultIdx()) {
 					this.setBackground(ShowRowControl.EventColor_Click);
 				} else {
 					this.setBackground(ShowRowControl.EventColor_UnClick);
 				}
 				this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiUnClick);
-			} else if (panel.getName() != null && panel.getName().equals(MainView.Lock)) {
+			} else if (panel.getName() != null && panel.getName().equals(MainView.MultiType)) {
 				if (showRowControl.getEventResultMap().containsKey(idx)) {
 					this.getComponent(0).setBackground(ShowRowControl.EventColor_MultiClick);
 				} else {

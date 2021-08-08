@@ -78,11 +78,11 @@ public class MainView extends JFrame {
 	public static final String CardLayout_Test_List = "test_list";
 	public static final String CardLayout_Test_Question = "test_question";
 	public static final String CardLayout_topbar_Start = "test_start";
-	public static final String CardLayout_Editbar_Serch = "editbar_serch";
+	public static final String CardLayout_Editbar_Search = "editbar_serch";
 	public static final String CardLayout_Editbar_Add = "editbar_add";
 	public static final String CardLayout_Editbar_edit = "editbar_edit";
-	public static final String Lock = "lock";
-	public static final String Unlock = "unlock";
+	public static final String MultiType = "lock";
+	public static final String SingleType = "unlock";
 	public static final String MouseEvent_RemoteClickUnResetFromIdx = "event_remoteclickunresetfromidx";
 	public static final String MouseEvent_RemoteClickResetFromIdx = "event_remoteclickresetfromidx";
 	private JPanel contentPane;
@@ -347,9 +347,10 @@ public class MainView extends JFrame {
 					map.put(ShowRowInfo.CardBox_Quantity, String.valueOf(list.size()));
 					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox);
 					((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar,
-							CardLayout_Editbar_Serch);
+							CardLayout_Editbar_Search);
 					Map<String, String> map2 = new HashMap<>();
-					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
+					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, MultiType);
+					vocabularyShowRowControl.getEventResultMap().clear();
 					cardboxShowRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				}
 			});
@@ -375,9 +376,9 @@ public class MainView extends JFrame {
 					map.put(ShowRowInfo.Vocabulary_Quantity, String.valueOf(list.size()));
 					vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary);
 					((CardLayout) panel_vocabulary_editbar.getLayout()).show(panel_vocabulary_editbar,
-							CardLayout_Editbar_Serch);
+							CardLayout_Editbar_Search);
 					Map<String, String> map2 = new HashMap<>();
-					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
+					map2.put(ShowRowInfo.Cardbox_Editbar_add_lock, SingleType);
 					cardboxShowRowControl.showInfo(map2, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 					vocabularyShowRowControl.getEventResultMap().clear();
 					vocabularyShowRowControl.showRow();
@@ -547,7 +548,7 @@ public class MainView extends JFrame {
 
 		JPanel panel_serch = new JPanel();
 		panel_serch.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_vocabulary_editbar.add(panel_serch, CardLayout_Editbar_Serch);
+		panel_vocabulary_editbar.add(panel_serch, CardLayout_Editbar_Search);
 
 		JLabel lblNewLabel_13 = new JLabel("serch");
 		lblNewLabel_13.setVisible(false);
@@ -648,7 +649,7 @@ public class MainView extends JFrame {
 				map.put(ShowRowInfo.Vocabulary, "");
 				vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Add);
 				((CardLayout) panel_vocabulary_editbar.getLayout()).show(panel_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 			}
 		});
 		btnNewButton_14.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -666,7 +667,7 @@ public class MainView extends JFrame {
 				map.put(ShowRowInfo.Vocabulary, "");
 				vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Add);
 				((CardLayout) panel_vocabulary_editbar.getLayout()).show(panel_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 			}
 		});
 		btnNewButton_15.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -742,7 +743,7 @@ public class MainView extends JFrame {
 				map.put(ShowRowInfo.Vocabulary, "");
 				vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Edit);
 				((CardLayout) panel_vocabulary_editbar.getLayout()).show(panel_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 				vocabularyShowRowControl.setEventResultIdx(-1);
 				vocabularyShowRowControl.showRow();
 			}
@@ -776,7 +777,7 @@ public class MainView extends JFrame {
 				map.put(ShowRowInfo.BoxId, "");
 				vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Edit);
 				((CardLayout) panel_vocabulary_editbar.getLayout()).show(panel_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 			}
 		});
 		JButton btnNewButton_14_1_1 = new JButton("Delete");
@@ -800,7 +801,7 @@ public class MainView extends JFrame {
 				map.put(ShowRowInfo.Vocabulary, "");
 				vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_Vocabulary_Editbar_Edit);
 				((CardLayout) panel_vocabulary_editbar.getLayout()).show(panel_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 				vocabularyShowRowControl.setEventResultIdx(-1);
 				vocabularyShowRowControl.showRow();
 
@@ -1050,13 +1051,14 @@ public class MainView extends JFrame {
 		panel_addandeditname.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_cardbox_vocabulary_title.add(panel_addandeditname);
 		panel_addandeditname.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JButton btnNewButton_9 = new JButton(InfoProperty.getInfo(InfoProperty.Create));
-		btnNewButton_9.setPreferredSize(new Dimension(50, 28));
-		btnNewButton_9.addMouseListener(new MouseAdapter() {
+		JButton btnNewButton_9a = new JButton(InfoProperty.getInfo(InfoProperty.Create));
+		btnNewButton_9a.setPreferredSize(new Dimension(50, 28));
+		btnNewButton_9a.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				vocabularyShowRowControl.resetFromIdx();
 				vocabularyShowRowControl.setEventResultIdx(-1);
+				vocabularyShowRowControl.getEventResultMap().clear();
 				vocabularyShowRowControl.showRow();
 				((CardLayout) panel_cardbox_vocabulary_editbar.getLayout()).show(panel_cardbox_vocabulary_editbar,
 						CardLayout_Editbar_Add);
@@ -1064,7 +1066,7 @@ public class MainView extends JFrame {
 				((MainView) vocabularyShowRowControl.getEventJFrame()).getVocabularyShowRowControl().setResults(list);
 				((MainView) vocabularyShowRowControl.getEventJFrame()).getVocabularyShowRowControl().showRow();
 				Map<String, String> map = new HashMap<>();
-				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, Lock);
+				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, MultiType);
 				cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				/*
 				 * 關閉Editbar EditPanel
@@ -1079,7 +1081,7 @@ public class MainView extends JFrame {
 					editpanel.setBorder(BorderFactory.createEmptyBorder());
 					fieldpanel.setVisible(false);
 				}
-				vocabularyShowRowControl.getEventResultMap().clear();
+				
 			}
 		});
 
@@ -1097,11 +1099,11 @@ public class MainView extends JFrame {
 
 		JPanel panel_3 = new JPanel();
 		panel_addandeditname.add(panel_3);
-		btnNewButton_9.setToolTipText("add words from list for this card-box");
-		btnNewButton_9.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		btnNewButton_9.setBackground(SystemColor.controlHighlight);
-		btnNewButton_9.setFont(new Font("Dialog", Font.PLAIN, 16));
-		panel_addandeditname.add(btnNewButton_9);
+		btnNewButton_9a.setToolTipText("add words from list for this card-box");
+		btnNewButton_9a.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		btnNewButton_9a.setBackground(SystemColor.controlHighlight);
+		btnNewButton_9a.setFont(new Font("Dialog", Font.PLAIN, 16));
+		panel_addandeditname.add(btnNewButton_9a);
 
 		JPanel panel_cardbox_vocabulary_editbar_editpanel = new JPanel();
 		info_cardbox_vocabulary_editbar_edit.add(panel_cardbox_vocabulary_editbar_editpanel,
@@ -1126,7 +1128,7 @@ public class MainView extends JFrame {
 					editpanel.setBorder(BorderFactory.createEmptyBorder());
 					fieldpanel.setVisible(false);
 					Map<String, String> map = new HashMap<>();
-					map.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
+					map.put(ShowRowInfo.Cardbox_Editbar_add_lock, SingleType);
 					cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				} else {
 					editpanel.setBorder(BorderFactory.createEtchedBorder());
@@ -1145,7 +1147,7 @@ public class MainView extends JFrame {
 					((CardLayout) ((MainView) cardboxShowRowControl.getEventJFrame())
 							.getPanel_cardbox_vocabulary_editbar().getLayout())
 									.show(((MainView) cardboxShowRowControl.getEventJFrame())
-											.getPanel_cardbox_vocabulary_editbar(), MainView.CardLayout_Editbar_Serch);
+											.getPanel_cardbox_vocabulary_editbar(), MainView.CardLayout_Editbar_Search);
 					vocabularyShowRowControl.setEventResultIdx(-1);
 					vocabularyShowRowControl.showRow();
 				}
@@ -1203,7 +1205,7 @@ public class MainView extends JFrame {
 				CardBoxRow eventP = (CardBoxRow) panel_cardbox.getComponent(eventRowIdx + 1);// 取得事件panel
 				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
 				Map<String, String> map = new HashMap<>();
-				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
+				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, SingleType);
 				cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 			}
 		});
@@ -1281,7 +1283,7 @@ public class MainView extends JFrame {
 
 		JPanel panel_serch = new JPanel();
 		panel_serch.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_cardbox_vocabulary_editbar.add(panel_serch, CardLayout_Editbar_Serch);
+		panel_cardbox_vocabulary_editbar.add(panel_serch, CardLayout_Editbar_Search);
 
 		JLabel lblNewLabel_13 = new JLabel("serch");
 		lblNewLabel_13.setVisible(false);
@@ -1300,31 +1302,31 @@ public class MainView extends JFrame {
 		comboBox.setBackground(SystemColor.menu);
 		panel_serch.add(comboBox);
 
-		JPanel panel_add = new JPanel();
-		info_cardbox_vocabulary_editbar_add.add(panel_add, ShowRowInfo.Cardbox_Editbar_add_lock);
-		panel_cardbox_vocabulary_editbar.add(panel_add, CardLayout_Editbar_Add);
-		panel_add.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel panel_adda = new JPanel();
+		info_cardbox_vocabulary_editbar_add.add(panel_adda, ShowRowInfo.Cardbox_Editbar_add_lock);
+		panel_cardbox_vocabulary_editbar.add(panel_adda, CardLayout_Editbar_Add);
+		panel_adda.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel lblNewLabel_15 = new JLabel("Serch");
 		lblNewLabel_15.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_15.setFont(new Font("新細明體", Font.PLAIN, 18));
-		panel_add.add(lblNewLabel_15);
+		panel_adda.add(lblNewLabel_15);
 
 		textField_10 = new JTextField();
 		textField_10.setFont(new Font("新細明體", Font.PLAIN, 16));
 		textField_10.setColumns(4);
-		panel_add.add(textField_10);
+		panel_adda.add(textField_10);
 
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setBackground(SystemColor.controlHighlight);
-		panel_add.add(comboBox_1);
+		panel_adda.add(comboBox_1);
 
 		JPanel panel = new JPanel();
-		panel_add.add(panel);
+		panel_adda.add(panel);
 
-		JButton btnNewButton_14 = new JButton("Add");
-		btnNewButton_14.setToolTipText("commit");
-		btnNewButton_14.addActionListener(new ActionListener() {
+		JButton btnNewButton_14a = new JButton("Add");
+		btnNewButton_14a.setToolTipText("commit");
+		btnNewButton_14a.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int cardbox_id = cardboxShowRowControl.getEventReault().getId();
 				List<Vocabulary> v = vocabularyShowRowControl.getEventResultMap().values().stream()
@@ -1335,7 +1337,7 @@ public class MainView extends JFrame {
 					vDao.update(x, x.getId());
 				});
 				Map<String, String> map = new HashMap<>();
-				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, Unlock);
+				map.put(ShowRowInfo.Cardbox_Editbar_add_lock, SingleType);
 				cardboxShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
 				vocabularyShowRowControl.getEventResultMap().clear();
 				/*
@@ -1355,12 +1357,12 @@ public class MainView extends JFrame {
 				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
 			}
 		});
-		btnNewButton_14.setFont(new Font("新細明體", Font.PLAIN, 14));
-		btnNewButton_14.setBackground(SystemColor.controlHighlight);
-		panel_add.add(btnNewButton_14);
+		btnNewButton_14a.setFont(new Font("新細明體", Font.PLAIN, 14));
+		btnNewButton_14a.setBackground(SystemColor.controlHighlight);
+		panel_adda.add(btnNewButton_14a);
 
 		JPanel panel_5 = new JPanel();
-		panel_add.add(panel_5);
+		panel_adda.add(panel_5);
 
 		JButton btnNewButton_15 = new JButton("取消");
 		btnNewButton_15.addActionListener(new ActionListener() {
@@ -1370,8 +1372,9 @@ public class MainView extends JFrame {
 				map.put(ShowRowInfo.BoxId, "");
 				map.put(ShowRowInfo.Vocabulary, "");
 				vocabularyShowRowControl.showInfo(map, ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add);
+				vocabularyShowRowControl.getEventResultMap().clear();
 				((CardLayout) panel_cardbox_vocabulary_editbar.getLayout()).show(panel_cardbox_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 				/*
 				 * 重繪狀態
 				 */
@@ -1383,7 +1386,7 @@ public class MainView extends JFrame {
 		});
 		btnNewButton_15.setFont(new Font("新細明體", Font.PLAIN, 14));
 		btnNewButton_15.setBackground(SystemColor.controlHighlight);
-		panel_add.add(btnNewButton_15);
+		panel_adda.add(btnNewButton_15);
 
 		JPanel panel_edit = new JPanel();
 		panel_cardbox_vocabulary_editbar.add(panel_edit, CardLayout_Editbar_edit);
@@ -1417,7 +1420,7 @@ public class MainView extends JFrame {
 				vocabularyShowRowControl.setEventResultIdx(-1);
 				vocabularyShowRowControl.showRow();
 				((CardLayout) panel_cardbox_vocabulary_editbar.getLayout()).show(panel_cardbox_vocabulary_editbar,
-						CardLayout_Editbar_Serch);
+						CardLayout_Editbar_Search);
 			}
 		});
 		btnNewButton_15_1.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -1703,7 +1706,7 @@ public class MainView extends JFrame {
 		JButton btnNewButton_15 = new JButton("取消");
 		btnNewButton_15.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar, CardLayout_Editbar_Serch);
+				((CardLayout) panel_cardbox_editbar.getLayout()).show(panel_cardbox_editbar, CardLayout_Editbar_Search);
 			}
 		});
 		btnNewButton_15.setFont(new Font("新細明體", Font.PLAIN, 14));
@@ -1712,7 +1715,7 @@ public class MainView extends JFrame {
 
 		JPanel panel_serch = new JPanel();
 		panel_serch.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_cardbox_editbar.add(panel_serch, CardLayout_Editbar_Serch);
+		panel_cardbox_editbar.add(panel_serch, CardLayout_Editbar_Search);
 
 		JLabel lblNewLabel_13 = new JLabel("serch");
 		lblNewLabel_13.setVisible(false);
