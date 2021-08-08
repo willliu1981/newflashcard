@@ -119,8 +119,8 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 						.getInfo(ShowRowInfo.InfoName_CardBox_Vocabulary_Editbar_Add)
 						.getComponent(ShowRowInfo.Cardbox_Editbar_add_lock);
 				if (panel.getName() != null && panel.getName().equals(MainView.SingleType)) {
-					/*
-					 * 顯示cardbox-vocabulary editbar edit
+					/**
+					 * 政策性選用 顯示cardbox-vocabulary editbar edit
 					 * 
 					 * ((CardLayout) ((MainView)
 					 * showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar()
@@ -128,10 +128,9 @@ public class VocabularyRow extends JPanel implements ShowRow<Vocabulary> {
 					 * showRowControl.getEventJFrame()).getPanel_cardbox_vocabulary_editbar(),
 					 * MainView.CardLayout_Editbar_edit);
 					 * showRowControl.getEventResultMap().clear();
-					 * showRowControl.addEventResultMap(idx, showRowControl.getEventReault()); //
+					 * showRowControl.addEventResultMap(idx, showRowControl.getEventReault());
 					 */
 				} else {
-
 					if (showRowControl.getEventResultMap().containsValue(showRowControl.getEventReault())) {
 						showRowControl.getEventResultMap().remove(idx);
 					} else {

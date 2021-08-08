@@ -43,6 +43,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import org.junit.platform.commons.util.StringUtils;
+
 import com.control.App;
 import com.control.ScoreControl;
 import com.control.dao.CardBoxDao;
@@ -64,7 +66,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 
 public class MainView extends JFrame {
-	private static MainView thisApp=App.getMainView();
+	private static MainView thisApp = App.getMainView();
 	public static final AddVocabularyFrame addVocabularyFrame = new AddVocabularyFrame();
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final QueryResultFrame queryResultFrame = new QueryResultFrame();
@@ -101,7 +103,7 @@ public class MainView extends JFrame {
 			}).collect(Collectors.toList());
 			Collections.shuffle(list);
 			this.questions = list;
-			this.originQuestionsQuantity=list.size();
+			this.originQuestionsQuantity = list.size();
 		}
 
 		@Override
@@ -134,13 +136,14 @@ public class MainView extends JFrame {
 	private JButton btnNewButton_topbar_test;
 	private JLabel lblNewLabel_exp;
 	private JLabel lblNewLabel_coin;
+	private JTextField textField_MoveTo;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		//deprecated
-		
+		// deprecated
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -1081,7 +1084,7 @@ public class MainView extends JFrame {
 					editpanel.setBorder(BorderFactory.createEmptyBorder());
 					fieldpanel.setVisible(false);
 				}
-				
+
 			}
 		});
 
@@ -1398,9 +1401,15 @@ public class MainView extends JFrame {
 				int eventRowIdx = ShowRowControl.getEventRowIdx(cardboxShowRowControl.getEventResultIdx(),
 						cardboxShowRowControl.getFromIdx());
 				CardBoxRow eventP = (CardBoxRow) panel_cardbox.getComponent(eventRowIdx + 1);// 取得事件panel
-				Vocabulary v = vocabularyShowRowControl.getEventReault();
-				v.setBox_id(-1);
-				new VocabularyDao().update(v, v.getId());
+				/**
+				 * 政策性選用 Vocabulary v = vocabularyShowRowControl.getEventReault();
+				 * v.setBox_id(-1); new VocabularyDao().update(v, v.getId());
+				 */
+				vocabularyShowRowControl.getEventResultMap().values().forEach(x -> {
+					x.setBox_id(-1);
+					new VocabularyDao().update(x, x.getId());
+				});
+
 				CardBox c = cardboxShowRowControl.getEventReault();
 				new CardBoxDao().update(c, c.getId());// 更新日期
 				// btnNewButton_topbar_cardbox.doClick();
@@ -1415,6 +1424,7 @@ public class MainView extends JFrame {
 		panel_edit.add(panel_5_1);
 
 		JButton btnNewButton_15_1 = new JButton("取消");
+		btnNewButton_15_1.setVisible(false);
 		btnNewButton_15_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				vocabularyShowRowControl.setEventResultIdx(-1);
@@ -1426,6 +1436,46 @@ public class MainView extends JFrame {
 		btnNewButton_15_1.setFont(new Font("新細明體", Font.PLAIN, 14));
 		btnNewButton_15_1.setBackground(SystemColor.controlHighlight);
 		panel_edit.add(btnNewButton_15_1);
+
+		JButton btnNewButton_15_1_1 = new JButton("MoveTo");
+		btnNewButton_15_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int eventRowIdx = ShowRowControl.getEventRowIdx(cardboxShowRowControl.getEventResultIdx(),
+						cardboxShowRowControl.getFromIdx());
+				CardBoxRow eventP = (CardBoxRow) panel_cardbox.getComponent(eventRowIdx + 1);// 取得事件panel
+
+				int id = -1;
+				try {
+					id = Integer.parseInt(textField_MoveTo.getText());
+				} catch (NumberFormatException e) {
+					System.out.println(e.getMessage());
+					return;
+				}
+
+				if (id == -1 || new CardBoxDao().isExist(id)) {
+					int bid = id;
+					vocabularyShowRowControl.getEventResultMap().values().forEach(x -> {
+						x.setBox_id(bid);
+						new VocabularyDao().update(x, x.getId());
+					});
+				} else {
+					return;
+				}
+
+				CardBox c = cardboxShowRowControl.getEventReault();
+				new CardBoxDao().update(c, c.getId());// 更新日期
+				vocabularyShowRowControl.getEventResultMap().clear();
+				eventP.getMouseListeners()[0].mousePressed(eventP.getLastMouseEvent());// 執行click
+			}
+		});
+		btnNewButton_15_1_1.setFont(new Font("新細明體", Font.PLAIN, 14));
+		btnNewButton_15_1_1.setBackground(SystemColor.controlHighlight);
+		panel_edit.add(btnNewButton_15_1_1);
+
+		textField_MoveTo = new JTextField();
+		textField_MoveTo.setFont(new Font("新細明體", Font.PLAIN, 18));
+		textField_MoveTo.setColumns(10);
+		panel_edit.add(textField_MoveTo);
 
 		JPanel panel_title = new JPanel();
 		panel_cardbox_vocabulary_title.add(panel_title);
@@ -1877,7 +1927,7 @@ public class MainView extends JFrame {
 	}
 
 	public static void setExp(String str) {
-		App.getMainView() .lblNewLabel_exp.setText(str);
+		App.getMainView().lblNewLabel_exp.setText(str);
 	}
 
 }
