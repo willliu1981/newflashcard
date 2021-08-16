@@ -84,7 +84,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);// 這個部分可能會被覆寫,可能在MainView
 																										// 定義TestQuestionControl
 																										// 時即便override
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().initialize(3, 11);// 設定問題Row 範圍區間
+				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().initialize(3, 8);// 設定問題Row 範圍區間
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
 				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
 

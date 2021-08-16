@@ -1646,10 +1646,10 @@ public class MainView extends JFrame {
 
 		/*
 		 * �test question, 更改此項需一併修改TestRow 的 myClickListerner 的 ((MainView)
-		 * showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15) 初始化, 以及
-		 * TestQuestion 相關參數
+		 * showRowControl.getEventJFrame()).getTestQuestionControl().init(4, 15) 初始化, Panel_Question 參數 以及
+		 * TestQuestion 相關參數(如果有的話)
 		 */
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < 9; i++) {
 			TestQuestion testQuestion = new TestQuestion();
 			panel_question.add(testQuestion);
 			testQuestion.setName("" + i);
