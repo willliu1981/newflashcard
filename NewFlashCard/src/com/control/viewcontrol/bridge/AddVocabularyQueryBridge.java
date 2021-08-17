@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 
 import com.control.bridge.Bridge;
+import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
+import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.Mask;
 import com.view.MainView;
@@ -64,7 +66,11 @@ public class AddVocabularyQueryBridge extends Bridge {
 			return;
 		}
 
+		CardBoxDao dao=new CardBoxDao();
+		CardBox box=dao.query(result.getBox_id());
+		
 		this.setParameter("vocabulary", result);
+		this.setParameter("cardbox", box);
 		this.setParameter("fetch", true);
 		this.getDispatcher().send(MainView.addVocabularyFrame);
 	}

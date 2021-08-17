@@ -32,10 +32,10 @@ import javax.swing.border.LineBorder;
 public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
-	private  static LineBorder OrangeLineBorder= new LineBorder(Color.orange, 3);
-	private  static LineBorder RedLineBorder= new LineBorder(Color.red, 3);
-	private  static LineBorder BlackLineBorder= new LineBorder(Color.black, 3);
-	private  static LineBorder GreenLineBorder= new LineBorder(MyColor.darkGreen(), 3);
+	private  static LineBorder PrimaryLineBorder= new LineBorder(Color.orange, 3);
+	private  static LineBorder BeforeDayLineBorder= new LineBorder(Color.red, 3);
+	private  static LineBorder OverdueLineBorder= new LineBorder(Color.black,5);
+	private  static LineBorder FinishLineBorder= new LineBorder(MyColor.darkGreen(), 3);
 	private  static LineBorder DefaultLineBorder= new LineBorder(MyColor.defaultColor(), 3);
 	private boolean wheelpress = false;// 滾輸按下
 
@@ -203,13 +203,13 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				panel_root.setBorder(DefaultLineBorder);
 				break;
 			case Primary:
-				panel_root.setBorder(OrangeLineBorder);
+				panel_root.setBorder(PrimaryLineBorder);
 				break;
 			case BeforeDay:
-				panel_root.setBorder(RedLineBorder);
+				panel_root.setBorder(BeforeDayLineBorder);
 				break;
 			case Overdue:
-				panel_root.setBorder(BlackLineBorder);
+				panel_root.setBorder(OverdueLineBorder);
 				break;
 			default:
 				panel_root.setBorder(DefaultLineBorder);
@@ -217,7 +217,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			}
 
 			if (cardBox.isFinish()) {
-				panel_root.setBorder(GreenLineBorder);
+				panel_root.setBorder(FinishLineBorder);
 			}
 		} else {
 			((JLabel) row_center[0]).setText(" ");

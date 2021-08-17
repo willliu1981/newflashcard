@@ -36,11 +36,14 @@ import com.control.pronounce.bridge.PronounceBridge;
 import com.control.viewcontrol.bridge.AddVocabularyBridge;
 import com.control.viewcontrol.bridge.AddVocabularyQueryBridge;
 import com.control.viewcontrol.bridge.AddVocabularyUpdateBridge;
+import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.Mask;
 import com.tool.MyColor;
 import com.tool.ConfigFactory;
 import javax.swing.border.LineBorder;
+import javax.swing.BoxLayout;
+import javax.swing.JTable;
 
 public class AddVocabularyFrame extends JFrame implements Transportable {
 	private static final String EXPLANATION = "解釋";
@@ -63,6 +66,11 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 	private String explanationType = EXPLANATION;
 	private JButton btnNewButton_type;
 	private JPanel panel_center;
+	private JPanel panel_east;
+	private JLabel lblNewLabel_vid;
+	private JLabel lblNewLabel_bid;
+	private JLabel lblNewLabel_bname;
+	private JLabel lblNewLabel_bstate;
 
 	/**
 	 * Launch the application.
@@ -458,6 +466,90 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		lblNewLabel_2.setPreferredSize(new Dimension(45, 28));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(lblNewLabel_2);
+		
+		panel_east = new JPanel();
+		panel_east.setVisible(false);
+		panel_east.setBorder(new LineBorder(Color.LIGHT_GRAY, 3, true));
+		panel_east.setPreferredSize(new Dimension(100, 10));
+		panel.add(panel_east, BorderLayout.EAST);
+		panel_east.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_9 = new JPanel();
+		panel_9.setPreferredSize(new Dimension(10, 300));
+		panel_east.add(panel_9, BorderLayout.NORTH);
+		panel_9.setLayout(new BoxLayout(panel_9, BoxLayout.Y_AXIS));
+		
+		JPanel panel_11 = new JPanel();
+		panel_11.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_9.add(panel_11);
+		panel_11.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_3 = new JLabel("ID");
+		lblNewLabel_3.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel_3.setPreferredSize(new Dimension(12, 30));
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_11.add(lblNewLabel_3, BorderLayout.NORTH);
+		
+		lblNewLabel_vid = new JLabel("content");
+		lblNewLabel_vid.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_vid.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_11.add(lblNewLabel_vid, BorderLayout.CENTER);
+		
+		JPanel panel_12 = new JPanel();
+		panel_12.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_9.add(panel_12);
+		panel_12.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_3_2 = new JLabel("Box ID");
+		lblNewLabel_3_2.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel_3_2.setPreferredSize(new Dimension(12, 30));
+		lblNewLabel_3_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_2.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_12.add(lblNewLabel_3_2, BorderLayout.NORTH);
+		
+		lblNewLabel_bid = new JLabel("content");
+		lblNewLabel_bid.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_bid.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_12.add(lblNewLabel_bid);
+		
+		JPanel panel_12_1 = new JPanel();
+		panel_12_1.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_9.add(panel_12_1);
+		panel_12_1.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_3_2_1 = new JLabel("Box Name");
+		lblNewLabel_3_2_1.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel_3_2_1.setPreferredSize(new Dimension(12, 30));
+		lblNewLabel_3_2_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_2_1.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_12_1.add(lblNewLabel_3_2_1, BorderLayout.NORTH);
+		
+		lblNewLabel_bname = new JLabel("content");
+		lblNewLabel_bname.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_bname.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_12_1.add(lblNewLabel_bname, BorderLayout.CENTER);
+		
+		JPanel panel_12_1_1 = new JPanel();
+		panel_12_1_1.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_9.add(panel_12_1_1);
+		panel_12_1_1.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_3_2_1_1 = new JLabel("Box State");
+		lblNewLabel_3_2_1_1.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel_3_2_1_1.setPreferredSize(new Dimension(12, 30));
+		lblNewLabel_3_2_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_2_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_12_1_1.add(lblNewLabel_3_2_1_1, BorderLayout.NORTH);
+		
+		lblNewLabel_bstate = new JLabel("content");
+		lblNewLabel_bstate.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_bstate.setFont(new Font("新細明體", Font.PLAIN, 18));
+		panel_12_1_1.add(lblNewLabel_bstate, BorderLayout.CENTER);
+		
+		JPanel panel_10 = new JPanel();
+		panel_east.add(panel_10);
+		panel_10.setLayout(new BoxLayout(panel_10, BoxLayout.Y_AXIS));
 
 		/*
 		 * initialize
@@ -471,6 +563,7 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		textArea_explanation.setText("");
 		textArea_example.setText("");
 		btnNewButton_update.setEnabled(false);
+		panel_east.setVisible(false);
 		textField_vocabulary.setEditable(true);
 		((CardLayout) panel_center_card.getLayout()).show(panel_center_card, "explanation");
 		panel_query.setBackground(MyColor.defaultColor());
@@ -482,9 +575,12 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		this.dt = dt;
 		this.setVisible(true);
 		Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+		CardBox box = (CardBox) dt.getParameter("cardbox");
 		boolean fetch = (boolean) dt.getParameter("fetch");
 
 		btnNewButton_update.setEnabled(fetch);
+		panel_east.setVisible(fetch);
+		
 
 		if (vocabulary != null) {
 			textArea_explanation.setText(vocabulary.getExplanation());
@@ -493,6 +589,14 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 			textField_translation.setText(vocabulary.getTranslation());
 			textField_vocabulary.setEditable(false);
 			highLightCauseQuery(true);
+			
+			this.lblNewLabel_vid.setText(vocabulary.getId().toString());
+			if(box !=null) {
+				this.lblNewLabel_bid.setText(box.getId().toString());
+				this.lblNewLabel_bname.setText(box.getName());
+				this.lblNewLabel_bstate.setText(box.isFinish()?"已完成":"未完成");
+			}
+			
 		} else {
 			highLightCauseQuery(false);
 			initializeComponent();
