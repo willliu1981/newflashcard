@@ -72,7 +72,7 @@ public class MainView extends JFrame {
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final QueryResultFrame queryResultFrame = new QueryResultFrame();
 	public static final PronounceSourceFrame pronounceSourceFrame = new PronounceSourceFrame();
-	public static final AutoPlayer autoPlayer = new AutoPlayer();
+	public static final AutoPlayerFrame autoPlayerFrame = new AutoPlayerFrame();
 	public static final HelpFrame helpFrame = new HelpFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";

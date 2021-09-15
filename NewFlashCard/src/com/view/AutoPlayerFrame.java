@@ -32,7 +32,7 @@ import java.awt.Button;
 import java.awt.SystemColor;
 import java.util.List;
 
-public class AutoPlayer extends JFrame {
+public class AutoPlayerFrame extends JFrame {
 
 	private JPanel contentPane;
 
@@ -43,7 +43,7 @@ public class AutoPlayer extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AutoPlayer frame = new AutoPlayer();
+					AutoPlayerFrame frame = new AutoPlayerFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,7 +55,7 @@ public class AutoPlayer extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AutoPlayer() {
+	public AutoPlayerFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1218, 859);
 		contentPane = new JPanel();
