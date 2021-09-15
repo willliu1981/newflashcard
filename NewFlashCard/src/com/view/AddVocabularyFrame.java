@@ -595,6 +595,10 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 				this.lblNewLabel_bid.setText(box.getId().toString());
 				this.lblNewLabel_bname.setText(box.getName());
 				this.lblNewLabel_bstate.setText(box.isFinish()?"已完成":"未完成");
+			}else {
+				this.lblNewLabel_bid.setText("--");
+				this.lblNewLabel_bname.setText("--");
+				this.lblNewLabel_bstate.setText("--");
 			}
 			
 		} else {

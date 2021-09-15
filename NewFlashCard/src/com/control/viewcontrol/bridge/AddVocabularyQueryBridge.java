@@ -69,6 +69,7 @@ public class AddVocabularyQueryBridge extends Bridge {
 		CardBoxDao dao=new CardBoxDao();
 		CardBox box=dao.query(result.getBox_id());
 		
+		
 		this.setParameter("vocabulary", result);
 		this.setParameter("cardbox", box);
 		this.setParameter("fetch", true);

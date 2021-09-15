@@ -78,14 +78,16 @@ public class CardBoxDao extends Dao<CardBox> {
 			st = myConn.prepareStatement(sql);
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			m = new CardBox();
-			m.setId(rs.getInt("id"));
-			m.setName(rs.getString("name"));
-			m.setTest_times(rs.getInt("test_times"));
-			m.setTest_date(rs.getString("test_date"));
-			m.setState(rs.getInt("state"));
-			m.setCreate_date(rs.getString("create_date"));
-			m.setUpdate_date(rs.getString("update_date"));
+			if(rs.next()) {
+				m = new CardBox();
+				m.setId(rs.getInt("id"));
+				m.setName(rs.getString("name"));
+				m.setTest_times(rs.getInt("test_times"));
+				m.setTest_date(rs.getString("test_date"));
+				m.setState(rs.getInt("state"));
+				m.setCreate_date(rs.getString("create_date"));
+				m.setUpdate_date(rs.getString("update_date"));
+			}
 			rs.close();
 			st.close();
 			myConn.close();

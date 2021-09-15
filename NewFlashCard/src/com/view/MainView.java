@@ -72,6 +72,7 @@ public class MainView extends JFrame {
 	public static final ExplanationFrame explantationFrame = new ExplanationFrame();
 	public static final QueryResultFrame queryResultFrame = new QueryResultFrame();
 	public static final PronounceSourceFrame pronounceSourceFrame = new PronounceSourceFrame();
+	public static final AutoPlayer autoPlayer = new AutoPlayer();
 	public static final HelpFrame helpFrame = new HelpFrame();
 	public static final String externalTranslationPrefixUrl = "https://www.quword.com/ciyuan/s/";
 	public static final String CardLayout_topbar_CardBox = "cardbox";
@@ -217,6 +218,17 @@ public class MainView extends JFrame {
 				addVocabularyFrame.setState(JFrame.NORMAL);
 			}
 		});
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("自動播放");
+		mntmNewMenuItem_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				autoPlayer.setVisible(true);
+				autoPlayer.setState(JFrame.NORMAL);
+			}
+		});
+		mntmNewMenuItem_4.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
+		mnNewMenu_1.add(mntmNewMenuItem_4);
 		mntmNewMenuItem_1.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 
