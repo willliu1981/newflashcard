@@ -139,6 +139,10 @@ public class CardBox {
 		}
 		return r;
 	}
+	
+	public boolean isTesting() {
+		return this.getState()!=0 && !this.isFinish();
+	}
 
 	public String getNextTestDateStr() {
 		if (this.state == 0 || this.isFinish()) {

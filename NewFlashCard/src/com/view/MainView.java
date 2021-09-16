@@ -223,8 +223,8 @@ public class MainView extends JFrame {
 		mntmNewMenuItem_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				autoPlayer.setVisible(true);
-				autoPlayer.setState(JFrame.NORMAL);
+				autoPlayerFrame.setVisible(true);
+				autoPlayerFrame.setState(JFrame.NORMAL);
 			}
 		});
 		mntmNewMenuItem_4.setFont(new Font("Microsoft JhengHei UI", Font.PLAIN, 14));
