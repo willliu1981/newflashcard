@@ -258,10 +258,8 @@ public class AutoPlayerFrame extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 		panel_3.add(scrollPane, BorderLayout.CENTER);
-		JPanel panel_5 = new JPanel();
-		scrollPane.setViewportView(panel_5);
-		panel_5.setLayout(new BorderLayout(0, 0));
 		txtrContent = new JTextArea();
+		scrollPane.setViewportView(txtrContent);
 		txtrContent.setEditable(false);
 		txtrContent.setWrapStyleWord(true);
 		txtrContent.setLineWrap(true);
@@ -270,7 +268,6 @@ public class AutoPlayerFrame extends JFrame {
 		txtrContent.setText("content");
 		txtrContent.setForeground(Color.WHITE);
 		txtrContent.setBackground(Color.DARK_GRAY);
-		panel_5.add(txtrContent);
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setPreferredSize(new Dimension(10, 80));
@@ -358,6 +355,9 @@ public class AutoPlayerFrame extends JFrame {
 	}
 
 	public void pause() {
+		if (runPlayer == null) {
+			return;
+		}
 		runPlayer.pause();
 		initControlButton();
 		btnPause.setEnabled(false);
