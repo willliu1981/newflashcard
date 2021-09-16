@@ -44,26 +44,29 @@ import java.awt.event.ActionEvent;
 
 public class AutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
-		List<Vocabulary> vocbs;
+		List<Vocabulary> vocbList;
 		int times = 3;
 		boolean isCancelled = false;
 
 		public RunPlayer(List<Vocabulary> vocbs) {
-			this.vocbs = vocbs;
+			this.vocbList = vocbs;
 		}
 
 		@Override
 		public void run() {
 			int ptr = 0;
 			int times = this.times;
+			int quantity = vocbList.size();
 			Vocabulary v = null;
 			while (!isCancelled) {
 				try {
-					v = vocbs.get(ptr);
+					v = vocbList.get(ptr);
 
 					AutoPlayerFrame.lblVocabulary.setText(v.getVocabulary());
 					AutoPlayerFrame.lblTreanslation.setText(v.getTranslation());
 					AutoPlayerFrame.txtrContent.setText(v.getExplanation());
+					AutoPlayerFrame.lblProgress.setText(String.format("%d / %d", ptr + 1, quantity));
+					AutoPlayerFrame.tetrExample.setText(v.getExample());
 					boolean r = PronounceControl.play(v.getVocabulary());
 
 					if (!r || --times == 0) {
@@ -71,7 +74,7 @@ public class AutoPlayerFrame extends JFrame {
 						ptr++;
 					}
 
-					if (ptr >= vocbs.size()) {
+					if (ptr >= vocbList.size()) {
 						ptr = 0;
 					}
 					Thread.sleep(2000);
@@ -91,8 +94,10 @@ public class AutoPlayerFrame extends JFrame {
 	ExecutorService esPlayer = Executors.newFixedThreadPool(1);
 	List<Vocabulary> playList = new ArrayList<>();
 	private static JTextArea txtrContent;
-	private static JLabel lblTreanslation;
+	private static JLabel lblProgress;
 	private static JLabel lblVocabulary;
+	private static JLabel lblTreanslation;
+	private static JTextArea tetrExample;
 
 	/**
 	 * Launch the application.
@@ -133,6 +138,7 @@ public class AutoPlayerFrame extends JFrame {
 
 		ButtonGroup radioPlayerGroup = new ButtonGroup();
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("全部");
+		rdbtnNewRadioButton.setEnabled(false);
 		rdbtnNewRadioButton.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton);
 		radioPlayerGroup.add(rdbtnNewRadioButton);
@@ -141,6 +147,7 @@ public class AutoPlayerFrame extends JFrame {
 		panel_1.add(panel_9);
 
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("測驗中");
+		rdbtnNewRadioButton_1.setEnabled(false);
 		rdbtnNewRadioButton_1.setSelected(true);
 		rdbtnNewRadioButton_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_1);
@@ -150,6 +157,7 @@ public class AutoPlayerFrame extends JFrame {
 		panel_1.add(panel_10);
 
 		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("已完成");
+		rdbtnNewRadioButton_2.setEnabled(false);
 		rdbtnNewRadioButton_2.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_2);
 		radioPlayerGroup.add(rdbtnNewRadioButton_2);
@@ -158,6 +166,7 @@ public class AutoPlayerFrame extends JFrame {
 		panel_1.add(panel_11);
 
 		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("已完成+測驗中");
+		rdbtnNewRadioButton_3.setEnabled(false);
 		rdbtnNewRadioButton_3.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_3);
 		radioPlayerGroup.add(rdbtnNewRadioButton_3);
@@ -166,6 +175,7 @@ public class AutoPlayerFrame extends JFrame {
 		panel_1.add(panel_12);
 
 		JRadioButton rdbtnNewRadioButton_3_1 = new JRadioButton("未開始");
+		rdbtnNewRadioButton_3_1.setEnabled(false);
 		rdbtnNewRadioButton_3_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_3_1);
 		radioPlayerGroup.add(rdbtnNewRadioButton_3_1);
@@ -185,19 +195,49 @@ public class AutoPlayerFrame extends JFrame {
 		panel_3.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setPreferredSize(new Dimension(10, 120));
+		panel_4.setPreferredSize(new Dimension(10, 160));
 		panel_3.add(panel_4, BorderLayout.NORTH);
-		panel_4.setLayout(null);
+		panel_4.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_13 = new JPanel();
+		panel_4.add(panel_13);
+		panel_13.setLayout(null);
 
 		lblVocabulary = new JLabel("word");
-		lblVocabulary.setBounds(192, 10, 495, 31);
-		lblVocabulary.setFont(new Font("DialogInput", Font.BOLD, 28));
-		panel_4.add(lblVocabulary);
+		lblVocabulary.setBounds(192, 0, 446, 43);
+		lblVocabulary.setFont(new Font("DialogInput", Font.BOLD, 32));
+		panel_13.add(lblVocabulary);
 
-		lblTreanslation = new JLabel("translation");
-		lblTreanslation.setBounds(46, 44, 1098, 55);
+		lblTreanslation = new JLabel("翻譯");
+		lblTreanslation.setBounds(22, 39, 2560, 37);
 		lblTreanslation.setFont(new Font("DialogInput", Font.PLAIN, 24));
-		panel_4.add(lblTreanslation);
+		panel_13.add(lblTreanslation);
+
+		JPanel panel_15 = new JPanel();
+		panel_15.setBounds(10, 74, 2572, 76);
+		panel_13.add(panel_15);
+		panel_15.setLayout(new BorderLayout(0, 0));
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBorder(null);
+		panel_15.add(scrollPane_1, BorderLayout.CENTER);
+
+		tetrExample = new JTextArea();
+		tetrExample.setBackground(SystemColor.control);
+		tetrExample.setEditable(false);
+		tetrExample.setMargin(new Insets(2, 8, 2, 8));
+		tetrExample.setFont(new Font("DialogInput", Font.PLAIN, 24));
+		tetrExample.setText("例句");
+		tetrExample.setLineWrap(true);
+		tetrExample.setWrapStyleWord(true);
+		scrollPane_1.setViewportView(tetrExample);
+
+		JPanel panel_14 = new JPanel();
+		panel_4.add(panel_14, BorderLayout.EAST);
+
+		lblProgress = new JLabel("0/0");
+		lblProgress.setFont(new Font("新細明體", Font.PLAIN, 20));
+		panel_14.add(lblProgress);
 
 		JScrollPane scrollPane = new JScrollPane();
 		panel_3.add(scrollPane, BorderLayout.CENTER);
@@ -205,6 +245,7 @@ public class AutoPlayerFrame extends JFrame {
 		scrollPane.setViewportView(panel_5);
 		panel_5.setLayout(new BorderLayout(0, 0));
 		txtrContent = new JTextArea();
+		txtrContent.setEditable(false);
 		txtrContent.setWrapStyleWord(true);
 		txtrContent.setLineWrap(true);
 		txtrContent.setMargin(new Insets(2, 8, 2, 8));
@@ -234,6 +275,7 @@ public class AutoPlayerFrame extends JFrame {
 		panel_7.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("❚❚");
+		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.setFocusPainted(false);
 		btnNewButton_1.setBackground(SystemColor.controlHighlight);
 		btnNewButton_1.setFont(new Font("DialogInput", Font.BOLD, 20));

@@ -12,10 +12,10 @@ import org.junit.Test;
  * 注意:更改state 規則將會影響TestQuestion 的 獎利獲得方法(ScoreControl),有可能會造成邏輯錯誤
  */
 public class CardBox {
-	public static enum StateResult{
-		Retest,Primary,BeforeDay,Overdue,Default
+	public static enum StateResult {
+		Retest, Primary, BeforeDay, Overdue, Default
 	}
-	
+
 	private Integer id;
 	private String name;
 	private Integer test_times;
@@ -23,7 +23,8 @@ public class CardBox {
 	private Integer state;
 	private String create_date;
 	private String update_date;
-	private Map<Integer, Integer> stateRuleMap;// <stage,days> ,用於動態方法回傳從資料庫撈到的 state 欄位的值 的對應延遲天數
+	private Map<Integer, Integer> stateRuleMap;// <stage,days> ,用於動態方法回傳從資料庫撈到的
+												// state 欄位的值 的對應延遲天數
 
 	public CardBox() {
 		stateRuleMap = new HashMap<>();
@@ -131,7 +132,8 @@ public class CardBox {
 			this.resetState();
 			return r = false;
 		}
-		if (this.getStateResult() == StateResult.Primary || this.getStateResult() == StateResult.BeforeDay) {
+		if (this.getStateResult() == StateResult.Primary
+				|| this.getStateResult() == StateResult.BeforeDay) {
 			r = !this.nextState();
 		} else if (this.getStateResult() == StateResult.Overdue) {
 			this.resetState();
@@ -139,9 +141,12 @@ public class CardBox {
 		}
 		return r;
 	}
-	
+
 	public boolean isTesting() {
-		return this.getState()!=0 && !this.isFinish();
+		StateResult r = this.getStateResult();
+		return this.getState() != 0 && !this.isFinish()
+				&& (r == StateResult.Primary || r == StateResult.BeforeDay
+						|| r == StateResult.Overdue);
 	}
 
 	public String getNextTestDateStr() {
@@ -176,7 +181,7 @@ public class CardBox {
 		if (next == null) {
 			return StateResult.Default;
 		}
-		
+
 		Calendar nextDelay = (Calendar) this.getNextTestDate().clone();
 		int day = this.stateRuleMap.get(this.state);
 		// 如果緩衝天數只有一天,則再加一天
@@ -187,7 +192,8 @@ public class CardBox {
 		if (now.before(next)) {
 			result = StateResult.Retest;// 即期重複測驗
 		} else if (now.get(Calendar.YEAR) == nextDelay.get(Calendar.YEAR)
-				&& now.get(Calendar.DAY_OF_YEAR) == nextDelay.get(Calendar.DAY_OF_YEAR) - 1) {
+				&& now.get(Calendar.DAY_OF_YEAR) == nextDelay
+						.get(Calendar.DAY_OF_YEAR) - 1) {
 			result = StateResult.BeforeDay;// 即期第一次測驗,但是在即期前一天
 		} else if (now.after(next) && now.before(nextDelay)) {
 			result = StateResult.Primary;// 即期第一次測驗
@@ -198,7 +204,8 @@ public class CardBox {
 	}
 
 	public int getStateMaxKey() {
-		return this.stateRuleMap.keySet().stream().max((x1, x2) -> x1 - x2).get();
+		return this.stateRuleMap.keySet().stream().max((x1, x2) -> x1 - x2)
+				.get();
 	}
 
 	public int getStateWithScore() {

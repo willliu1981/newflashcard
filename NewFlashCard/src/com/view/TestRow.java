@@ -32,18 +32,24 @@ import javax.swing.border.LineBorder;
 public class TestRow extends JPanel implements ShowRow<CardBox> {
 	private ShowRowControl<CardBox> showRowControl;
 	private static Map<Integer, Integer> vocabularyQuantities = new HashMap<>();
-	private  static LineBorder PrimaryLineBorder= new LineBorder(Color.orange, 3);
-	private  static LineBorder BeforeDayLineBorder= new LineBorder(Color.red, 3);
-	private  static LineBorder OverdueLineBorder= new LineBorder(Color.black,5);
-	private  static LineBorder FinishLineBorder= new LineBorder(MyColor.darkGreen(), 3);
-	private  static LineBorder DefaultLineBorder= new LineBorder(MyColor.defaultColor(), 3);
+	private static LineBorder PrimaryLineBorder = new LineBorder(Color.orange,
+			3);
+	private static LineBorder BeforeDayLineBorder = new LineBorder(Color.red,
+			3);
+	private static LineBorder OverdueLineBorder = new LineBorder(Color.black,
+			5);
+	private static LineBorder FinishLineBorder = new LineBorder(
+			MyColor.darkGreen(), 3);
+	private static LineBorder DefaultLineBorder = new LineBorder(
+			MyColor.defaultColor(), 3);
 	private boolean wheelpress = false;// 滾輸按下
 
 	private MouseWheelListener myWheelListener = new MouseWheelListener() {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() == 1) {
 				if (wheelpress) {
-					showRowControl.rearwardFromIdx(12);// 移動量取決於MainView panel_vocabulary add
+					showRowControl.rearwardFromIdx(12);// 移動量取決於MainView
+														// panel_vocabulary add
 														// VocabularyRow 的數量
 				} else {
 					showRowControl.rearwardFromIdx(3);
@@ -56,7 +62,7 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				}
 			}
 			showRowControl.showRow();
-			
+
 		}
 	};
 
@@ -66,27 +72,35 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			wheelpress = false;
 		}
 
-		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				int idx = Integer.valueOf(getName()) + showRowControl.getFromIdx();
+				int idx = Integer.valueOf(getName())
+						+ showRowControl.getFromIdx();
 				if (idx >= showRowControl.getResults().size()) {
 					return;
 				}
-				((CardLayout) ((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout()
-						.getLayout()).show(
-								((MainView) showRowControl.getEventJFrame()).getPanel_test_center_cardlayout(),
+				((CardLayout) ((MainView) showRowControl.getEventJFrame())
+						.getPanel_test_center_cardlayout().getLayout()).show(
+								((MainView) showRowControl.getEventJFrame())
+										.getPanel_test_center_cardlayout(),
 								MainView.CardLayout_Test_Question);
 				CardBox cardbox = showRowControl.getResults().get(idx);
 				List<Vocabulary> list = new VocabularyDao().queryAll();
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setCardboxIdx(cardbox.getId());
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().setResults(list);// 這個部分可能會被覆寫,可能在MainView
-																										// 定義TestQuestionControl
-																										// 時即便override
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().initialize(3, 8);// 設定問題Row 範圍區間
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().showRow();
-				((MainView) showRowControl.getEventJFrame()).getTestQuestionControl().nextStage();
+				((MainView) showRowControl.getEventJFrame())
+						.getTestQuestionControl()
+						.setCardboxIdx(cardbox.getId());
+				((MainView) showRowControl.getEventJFrame())
+						.getTestQuestionControl().setResults(list);// 這個部分可能會被覆寫,可能在MainView
+																	// 定義TestQuestionControl
+																	// 時即便override
+				((MainView) showRowControl.getEventJFrame())
+						.getTestQuestionControl().initialize(3, 8);// 設定問題Row
+																	// 範圍區間
+				((MainView) showRowControl.getEventJFrame())
+						.getTestQuestionControl().showRow();
+				((MainView) showRowControl.getEventJFrame())
+						.getTestQuestionControl().nextStage();
 
 			} else if (e.getButton() == MouseEvent.BUTTON2) {
 				wheelpress = true;
@@ -100,7 +114,8 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 	 * Create the panel.
 	 */
 	public TestRow() {
-		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null,
+				null));
 		setLayout(new BorderLayout(0, 0));
 
 		panel_root = new JPanel();
@@ -175,10 +190,13 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 
 	@Override
 	public void showRow() {
-		int idx = Integer.valueOf(this.getName()) + this.showRowControl.getFromIdx();
+		int idx = Integer.valueOf(this.getName())
+				+ this.showRowControl.getFromIdx();
 		int size = this.showRowControl.getResults().size();
-		JPanel pc = ((JPanel) ((BorderLayout) this.panel_root.getLayout()).getLayoutComponent("Center"));
-		JPanel pr = ((JPanel) ((BorderLayout) this.panel_root.getLayout()).getLayoutComponent("East"));
+		JPanel pc = ((JPanel) ((BorderLayout) this.panel_root.getLayout())
+				.getLayoutComponent("Center"));
+		JPanel pr = ((JPanel) ((BorderLayout) this.panel_root.getLayout())
+				.getLayoutComponent("East"));
 		Component[] row_center = pc.getComponents();
 		Component[] row_right = pr.getComponents();
 		if (idx < size) {
@@ -189,7 +207,8 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 			}
 			((JLabel) row_center[0]).setText("" + cardBox.getName());
 			((JLabel) row_right[0]).setText("詞彙數量: " + sum);
-			((JLabel) row_right[1]).setText("已測驗次數: " + cardBox.getTest_times());
+			((JLabel) row_right[1])
+					.setText("已測驗次數: " + cardBox.getTest_times());
 			// 測驗時間為null時,標示紅色
 			if (cardBox.getTest_date() == null && !cardBox.isFinish()) {
 				((JLabel) row_right[2]).setForeground((Color.red));
@@ -197,7 +216,9 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 				((JLabel) row_right[2]).setForeground(Color.black);
 			}
 			((JLabel) row_right[2]).setText("時間: " + cardBox.getTest_date());
-			((JLabel) row_right[3]).setText("下次: " + (cardBox.isFinish() ? "已完成任務" : cardBox.getNextTestDateStr()));
+			((JLabel) row_right[3])
+					.setText("下次: " + (cardBox.isFinish() ? "已完成任務"
+							: cardBox.getNextTestDateStr()));
 			switch (cardBox.getStateResult()) {
 			case Retest:
 				panel_root.setBorder(DefaultLineBorder);
@@ -237,10 +258,12 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 	/*
 	 * map <box-id,quantity>
 	 */
-	public static void setVocabularyQuantitiesInCardboxMap(List<Vocabulary> list) {
+	public static void setVocabularyQuantitiesInCardboxMap(
+			List<Vocabulary> list) {
 		Map<Integer, Integer> map = new HashMap<>();
 		for (int i = 0, id; i < list.size(); i++) {
-			if (list.get(i).getBox_id() != null && (id = list.get(i).getBox_id()) > -1) {
+			if (list.get(i).getBox_id() != null
+					&& (id = list.get(i).getBox_id()) > -1) {
 				if (map.containsKey(id)) {
 					map.put(id, map.get(id) + 1);
 				} else {
@@ -252,7 +275,8 @@ public class TestRow extends JPanel implements ShowRow<CardBox> {
 	}
 
 	public static Map<Integer, Integer> getVocabularyQuantitiesInCardboxMap() {
-		return vocabularyQuantities == null ? new HashMap<>() : vocabularyQuantities;
+		return vocabularyQuantities == null ? new HashMap<>()
+				: vocabularyQuantities;
 	}
 
 }
