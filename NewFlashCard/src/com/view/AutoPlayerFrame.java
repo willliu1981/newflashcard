@@ -47,6 +47,7 @@ public class AutoPlayerFrame extends JFrame {
 		List<Vocabulary> vocbList;
 		int times = 3;
 		boolean isCancelled = false;
+		boolean isWaiting = false;
 
 		public RunPlayer(List<Vocabulary> vocbs) {
 			this.vocbList = vocbs;
@@ -59,13 +60,15 @@ public class AutoPlayerFrame extends JFrame {
 			int quantity = vocbList.size();
 			Vocabulary v = null;
 			while (!isCancelled) {
-				try {
+				if (!isWaiting) {
+
 					v = vocbList.get(ptr);
 
 					AutoPlayerFrame.lblVocabulary.setText(v.getVocabulary());
 					AutoPlayerFrame.lblTreanslation.setText(v.getTranslation());
 					AutoPlayerFrame.txtrContent.setText(v.getExplanation());
-					AutoPlayerFrame.lblProgress.setText(String.format("%d / %d", ptr + 1, quantity));
+					AutoPlayerFrame.lblProgress.setText(
+							String.format("%d / %d", ptr + 1, quantity));
 					AutoPlayerFrame.tetrExample.setText(v.getExample());
 					boolean r = PronounceControl.play(v.getVocabulary());
 
@@ -77,6 +80,9 @@ public class AutoPlayerFrame extends JFrame {
 					if (ptr >= vocbList.size()) {
 						ptr = 0;
 					}
+
+				}
+				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -86,6 +92,14 @@ public class AutoPlayerFrame extends JFrame {
 
 		public void cancel() {
 			this.isCancelled = true;
+		}
+
+		public void pause() {
+			this.isWaiting = true;
+		}
+
+		public void play() {
+			this.isWaiting = false;
 		}
 	}
 
@@ -98,6 +112,9 @@ public class AutoPlayerFrame extends JFrame {
 	private static JLabel lblVocabulary;
 	private static JLabel lblTreanslation;
 	private static JTextArea tetrExample;
+	private static JButton btnPlay;
+	private static JButton btnPause;
+	private static JButton btnStop;
 
 	/**
 	 * Launch the application.
@@ -146,7 +163,7 @@ public class AutoPlayerFrame extends JFrame {
 		JPanel panel_9 = new JPanel();
 		panel_1.add(panel_9);
 
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("測驗中");
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("當前測驗中");
 		rdbtnNewRadioButton_1.setEnabled(false);
 		rdbtnNewRadioButton_1.setSelected(true);
 		rdbtnNewRadioButton_1.setFont(new Font("新細明體", Font.PLAIN, 18));
@@ -156,7 +173,7 @@ public class AutoPlayerFrame extends JFrame {
 		JPanel panel_10 = new JPanel();
 		panel_1.add(panel_10);
 
-		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("已完成");
+		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("所有已開始未完成");
 		rdbtnNewRadioButton_2.setEnabled(false);
 		rdbtnNewRadioButton_2.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_2);
@@ -165,7 +182,7 @@ public class AutoPlayerFrame extends JFrame {
 		JPanel panel_11 = new JPanel();
 		panel_1.add(panel_11);
 
-		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("已完成+測驗中");
+		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("已完成");
 		rdbtnNewRadioButton_3.setEnabled(false);
 		rdbtnNewRadioButton_3.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_3);
@@ -263,34 +280,38 @@ public class AutoPlayerFrame extends JFrame {
 		JPanel panel_7 = new JPanel();
 		panel_6.add(panel_7);
 
-		JButton btnNewButton = new JButton("▶");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnPlay = new JButton("▶");
+		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				play();
 			}
 		});
-		btnNewButton.setFocusPainted(false);
-		btnNewButton.setBackground(SystemColor.controlHighlight);
-		btnNewButton.setFont(new Font("DialogInput", Font.BOLD, 20));
-		panel_7.add(btnNewButton);
+		btnPlay.setFocusPainted(false);
+		btnPlay.setBackground(SystemColor.controlHighlight);
+		btnPlay.setFont(new Font("DialogInput", Font.BOLD, 20));
+		panel_7.add(btnPlay);
 
-		JButton btnNewButton_1 = new JButton("❚❚");
-		btnNewButton_1.setEnabled(false);
-		btnNewButton_1.setFocusPainted(false);
-		btnNewButton_1.setBackground(SystemColor.controlHighlight);
-		btnNewButton_1.setFont(new Font("DialogInput", Font.BOLD, 20));
-		panel_7.add(btnNewButton_1);
+		btnPause = new JButton("❚❚");
+		btnPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				pause();
+			}
+		});
+		btnPause.setFocusPainted(false);
+		btnPause.setBackground(SystemColor.controlHighlight);
+		btnPause.setFont(new Font("DialogInput", Font.BOLD, 20));
+		panel_7.add(btnPause);
 
-		JButton btnNewButton_2 = new JButton("■");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		btnStop = new JButton("■");
+		btnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				stop();
 			}
 		});
-		btnNewButton_2.setFocusPainted(false);
-		btnNewButton_2.setBackground(SystemColor.controlHighlight);
-		btnNewButton_2.setFont(new Font("DialogInput", Font.BOLD, 20));
-		panel_7.add(btnNewButton_2);
+		btnStop.setFocusPainted(false);
+		btnStop.setBackground(SystemColor.controlHighlight);
+		btnStop.setFont(new Font("DialogInput", Font.BOLD, 20));
+		panel_7.add(btnStop);
 
 		JPanel panel_8 = new JPanel();
 		panel_8.setPreferredSize(new Dimension(10, 20));
@@ -306,7 +327,9 @@ public class AutoPlayerFrame extends JFrame {
 
 		vocbs.stream().forEach(v -> {
 			if (v.getBox_id() > 0) {
-				Optional<CardBox> box = boxs.stream().filter(b -> b.getId().equals(v.getBox_id())).findFirst();
+				Optional<CardBox> box = boxs.stream()
+						.filter(b -> b.getId().equals(v.getBox_id()))
+						.findFirst();
 				if (box.isPresent()) {
 					if (box.get().isTesting()) {
 						playList.add(v);
@@ -321,14 +344,23 @@ public class AutoPlayerFrame extends JFrame {
 		if (playList.size() == 0) {
 			return;
 		}
-		Collections.shuffle(playList);
 
 		if (runPlayer == null && playList != null) {
+			Collections.shuffle(playList);
 			runPlayer = new RunPlayer(playList);
+			Thread thd = new Thread(runPlayer);
+			esPlayer.submit(thd);
+		} else {
+			runPlayer.play();
 		}
+		initControlButton();
+		btnPlay.setEnabled(false);
+	}
 
-		Thread thd = new Thread(runPlayer);
-		esPlayer.submit(thd);
+	public void pause() {
+		runPlayer.pause();
+		initControlButton();
+		btnPause.setEnabled(false);
 	}
 
 	public void stop() {
@@ -336,6 +368,12 @@ public class AutoPlayerFrame extends JFrame {
 			runPlayer.cancel();
 			runPlayer = null;
 		}
+		initControlButton();
+	}
 
+	public void initControlButton() {
+		btnPlay.setEnabled(true);
+		btnPause.setEnabled(true);
+		btnStop.setEnabled(true);
 	}
 }
