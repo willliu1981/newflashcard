@@ -13,6 +13,9 @@ import javax.swing.JScrollPane;
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
@@ -44,8 +47,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
+import javax.swing.JTextPane;
 
-public class AutoPlayerFrame extends JFrame {
+public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
 		List<Vocabulary> vocbList;
 		int times = 3;
@@ -62,17 +66,43 @@ public class AutoPlayerFrame extends JFrame {
 			int times = this.times;
 			int quantity = vocbList.size();
 			Vocabulary v = null;
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			while (!isCancelled) {
 				if (!isWaiting) {
 
 					v = vocbList.get(ptr);
 
-					AutoPlayerFrame.lblVocabulary.setText(v.getVocabulary());
-					AutoPlayerFrame.lblTreanslation.setText(v.getTranslation());
-					AutoPlayerFrame.txtrContent.setText(v.getExplanation());
-					AutoPlayerFrame.lblProgress.setText(
+					SimpleAutoPlayerFrame.lblProgress.setText(
 							String.format("%d / %d", ptr + 1, quantity));
-					AutoPlayerFrame.tetrExample.setText(v.getExample());
+					SimpleAutoPlayerFrame.txtpnNumber
+							.setText("" + (ptr + 1) + ".");
+					SimpleAutoPlayerFrame.txtpnVocabulary
+							.setText(v.getVocabulary());
+					SimpleAutoPlayerFrame.txtpnTranslation
+							.setText(v.getTranslation());
+
+					if (v.getExplanation() != null) {
+						StringBuilder sb = new StringBuilder(
+								v.getExplanation());
+						int cutIdx = sb.indexOf("\n\n\n");
+						String explanation = "";
+						if (cutIdx == -1) {
+							explanation = sb.toString();
+						} else {
+							explanation = sb.substring(0, cutIdx);
+						}
+
+						SimpleAutoPlayerFrame.txtpnExplanation
+								.setText(explanation);
+					} else {
+						SimpleAutoPlayerFrame.txtpnExplanation.setText("");
+					}
+
 					boolean r = PronounceControl.play(v.getVocabulary());
 
 					if (!r || --times == 0) {
@@ -106,18 +136,24 @@ public class AutoPlayerFrame extends JFrame {
 		}
 	}
 
+	private final static Color background = new Color(41, 57, 55);
+	private final static Color chalkWhite = new Color(239, 238, 233);
+	private final static Color chalkYellow = new Color(240, 219, 66);
+	private final static Color chalkRed = new Color(219, 78, 95);
+	private final static Color chalkGreen = new Color(91, 160, 116);
+	private final static Color chalkBlue = new Color(62, 154, 229);
 	private JPanel contentPane;
 	RunPlayer runPlayer;
 	ExecutorService esPlayer = Executors.newFixedThreadPool(1);
 	List<Vocabulary> playList = new ArrayList<>();
-	private static JTextArea txtrContent;
 	private static JLabel lblProgress;
-	private static JLabel lblVocabulary;
-	private static JLabel lblTreanslation;
-	private static JTextArea tetrExample;
 	private static JButton btnPlay;
 	private static JButton btnPause;
 	private static JButton btnStop;
+	private static JTextPane txtpnTranslation;
+	private static JTextPane txtpnExplanation;
+	private static JTextPane txtpnVocabulary;
+	private static JTextPane txtpnNumber;
 
 	/**
 	 * Launch the application.
@@ -126,7 +162,7 @@ public class AutoPlayerFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AutoPlayerFrame frame = new AutoPlayerFrame();
+					SimpleAutoPlayerFrame frame = new SimpleAutoPlayerFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -138,14 +174,14 @@ public class AutoPlayerFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AutoPlayerFrame() {
+	public SimpleAutoPlayerFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 1218, 859);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		this.addWindowListener(new  WindowAdapter() {
+		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				stop();
@@ -215,70 +251,92 @@ public class AutoPlayerFrame extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 16));
 		panel_2.add(lblNewLabel, BorderLayout.WEST);
-		
-				lblProgress = new JLabel("0/0");
-				panel_2.add(lblProgress, BorderLayout.EAST);
-				lblProgress.setFont(new Font("新細明體", Font.PLAIN, 24));
+
+		lblProgress = new JLabel("0/0");
+		panel_2.add(lblProgress, BorderLayout.EAST);
+		lblProgress.setFont(new Font("新細明體", Font.PLAIN, 24));
 
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
 		panel_3.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setPreferredSize(new Dimension(10, 230));
+		panel_4.setPreferredSize(new Dimension(10, 320));
 		panel_3.add(panel_4, BorderLayout.NORTH);
 		panel_4.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_13 = new JPanel();
-		panel_4.add(panel_13);
-		panel_13.setLayout(null);
+		txtpnTranslation = new JTextPane();
+		txtpnTranslation.setForeground(chalkWhite);
+		txtpnTranslation.setBackground(background);
+		txtpnTranslation.setText("translate");
+		txtpnTranslation.setFont(new Font("DialogInput", Font.PLAIN, 52));
+		panel_4.add(txtpnTranslation, BorderLayout.SOUTH);
+		setAlignment(txtpnTranslation);
 
-		lblVocabulary = new JLabel("word");
-		lblVocabulary.setPreferredSize(new Dimension(60, 15));
-		lblVocabulary.setBounds(197, 10, 2560, 66);
-		lblVocabulary.setFont(new Font("DialogInput", Font.BOLD, 58));
-		panel_13.add(lblVocabulary);
-
-		lblTreanslation = new JLabel("翻譯");
-		lblTreanslation.setBounds(22, 73, 2560, 58);
-		lblTreanslation.setFont(new Font("DialogInput", Font.PLAIN, 38));
-		panel_13.add(lblTreanslation);
-
-		JPanel panel_15 = new JPanel();
-		panel_15.setBounds(22, 130, 2560, 90);
-		panel_13.add(panel_15);
-		panel_15.setLayout(new BorderLayout(0, 0));
-
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBorder(null);
-		panel_15.add(scrollPane_1, BorderLayout.CENTER);
-
-		tetrExample = new JTextArea();
-		tetrExample.setPreferredSize(new Dimension(5, 35));
-		tetrExample.setBackground(SystemColor.control);
-		tetrExample.setEditable(false);
-		tetrExample.setMargin(new Insets(2, 8, 2, 8));
-		tetrExample.setFont(new Font("DialogInput", Font.PLAIN, 32));
-		tetrExample.setText("例句");
-		tetrExample.setLineWrap(true);
-		tetrExample.setWrapStyleWord(true);
-		scrollPane_1.setViewportView(tetrExample);
+		JPanel panel_5 = new JPanel();
+		panel_4.add(panel_5, BorderLayout.CENTER);
+		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.X_AXIS));
 
 		JPanel panel_14 = new JPanel();
-		panel_4.add(panel_14, BorderLayout.EAST);
+		panel_14.setBackground(background);
+		panel_5.add(panel_14);
+		panel_14.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane();
-		panel_3.add(scrollPane, BorderLayout.CENTER);
-		txtrContent = new JTextArea();
-		scrollPane.setViewportView(txtrContent);
-		txtrContent.setEditable(false);
-		txtrContent.setWrapStyleWord(true);
-		txtrContent.setLineWrap(true);
-		txtrContent.setMargin(new Insets(8, 16, 8, 16));
-		txtrContent.setFont(new Font("DialogInput", Font.PLAIN, 32));
-		txtrContent.setText("content");
-		txtrContent.setForeground(Color.WHITE);
-		txtrContent.setBackground(Color.DARK_GRAY);
+		JPanel panel_15 = new JPanel();
+		panel_14.add(panel_15, BorderLayout.SOUTH);
+		panel_15.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_17 = new JPanel();
+		panel_17.setBackground(background);
+		panel_15.add(panel_17, BorderLayout.CENTER);
+		panel_17.setLayout(new BorderLayout(0, 0));
+
+		txtpnNumber = new JTextPane();
+		txtpnNumber.setForeground(chalkBlue);
+		txtpnNumber.setBackground(background);
+		txtpnNumber.setText("0");
+		txtpnNumber.setFont(new Font("DialogInput", Font.PLAIN, 48));
+		panel_17.add(txtpnNumber, BorderLayout.EAST);
+		setAlignment(txtpnNumber, StyleConstants.ALIGN_RIGHT);
+
+		JPanel panel_13 = new JPanel();
+		panel_13.setBackground(background);
+		panel_5.add(panel_13);
+		panel_13.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_18 = new JPanel();
+		panel_13.add(panel_18, BorderLayout.SOUTH);
+		panel_18.setLayout(new BorderLayout(0, 0));
+
+		txtpnVocabulary = new JTextPane();
+		txtpnVocabulary.setForeground(chalkYellow);
+		txtpnVocabulary.setBackground(background);
+		panel_18.add(txtpnVocabulary);
+		txtpnVocabulary.setText("content");
+		txtpnVocabulary.setFont(new Font("DialogInput", Font.BOLD, 82));
+		setAlignment(txtpnVocabulary);
+
+		JPanel panel_16 = new JPanel();
+		panel_16.setBackground(background);
+		panel_5.add(panel_16);
+		panel_16.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_19 = new JPanel();
+		panel_19.setBackground(background);
+		panel_19.setPreferredSize(new Dimension(10, 120));
+		panel_4.add(panel_19, BorderLayout.NORTH);
+
+		JPanel panel_5_1 = new JPanel();
+		panel_3.add(panel_5_1, BorderLayout.CENTER);
+		panel_5_1.setLayout(new BorderLayout(0, 0));
+
+		txtpnExplanation = new JTextPane();
+		txtpnExplanation.setForeground(chalkWhite);
+		txtpnExplanation.setBackground(background);
+		txtpnExplanation.setText("explanation");
+		txtpnExplanation.setFont(new Font("DialogInput", Font.PLAIN, 38));
+		panel_5_1.add(txtpnExplanation, BorderLayout.CENTER);
+		setAlignment(txtpnExplanation);
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setPreferredSize(new Dimension(10, 80));
@@ -324,6 +382,17 @@ public class AutoPlayerFrame extends JFrame {
 		JPanel panel_8 = new JPanel();
 		panel_8.setPreferredSize(new Dimension(10, 20));
 		panel_6.add(panel_8, BorderLayout.NORTH);
+	}
+
+	private void setAlignment(JTextPane pane) {
+		setAlignment(pane, StyleConstants.ALIGN_CENTER);
+	}
+
+	private void setAlignment(JTextPane pane, int styleConst) {
+		StyledDocument doc = pane.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 	}
 
 	public void load() {
@@ -386,5 +455,13 @@ public class AutoPlayerFrame extends JFrame {
 		btnPlay.setEnabled(true);
 		btnPause.setEnabled(true);
 		btnStop.setEnabled(true);
+		clear();
+	}
+
+	public void clear() {
+		SimpleAutoPlayerFrame.txtpnNumber.setText("");
+		SimpleAutoPlayerFrame.txtpnVocabulary.setText("");
+		SimpleAutoPlayerFrame.txtpnTranslation.setText("");
+		SimpleAutoPlayerFrame.txtpnExplanation.setText("");
 	}
 }

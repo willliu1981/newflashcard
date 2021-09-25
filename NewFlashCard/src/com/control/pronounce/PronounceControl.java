@@ -90,6 +90,7 @@ public class PronounceControl {
 		Media hit = new Media(f.toURI().toString());
 		mediaPlayer = new MediaPlayer(hit);
 		mediaPlayer.play();
+		mediaPlayer.setVolume(1.0);
 	}
 
 	public static boolean download(String vocabulary) {
