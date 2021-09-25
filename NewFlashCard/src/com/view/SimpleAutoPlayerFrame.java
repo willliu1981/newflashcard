@@ -261,11 +261,12 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		panel_3.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setPreferredSize(new Dimension(10, 320));
+		panel_4.setPreferredSize(new Dimension(10, 380));
 		panel_3.add(panel_4, BorderLayout.NORTH);
 		panel_4.setLayout(new BorderLayout(0, 0));
 
 		txtpnTranslation = new JTextPane();
+		txtpnTranslation.setPreferredSize(new Dimension(7, 135));
 		txtpnTranslation.setForeground(chalkWhite);
 		txtpnTranslation.setBackground(background);
 		txtpnTranslation.setText("translate");
@@ -449,13 +450,13 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			runPlayer = null;
 		}
 		initControlButton();
+		clear();
 	}
 
 	public void initControlButton() {
 		btnPlay.setEnabled(true);
 		btnPause.setEnabled(true);
 		btnStop.setEnabled(true);
-		clear();
 	}
 
 	public void clear() {
