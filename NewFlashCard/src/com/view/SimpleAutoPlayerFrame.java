@@ -81,6 +81,8 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							String.format("%d / %d", ptr + 1, quantity));
 					SimpleAutoPlayerFrame.txtpnNumber
 							.setText("" + (ptr + 1) + ".");
+					SimpleAutoPlayerFrame.txtpnNumber_ghost
+					.setText("" + (ptr + 1) + "");
 					SimpleAutoPlayerFrame.txtpnVocabulary
 							.setText(v.getVocabulary());
 					SimpleAutoPlayerFrame.txtpnTranslation
@@ -154,6 +156,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	private static JTextPane txtpnExplanation;
 	private static JTextPane txtpnVocabulary;
 	private static JTextPane txtpnNumber;
+	private static JTextPane txtpnNumber_ghost;
 
 	/**
 	 * Launch the application.
@@ -261,20 +264,21 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		panel_3.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setPreferredSize(new Dimension(10, 380));
+		panel_4.setPreferredSize(new Dimension(10, 420));
 		panel_3.add(panel_4, BorderLayout.NORTH);
 		panel_4.setLayout(new BorderLayout(0, 0));
 
 		txtpnTranslation = new JTextPane();
-		txtpnTranslation.setPreferredSize(new Dimension(7, 135));
+		txtpnTranslation.setPreferredSize(new Dimension(7, 180));
 		txtpnTranslation.setForeground(chalkWhite);
 		txtpnTranslation.setBackground(background);
-		txtpnTranslation.setText("translate");
+		txtpnTranslation.setText("翻譯");
 		txtpnTranslation.setFont(new Font("DialogInput", Font.PLAIN, 52));
 		panel_4.add(txtpnTranslation, BorderLayout.SOUTH);
 		setAlignment(txtpnTranslation);
 
 		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(background);
 		panel_4.add(panel_5, BorderLayout.CENTER);
 		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.X_AXIS));
 
@@ -284,6 +288,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		panel_14.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_15 = new JPanel();
+		panel_15.setBackground(background);
 		panel_14.add(panel_15, BorderLayout.SOUTH);
 		panel_15.setLayout(new BorderLayout(0, 0));
 
@@ -293,7 +298,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		panel_17.setLayout(new BorderLayout(0, 0));
 
 		txtpnNumber = new JTextPane();
-		txtpnNumber.setForeground(chalkBlue);
+		txtpnNumber.setForeground(background);
 		txtpnNumber.setBackground(background);
 		txtpnNumber.setText("0");
 		txtpnNumber.setFont(new Font("DialogInput", Font.PLAIN, 48));
@@ -314,13 +319,36 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		txtpnVocabulary.setBackground(background);
 		panel_18.add(txtpnVocabulary);
 		txtpnVocabulary.setText("content");
-		txtpnVocabulary.setFont(new Font("DialogInput", Font.BOLD, 82));
+		txtpnVocabulary.setFont(new Font("DialogInput", Font.BOLD, 92));
 		setAlignment(txtpnVocabulary);
 
 		JPanel panel_16 = new JPanel();
 		panel_16.setBackground(background);
 		panel_5.add(panel_16);
 		panel_16.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_15_1 = new JPanel();
+		panel_15_1.setBackground(background);
+		panel_16.add(panel_15_1, BorderLayout.CENTER);
+		panel_15_1.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_17_1 = new JPanel();
+		panel_17_1.setBackground(background);
+		panel_15_1.add(panel_17_1, BorderLayout.CENTER);
+		panel_17_1.setLayout(new BorderLayout(0, 0));
+
+		txtpnNumber_ghost = new JTextPane();
+		txtpnNumber_ghost.setText("0");
+		txtpnNumber_ghost.setForeground(chalkGreen);
+		txtpnNumber_ghost.setFont(new Font("DialogInput", Font.PLAIN, 48));
+		txtpnNumber_ghost.setBackground(new Color(41, 57, 55));
+		panel_17_1.add(txtpnNumber_ghost, BorderLayout.CENTER);
+		this.setAlignment(txtpnNumber_ghost);
+		
+		JPanel panel_20 = new JPanel();
+		panel_20.setPreferredSize(new Dimension(10, 20));
+		panel_20.setBackground(background);
+		panel_15_1.add(panel_20, BorderLayout.NORTH);
 
 		JPanel panel_19 = new JPanel();
 		panel_19.setBackground(background);
@@ -334,7 +362,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		txtpnExplanation = new JTextPane();
 		txtpnExplanation.setForeground(chalkWhite);
 		txtpnExplanation.setBackground(background);
-		txtpnExplanation.setText("explanation");
+		txtpnExplanation.setText("解釋");
 		txtpnExplanation.setFont(new Font("DialogInput", Font.PLAIN, 38));
 		panel_5_1.add(txtpnExplanation, BorderLayout.CENTER);
 		setAlignment(txtpnExplanation);
