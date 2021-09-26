@@ -59,61 +59,61 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			Vocabulary v = null;
 			try {
 				Thread.sleep(2000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			while (!isCancelled) {
-				if (!isWaiting) {
 
-					v = vocbList.get(ptr);
-					/*
-					SimpleAutoPlayerFrame.txtpnNumber
-							.setText("" + (ptr + 1) + ".");
-					SimpleAutoPlayerFrame.txtpnNumber_ghost
-							.setText("" + (ptr + 1) + "");
-					//*/
-					SimpleAutoPlayerFrame.txtpnNumber_righttop
-							.setText("" + (ptr + 1) + "");
-					SimpleAutoPlayerFrame.txtpnVocabulary
-							.setText(v.getVocabulary());
-					SimpleAutoPlayerFrame.txtpnTranslation
-							.setText(v.getTranslation());
+				while (!isCancelled) {
+					if (!isWaiting) {
 
-					if (v.getExplanation() != null) {
-						StringBuilder sb = new StringBuilder(
-								v.getExplanation());
-						int cutIdx = sb.indexOf("\n\n\n");
-						String explanation = "";
-						if (cutIdx == -1) {
-							explanation = sb.toString();
+						v = vocbList.get(ptr);
+						/*
+						SimpleAutoPlayerFrame.txtpnNumber
+								.setText("" + (ptr + 1) + ".");
+						SimpleAutoPlayerFrame.txtpnNumber_ghost
+								.setText("" + (ptr + 1) + "");
+						//*/
+						SimpleAutoPlayerFrame.txtpnNumber_righttop
+								.setText("" + (ptr + 1) + "");
+						SimpleAutoPlayerFrame.txtpnVocabulary
+								.setText(v.getVocabulary());
+						SimpleAutoPlayerFrame.txtpnTranslation
+								.setText(v.getTranslation());
+
+						if (v.getExplanation() != null) {
+							StringBuilder sb = new StringBuilder(
+									v.getExplanation());
+							int cutIdx = sb.indexOf("\n\n\n");
+							String explanation = "";
+							if (cutIdx == -1) {
+								explanation = sb.toString();
+							} else {
+								explanation = sb.substring(0, cutIdx);
+							}
+
+							SimpleAutoPlayerFrame.txtpnExplanation
+									.setText(explanation);
 						} else {
-							explanation = sb.substring(0, cutIdx);
+							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
 						}
 
-						SimpleAutoPlayerFrame.txtpnExplanation
-								.setText(explanation);
-					} else {
-						SimpleAutoPlayerFrame.txtpnExplanation.setText("");
+						boolean r = PronounceControl.play(v.getVocabulary());
+
+						if (!r || --times == 0) {
+							times = this.times;
+							ptr++;
+						}
+
+						if (ptr >= vocbList.size()) {
+							ptr = 0;
+
+							Thread.sleep(2000);
+
+						}
+
 					}
 
-					boolean r = PronounceControl.play(v.getVocabulary());
-
-					if (!r || --times == 0) {
-						times = this.times;
-						ptr++;
-					}
-
-					if (ptr >= vocbList.size()) {
-						ptr = 0;
-					}
-
-				}
-				try {
 					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -138,7 +138,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	private final static Color chalkGreen = new Color(91, 160, 116);
 	private final static Color chalkBlue = new Color(62, 154, 229);
 	private static JPanel singletonContentPane;
-	RunPlayer runPlayer;
+	static RunPlayer runPlayer;
 	ExecutorService esPlayer = Executors.newFixedThreadPool(1);
 	List<Vocabulary> playList = new ArrayList<>();
 	private static JButton btnPlay;
@@ -407,6 +407,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				createNewFrame(false);
 				SimpleAutoPlayerFrame.singletonFrame.setVisible(true);
+				SimpleAutoPlayerFrame.singletonFrame.setLocation(lastPoint);
 			}
 		});
 		btnStop_1.setFont(new Font("DialogInput", Font.BOLD, 20));
