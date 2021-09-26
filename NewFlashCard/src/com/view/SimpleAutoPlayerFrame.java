@@ -36,6 +36,7 @@ import com.control.pronounce.PronounceControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;
+import java.awt.event.MouseAdapter;
 
 public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
@@ -144,7 +145,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	private static JTextPane txtpnNumber;
 	private static JTextPane txtpnNumber_ghost;
 	private JPanel panel_bottom;
-	private JPanel panel_playerButton;
+	private JPanel panel_playerButtonCenter;
 	private JPanel panel_playerButtonTop;
 
 	/**
@@ -178,6 +179,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		setContentPane(singletonContentPane);
 		if (unDecorate) {
 			this.setUndecorated(unDecorate);
+			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -191,7 +193,8 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			@Override
 			public void windowStateChanged(WindowEvent state) {
 				if (state.getNewState() == JFrame.MAXIMIZED_BOTH) {
-
+					createNewFrame(true);
+					SimpleAutoPlayerFrame.singletonFrame.setVisible(true);
 				}
 			}
 
@@ -308,12 +311,32 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		setAlignment(txtpnExplanation);
 
 		panel_bottom = new JPanel();
+		panel_bottom.addMouseListener(new MouseAdapter() {
+			boolean isOut = false;
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				if (!panel_playerButtonCenter.isVisible()) {
+					isOut = true;
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if (isOut) {
+					if (!panel_playerButtonCenter.isVisible()) {
+						restorePlayerButton();
+						isOut = false;
+					}
+				}
+			}
+		});
 		panel_bottom.setPreferredSize(new Dimension(10, 80));
 		singletonContentPane.add(panel_bottom, BorderLayout.SOUTH);
 		panel_bottom.setLayout(new BorderLayout(0, 0));
 
-		panel_playerButton = new JPanel();
-		panel_bottom.add(panel_playerButton);
+		panel_playerButtonCenter = new JPanel();
+		panel_bottom.add(panel_playerButtonCenter);
 
 		btnPlay = new JButton("▶");
 		btnPlay.addActionListener(new ActionListener() {
@@ -324,7 +347,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		btnPlay.setFocusPainted(false);
 		btnPlay.setBackground(SystemColor.controlHighlight);
 		btnPlay.setFont(new Font("DialogInput", Font.BOLD, 20));
-		panel_playerButton.add(btnPlay);
+		panel_playerButtonCenter.add(btnPlay);
 
 		btnPause = new JButton("❚❚");
 		btnPause.addActionListener(new ActionListener() {
@@ -335,7 +358,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		btnPause.setFocusPainted(false);
 		btnPause.setBackground(SystemColor.controlHighlight);
 		btnPause.setFont(new Font("DialogInput", Font.BOLD, 20));
-		panel_playerButton.add(btnPause);
+		panel_playerButtonCenter.add(btnPause);
 
 		btnStop = new JButton("■");
 		btnStop.addActionListener(new ActionListener() {
@@ -346,10 +369,10 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		btnStop.setFocusPainted(false);
 		btnStop.setBackground(SystemColor.controlHighlight);
 		btnStop.setFont(new Font("DialogInput", Font.BOLD, 20));
-		panel_playerButton.add(btnStop);
+		panel_playerButtonCenter.add(btnStop);
 
 		JPanel panel = new JPanel();
-		panel_playerButton.add(panel);
+		panel_playerButtonCenter.add(panel);
 
 		JLabel lblNewLabel = new JLabel("｜");
 		lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 28));
@@ -358,35 +381,18 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		JButton btnStop_1 = new JButton("▣");
 		btnStop_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// SimpleAutoPlayerFrame.singletonFrame=new
-				// SimpleAutoPlayerFrame(SimpleAutoPlayerFrame.singletonContentPane);
-				// singletonFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+				createNewFrame(false);
+				SimpleAutoPlayerFrame.singletonFrame.setVisible(true);
 			}
 		});
 		btnStop_1.setFont(new Font("DialogInput", Font.BOLD, 20));
 		btnStop_1.setFocusPainted(false);
 		btnStop_1.setBackground(SystemColor.controlHighlight);
-		panel_playerButton.add(btnStop_1);
+		panel_playerButtonCenter.add(btnStop_1);
 
 		panel_playerButtonTop = new JPanel();
 		panel_playerButtonTop.setPreferredSize(new Dimension(10, 20));
 		panel_bottom.add(panel_playerButtonTop, BorderLayout.NORTH);
-		panel_playerButtonTop.addMouseMotionListener(new MouseMotionListener() {
-
-			@Override
-			public void mouseDragged(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent arg0) {
-				if (!panel_playerButton.isVisible()) {
-					restorePlayerButton();
-				}
-			}
-		});
 	}
 
 	private void setAlignment(JTextPane pane) {
@@ -472,20 +478,30 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	}
 
 	private void restorePlayerButton() {
-		panel_playerButton.setVisible(true);
+		panel_playerButtonCenter.setVisible(true);
 		panel_playerButtonTop.setBackground(MyColor.defaultColor());
 	}
 
 	private void hidePlayerButton() {
-		panel_playerButton.setVisible(false);
+		panel_playerButtonCenter.setVisible(false);
 		panel_playerButtonTop.setBackground(background);
+		panel_bottom.setBackground(background);
 	}
 
 	public static SimpleAutoPlayerFrame getFrame() {
 		if (SimpleAutoPlayerFrame.singletonFrame == null) {
-			SimpleAutoPlayerFrame.singletonFrame = new SimpleAutoPlayerFrame();
+			createNewFrame(false);
 		}
 		return SimpleAutoPlayerFrame.singletonFrame;
+	}
+
+	public static void createNewFrame(boolean maxSize) {
+		if (SimpleAutoPlayerFrame.singletonFrame != null) {
+			SimpleAutoPlayerFrame.singletonFrame.setVisible(false);
+			SimpleAutoPlayerFrame.singletonFrame.dispose();
+		}
+		SimpleAutoPlayerFrame.singletonFrame = new SimpleAutoPlayerFrame(
+				maxSize);
 	}
 
 }
