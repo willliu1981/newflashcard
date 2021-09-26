@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +38,7 @@ import com.model.CardBox;
 import com.model.Vocabulary;
 import com.tool.MyColor;
 import java.awt.event.MouseAdapter;
+import java.awt.Insets;
 
 public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
@@ -65,10 +67,13 @@ public class SimpleAutoPlayerFrame extends JFrame {
 				if (!isWaiting) {
 
 					v = vocbList.get(ptr);
-
+					/*
 					SimpleAutoPlayerFrame.txtpnNumber
 							.setText("" + (ptr + 1) + ".");
 					SimpleAutoPlayerFrame.txtpnNumber_ghost
+							.setText("" + (ptr + 1) + "");
+					//*/
+					SimpleAutoPlayerFrame.txtpnNumber_righttop
 							.setText("" + (ptr + 1) + "");
 					SimpleAutoPlayerFrame.txtpnVocabulary
 							.setText(v.getVocabulary());
@@ -147,6 +152,8 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	private JPanel panel_bottom;
 	private JPanel panel_playerButtonCenter;
 	private JPanel panel_playerButtonTop;
+	private static Point lastPoint;
+	private static JTextPane txtpnNumber_righttop;
 
 	/**
 	 * Launch the application.
@@ -179,8 +186,10 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		setContentPane(singletonContentPane);
 		if (unDecorate) {
 			this.setUndecorated(unDecorate);
+			this.setLocation(lastPoint);
 			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
+
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -212,6 +221,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		panel_4.setLayout(new BorderLayout(0, 0));
 
 		txtpnTranslation = new JTextPane();
+		txtpnTranslation.setMargin(new Insets(20, 20, 20, 20));
 		txtpnTranslation.setPreferredSize(new Dimension(7, 180));
 		txtpnTranslation.setForeground(chalkWhite);
 		txtpnTranslation.setBackground(background);
@@ -282,7 +292,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 
 		txtpnNumber_ghost = new JTextPane();
 		txtpnNumber_ghost.setText("0");
-		txtpnNumber_ghost.setForeground(chalkGreen);
+		txtpnNumber_ghost.setForeground(background);
 		txtpnNumber_ghost.setFont(new Font("DialogInput", Font.PLAIN, 48));
 		txtpnNumber_ghost.setBackground(new Color(41, 57, 55));
 		panel_17_1.add(txtpnNumber_ghost, BorderLayout.CENTER);
@@ -297,12 +307,26 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		panel_19.setBackground(background);
 		panel_19.setPreferredSize(new Dimension(10, 120));
 		panel_4.add(panel_19, BorderLayout.NORTH);
+		panel_19.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setPreferredSize(new Dimension(100, 10));
+		panel_1.setBackground(background);
+		panel_19.add(panel_1, BorderLayout.EAST);
+
+		txtpnNumber_righttop = new JTextPane();
+		txtpnNumber_righttop.setText("0");
+		txtpnNumber_righttop.setForeground(new Color(91, 160, 116));
+		txtpnNumber_righttop.setFont(new Font("DialogInput", Font.PLAIN, 48));
+		txtpnNumber_righttop.setBackground(new Color(41, 57, 55));
+		panel_1.add(txtpnNumber_righttop);
 
 		JPanel panel_5_1 = new JPanel();
 		panel_3.add(panel_5_1, BorderLayout.CENTER);
 		panel_5_1.setLayout(new BorderLayout(0, 0));
 
 		txtpnExplanation = new JTextPane();
+		txtpnExplanation.setMargin(new Insets(20, 20, 20, 20));
 		txtpnExplanation.setForeground(chalkWhite);
 		txtpnExplanation.setBackground(background);
 		txtpnExplanation.setText("解釋");
@@ -498,6 +522,8 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	public static void createNewFrame(boolean maxSize) {
 		if (SimpleAutoPlayerFrame.singletonFrame != null) {
 			SimpleAutoPlayerFrame.singletonFrame.setVisible(false);
+			lastPoint = new Point(SimpleAutoPlayerFrame.singletonFrame.getX(),
+					SimpleAutoPlayerFrame.singletonFrame.getY());
 			SimpleAutoPlayerFrame.singletonFrame.dispose();
 		}
 		SimpleAutoPlayerFrame.singletonFrame = new SimpleAutoPlayerFrame(
