@@ -36,6 +36,7 @@ import com.control.dao.VocabularyDao;
 import com.control.pronounce.PronounceControl;
 import com.model.CardBox;
 import com.model.Vocabulary;
+import com.model.CardBox.StateResult;
 import com.tool.MyColor;
 import java.awt.event.MouseAdapter;
 import java.awt.Insets;
@@ -43,9 +44,11 @@ import java.awt.Insets;
 public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
 		List<Vocabulary> vocbList;
-		int times = 3;
+		static int MAXTIMES = 6;
+		static int HINDTIMES = 3;
 		boolean isCancelled = false;
 		boolean isWaiting = false;
+		static final String defaultHint = "-";
 
 		public RunPlayer(List<Vocabulary> vocbs) {
 			this.vocbList = vocbs;
@@ -54,58 +57,87 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		@Override
 		public void run() {
 			int ptr = 0;
-			int times = this.times;
+			int times = 0;
 			int quantity = vocbList.size();
+
 			Vocabulary v = null;
+			SimpleAutoPlayerFrame.getFrame().setTitle("" + quantity);
 			try {
 				Thread.sleep(2000);
-
 				while (!isCancelled) {
 					if (!isWaiting) {
 
 						v = vocbList.get(ptr);
-						/*
-						SimpleAutoPlayerFrame.txtpnNumber
-								.setText("" + (ptr + 1) + ".");
-						SimpleAutoPlayerFrame.txtpnNumber_ghost
-								.setText("" + (ptr + 1) + "");
-						//*/
+						SimpleAutoPlayerFrame.txtpnNumber_righttop.setText("");
 						SimpleAutoPlayerFrame.txtpnNumber_righttop
 								.setText("" + (ptr + 1) + "");
-						SimpleAutoPlayerFrame.txtpnVocabulary
-								.setText(v.getVocabulary());
-						SimpleAutoPlayerFrame.txtpnTranslation
-								.setText(v.getTranslation());
 
-						if (v.getExplanation() != null) {
-							StringBuilder sb = new StringBuilder(
-									v.getExplanation());
-							int cutIdx = sb.indexOf("\n\n\n");
-							String explanation = "";
-							if (cutIdx == -1) {
-								explanation = sb.toString();
-							} else {
-								explanation = sb.substring(0, cutIdx);
-							}
-
-							SimpleAutoPlayerFrame.txtpnExplanation
-									.setText(explanation);
-						} else {
+						switch (times) {
+						case 0:
+							SimpleAutoPlayerFrame.txtpnVocabulary.setText("");
+							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
 							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
-						}
+							break;
+						case 1:
+							SimpleAutoPlayerFrame.txtpnVocabulary.setText(
+									createHint(v.getVocabulary().length()));
+							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
+							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
+							break;
+						case 2:
+							SimpleAutoPlayerFrame.txtpnVocabulary.setText(v
+									.getVocabulary().substring(0, 1)
+									+ createHint(v.getVocabulary().length() - 2)
+									+ v.getVocabulary().substring(
+											v.getVocabulary().length() - 1));
+							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
+							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
+							break;
+						case 3:
+							Thread.sleep(500);
+						case 4:
+						case 5:
+							SimpleAutoPlayerFrame.txtpnVocabulary
+									.setText(v.getVocabulary());
+							SimpleAutoPlayerFrame.txtpnTranslation
+									.setText(v.getTranslation());
 
+							if (v.getExplanation() != null) {
+								StringBuilder sb = new StringBuilder(
+										v.getExplanation());
+								int cutIdx = sb.indexOf("\n\n\n");
+								String explanation = "";
+								if (cutIdx == -1) {
+									explanation = sb.toString();
+								} else {
+									explanation = sb.substring(0, cutIdx);
+								}
+
+								SimpleAutoPlayerFrame.txtpnExplanation
+										.setText(explanation);
+							} else {
+								SimpleAutoPlayerFrame.txtpnExplanation
+										.setText("");
+							}
+							break;
+						default:
+							break;
+						}
+						
+						Thread.sleep(250);
 						boolean r = PronounceControl.play(v.getVocabulary());
 
-						if (!r || --times == 0) {
-							times = this.times;
+						if (!r || ++times == MAXTIMES) {
+							if (!r) {
+								Thread.sleep(1750);
+							}
+							times = 0;
 							ptr++;
 						}
 
 						if (ptr >= vocbList.size()) {
 							ptr = 0;
-
 							Thread.sleep(2000);
-
 						}
 
 					}
@@ -115,6 +147,19 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+
+		private static String createHint(int num, String hint) {
+			StringBuilder sb = new StringBuilder();
+			while (--num >= 0) {
+				sb = sb.append(hint);
+			}
+			return sb.toString();
+		}
+
+		private static String createHint(int num) {
+
+			return createHint(num, defaultHint);
 		}
 
 		public void cancel() {
@@ -440,11 +485,13 @@ public class SimpleAutoPlayerFrame extends JFrame {
 
 		vocbs.stream().forEach(v -> {
 			if (v.getBox_id() > 0) {
-				Optional<CardBox> box = boxs.stream()
+				Optional<CardBox> opBox = boxs.stream()
 						.filter(b -> b.getId().equals(v.getBox_id()))
 						.findFirst();
-				if (box.isPresent()) {
-					if (box.get().isTesting()) {
+				if (opBox.isPresent()) {
+					CardBox box = opBox.get();
+					if (box.isCurrentTesting() || (!box.isFinish()
+							&& box.getStateResult() == StateResult.Default)) {
 						playList.add(v);
 					}
 				}

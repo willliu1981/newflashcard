@@ -142,7 +142,7 @@ public class CardBox {
 		return r;
 	}
 
-	public boolean isTesting() {
+	public boolean isCurrentTesting() {
 		StateResult r = this.getStateResult();
 		return this.getState() != 0 && !this.isFinish()
 				&& (r == StateResult.Primary || r == StateResult.BeforeDay

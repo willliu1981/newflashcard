@@ -174,7 +174,6 @@ public class AutoPlayerFrame extends JFrame {
 
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("當前測驗中");
 		rdbtnNewRadioButton_1.setEnabled(false);
-		rdbtnNewRadioButton_1.setSelected(true);
 		rdbtnNewRadioButton_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_1);
 		radioPlayerGroup.add(rdbtnNewRadioButton_1);
@@ -205,6 +204,16 @@ public class AutoPlayerFrame extends JFrame {
 		rdbtnNewRadioButton_3_1.setFont(new Font("新細明體", Font.PLAIN, 18));
 		panel_1.add(rdbtnNewRadioButton_3_1);
 		radioPlayerGroup.add(rdbtnNewRadioButton_3_1);
+		
+		JPanel panel_12_1 = new JPanel();
+		panel_1.add(panel_12_1);
+		
+		JRadioButton rdbtnNewRadioButton_3_1_1 = new JRadioButton("已創建未開始、逾期或當前測驗中");
+		rdbtnNewRadioButton_3_1_1.setSelected(true);
+		rdbtnNewRadioButton_3_1_1.setFont(new Font("新細明體", Font.PLAIN, 18));
+		rdbtnNewRadioButton_3_1_1.setEnabled(false);
+		panel_1.add(rdbtnNewRadioButton_3_1_1);
+		radioPlayerGroup.add(rdbtnNewRadioButton_3_1_1);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setPreferredSize(new Dimension(240, 10));
@@ -339,7 +348,7 @@ public class AutoPlayerFrame extends JFrame {
 						.filter(b -> b.getId().equals(v.getBox_id()))
 						.findFirst();
 				if (box.isPresent()) {
-					if (box.get().isTesting()) {
+					if (box.get().isCurrentTesting()) {
 						playList.add(v);
 					}
 				}
