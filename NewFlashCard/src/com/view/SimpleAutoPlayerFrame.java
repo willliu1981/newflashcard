@@ -44,8 +44,8 @@ import java.awt.Insets;
 public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
 		List<Vocabulary> vocbList;
-		static int MAXTIMES = 6;
-		static int HINDTIMES = 3;
+		static int MAXTIMES = 3;
+		//static int HINDTIMES = 2;
 		boolean isCancelled = false;
 		boolean isWaiting = false;
 		static final String defaultHint = "-";
@@ -65,6 +65,9 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			try {
 				Thread.sleep(2000);
 				while (!isCancelled) {
+					int roundDelayTime = 1500;
+					int allRoundDelayTime = 3000;
+					int hindDelayTime = 250;
 					if (!isWaiting) {
 
 						v = vocbList.get(ptr);
@@ -74,17 +77,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 
 						switch (times) {
 						case 0:
-							SimpleAutoPlayerFrame.txtpnVocabulary.setText("");
-							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
-							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
-							break;
 						case 1:
-							SimpleAutoPlayerFrame.txtpnVocabulary.setText(
-									createHint(v.getVocabulary().length()));
-							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
-							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
-							break;
-						case 2:
 							SimpleAutoPlayerFrame.txtpnVocabulary.setText(v
 									.getVocabulary().substring(0, 1)
 									+ createHint(v.getVocabulary().length() - 2)
@@ -93,10 +86,12 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
 							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
 							break;
-						case 3:
-							Thread.sleep(500);
-						case 4:
-						case 5:
+						case 2:
+							hindDelayTime += 1500;
+						//case 3:
+						//case 4:
+						//case 5:
+							roundDelayTime -= 1000;
 							SimpleAutoPlayerFrame.txtpnVocabulary
 									.setText(v.getVocabulary());
 							SimpleAutoPlayerFrame.txtpnTranslation
@@ -120,19 +115,52 @@ public class SimpleAutoPlayerFrame extends JFrame {
 										.setText("");
 							}
 							break;
+						/*
+						case 3:
+						Thread.sleep(500);
+						case 4:
+						case 5:
+						SimpleAutoPlayerFrame.txtpnVocabulary
+								.setText(v.getVocabulary());
+						SimpleAutoPlayerFrame.txtpnTranslation
+								.setText(v.getTranslation());
+						
+						if (v.getExplanation() != null) {
+							StringBuilder sb = new StringBuilder(
+									v.getExplanation());
+							int cutIdx = sb.indexOf("\n\n\n");
+							String explanation = "";
+							if (cutIdx == -1) {
+								explanation = sb.toString();
+							} else {
+								explanation = sb.substring(0, cutIdx);
+							}
+						
+							SimpleAutoPlayerFrame.txtpnExplanation
+									.setText(explanation);
+						} else {
+							SimpleAutoPlayerFrame.txtpnExplanation
+									.setText("");
+						}
+						break;
+						//*/
 						default:
 							break;
 						}
-						
-						Thread.sleep(250);
+
+						Thread.sleep(hindDelayTime);
 						boolean r = PronounceControl.play(v.getVocabulary());
 
 						if (!r || ++times == MAXTIMES) {
 							if (!r) {
-								Thread.sleep(1750);
+								Thread.sleep(2000);
+							}else {
+								Thread.sleep(allRoundDelayTime);
 							}
 							times = 0;
 							ptr++;
+						} else {
+							Thread.sleep(roundDelayTime);
 						}
 
 						if (ptr >= vocbList.size()) {
@@ -142,7 +170,6 @@ public class SimpleAutoPlayerFrame extends JFrame {
 
 					}
 
-					Thread.sleep(2000);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
