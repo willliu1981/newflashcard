@@ -362,7 +362,7 @@ public class AutoPlayerFrame extends JFrame {
 			return;
 		}
 
-		if (runPlayer == null && playList != null) {
+		if (runPlayer == null ) {
 			Collections.shuffle(playList);
 			runPlayer = new RunPlayer(playList);
 			Thread thd = new Thread(runPlayer);

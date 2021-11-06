@@ -44,8 +44,8 @@ import java.awt.Insets;
 public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
 		List<Vocabulary> vocbList;
-		static int MAXTIMES = 3;
-		//static int HINDTIMES = 2;
+		static int ROUNDMAXTIMES = 4;
+		// static int HINDTIMES = 2;
 		boolean isCancelled = false;
 		boolean isWaiting = false;
 		static final String defaultHint = "-";
@@ -67,9 +67,11 @@ public class SimpleAutoPlayerFrame extends JFrame {
 				while (!isCancelled) {
 					int roundDelayTime = 1500;
 					int allRoundDelayTime = 3000;
-					int hindDelayTime = 250;
+					int basePlayDelayTime = 250;
+					int playDelayTime = 250;
+					boolean ignorePlay = false;
+					Thread.sleep(1);
 					if (!isWaiting) {
-
 						v = vocbList.get(ptr);
 						SimpleAutoPlayerFrame.txtpnNumber_righttop.setText("");
 						SimpleAutoPlayerFrame.txtpnNumber_righttop
@@ -87,10 +89,16 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
 							break;
 						case 2:
-							hindDelayTime += 1500;
-						//case 3:
-						//case 4:
-						//case 5:
+							SimpleAutoPlayerFrame.txtpnVocabulary
+									.setText(v.getVocabulary());
+							playDelayTime = basePlayDelayTime + 750;
+							ignorePlay = true;
+							break;
+						case 3:
+							// case 4:
+							// case 5:
+							ignorePlay = false;
+							playDelayTime = basePlayDelayTime + 750;
 							roundDelayTime -= 1000;
 							SimpleAutoPlayerFrame.txtpnVocabulary
 									.setText(v.getVocabulary());
@@ -148,13 +156,18 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							break;
 						}
 
-						Thread.sleep(hindDelayTime);
-						boolean r = PronounceControl.play(v.getVocabulary());
+						Thread.sleep(playDelayTime);
+						boolean r = false;
+						if (ignorePlay == false) {
+							r = PronounceControl.play(v.getVocabulary());
+						} else {
+							r = true;
+						}
 
-						if (!r || ++times == MAXTIMES) {
+						if (!r || ++times == ROUNDMAXTIMES) {
 							if (!r) {
 								Thread.sleep(2000);
-							}else {
+							} else {
 								Thread.sleep(allRoundDelayTime);
 							}
 							times = 0;
