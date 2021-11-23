@@ -163,14 +163,14 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		JLabel lblNewLabel = new JLabel("vocabulary");
 		lblNewLabel.setSize(200, 0);
 		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 32));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_question.add(lblNewLabel, BorderLayout.CENTER);
 
 		lblNewLabel_msg = new JLabel("download...");
 		lblNewLabel_msg.setVisible(false);
 		lblNewLabel_msg.setForeground(Color.RED);
-		lblNewLabel_msg.setFont(new Font("新細明體", Font.BOLD, 16));
+		lblNewLabel_msg.setFont(new Font("新細明體", Font.BOLD, 18));
 		lblNewLabel_msg.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_msg.setOpaque(true);
 		lblNewLabel_msg.setBackground(Color.YELLOW);
@@ -185,7 +185,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 		JLabel lblNewLabel_1 = new JLabel("隨機答案");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
+		lblNewLabel_1.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
 		panel_answer.add(lblNewLabel_1);
 
 		panel = new JPanel();
@@ -218,7 +218,7 @@ public class TestQuestion extends JPanel implements ShowRow<Vocabulary> {
 
 		lblNewLabel_2 = new JLabel("info");
 		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		lblNewLabel_2.setFont(new Font("微軟正黑體", Font.BOLD, 24));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_background.add(lblNewLabel_2, BorderLayout.CENTER);
 		addMouseListener(myClickListener);

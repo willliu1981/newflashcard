@@ -549,7 +549,27 @@ public class AddVocabularyFrame extends JFrame implements Transportable {
 		
 		JPanel panel_10 = new JPanel();
 		panel_east.add(panel_10);
-		panel_10.setLayout(new BoxLayout(panel_10, BoxLayout.Y_AXIS));
+		panel_10.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		panel_10.add(panel_3, BorderLayout.NORTH);
+		panel_3.setLayout(new BorderLayout(0, 0));
+		
+		JButton btnNewButton = new JButton("reset");
+		btnNewButton.setBackground(SystemColor.controlHighlight);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddVocabularyUpdateBridge bridge = new AddVocabularyUpdateBridge();
+				Vocabulary vocabulary = (Vocabulary) dt.getParameter("vocabulary");
+				vocabulary.setBox_id(-1);
+				bridge.setParameter("parent", thisFrame);
+				bridge.setParameter("vocabulary", vocabulary);
+				bridge.getDispatcher().send();
+			}
+		});
+		btnNewButton.setToolTipText("remove from cardbox");
+		btnNewButton.setFont(new Font("新細明體", Font.BOLD, 18));
+		panel_3.add(btnNewButton, BorderLayout.NORTH);
 
 		/*
 		 * initialize
