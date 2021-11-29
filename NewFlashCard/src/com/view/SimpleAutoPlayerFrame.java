@@ -130,15 +130,17 @@ public class SimpleAutoPlayerFrame extends JFrame {
 						}
 
 						Thread.sleep(playDelayTime);
-						boolean r = false;
+						boolean isPlayable = false;
 						if (ignorePlay == false) {
-							r = PronounceControl.play(v.getVocabulary());
+							isPlayable = PronounceControl
+									.play(v.getVocabulary());
 						} else {
-							r = true;
+							isPlayable = true;
 						}
 
-						if (!r || ++times == ROUNDMAXTIMES) {
-							if (!r) {
+						/*
+						if (!isPlayable || ++times == ROUNDMAXTIMES) {
+							if (!isPlayable) {
 								Thread.sleep(2000);
 							} else {
 								Thread.sleep(allRoundDelayTime);
@@ -147,6 +149,19 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							ptr++;
 						} else {
 							Thread.sleep(roundDelayTime);
+						}
+						*/
+						if (++times == ROUNDMAXTIMES) {
+							Thread.sleep(allRoundDelayTime);
+							times = 0;
+							ptr++;
+						} else {
+							if (isPlayable) {
+								Thread.sleep(roundDelayTime);
+							} else {
+								Thread.sleep(roundDelayTime / 2);
+							}
+
 						}
 
 						if (ptr >= vocbList.size()) {
