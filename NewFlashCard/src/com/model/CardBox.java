@@ -177,7 +177,6 @@ public class CardBox {
 			cal.setTime(testDate);
 			cal.add(Calendar.DAY_OF_MONTH, this.stateRuleMap.get(this.state));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return cal;

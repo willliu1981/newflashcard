@@ -97,6 +97,10 @@ public class CardBoxDao extends Dao<CardBox> {
 		return m;
 	}
 
+	/*
+	 * 使用update() 要注意 test_date 和 state 的問題
+	 * 將引發 CardBox 的 getNextTestDate() 的 date parse Exception
+	 */
 	@Override
 	public void update(CardBox t, int id) {
 		Conn conn = new Conn();

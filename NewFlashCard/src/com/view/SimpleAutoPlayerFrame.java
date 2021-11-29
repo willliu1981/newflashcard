@@ -5,19 +5,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,6 +28,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
@@ -35,11 +39,9 @@ import com.control.dao.CardBoxDao;
 import com.control.dao.VocabularyDao;
 import com.control.pronounce.PronounceControl;
 import com.model.CardBox;
-import com.model.Vocabulary;
 import com.model.CardBox.StateResult;
+import com.model.Vocabulary;
 import com.tool.MyColor;
-import java.awt.event.MouseAdapter;
-import java.awt.Insets;
 
 public class SimpleAutoPlayerFrame extends JFrame {
 	static class RunPlayer implements Runnable {
@@ -123,35 +125,6 @@ public class SimpleAutoPlayerFrame extends JFrame {
 										.setText("");
 							}
 							break;
-						/*
-						case 3:
-						Thread.sleep(500);
-						case 4:
-						case 5:
-						SimpleAutoPlayerFrame.txtpnVocabulary
-								.setText(v.getVocabulary());
-						SimpleAutoPlayerFrame.txtpnTranslation
-								.setText(v.getTranslation());
-						
-						if (v.getExplanation() != null) {
-							StringBuilder sb = new StringBuilder(
-									v.getExplanation());
-							int cutIdx = sb.indexOf("\n\n\n");
-							String explanation = "";
-							if (cutIdx == -1) {
-								explanation = sb.toString();
-							} else {
-								explanation = sb.substring(0, cutIdx);
-							}
-						
-							SimpleAutoPlayerFrame.txtpnExplanation
-									.setText(explanation);
-						} else {
-							SimpleAutoPlayerFrame.txtpnExplanation
-									.setText("");
-						}
-						break;
-						//*/
 						default:
 							break;
 						}
@@ -179,6 +152,16 @@ public class SimpleAutoPlayerFrame extends JFrame {
 						if (ptr >= vocbList.size()) {
 							ptr = 0;
 							Thread.sleep(2000);
+							int value = JOptionPane.showConfirmDialog(thisFrame,
+									"已播放完一輪,是否藉此使測驗通過?", "更新測驗進度",
+									JOptionPane.YES_NO_OPTION);
+							if (value == JOptionPane.YES_OPTION) {
+								CardBoxDao dao = new CardBoxDao();
+								boxList.forEach(x -> {
+									x.state();
+									dao.updateTest(x, x.getId());
+								});
+							}
 						}
 
 					}
@@ -215,7 +198,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		}
 	}
 
-	private static SimpleAutoPlayerFrame singletonFrame;
+	private static SimpleAutoPlayerFrame thisFrame;
 	private final static Color background = new Color(41, 57, 55);
 	private final static Color chalkWhite = new Color(239, 238, 233);
 	private final static Color chalkYellow = new Color(240, 219, 66);
@@ -225,7 +208,8 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	private static JPanel singletonContentPane;
 	static RunPlayer runPlayer;
 	ExecutorService esPlayer = Executors.newFixedThreadPool(1);
-	List<Vocabulary> playList = new ArrayList<>();
+	static List<Vocabulary> playList;
+	static Set<CardBox> boxList;
 	private static JButton btnPlay;
 	private static JButton btnPause;
 	private static JButton btnStop;
@@ -288,7 +272,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			public void windowStateChanged(WindowEvent state) {
 				if (state.getNewState() == JFrame.MAXIMIZED_BOTH) {
 					createNewFrame(true);
-					SimpleAutoPlayerFrame.singletonFrame.setVisible(true);
+					SimpleAutoPlayerFrame.thisFrame.setVisible(true);
 				}
 			}
 
@@ -491,8 +475,8 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		btnStop_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				createNewFrame(false);
-				SimpleAutoPlayerFrame.singletonFrame.setVisible(true);
-				SimpleAutoPlayerFrame.singletonFrame.setLocation(lastPoint);
+				SimpleAutoPlayerFrame.thisFrame.setVisible(true);
+				SimpleAutoPlayerFrame.thisFrame.setLocation(lastPoint);
 			}
 		});
 		btnStop_1.setFont(new Font("DialogInput", Font.BOLD, 20));
@@ -504,7 +488,6 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		btnStop_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				load();
-
 			}
 		});
 		btnStop_1_1.setFont(new Font("DialogInput", Font.BOLD, 20));
@@ -531,9 +514,12 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	public void load() {
 		CardBoxDao cbDao = new CardBoxDao();
 		List<CardBox> boxs = cbDao.queryAll();
+
 		VocabularyDao vocbDao = new VocabularyDao();
 		List<Vocabulary> vocbs = vocbDao.queryAll();
+
 		playList = new ArrayList<>();
+		boxList = new HashSet<>();
 
 		vocbs.stream().forEach(v -> {
 			if (v.getBox_id() > 0) {
@@ -545,11 +531,12 @@ public class SimpleAutoPlayerFrame extends JFrame {
 					if (box.isCurrentTesting() || (!box.isFinish()
 							&& box.getStateResult() == StateResult.Default)) {
 						playList.add(v);
+						boxList.add(box);
 					}
+
 				}
 			}
 		});
-
 	}
 
 	public void play() {
@@ -613,21 +600,20 @@ public class SimpleAutoPlayerFrame extends JFrame {
 	}
 
 	public static SimpleAutoPlayerFrame getFrame() {
-		if (SimpleAutoPlayerFrame.singletonFrame == null) {
+		if (SimpleAutoPlayerFrame.thisFrame == null) {
 			createNewFrame(false);
 		}
-		return SimpleAutoPlayerFrame.singletonFrame;
+		return SimpleAutoPlayerFrame.thisFrame;
 	}
 
 	public static void createNewFrame(boolean maxSize) {
-		if (SimpleAutoPlayerFrame.singletonFrame != null) {
-			SimpleAutoPlayerFrame.singletonFrame.setVisible(false);
-			lastPoint = new Point(SimpleAutoPlayerFrame.singletonFrame.getX(),
-					SimpleAutoPlayerFrame.singletonFrame.getY());
-			SimpleAutoPlayerFrame.singletonFrame.dispose();
+		if (SimpleAutoPlayerFrame.thisFrame != null) {
+			SimpleAutoPlayerFrame.thisFrame.setVisible(false);
+			lastPoint = new Point(SimpleAutoPlayerFrame.thisFrame.getX(),
+					SimpleAutoPlayerFrame.thisFrame.getY());
+			SimpleAutoPlayerFrame.thisFrame.dispose();
 		}
-		SimpleAutoPlayerFrame.singletonFrame = new SimpleAutoPlayerFrame(
-				maxSize);
+		SimpleAutoPlayerFrame.thisFrame = new SimpleAutoPlayerFrame(maxSize);
 	}
 
 }
