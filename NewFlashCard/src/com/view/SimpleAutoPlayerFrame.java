@@ -500,6 +500,18 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		btnStop_1.setBackground(SystemColor.controlHighlight);
 		panel_playerButtonCenter.add(btnStop_1);
 
+		JButton btnStop_1_1 = new JButton("⟲⌛");
+		btnStop_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				load();
+
+			}
+		});
+		btnStop_1_1.setFont(new Font("DialogInput", Font.BOLD, 20));
+		btnStop_1_1.setFocusPainted(false);
+		btnStop_1_1.setBackground(SystemColor.controlHighlight);
+		panel_playerButtonCenter.add(btnStop_1_1);
+
 		panel_playerButtonTop = new JPanel();
 		panel_playerButtonTop.setPreferredSize(new Dimension(10, 20));
 		panel_bottom.add(panel_playerButtonTop, BorderLayout.NORTH);

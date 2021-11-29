@@ -93,6 +93,14 @@ public class CardBox {
 		}
 	}
 
+	private boolean preState() {
+		if (this.state > 1) {
+			this.state--;
+			return true;
+		}
+		return false;
+	}
+
 	public void finish() {
 		this.state = this.stateRuleMap.size() + 1;
 	}
@@ -136,7 +144,8 @@ public class CardBox {
 				|| this.getStateResult() == StateResult.BeforeDay) {
 			r = !this.nextState();
 		} else if (this.getStateResult() == StateResult.Overdue) {
-			this.resetState();
+			// this.resetState();
+			this.preState();
 			r = false;
 		}
 		return r;
