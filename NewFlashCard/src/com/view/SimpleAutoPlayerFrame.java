@@ -64,44 +64,66 @@ public class SimpleAutoPlayerFrame extends JFrame {
 
 			Vocabulary v = null;
 			SimpleAutoPlayerFrame.getFrame().setTitle("" + quantity);
+			int correctSequence = 0;
 			try {
 				Thread.sleep(2000);
 				while (!isCancelled) {
 					int roundDelayTime = 1500;
 					int allRoundDelayTime = 3000;
-					int basePlayDelayTime = 250;
-					int playDelayTime = 250;
-					boolean ignorePlay = false;
+					int baseSoundPlayDelayTime = 500;
+					int soundPlayDelayTime = 250;
+					boolean ignoreSoundPlay = false;
 					Thread.sleep(1);
 					if (!isWaiting) {
 						v = vocbList.get(ptr);
 						SimpleAutoPlayerFrame.txtpnNumber_righttop.setText("");
 						SimpleAutoPlayerFrame.txtpnNumber_righttop
 								.setText("" + (ptr + 1) + "");
-
 						switch (times) {
 						case 0:
-						case 1:
 							SimpleAutoPlayerFrame.txtpnVocabulary.setText(v
 									.getVocabulary().substring(0, 1)
 									+ createHint(v.getVocabulary().length() - 2)
 									+ v.getVocabulary().substring(
 											v.getVocabulary().length() - 1));
+							correctSequence = (int) (Math.random() * 4);
 							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
-							SimpleAutoPlayerFrame.txtpnExplanation.setText("");
+							SimpleAutoPlayerFrame.txtpnExplanation
+									.setText("♜ " + getSequenceLetter(0) + ") "
+											+ getRandomTranslate(vocbList, 0,
+													correctSequence, ptr)
+											+ "\n" + "♜ " + getSequenceLetter(1)
+											+ ") "
+											+ getRandomTranslate(vocbList, 1,
+													correctSequence, ptr)
+											+ "\n" + "♜ " + getSequenceLetter(2)
+											+ ") "
+											+ getRandomTranslate(vocbList, 2,
+													correctSequence, ptr)
+											+ "\n" + "♜ " + getSequenceLetter(3)
+											+ ") "
+											+ getRandomTranslate(vocbList, 3,
+													correctSequence, ptr));
+							break;
+						case 1:
+							roundDelayTime += 1000;
 							break;
 						case 2:
+							ignoreSoundPlay = true;
+							roundDelayTime += 1000;
 							SimpleAutoPlayerFrame.txtpnVocabulary
 									.setText(v.getVocabulary());
-							playDelayTime = basePlayDelayTime + 750;
-							ignorePlay = true;
+							soundPlayDelayTime = baseSoundPlayDelayTime - 250;
+							SimpleAutoPlayerFrame.txtpnTranslation.setText(
+									 getSequenceLetter(correctSequence)
+											+ ") " + v.getTranslation());
 							break;
 						case 3:
+
 							// case 4:
 							// case 5:
-							ignorePlay = false;
-							playDelayTime = basePlayDelayTime + 750;
-							roundDelayTime -= 1000;
+							ignoreSoundPlay = false;
+							soundPlayDelayTime = baseSoundPlayDelayTime + 1250;
 							SimpleAutoPlayerFrame.txtpnVocabulary
 									.setText(v.getVocabulary());
 							SimpleAutoPlayerFrame.txtpnTranslation
@@ -129,28 +151,15 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							break;
 						}
 
-						Thread.sleep(playDelayTime);
+						Thread.sleep(soundPlayDelayTime);
 						boolean isPlayable = false;
-						if (ignorePlay == false) {
+						if (ignoreSoundPlay == false) {
 							isPlayable = PronounceControl
 									.play(v.getVocabulary());
 						} else {
 							isPlayable = true;
 						}
 
-						/*
-						if (!isPlayable || ++times == ROUNDMAXTIMES) {
-							if (!isPlayable) {
-								Thread.sleep(2000);
-							} else {
-								Thread.sleep(allRoundDelayTime);
-							}
-							times = 0;
-							ptr++;
-						} else {
-							Thread.sleep(roundDelayTime);
-						}
-						*/
 						if (++times == ROUNDMAXTIMES) {
 							Thread.sleep(allRoundDelayTime);
 							times = 0;
@@ -198,6 +207,33 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		private static String createHint(int num) {
 
 			return createHint(num, defaultHint);
+		}
+
+		private static String getRandomTranslate(List<Vocabulary> list,
+				int sequence, int correctSequence, int correctIndex) {
+			String translate = null;
+			if (correctSequence == sequence) {
+				translate = list.get(correctIndex).getTranslation();
+			} else {
+				int rnd = (int) (Math.random() * list.size());
+				translate = list.get(rnd).getTranslation();
+			}
+			return translate;
+		}
+
+		private static String getSequenceLetter(int sequence) {
+			switch (sequence) {
+			case 0:
+				return "A";
+			case 1:
+				return "B";
+			case 2:
+				return "C";
+			case 3:
+				return "D";
+			default:
+				return "?";
+			}
 		}
 
 		public void cancel() {

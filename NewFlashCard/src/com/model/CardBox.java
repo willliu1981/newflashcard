@@ -145,7 +145,7 @@ public class CardBox {
 			r = !this.nextState();
 		} else if (this.getStateResult() == StateResult.Overdue) {
 			// this.resetState();
-			this.preState();
+			//this.preState();
 			r = false;
 		}
 		return r;
