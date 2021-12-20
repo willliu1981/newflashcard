@@ -70,7 +70,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 				Thread.sleep(2000);
 				while (!isCancelled) {
 					int roundDelayTime = 1500;
-					int allRoundDelayTime = 3000;
+					int allRoundDelayTime = 2000;
 					int baseSoundPlayDelayTime = 500;
 					int soundPlayDelayTime = 250;
 					boolean ignoreSoundPlay = false;
@@ -90,14 +90,32 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							correctSequence = (int) (Math.random() * 4);
 							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
 							optionsList.clear();
-							optionsList.add(getRandomTranslate(vocbList, 0,
-									correctSequence, ptr));
-							optionsList.add(getRandomTranslate(vocbList, 1,
-									correctSequence, ptr));
-							optionsList.add(getRandomTranslate(vocbList, 2,
-									correctSequence, ptr));
-							optionsList.add(getRandomTranslate(vocbList, 3,
-									correctSequence, ptr));
+							List<Vocabulary> vs = new ArrayList<>();
+							for (int i = 0; i < 4; i++) {
+								int count = 0;
+								Vocabulary rndV = null;
+								while (true) {
+									count++;
+									if (count >= 10) {
+										break;
+									}
+
+									rndV = getRandomVocabulary(vocbList, i,
+											correctSequence, ptr);
+									if (i != correctSequence) {
+										if (rndV == vocbList.get(ptr)) {
+											continue;
+										}
+									}
+
+									if (vs.contains(rndV)) {
+										continue;
+									}
+									break;
+								}
+								vs.add(rndV);
+								optionsList.add(rndV.getTranslation());
+							}
 
 							SimpleAutoPlayerFrame.txtpnExplanation
 									.setText(getCorrectMark(-1, correctSequence)
@@ -165,7 +183,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							// case 4:
 							// case 5:
 							ignoreSoundPlay = false;
-							soundPlayDelayTime = baseSoundPlayDelayTime + 1250;
+							soundPlayDelayTime = baseSoundPlayDelayTime + 750;
 							SimpleAutoPlayerFrame.txtpnVocabulary
 									.setText(v.getVocabulary());
 							SimpleAutoPlayerFrame.txtpnTranslation
@@ -210,7 +228,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							if (isPlayable) {
 								Thread.sleep(roundDelayTime);
 							} else {
-								Thread.sleep(roundDelayTime / 2);
+								Thread.sleep((int) (roundDelayTime * 0.75));
 							}
 
 						}
@@ -251,23 +269,23 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			return createHint(num, defaultHint);
 		}
 
-		private static String getRandomTranslate(List<Vocabulary> list,
+		private static Vocabulary getRandomVocabulary(List<Vocabulary> list,
 				int sequence, int correctSequence, int correctIndex) {
-			String translate = null;
+			Vocabulary voca = null;
 			if (correctSequence == sequence) {
-				translate = list.get(correctIndex).getTranslation();
+				voca = list.get(correctIndex);
 			} else {
 				int rnd = (int) (Math.random() * list.size());
-				translate = list.get(rnd).getTranslation();
+				voca = list.get(rnd);
 
 			}
 
-			return translate;
+			return voca;
 		}
 
 		private static String getCorrectMark(int sequence,
 				int correctSequence) {
-			return getCorrectMark(sequence, correctSequence, "♜ ", "♖ ");
+			return getCorrectMark(sequence, correctSequence, "♛ ", "♕ ");
 		}
 
 		private static String getCorrectMark(int sequence, int correctSequence,
@@ -508,7 +526,7 @@ public class SimpleAutoPlayerFrame extends JFrame {
 		txtpnExplanation.setForeground(chalkWhite);
 		txtpnExplanation.setBackground(background);
 		txtpnExplanation.setText("解釋");
-		txtpnExplanation.setFont(new Font("DialogInput", Font.PLAIN, 38));
+		txtpnExplanation.setFont(new Font("DialogInput", Font.PLAIN, 48));
 		panel_5_1.add(txtpnExplanation, BorderLayout.CENTER);
 		setAlignment(txtpnExplanation);
 
