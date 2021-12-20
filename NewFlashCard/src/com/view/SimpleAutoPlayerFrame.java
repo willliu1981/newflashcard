@@ -89,19 +89,26 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							correctSequence = (int) (Math.random() * 4);
 							SimpleAutoPlayerFrame.txtpnTranslation.setText("");
 							SimpleAutoPlayerFrame.txtpnExplanation
-									.setText("♜ " + getSequenceLetter(0) + ") "
+									.setText(getCorrectMark(-1, correctSequence)
+											+ getSequenceLetter(0) 
 											+ getRandomTranslate(vocbList, 0,
 													correctSequence, ptr)
-											+ "\n" + "♜ " + getSequenceLetter(1)
-											+ ") "
+											+ "\n"
+											+ getCorrectMark(-1,
+													correctSequence)
+											+ getSequenceLetter(1) 
 											+ getRandomTranslate(vocbList, 1,
 													correctSequence, ptr)
-											+ "\n" + "♜ " + getSequenceLetter(2)
-											+ ") "
+											+ "\n"
+											+ getCorrectMark(-1,
+													correctSequence)
+											+ getSequenceLetter(2) 
 											+ getRandomTranslate(vocbList, 2,
 													correctSequence, ptr)
-											+ "\n" + "♜ " + getSequenceLetter(3)
-											+ ") "
+											+ "\n"
+											+ getCorrectMark(-1,
+													correctSequence)
+											+ getSequenceLetter(3) 
 											+ getRandomTranslate(vocbList, 3,
 													correctSequence, ptr));
 							break;
@@ -114,9 +121,29 @@ public class SimpleAutoPlayerFrame extends JFrame {
 							SimpleAutoPlayerFrame.txtpnVocabulary
 									.setText(v.getVocabulary());
 							soundPlayDelayTime = baseSoundPlayDelayTime - 250;
-							SimpleAutoPlayerFrame.txtpnTranslation.setText(
-									 getSequenceLetter(correctSequence)
-											+ ") " + v.getTranslation());
+							SimpleAutoPlayerFrame.txtpnTranslation
+									.setText(getSequenceLetter(correctSequence)
+											+ v.getTranslation());
+							SimpleAutoPlayerFrame.txtpnExplanation
+									.setText(getCorrectMark(0, correctSequence)
+											+ getSequenceLetter(0)
+											+ getRandomTranslate(vocbList, 0,
+													correctSequence, ptr)
+											+ "\n"
+											+ getCorrectMark(1, correctSequence)
+											+ getSequenceLetter(1)
+											+ getRandomTranslate(vocbList, 1,
+													correctSequence, ptr)
+											+ "\n"
+											+ getCorrectMark(2, correctSequence)
+											+ getSequenceLetter(2)
+											+ getRandomTranslate(vocbList, 2,
+													correctSequence, ptr)
+											+ "\n"
+											+ getCorrectMark(3, correctSequence)
+											+ getSequenceLetter(3)
+											+ getRandomTranslate(vocbList, 3,
+													correctSequence, ptr));
 							break;
 						case 3:
 
@@ -221,18 +248,27 @@ public class SimpleAutoPlayerFrame extends JFrame {
 			return translate;
 		}
 
+		private static String getCorrectMark(int sequence,
+				int correctSequence) {
+			if (correctSequence == sequence) {
+				return "♜ ";
+			} else {
+				return "♖ ";
+			}
+		}
+
 		private static String getSequenceLetter(int sequence) {
 			switch (sequence) {
 			case 0:
-				return "A";
+				return "A) ";
 			case 1:
-				return "B";
+				return "B) ";
 			case 2:
-				return "C";
+				return "C) ";
 			case 3:
-				return "D";
+				return "D) ";
 			default:
-				return "?";
+				return "?) ";
 			}
 		}
 
