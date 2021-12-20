@@ -52,6 +52,7 @@ import com.control.dao.VocabularyDao;
 import com.control.pronounce.PronounceControl;
 import com.control.pronounce.PronounceErrUrlFactory;
 import com.control.pronounce.bridge.OpenPronounceSourceBridge;
+import com.control.pronounce.bridge.PronounceBridge;
 import com.control.viewcontrol.InfoProperty;
 import com.control.viewcontrol.ShowRowControl;
 import com.control.viewcontrol.ShowRowInfo;
@@ -1470,7 +1471,11 @@ public class MainView extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Vocabulary> vocaList = vocabularyShowRowControl
 						.getResults();
-				vocaList.forEach(x -> PronounceControl.play(x.getVocabulary()));
+				vocaList.forEach(x -> {
+					PronounceBridge bridge = new PronounceBridge();
+					bridge.setParameter("vocabulary", x.getVocabulary());
+					bridge.getDispatcher().send();
+				});
 				JOptionPane.showConfirmDialog(btnDownload, "下載完畢", "",
 						JOptionPane.DEFAULT_OPTION,
 						JOptionPane.INFORMATION_MESSAGE);

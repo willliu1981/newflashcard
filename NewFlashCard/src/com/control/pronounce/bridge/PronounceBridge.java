@@ -19,12 +19,12 @@ public class PronounceBridge extends Bridge {
 	public void doSend() {
 		String vocabulary = ((String) this.getParameter("vocabulary")).trim();
 		TestQuestion parent = ((TestQuestion) this.getParameter("parent"));
-
 		if (parent != null) {
 			JLabel lblMsg = parent.getMsgLabel();
 			if (vocabulary != null) {
 				lblMsg.setVisible(false);
-				if (!PronounceErrUrlFactory.isContainError(vocabulary) && !PronounceControl.play(vocabulary)) {
+				if (!PronounceErrUrlFactory.isContainError(vocabulary)
+						&& !PronounceControl.play(vocabulary)) {
 					lblMsg.setVisible(true);
 					lblMsg.setText("downloading ...");
 					lblMsg.setBackground(Color.yellow);
@@ -44,7 +44,8 @@ public class PronounceBridge extends Bridge {
 			}
 		} else {
 			if (vocabulary != null) {
-				if (!PronounceErrUrlFactory.isContainError(vocabulary) && !PronounceControl.play(vocabulary)) {
+				if (!PronounceErrUrlFactory.isContainError(vocabulary)
+						&& !PronounceControl.play(vocabulary)) {
 					if (PronounceControl.download(vocabulary)) {
 						PronounceControl.play(vocabulary);
 					} else {
